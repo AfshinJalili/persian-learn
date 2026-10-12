@@ -10,8 +10,27 @@ type Manifest = {
 
 const manifest = JSON.parse(readFileSync('public/audio/manifest.json', 'utf8')) as Manifest;
 
+class FakeUtterance {
+  text: string;
+  lang = '';
+  rate = 1;
+  voice: SpeechSynthesisVoice | null = null;
+  onend: ((event: SpeechSynthesisEvent) => void) | null = null;
+  onerror: ((event: SpeechSynthesisErrorEvent) => void) | null = null;
+  constructor(text: string) {
+    this.text = text;
+  }
+}
+
 function mockMissingAudioAndTts() {
-  const speak = jest.fn();
+  const speak = jest.fn((utterance: FakeUtterance) => {
+    utterance.onend?.(undefined as unknown as SpeechSynthesisEvent);
+  });
+  Object.defineProperty(window, 'SpeechSynthesisUtterance', {
+    configurable: true,
+    writable: true,
+    value: FakeUtterance,
+  });
   Object.defineProperty(window, 'speechSynthesis', {
     configurable: true,
     value: {
