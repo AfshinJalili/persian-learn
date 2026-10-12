@@ -427,8 +427,11 @@ h2,
 }
 
 .slow-btn svg {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
+  min-width: 24px;
+  min-height: 24px;
+  flex: none;
 }
 
 .lesson-top {
@@ -482,14 +485,20 @@ h2,
 
 .object-choice-card,
 .object-count-card {
-  height: 172px;
-  padding: 16px;
+  min-height: 172px;
+  height: auto;
+  padding: 16px 8px;
   place-items: center;
 }
 
 .object-count-card {
-  height: 180px;
+  min-height: 180px;
+  padding: 16px;
   background: #fff8ec;
+}
+
+.picture-grid .object-choice-card {
+  padding-inline: 8px;
 }
 
 .app-phone.object-gallery-page {
@@ -515,8 +524,9 @@ h2,
 
 .object-choice-card .object-cluster,
 .object-count-card .object-cluster {
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
+  max-width: 100%;
 }
 
 .object-cluster[data-count='3'][data-layout='grid'] > .illus:nth-child(3) {
@@ -577,6 +587,17 @@ h2,
   gap: var(--s-4);
 }
 
+.cluster-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.gallery-wide {
+  grid-column: 1 / -1;
+}
+
 .picture-grid {
   gap: 12px;
   width: 100%;
@@ -593,6 +614,26 @@ h2,
   align-items: center;
   justify-content: center;
   min-height: 84px;
+}
+
+.ten-frame-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(40px, 1fr));
+  gap: 8px;
+  width: 100%;
+  max-width: 24rem;
+}
+
+.ten-frame-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  aspect-ratio: 1;
+  border: 4px solid var(--line-strong);
+  background: #fff8ec;
+  border-radius: 12px;
 }
 
 .match-digit-slot {

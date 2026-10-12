@@ -1,5 +1,5 @@
 import { describe, expect, it, jest } from '@jest/globals';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import MatchPairsExercise from '../components/exercises/MatchPairsExercise';
 import type { Exercise } from '../lib/types';
@@ -127,21 +127,25 @@ describe('MatchPairsExercise retry', () => {
   });
 });
 
+function appleExercise(): Exercise {
+  return {
+    id: 'm1l4e2',
+    type: 'match_pairs',
+    prompt: '🔗',
+    audio_script: 'هر عدد را به تصویری وصل کنید که همان تعداد سیب دارد.',
+    payload: {},
+    answer: '۱=🍎|۲=🍎🍎|۳=🍎🍎🍎',
+    distractors: [],
+    feedback_correct: 'ok',
+    feedback_wrong: 'no',
+  };
+}
+
 describe('MatchPairsExercise object rows', () => {
   it('keeps every apple the same size in a 1-2-3 question', () => {
     const { container } = render(
       <MatchPairsExercise
-        exercise={{
-          id: 'm1l4e2',
-          type: 'match_pairs',
-          prompt: '🔗',
-          audio_script: 'هر عدد را به تصویری وصل کنید که همان تعداد سیب دارد.',
-          payload: {},
-          answer: '۱=🍎|۲=🍎🍎|۳=🍎🍎🍎',
-          distractors: [],
-          feedback_correct: 'ok',
-          feedback_wrong: 'no',
-        }}
+        exercise={appleExercise()}
         userAnswer=""
         onAnswerChange={() => {}}
         disabled={false}
@@ -154,5 +158,94 @@ describe('MatchPairsExercise object rows', () => {
     expect(sizes[0]).not.toBe('24px');
     const items = [...container.querySelectorAll('.match-object-apples .illus')] as HTMLElement[];
     expect(new Set(items.map((item) => item.style.width)).size).toBe(1);
+  });
+
+  it('pairs a number onto a slot when the number is tapped first', async () => {
+    const user = userEvent.setup();
+    const onAnswerChange = jest.fn();
+    render(
+      <MatchPairsExercise
+        exercise={appleExercise()}
+        userAnswer=""
+        onAnswerChange={onAnswerChange}
+        disabled={false}
+      />
+    );
+
+    await user.click(screen.getByRole('button', { name: '۱' }));
+    await user.click(screen.getByRole('button', { name: '🍎' }));
+    await user.click(screen.getByRole('button', { name: '۲' }));
+    await user.click(screen.getByRole('button', { name: '🍎🍎' }));
+    await user.click(screen.getByRole('button', { name: '۳' }));
+    await user.click(screen.getByRole('button', { name: '🍎🍎🍎' }));
+
+    await waitFor(() => {
+      expect(onAnswerChange).toHaveBeenCalled();
+    });
+  });
+
+  it('pairs a number onto a slot when the number is dragged', async () => {
+    const onAnswerChange = jest.fn();
+    render(
+      <MatchPairsExercise
+        exercise={appleExercise()}
+        userAnswer=""
+        onAnswerChange={onAnswerChange}
+        disabled={false}
+      />
+    );
+
+    const dataTransfer = {
+      data: {} as Record<string, string>,
+      setData(type: string, value: string) {
+        this.data[type] = value;
+      },
+      getData(type: string) {
+        return this.data[type] ?? '';
+      },
+      effectAllowed: 'all',
+    };
+
+    fireEvent.dragStart(screen.getByRole('button', { name: '۱' }), { dataTransfer });
+    fireEvent.dragOver(screen.getByRole('button', { name: '🍎' }), { dataTransfer });
+    fireEvent.drop(screen.getByRole('button', { name: '🍎' }), { dataTransfer });
+    fireEvent.dragStart(screen.getByRole('button', { name: '۲' }), { dataTransfer });
+    fireEvent.drop(screen.getByRole('button', { name: '🍎🍎' }), { dataTransfer });
+    fireEvent.dragStart(screen.getByRole('button', { name: '۳' }), { dataTransfer });
+    fireEvent.drop(screen.getByRole('button', { name: '🍎🍎🍎' }), { dataTransfer });
+
+    await waitFor(() => {
+      expect(onAnswerChange).toHaveBeenCalled();
+    });
+  });
+
+  it('wraps 8-10 objects at 32px or larger instead of one shrinking row', () => {
+    const { container } = render(
+      <MatchPairsExercise
+        exercise={{
+          id: 'm3l3e9',
+          type: 'match_pairs',
+          prompt: '🔗',
+          audio_script: 'هر عدد را به تصویری وصل کنید که همان تعداد نان دارد.',
+          payload: {},
+          answer: '۸=🍞🍞🍞🍞🍞🍞🍞🍞|۹=🍞🍞🍞🍞🍞🍞🍞🍞🍞|۱۰=🍞🍞🍞🍞🍞🍞🍞🍞🍞🍞',
+          distractors: [],
+          feedback_correct: 'ok',
+          feedback_wrong: 'no',
+        }}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+    const clusters = [...container.querySelectorAll('.match-object-apples .object-cluster')] as HTMLElement[];
+    expect(clusters).toHaveLength(3);
+    expect(new Set(clusters.map((cluster) => cluster.style.getPropertyValue('--object-size'))).size).toBe(1);
+    const ten = clusters.find((cluster) => cluster.getAttribute('data-count') === '10');
+    expect(ten).toHaveAttribute('data-layout', 'row');
+    expect(ten?.style.getPropertyValue('--object-cols')).toBe('5');
+    expect(ten?.style.getPropertyValue('--object-rows')).toBe('2');
+    const size = Number.parseInt(ten?.style.getPropertyValue('--object-size') ?? '0', 10);
+    expect(size).toBeGreaterThanOrEqual(32);
   });
 });

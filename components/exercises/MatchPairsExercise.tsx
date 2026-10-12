@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react';
 import { playOptionAudio } from '@/lib/spoken-option';
 import { canonicalizePairs } from '@/lib/answers';
 import { shuffleSeeded } from '@/lib/shuffle';
@@ -10,8 +10,11 @@ import SpeakerButton from '@/components/SpeakerButton';
 import {
   ObjectArt,
   ObjectCluster,
+  OBJECT_CLUSTER_GAP,
+  OBJECT_CLUSTER_MIN_SIZE,
   looksLikeObjects,
   objectClusterItemSizeForBox,
+  objectClusterRows,
   splitObjectTokens,
 } from '@/components/art/objects';
 
@@ -33,6 +36,7 @@ export default function MatchPairsExercise({
 }: Props) {
   const [selected, setSelected] = useState<Selection | null>(null);
   const [pairs, setPairs] = useState<Array<[string, string]>>([]);
+  const selectedRef = useRef<Selection | null>(null);
 
   const answerPairs = useMemo(
     () => exercise.answer.split('|').map((pair) => pair.split('=') as [string, string]),
@@ -57,15 +61,25 @@ export default function MatchPairsExercise({
     rightOptions.every(looksLikeObjects) &&
     leftOptions.every((item) => /^[0-9۰-۹]+$/.test(item));
   const appleCounts = rightOptions.map((option) => splitObjectTokens(option).length);
-  const appleSize = objectClusterItemSizeForBox(Math.max(1, ...appleCounts), 210, 72, 8, 'row');
+  const appleFullest = Math.max(1, ...appleCounts);
+  const appleRows = objectClusterRows(appleFullest, 'row');
+  const appleSize = objectClusterItemSizeForBox(
+    appleFullest,
+    236,
+    Math.max(72, appleRows * OBJECT_CLUSTER_MIN_SIZE + Math.max(0, appleRows - 1) * OBJECT_CLUSTER_GAP),
+    OBJECT_CLUSTER_GAP,
+    'row'
+  );
 
   useEffect(() => {
+    selectedRef.current = null;
     setSelected(null);
     setPairs([]);
   }, [exercise.id]);
 
   useEffect(() => {
     if (userAnswer !== '') return;
+    selectedRef.current = null;
     setSelected(null);
     setPairs([]);
   }, [userAnswer]);
@@ -74,6 +88,21 @@ export default function MatchPairsExercise({
   const isRightUsed = (option: string) => pairs.some(([, right]) => right === option);
   const pairForRight = (option: string) => pairs.find(([, right]) => right === option);
 
+  const rememberSelection = (next: Selection | null) => {
+    selectedRef.current = next;
+    setSelected(next);
+  };
+
+  const placePair = (left: string, right: string) => {
+    if (disabled || isLeftUsed(left) || isRightUsed(right)) return;
+    const newPairs: Array<[string, string]> = [...pairs, [left, right]];
+    setPairs(newPairs);
+    rememberSelection(null);
+    if (newPairs.length === answerPairs.length) {
+      onAnswerChange(canonicalizePairs(newPairs.map((pair) => pair.join('=')).join('|')));
+    }
+  };
+
   const handleSelect = (side: Side, option: string) => {
     if (disabled) return;
     if (side === 'left' && isLeftUsed(option)) return;
@@ -81,20 +110,31 @@ export default function MatchPairsExercise({
 
     playOptionAudio(option, speakPeers).catch(() => {});
 
-    if (!selected || selected.side === side) {
-      setSelected({ side, value: option });
+    const current = selectedRef.current;
+    if (!current || current.side === side) {
+      rememberSelection({ side, value: option });
       return;
     }
 
-    const left = side === 'left' ? option : selected.value;
-    const right = side === 'right' ? option : selected.value;
-    const newPairs: Array<[string, string]> = [...pairs, [left, right]];
-    setPairs(newPairs);
-    setSelected(null);
+    const left = side === 'left' ? option : current.value;
+    const right = side === 'right' ? option : current.value;
+    placePair(left, right);
+  };
 
-    if (newPairs.length === answerPairs.length) {
-      onAnswerChange(canonicalizePairs(newPairs.map((pair) => pair.join('=')).join('|')));
-    }
+  const handleDigitDragStart = (option: string, event: DragEvent<HTMLButtonElement>) => {
+    event.dataTransfer.setData('text/plain', option);
+    event.dataTransfer.effectAllowed = 'copyMove';
+    rememberSelection({ side: 'left', value: option });
+  };
+
+  const handleSlotDrop = (option: string, event: DragEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    const digit = event.dataTransfer.getData('text/plain') || (
+      selectedRef.current?.side === 'left' ? selectedRef.current.value : ''
+    );
+    if (!digit) return;
+    playOptionAudio(digit, speakPeers).catch(() => {});
+    placePair(digit, option);
   };
 
   return (
@@ -115,8 +155,11 @@ export default function MatchPairsExercise({
                 type="button"
                 key={option}
                 aria-label={option}
+                data-match-slot={option}
                 disabled={disabled || Boolean(placed)}
                 onClick={() => handleSelect('right', option)}
+                onDragOver={(event) => event.preventDefault()}
+                onDrop={(event) => handleSlotDrop(option, event)}
                 className={`row-card match-object-row ${picking ? 'selected' : ''}`}
                 style={{
                   padding: '12px 16px',
@@ -168,7 +211,10 @@ export default function MatchPairsExercise({
                   type="button"
                   key={option}
                   aria-label={option}
+                  data-match-digit={option}
+                  draggable={!disabled}
                   onClick={() => handleSelect('left', option)}
+                  onDragStart={(event) => handleDigitDragStart(option, event)}
                   className={`card ${selected?.side === 'left' && selected.value === option ? 'selected' : ''}`}
                   style={{ width: 88, height: 88, borderRadius: 20 }}
                 >
@@ -189,6 +235,8 @@ export default function MatchPairsExercise({
                 key={`left-${option}`}
                 aria-label={option}
                 onClick={() => handleSelect('left', option)}
+                draggable={!disabled && !isLeftUsed(option)}
+                onDragStart={(event) => handleDigitDragStart(option, event)}
                 disabled={disabled || isLeftUsed(option)}
                 className={`card h-20 w-full ${isLeftUsed(option) ? 'dim' : ''} ${selected?.side === 'left' && selected.value === option ? 'selected' : ''}`}
               >
@@ -207,6 +255,8 @@ export default function MatchPairsExercise({
                 key={`right-${option}`}
                 aria-label={option}
                 onClick={() => handleSelect('right', option)}
+                onDragOver={(event) => event.preventDefault()}
+                onDrop={(event) => handleSlotDrop(option, event)}
                 disabled={disabled || isRightUsed(option)}
                 className={`card h-20 w-full ${isRightUsed(option) ? 'dim' : ''} ${selected?.side === 'right' && selected.value === option ? 'selected' : ''}`}
               >

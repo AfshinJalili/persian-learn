@@ -2,14 +2,16 @@
 
 import { useLayoutEffect, useRef, useState } from 'react';
 import {
+  OBJECT_CARD_INNER_FALLBACK,
   objectClusterItemSize,
-  objectClusterItemSizeForBox,
+  objectClusterLayoutForBox,
 } from '@/components/art/objects';
 
 export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(counts: number[]) {
   const ref = useRef<T | null>(null);
   const fullest = Math.max(1, ...counts);
   const [size, setSize] = useState(() => objectClusterItemSize(fullest));
+  const [box, setBox] = useState(OBJECT_CARD_INNER_FALLBACK);
 
   useLayoutEffect(() => {
     const root = ref.current;
@@ -19,17 +21,20 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(cou
       const card = (root.matches('.object-choice-card, .object-count-card')
         ? root
         : root.querySelector('.object-choice-card, .object-count-card')) as HTMLElement | null;
-      const box = card ?? root;
-      const style = getComputedStyle(box);
+      const node = card ?? root;
+      const style = getComputedStyle(node);
       const padX = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
       const padY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
-      const innerW = box.clientWidth - padX;
-      const innerH = box.clientHeight - padY;
+      const innerW = node.clientWidth - padX;
+      const innerH = node.clientHeight - padY;
       if (innerW < 8 || innerH < 8) {
+        setBox(OBJECT_CARD_INNER_FALLBACK);
         setSize(objectClusterItemSize(fullest));
         return;
       }
-      setSize(objectClusterItemSizeForBox(fullest, innerW, innerH));
+      const nextBox = { width: innerW, height: innerH };
+      setBox(nextBox);
+      setSize(objectClusterLayoutForBox(fullest, innerW, innerH).size);
     };
 
     measure();
@@ -41,5 +46,5 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(cou
     return () => observer.disconnect();
   }, [fullest]);
 
-  return { ref, size, fullest };
+  return { ref, size, box, fullest };
 }

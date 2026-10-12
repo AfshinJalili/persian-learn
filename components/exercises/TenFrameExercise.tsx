@@ -4,6 +4,7 @@ import { Exercise } from '@/lib/types';
 import { exerciseChoices } from '@/lib/shuffle';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
+import { ObjectArt } from '@/components/art/objects';
 
 interface TenFrameExerciseProps {
   exercise: Exercise;
@@ -30,13 +31,10 @@ export default function TenFrameExercise({
         <div className="text-3xl font-black">{exercise.prompt}</div>
       </div>
 
-      <div className="grid grid-cols-5 gap-2 w-full max-w-sm">
+      <div className="ten-frame-grid">
         {Array.from({ length: 10 }, (_, i) => (
-          <div
-            key={i}
-            className="flex items-center justify-center border-4 border-brown-600 bg-cream-50 aspect-square rounded-xl"
-          >
-            {i < filledCount ? <span className="text-4xl">{glyph}</span> : null}
+          <div key={i} className="ten-frame-cell">
+            {i < filledCount ? <ObjectArt token={glyph} size={40} /> : null}
           </div>
         ))}
       </div>

@@ -46,6 +46,27 @@ describe('TapPictureExercise', () => {
     expect(sizes[0]).not.toBe('24px');
   });
 
+  it('stacks high-count cards so items can stay at 32px', () => {
+    const { container } = render(
+      <TapPictureExercise
+        exercise={tapExercise(['🍎🍎🍎🍎🍎', '🍎🍎🍎🍎🍎🍎🍎'])}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+    expect(container.querySelector('.cluster-stack')).toBeTruthy();
+    const sizes = [...container.querySelectorAll('.object-cluster')].map((cluster) =>
+      Number.parseInt((cluster as HTMLElement).style.getPropertyValue('--object-size') || '0', 10)
+    );
+    expect(sizes.every((size) => size >= 32)).toBe(true);
+    const seven = container.querySelector('[data-count="7"]') as HTMLElement | null;
+    expect(seven).toBeTruthy();
+    expect(
+      Number.parseInt(seven?.style.getPropertyValue('--object-size') || '0', 10)
+    ).toBeGreaterThanOrEqual(32);
+  });
+
   it('keeps two picture choices in a two-column grid', () => {
     const { container } = render(
       <TapPictureExercise

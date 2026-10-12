@@ -5,7 +5,7 @@ import { playOptionAudio } from '@/lib/spoken-option';
 import { comparePrompt } from '@/lib/compare';
 import { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
-import { ObjectCluster, splitObjectTokens } from '@/components/art/objects';
+import { ObjectCluster, objectClusterChoiceGridClass, splitObjectTokens } from '@/components/art/objects';
 import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
 interface CompareMoreLessExerciseProps {
@@ -22,7 +22,7 @@ export default function CompareMoreLessExercise({
   disabled,
 }: CompareMoreLessExerciseProps) {
   const { left, right, ask } = exercise.payload as { left: string; right: string; ask: string };
-  const { ref, size } = useSharedClusterSize([
+  const { ref, size, box } = useSharedClusterSize([
     splitObjectTokens(left).length,
     splitObjectTokens(right).length,
   ]);
@@ -43,14 +43,25 @@ export default function CompareMoreLessExercise({
         <SpeakerButton text={exercise.audio_script} />
         <h2>{comparePrompt(ask)}</h2>
       </div>
-      <div ref={ref} className="grid2">
+      <div
+        ref={ref}
+        className={objectClusterChoiceGridClass(
+          Math.max(splitObjectTokens(left).length, splitObjectTokens(right).length),
+          2
+        )}
+      >
         <button
           type="button"
           onClick={() => select('left', left)}
           disabled={disabled}
           className={`card object-choice-card ${userAnswer === 'left' ? 'selected' : ''}`}
         >
-          <ObjectCluster token={left} itemSize={size} />
+          <ObjectCluster
+            token={left}
+            itemSize={size}
+            boxWidth={box.width}
+            boxHeight={box.height}
+          />
         </button>
         <button
           type="button"
@@ -58,7 +69,12 @@ export default function CompareMoreLessExercise({
           disabled={disabled}
           className={`card object-choice-card ${userAnswer === 'right' ? 'selected' : ''}`}
         >
-          <ObjectCluster token={right} itemSize={size} />
+          <ObjectCluster
+            token={right}
+            itemSize={size}
+            boxWidth={box.width}
+            boxHeight={box.height}
+          />
         </button>
       </div>
       <button

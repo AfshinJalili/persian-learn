@@ -151,23 +151,26 @@ test.describe('Codex review navigation fixes', () => {
       const dots = [...three.querySelectorAll('.object-cluster > .illus')]
         .map((dot) => dot.getBoundingClientRect())
         .sort((left, right) => left.y - right.y || left.x - right.x);
-      const top = dots.filter((dot) => Math.abs(dot.y - dots[0]!.y) < 4);
+      const unique = new Set(sizes.map((size) => Math.round(size)));
       return {
         sizes,
+        unique: unique.size,
         cardX: cardBox.x,
         cardRight: cardBox.right,
         firstDotX: dots[0]?.x ?? 0,
         lastDotRight: Math.max(...dots.map((dot) => dot.right)),
-        topCount: top.length,
-        thirdLower: (dots[2]?.y ?? 0) - (dots[0]?.y ?? 0) > 8,
+        cols: Number.parseInt(
+          (three.querySelector('.object-cluster') as HTMLElement | null)?.style.getPropertyValue(
+            '--object-cols'
+          ) || '0',
+          10
+        ),
       };
     });
     expect(layout).toBeTruthy();
     expect(layout!.sizes).toHaveLength(3);
-    expect(new Set(layout!.sizes.map((size) => Math.round(size))).size).toBe(1);
-    expect(layout!.sizes[0] ?? 0).toBeGreaterThan(24);
-    expect(layout!.topCount).toBe(2);
-    expect(layout!.thirdLower).toBe(true);
+    expect(layout!.unique).toBe(1);
+    expect(layout!.sizes[0] ?? 0).toBeGreaterThanOrEqual(32);
     expect(layout!.firstDotX).toBeGreaterThanOrEqual(layout!.cardX);
     expect(layout!.lastDotRight).toBeLessThanOrEqual(layout!.cardRight);
   });
@@ -229,5 +232,34 @@ test.describe('Codex review navigation fixes', () => {
     const slow = page.locator('.slow-btn');
     await expect(slow).toBeVisible();
     expect((await slow.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(48);
+    const turtle = slow.locator('svg');
+    await expect(turtle).toBeVisible();
+    const turtleBox = await turtle.boundingBox();
+    expect(turtleBox?.width ?? 0).toBeGreaterThanOrEqual(24);
+    expect(turtleBox?.height ?? 0).toBeGreaterThanOrEqual(24);
+    await expect(turtle.locator('ellipse').first()).toHaveAttribute('fill', '#3E9A00');
+  });
+
+  test('gallery object items stay at least 32px and wrap after five', async ({ page }) => {
+    await page.goto('/dev/object-cards');
+    await expect(page.locator('[data-object-gallery]')).toBeVisible();
+    const sizes = await page.evaluate(() => {
+      const items = [...document.querySelectorAll('.object-cluster > .illus, .ten-frame-cell .illus')];
+      return items.map((item) => Math.round(item.getBoundingClientRect().width));
+    });
+    expect(sizes.length).toBeGreaterThan(20);
+    expect(Math.min(...sizes)).toBeGreaterThanOrEqual(32);
+
+    const tenApples = page.locator('[data-gallery-section="match_pairs"] [data-count="10"] .object-cluster');
+    await expect(tenApples).toHaveAttribute('data-layout', 'row');
+    await expect(tenApples).toHaveAttribute('data-count', '10');
+    const tenLayout = await tenApples.evaluate((element) => ({
+      cols: (element as HTMLElement).style.getPropertyValue('--object-cols'),
+      rows: (element as HTMLElement).style.getPropertyValue('--object-rows'),
+      size: Number.parseInt((element as HTMLElement).style.getPropertyValue('--object-size') || '0', 10),
+    }));
+    expect(tenLayout.cols).toBe('5');
+    expect(tenLayout.rows).toBe('2');
+    expect(tenLayout.size).toBeGreaterThanOrEqual(32);
   });
 });

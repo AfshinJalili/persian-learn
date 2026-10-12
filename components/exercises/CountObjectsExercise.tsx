@@ -27,7 +27,7 @@ export default function CountObjectsExercise({
   const options = exerciseChoices(exercise);
   const count = Number.isFinite(payload.count) ? payload.count : 0;
   const objects = Array.from({ length: Math.max(0, count) }, () => payload.objects || '•');
-  const { ref, size } = useSharedClusterSize([objects.length]);
+  const { ref, size, box } = useSharedClusterSize([objects.length]);
 
   const handleSelect = (option: string) => {
     if (disabled) return;
@@ -41,7 +41,12 @@ export default function CountObjectsExercise({
         <h2>{exerciseHeading(exercise)}</h2>
       </div>
       <div ref={ref} className="card object-count-card">
-        <ObjectCluster tokens={objects} itemSize={size} />
+        <ObjectCluster
+          tokens={objects}
+          itemSize={size}
+          boxWidth={box.width}
+          boxHeight={box.height}
+        />
       </div>
       <div className="grid3">
         {options.map((option) => {

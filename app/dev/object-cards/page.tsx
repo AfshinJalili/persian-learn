@@ -1,6 +1,11 @@
 'use client';
 
-import { ObjectCluster, objectClusterItemSizeForBox } from '@/components/art/objects';
+import {
+  ObjectArt,
+  ObjectCluster,
+  objectClusterItemSizeForBox,
+  objectClusterNeedsWideCard,
+} from '@/components/art/objects';
 import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
 function FillingCard({
@@ -12,38 +17,76 @@ function FillingCard({
   token: string;
   className: string;
 }) {
-  const { ref, size } = useSharedClusterSize([count]);
+  const { ref, size, box } = useSharedClusterSize([count]);
   return (
     <div ref={ref} className={className} data-count={count}>
-      <ObjectCluster token={token.repeat(count)} itemSize={size} />
+      <ObjectCluster
+        token={token.repeat(count)}
+        itemSize={size}
+        boxWidth={box.width}
+        boxHeight={box.height}
+      />
     </div>
   );
 }
 
 function CompareRow({ left, right, token }: { left: number; right: number; token: string }) {
-  const { ref, size } = useSharedClusterSize([left, right]);
+  const { ref, size, box } = useSharedClusterSize([left, right]);
+  const stacked = objectClusterNeedsWideCard(Math.max(left, right));
   return (
-    <div ref={ref} className="grid2" data-compare={`${left}-${right}`}>
+    <div ref={ref} className={stacked ? 'cluster-stack' : 'grid2'} data-compare={`${left}-${right}`}>
       <div className="card object-choice-card">
-        <ObjectCluster token={token.repeat(left)} itemSize={size} />
+        <ObjectCluster
+          token={token.repeat(left)}
+          itemSize={size}
+          boxWidth={box.width}
+          boxHeight={box.height}
+        />
       </div>
       <div className="card object-choice-card">
-        <ObjectCluster token={token.repeat(right)} itemSize={size} />
+        <ObjectCluster
+          token={token.repeat(right)}
+          itemSize={size}
+          boxWidth={box.width}
+          boxHeight={box.height}
+        />
       </div>
     </div>
   );
 }
 
+function ThreeCardTypeGallery({
+  section,
+  title,
+  token,
+}: {
+  section: string;
+  title: string;
+  token: string;
+}) {
+  return (
+    <section data-gallery-section={section}>
+      <h2>{title}</h2>
+      <div className="grid3 picture-grid">
+        {Array.from({ length: 10 }, (_, index) => (
+          <FillingCard
+            key={index}
+            count={index + 1}
+            token={token}
+            className={`card object-choice-card${objectClusterNeedsWideCard(index + 1) ? ' gallery-wide' : ''}`}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function TenFrame({ count, token }: { count: number; token: string }) {
   return (
-    <div className="grid grid-cols-5 gap-2 w-full" data-count={count}>
+    <div className="ten-frame-grid" data-count={count}>
       {Array.from({ length: 10 }, (_, index) => (
-        <div
-          key={index}
-          className="flex items-center justify-center border-4 aspect-square rounded-xl"
-          style={{ borderColor: 'var(--line-strong)', background: '#fff8ec' }}
-        >
-          {index < count ? <ObjectCluster token={token} itemSize={28} /> : null}
+        <div key={index} className="ten-frame-cell">
+          {index < count ? <ObjectArt token={token} size={40} /> : null}
         </div>
       ))}
     </div>
@@ -60,15 +103,19 @@ export default function ObjectCardsGalleryPage() {
       style={{ height: 'auto', maxHeight: 'none', overflow: 'visible' }}
     >
       <div className="content" style={{ paddingTop: 16, gap: 24 }}>
+        <ThreeCardTypeGallery section="show_n" title="نشان بده ۱ تا ۱۰" token="🍞" />
+        <ThreeCardTypeGallery section="at_a_glance" title="با یک نگاه ۱ تا ۱۰" token="🔵" />
+        <ThreeCardTypeGallery section="digit_to_group" title="عدد به دسته ۱ تا ۱۰" token="🌷" />
+
         <section data-gallery-section="tap_picture">
           <h1>انتخاب تصویر ۱ تا ۱۰</h1>
-          <div className="grid2">
+          <div className="grid3 picture-grid">
             {Array.from({ length: 10 }, (_, index) => (
               <FillingCard
                 key={index}
                 count={index + 1}
                 token="🔵"
-                className="card object-choice-card"
+                className={`card object-choice-card${objectClusterNeedsWideCard(index + 1) ? ' gallery-wide' : ''}`}
               />
             ))}
           </div>
@@ -94,7 +141,7 @@ export default function ObjectCardsGalleryPage() {
                 key={index}
                 count={index + 1}
                 token="🍎"
-                className="card object-choice-card"
+                className={`card object-choice-card${objectClusterNeedsWideCard(index + 1) ? ' gallery-wide' : ''}`}
               />
             ))}
           </div>
