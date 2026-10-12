@@ -256,7 +256,7 @@ describe('MatchPairsExercise object rows', () => {
     expect(size).toBeGreaterThanOrEqual(32);
   });
 
-  it('lays 6 objects in one filled row when 32px items fit', () => {
+  it('lays 6 objects in one filled row when that is larger than a 5x2 wrap', () => {
     const { container } = render(
       <MatchPairsExercise
         exercise={{

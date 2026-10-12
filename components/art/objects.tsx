@@ -491,20 +491,22 @@ export function objectClusterLayoutForBox(
   }
 
   if (layout === 'row') {
-    const oneRowSize = (innerWidth - gap * Math.max(0, count - 1)) / Math.max(1, count);
-    const cols = oneRowSize >= OBJECT_CLUSTER_MIN_SIZE ? count : Math.min(5, count);
-    const rows = cols === count ? 1 : count > 5 ? 2 : 1;
-    const sizeW = (innerWidth - gap * Math.max(0, cols - 1)) / cols;
-    const sizeH = (innerHeight - gap * Math.max(0, rows - 1)) / rows;
-    const unclamped = Math.min(
-      sizeW,
-      Number.isFinite(sizeH) && sizeH > 8 ? sizeH : sizeW
-    );
+    const score = (cols: number, rows: number) => {
+      const sizeW = (innerWidth - gap * Math.max(0, cols - 1)) / cols;
+      const sizeH = (innerHeight - gap * Math.max(0, rows - 1)) / rows;
+      return Math.min(
+        sizeW,
+        Number.isFinite(sizeH) && sizeH > 8 ? sizeH : sizeW
+      );
+    };
+    let best = { cols: Math.min(5, count), rows: count > 5 ? 2 : 1, unclamped: score(Math.min(5, count), count > 5 ? 2 : 1) };
+    const oneRow = score(count, 1);
+    if (oneRow > best.unclamped + 0.25) {
+      best = { cols: count, rows: 1, unclamped: oneRow };
+    }
     return {
-      cols,
-      rows,
-      unclamped,
-      size: Math.max(8, Math.floor(unclamped)),
+      ...best,
+      size: Math.max(8, Math.floor(best.unclamped)),
     };
   }
 

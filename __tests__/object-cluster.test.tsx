@@ -39,15 +39,23 @@ describe('ObjectCluster', () => {
   it('fills a wide match-pair box with a row layout above 32px', () => {
     const six = objectClusterLayoutForBox(6, 220, 72, 4, 'row');
     const ten = objectClusterLayoutForBox(10, 220, 72, 4, 'row');
-    expect(six).toMatchObject({ cols: 6, rows: 1 });
+    expect(six).toMatchObject({ cols: 5, rows: 2 });
     expect(six.size).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
     expect(ten).toMatchObject({ cols: 5, rows: 2 });
     expect(ten.size).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
-    expect((6 * six.size + 20) / 220).toBeGreaterThanOrEqual(0.65);
+    expect((5 * six.size + 16) / 220).toBeGreaterThanOrEqual(0.65);
     const capped = objectClusterLayoutForBox(6, 250, 84, 4, 'row');
-    expect(capped).toMatchObject({ cols: 6, rows: 1 });
+    expect(capped).toMatchObject({ cols: 5, rows: 2 });
     expect(capped.size).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
-    expect((6 * capped.size + 20) / 250).toBeGreaterThanOrEqual(0.65);
+    expect((5 * capped.size + 16) / 250).toBeGreaterThanOrEqual(0.65);
+  });
+
+  it('uses one short row of nine when that is larger than a 5x2 wrap', () => {
+    const nine = objectClusterLayoutForBox(9, 250, 40, 4, 'row');
+    expect(nine.cols).toBe(9);
+    expect(nine.rows).toBe(1);
+    expect(nine.size).toBeGreaterThanOrEqual(20);
+    expect((9 * nine.size + 32) / 250).toBeGreaterThanOrEqual(0.6);
   });
 
   it('fills four and five match-pair items across the row at 32px or larger', () => {
