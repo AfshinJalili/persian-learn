@@ -1,3 +1,5 @@
+import { audioContentHash, audioUrlForHash, spokenTextKey } from './audio-id';
+
 let currentAudio: HTMLAudioElement | null = null;
 let speechSynthesis: SpeechSynthesis | null = null;
 let audioUnlocked = false;
@@ -27,26 +29,22 @@ export async function playAudio(text: string, slow: boolean = false): Promise<vo
   stopAudio();
 
   const speed = slow ? 0.75 : audioSpeed;
-  
-  const normalizedText = normalizePersianText(text);
-  const audioId = generateAudioId(normalizedText);
-  const audioPath = `/audio/${audioId}.mp3`;
-
-  try {
-    const response = await fetch(audioPath, { method: 'HEAD' });
-    if (response.ok) {
-      return playAudioFile(audioPath, speed);
-    }
-  } catch {
+  const key = spokenTextKey(text);
+  if (!key) {
+    return;
   }
 
-  return playWithSpeechSynthesis(normalizedText, speed);
-}
+  const hash = await audioContentHash(key);
+  const audioPath = audioUrlForHash(hash);
 
-function normalizePersianText(text: string): string {
-  return text
-    .replace(/\u064A/g, '\u06CC')
-    .replace(/\u0643/g, '\u06A9');
+  try {
+    await playAudioFile(audioPath, speed);
+    return;
+  } catch {
+    /* fall through to device TTS */
+  }
+
+  return playWithSpeechSynthesis(key, speed);
 }
 
 function playAudioFile(path: string, rate: number): Promise<void> {
@@ -80,8 +78,8 @@ function playWithSpeechSynthesis(text: string, rate: number): Promise<void> {
     utterance.rate = rate;
 
     const voices = speechSynthesis.getVoices();
-    const persianVoice = voices.find(v =>
-      v.lang.startsWith('fa') || v.name.includes('Persian') || v.name.includes('Farsi')
+    const persianVoice = voices.find(
+      (v) => v.lang.startsWith('fa') || v.name.includes('Persian') || v.name.includes('Farsi')
     );
 
     if (persianVoice) {
@@ -121,16 +119,6 @@ export function isPlaying(): boolean {
   }
 
   return false;
-}
-
-function generateAudioId(text: string): string {
-  const hash = text
-    .split('')
-    .reduce((acc, char) => {
-      return ((acc << 5) - acc + char.charCodeAt(0)) | 0;
-    }, 0);
-
-  return `audio_${Math.abs(hash)}`;
 }
 
 export function vibrate(pattern: number | number[]) {
