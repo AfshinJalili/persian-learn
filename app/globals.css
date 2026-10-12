@@ -486,6 +486,10 @@ h2,
   place-items: stretch;
 }
 
+.picture-grid .object-choice-card {
+  padding: 20px;
+}
+
 .object-count-card {
   height: 180px;
   background: #fff8ec;
@@ -568,9 +572,9 @@ h2,
 }
 
 .picture-grid {
-  gap: 8px;
-  width: calc(100% + 2 * var(--s-5));
-  margin-inline: calc(-1 * var(--s-5));
+  gap: 12px;
+  width: 100%;
+  margin-inline: 0;
 }
 
 .bottom {
