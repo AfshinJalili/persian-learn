@@ -13,6 +13,17 @@ import ListenChooseExercise from '@/components/exercises/ListenChooseExercise';
 import CountObjectsExercise from '@/components/exercises/CountObjectsExercise';
 import TraceLetterExercise from '@/components/exercises/TraceLetterExercise';
 import MatchPairsExercise from '@/components/exercises/MatchPairsExercise';
+import TenFrameExercise from '@/components/exercises/TenFrameExercise';
+import BreakPointsExercise from '@/components/exercises/BreakPointsExercise';
+import ReadClockExercise from '@/components/exercises/ReadClockExercise';
+import ChooseDigitExercise from '@/components/exercises/ChooseDigitExercise';
+import EquationExercise from '@/components/exercises/EquationExercise';
+import CompareMoreLessExercise from '@/components/exercises/CompareMoreLessExercise';
+import NumberLineExercise from '@/components/exercises/NumberLineExercise';
+import BuildWordExercise from '@/components/exercises/BuildWordExercise';
+import CountMoneyExercise from '@/components/exercises/CountMoneyExercise';
+import PayAmountExercise from '@/components/exercises/PayAmountExercise';
+import MakeChangeExercise from '@/components/exercises/MakeChangeExercise';
 
 export default function LessonPage() {
   const params = useParams();
@@ -189,6 +200,94 @@ export default function LessonPage() {
         )}
         {currentExercise.type === 'match_pairs' && (
           <MatchPairsExercise
+            exercise={currentExercise}
+            userAnswer={userAnswer}
+            onAnswerChange={setUserAnswer}
+            disabled={showFeedback}
+          />
+        )}
+        {currentExercise.type === 'ten_frame' && (
+          <TenFrameExercise
+            exercise={currentExercise}
+            userAnswer={userAnswer}
+            onAnswerChange={setUserAnswer}
+            disabled={showFeedback}
+          />
+        )}
+        {currentExercise.type === 'break_points' && (
+          <BreakPointsExercise
+            exercise={currentExercise}
+            userAnswer={userAnswer}
+            onAnswerChange={setUserAnswer}
+            disabled={showFeedback}
+          />
+        )}
+        {currentExercise.type === 'read_clock' && (
+          <ReadClockExercise
+            exercise={currentExercise}
+            userAnswer={userAnswer}
+            onAnswerChange={setUserAnswer}
+            disabled={showFeedback}
+          />
+        )}
+        {currentExercise.type === 'choose_digit' && (
+          <ChooseDigitExercise
+            exercise={currentExercise}
+            userAnswer={userAnswer}
+            onAnswerChange={setUserAnswer}
+            disabled={showFeedback}
+          />
+        )}
+        {currentExercise.type === 'equation' && (
+          <EquationExercise
+            exercise={currentExercise}
+            userAnswer={userAnswer}
+            onAnswerChange={setUserAnswer}
+            disabled={showFeedback}
+          />
+        )}
+        {currentExercise.type === 'compare_more_less' && (
+          <CompareMoreLessExercise
+            exercise={currentExercise}
+            userAnswer={userAnswer}
+            onAnswerChange={setUserAnswer}
+            disabled={showFeedback}
+          />
+        )}
+        {currentExercise.type === 'number_line' && (
+          <NumberLineExercise
+            exercise={currentExercise}
+            userAnswer={userAnswer}
+            onAnswerChange={setUserAnswer}
+            disabled={showFeedback}
+          />
+        )}
+        {currentExercise.type === 'build_word' && (
+          <BuildWordExercise
+            exercise={currentExercise}
+            userAnswer={userAnswer}
+            onAnswerChange={setUserAnswer}
+            disabled={showFeedback}
+          />
+        )}
+        {currentExercise.type === 'count_money' && (
+          <CountMoneyExercise
+            exercise={currentExercise}
+            userAnswer={userAnswer}
+            onAnswerChange={setUserAnswer}
+            disabled={showFeedback}
+          />
+        )}
+        {currentExercise.type === 'pay_amount' && (
+          <PayAmountExercise
+            exercise={currentExercise}
+            userAnswer={userAnswer}
+            onAnswerChange={setUserAnswer}
+            disabled={showFeedback}
+          />
+        )}
+        {currentExercise.type === 'make_change' && (
+          <MakeChangeExercise
             exercise={currentExercise}
             userAnswer={userAnswer}
             onAnswerChange={setUserAnswer}

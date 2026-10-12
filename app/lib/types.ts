@@ -13,7 +13,9 @@ export type ExerciseType =
   | 'count_money'
   | 'pay_amount'
   | 'make_change'
-  | 'read_clock';
+  | 'read_clock'
+  | 'ten_frame'
+  | 'break_points';
 
 export interface Exercise {
   id: string;
