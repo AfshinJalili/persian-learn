@@ -96,7 +96,8 @@ function measurePage() {
   if (digit) {
     const card = cardOf(digit);
     const offset = card?.offsetWidth ?? 0;
-    const width = digit.getBoundingClientRect().width;
+    const box = digit.getBoundingClientRect();
+    const width = Math.max(box.width, box.height);
     singles.push({ width, inner: offset, ratio: offset > 0 ? width / offset : 0 });
   }
 
