@@ -182,7 +182,7 @@ export default function LessonPage() {
         </div>
       </div>
 
-      <div className="content" style={{ paddingTop: 20 }}>
+      <div className="content">
         <ExerciseRenderer
           exercise={currentExercise}
           userAnswer={userAnswer}

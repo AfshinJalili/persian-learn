@@ -11,3 +11,7 @@ export function exerciseHeading(exercise: Exercise): string {
   }
   return prompt;
 }
+
+export function exerciseHeadingClass(exercise: Exercise): string | undefined {
+  return /^[0-9۰-۹]{1,2}$/.test(exerciseHeading(exercise)) ? 'prompt-numeral' : undefined;
+}

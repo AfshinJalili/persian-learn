@@ -2,6 +2,7 @@ import { test, expect } from './e2e-audio-stub';
 
 const VIEWPORTS = [
   { width: 375, height: 812 },
+  { width: 390, height: 844 },
   { width: 412, height: 915 },
 ] as const;
 
@@ -119,9 +120,20 @@ function measurePage() {
     ...document.querySelectorAll('.object-cluster > .illus, .ten-frame-cell .illus'),
   ].map((item) => item.getBoundingClientRect().width);
 
+  const innerScrolls = [...document.querySelectorAll('.content, .match-object-list, .cluster-stack')].map(
+    (node) => {
+      const el = node as HTMLElement;
+      return {
+        className: el.className,
+        overflow: el.scrollHeight - el.clientHeight,
+      };
+    }
+  );
+
   return {
     singles: singles.filter((item) => item.inner >= 8),
     matchFills,
+    innerScrolls,
     minSize: sizes.length ? Math.min(...sizes.map((size) => Math.round(size))) : 0,
     sizeCount: sizes.length,
   };
@@ -208,11 +220,13 @@ test.describe('Object fill at phone widths', () => {
 
       const lessons = [
         { path: '/lesson/m1l1?ex=1', hasTray: false },
+        { path: '/lesson/m1l1?ex=2', hasTray: false },
         { path: '/lesson/m1l2?ex=1', hasTray: false },
         { path: '/lesson/m1l3?ex=1', hasTray: false },
         { path: '/lesson/m1l4?ex=1', hasTray: true },
         { path: '/lesson/m2l3?ex=1', hasTray: false },
         { path: '/lesson/m2l4?ex=8', hasTray: true },
+        { path: '/lesson/m3l2?ex=2', hasTray: false },
         { path: '/lesson/m3l2?ex=8', hasTray: true },
       ];
 
@@ -228,6 +242,25 @@ test.describe('Object fill at phone widths', () => {
         for (const item of stats.singles) {
           expect(item.width, lesson.path).toBeGreaterThanOrEqual(32);
           expect(item.ratio, lesson.path).toBeGreaterThanOrEqual(0.65);
+        }
+        for (const scroller of stats.innerScrolls) {
+          expect(scroller.overflow, `${lesson.path} ${scroller.className}`).toBeLessThanOrEqual(1);
+        }
+        const list = page.locator('.picture-grid, .match-object-list, .cluster-stack, .object-count-card').first();
+        const listBox = await list.boundingBox();
+        expect(listBox?.x ?? 99, lesson.path).toBeLessThanOrEqual(26);
+        const numeral = page.locator('.prompt-numeral');
+        if ((await numeral.count()) > 0) {
+          const fontSize = await numeral.evaluate((el) => Number.parseFloat(getComputedStyle(el).fontSize));
+          expect(fontSize, lesson.path).toBeGreaterThanOrEqual(48);
+        }
+        if (lesson.path.includes('m1l1?ex=2')) {
+          const three = page.locator('.object-cluster[data-count="3"]');
+          await expect(three).toHaveAttribute('data-layout', 'grid');
+          const cols = await three.evaluate((el) =>
+            (el as HTMLElement).style.getPropertyValue('--object-cols')
+          );
+          expect(cols, lesson.path).toBe('2');
         }
         for (const row of stats.matchFills.filter((item) => item.count >= 6)) {
           expect(row.size, lesson.path).toBeGreaterThanOrEqual(32);
@@ -260,6 +293,9 @@ test.describe('Object fill at phone widths', () => {
       for (const item of stats.singles) {
         expect(item.width).toBeGreaterThanOrEqual(90);
         expect(item.ratio).toBeGreaterThanOrEqual(0.9);
+      }
+      for (const scroller of stats.innerScrolls) {
+        expect(scroller.overflow, scroller.className).toBeLessThanOrEqual(1);
       }
     });
   }

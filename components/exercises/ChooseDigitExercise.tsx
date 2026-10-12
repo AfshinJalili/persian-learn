@@ -2,7 +2,7 @@
 
 import { Exercise } from '@/lib/types';
 import { exerciseChoices } from '@/lib/shuffle';
-import { exerciseHeading } from '@/lib/exercise-copy';
+import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
 import {
@@ -38,7 +38,7 @@ export default function ChooseDigitExercise({
     <>
       <div className="prompt">
         <SpeakerButton text={exercise.audio_script} />
-        <h2>{exerciseHeading(exercise)}</h2>
+        <h2 className={exerciseHeadingClass(exercise)}>{exerciseHeading(exercise)}</h2>
       </div>
       {diceCount > 0 ? (
         <div ref={ref} className="card object-count-card" data-dice-face={display}>

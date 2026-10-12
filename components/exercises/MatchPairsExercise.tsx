@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react';
 import { playOptionAudio } from '@/lib/spoken-option';
 import { canonicalizePairs } from '@/lib/answers';
 import { shuffleSeeded } from '@/lib/shuffle';
-import { exerciseHeading } from '@/lib/exercise-copy';
+import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import {
@@ -134,7 +134,7 @@ export default function MatchPairsExercise({
     <>
       <div className="prompt">
         <SpeakerButton text={exercise.audio_script} />
-        <h2>{exerciseHeading(exercise)}</h2>
+        <h2 className={exerciseHeadingClass(exercise)}>{exerciseHeading(exercise)}</h2>
       </div>
       {objectLayout ? (
         <div className="match-pairs-board">

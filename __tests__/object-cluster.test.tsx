@@ -19,7 +19,7 @@ describe('ObjectCluster', () => {
       size: Math.floor(81 * OBJECT_SINGLE_WIDTH_RATIO),
     });
     expect(objectClusterLayoutForBox(2, 81, 140)).toMatchObject({ cols: 1, rows: 2, size: 66 });
-    expect(objectClusterLayoutForBox(3, 81, 140)).toMatchObject({ cols: 1, rows: 3, size: 41 });
+    expect(objectClusterLayoutForBox(3, 81, 140)).toMatchObject({ cols: 2, rows: 2, size: 36 });
     expect(objectClusterLayoutForBox(4, 81, 140)).toMatchObject({ cols: 2, rows: 2, size: 36 });
     expect(objectClusterLayoutForBox(5, 81, 140)).toMatchObject({ cols: 2, rows: 3, size: 36 });
     expect(objectClusterItemSize(1)).toBe(Math.floor(81 * OBJECT_SINGLE_WIDTH_RATIO));
@@ -84,7 +84,7 @@ describe('ObjectCluster', () => {
     );
   });
 
-  it('stacks three items in one column in a tall 81x140 card', () => {
+  it('lays three items in a dice triangle instead of a single column', () => {
     const { container } = render(
       <ObjectCluster token="🔵🔵🔵" boxWidth={81} boxHeight={140} />
     );
@@ -92,9 +92,9 @@ describe('ObjectCluster', () => {
     expect(cluster).toHaveAttribute('data-count', '3');
     expect(cluster).toHaveAttribute('data-layout', 'grid');
     expect(cluster?.children).toHaveLength(3);
-    expect((cluster as HTMLElement).style.getPropertyValue('--object-cols')).toBe('1');
-    expect((cluster as HTMLElement).style.getPropertyValue('--object-rows')).toBe('3');
-    expect((cluster as HTMLElement).style.getPropertyValue('--object-size')).toBe('41px');
+    expect((cluster as HTMLElement).style.getPropertyValue('--object-cols')).toBe('2');
+    expect((cluster as HTMLElement).style.getPropertyValue('--object-rows')).toBe('2');
+    expect((cluster as HTMLElement).style.getPropertyValue('--object-size')).toBe('36px');
   });
 
   it('uses a two-column dice layout when that is larger than a stack', () => {

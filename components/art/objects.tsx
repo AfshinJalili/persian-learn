@@ -24,7 +24,7 @@ export function PomegranateSvg() {
 
 export function TeaSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="14 16 72 80" aria-hidden="true">
       <ellipse cx="50" cy="84" rx="34" ry="8" fill="#5A7A84" />
       <path d="M32 22h36l-4 20c-1 6 4 10 4 22 0 10-8 16-18 16s-18-6-18-16c0-12 5-16 4-22z" fill="#5A7A84" stroke="#3A5560" strokeWidth="3" />
       <path d="M34.5 40h31c-1 5 3.5 10 3.5 24 0 8.5-7 13.5-19 13.5S31 72.5 31 64c0-14 4.5-19 3.5-24z" fill="#B8541A" />
@@ -312,10 +312,25 @@ export function objectClusterLayoutForBox(
     return Math.min(sizeW, sizeH);
   };
 
+  if (count === 3 && (layout === 'grid' || layout === 'picture')) {
+    const unclamped = sizeFor(2, 2);
+    return {
+      cols: 2,
+      rows: 2,
+      unclamped,
+      size: Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.floor(unclamped)),
+    };
+  }
+
   if (layout === 'row') {
     const cols = Math.min(5, count);
     const rows = count > 5 ? 2 : 1;
-    const unclamped = (innerWidth - gap * Math.max(0, cols - 1)) / cols;
+    const sizeW = (innerWidth - gap * Math.max(0, cols - 1)) / cols;
+    const sizeH = (innerHeight - gap * Math.max(0, rows - 1)) / rows;
+    const unclamped =
+      rows === 1 || !Number.isFinite(sizeH) || sizeH < OBJECT_CLUSTER_MIN_SIZE
+        ? sizeW
+        : Math.min(sizeW, sizeH);
     return {
       cols,
       rows,

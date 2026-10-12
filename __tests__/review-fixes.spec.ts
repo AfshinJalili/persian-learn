@@ -387,7 +387,15 @@ test.describe('Codex review navigation fixes', () => {
     const check = page.getByRole('button', { name: /بررسی/ });
     await expect(tray).toBeVisible();
     await expect(check).toBeVisible();
-    await expect(page.locator('.match-object-row')).toHaveCount(4);
+    const rows = page.locator('.match-object-row');
+    await expect(rows).toHaveCount(4);
+    for (let index = 0; index < 4; index += 1) {
+      await expect(rows.nth(index)).toBeInViewport();
+    }
+    const listOverflow = await page.locator('.match-object-list').evaluate(
+      (el) => el.scrollHeight - el.clientHeight
+    );
+    expect(listOverflow).toBeLessThanOrEqual(1);
 
     const trayBox = await tray.boundingBox();
     const checkBox = await check.boundingBox();

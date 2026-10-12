@@ -2,7 +2,7 @@
 
 import { playAudio } from '@/lib/audio';
 import { exerciseChoices } from '@/lib/shuffle';
-import { exerciseHeading } from '@/lib/exercise-copy';
+import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
@@ -52,7 +52,7 @@ export default function ListenChooseExercise({
 
   return (
     <div className="content-center flex flex-col items-center gap-5">
-      <h2>{exerciseHeading(exercise)}</h2>
+      <h2 className={exerciseHeadingClass(exercise)}>{exerciseHeading(exercise)}</h2>
       <SpeakerButton text={exercise.audio_script} size="xl" />
       <button type="button" className="slow-btn" onClick={handleSlow}>
         <TurtleIcon size={28} />

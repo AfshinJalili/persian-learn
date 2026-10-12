@@ -72,6 +72,30 @@ describe('TapPictureExercise', () => {
     ).toBeGreaterThanOrEqual(32);
   });
 
+  it('shows a numeral prompt at the prompt-numeral size', () => {
+    const { container } = render(
+      <TapPictureExercise
+        exercise={{
+          id: 'm3l2e3',
+          type: 'tap_picture',
+          prompt: '۸',
+          audio_script: 'این عدد را ببینید. کدام تصویر به همین تعداد استکان چای دارد؟',
+          payload: { display: '۸' },
+          answer: '☕☕☕☕☕☕☕☕',
+          distractors: ['☕☕☕☕☕☕☕', '☕☕☕☕☕☕☕☕☕'],
+          feedback_correct: 'ok',
+          feedback_wrong: 'no',
+        }}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+    const heading = container.querySelector('.prompt h2');
+    expect(heading).toHaveClass('prompt-numeral');
+    expect(heading).toHaveTextContent('۸');
+  });
+
   it('lets alphabet tap-picture items fill the content box instead of the math 70% ratio', () => {
     const { container } = render(
       <TapPictureExercise

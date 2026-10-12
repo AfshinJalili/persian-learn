@@ -3,7 +3,7 @@
 import { Exercise } from '@/lib/types';
 import { formatPersianNumber } from '@/lib/persian';
 import { playOptionAudio } from '@/lib/spoken-option';
-import { exerciseHeading } from '@/lib/exercise-copy';
+import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
 import SpeakerButton from '@/components/SpeakerButton';
 import { PomegranateSvg } from '@/components/art/objects';
 
@@ -43,7 +43,7 @@ export default function NumberLineExercise({
     <>
       <div className="prompt">
         <SpeakerButton text={exercise.audio_script} />
-        <h2>{exerciseHeading(exercise)}</h2>
+        <h2 className={exerciseHeadingClass(exercise)}>{exerciseHeading(exercise)}</h2>
       </div>
       <p className="body-lg muted" style={{ marginTop: -8 }}>
         علامت سبز را روی عدد درست بگذارید.
