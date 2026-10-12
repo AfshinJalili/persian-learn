@@ -1,10 +1,15 @@
 import { test, expect } from './e2e-audio-stub';
 import math from '../public/content/math.json';
 
-const VIEWPORTS = [
+const GALLERY_VIEWPORTS = [
   { width: 375, height: 812 },
   { width: 390, height: 844 },
   { width: 412, height: 915 },
+] as const;
+
+const LESSON_VIEWPORTS = [
+  { width: 375, height: 667 },
+  { width: 1024, height: 594 },
 ] as const;
 
 const MATH_M1_M3 = math.units
@@ -163,19 +168,49 @@ function measurePage() {
     };
   });
 
+  const phone = document.querySelector('.app-phone') as HTMLElement | null;
+  const countCard = document.querySelector('.object-count-card') as HTMLElement | null;
+  const answers = [
+    ...document.querySelectorAll('.grid3, .grid2, .picture-grid, [data-match-tray], .bottom'),
+  ] as HTMLElement[];
+  const lastAnswer = answers.at(-1);
+  const lastBottom = lastAnswer ? lastAnswer.getBoundingClientRect().bottom : 0;
+  const dice = [...document.querySelectorAll('[data-dice-face] .object-cluster > .illus')].map(
+    (item) => {
+      const card = cardOf(item);
+      const offset = card?.offsetWidth ?? 0;
+      const width = item.getBoundingClientRect().width;
+      return { width, inner: offset, ratio: offset > 0 ? width / offset : 0 };
+    }
+  );
+
+  const rawGlyphs = [...document.querySelectorAll('.object-cluster .glyph')]
+    .map((node) => node.textContent ?? '')
+    .filter((text) => /\p{Extended_Pictographic}/u.test(text));
+
   return {
     singles: singles.filter((item) => item.inner >= 8),
+    dice,
     matchFills,
     innerScrolls,
     contained,
     sizeSignature,
     minSize: sizes.length ? Math.min(...sizes.map((size) => Math.round(size))) : 0,
     sizeCount: sizes.length,
+    viewportHeight: window.innerHeight,
+    pageOverflow: Math.max(
+      0,
+      document.documentElement.scrollHeight - window.innerHeight,
+      (phone?.scrollHeight ?? 0) - (phone?.clientHeight ?? 0)
+    ),
+    answersBottom: lastBottom,
+    countCardHeight: countCard?.getBoundingClientRect().height ?? 0,
+    rawGlyphs,
   };
 }
 
 test.describe('Object fill at phone widths', () => {
-  for (const viewport of VIEWPORTS) {
+  for (const viewport of GALLERY_VIEWPORTS) {
     test(`gallery singles fill the card inner box at ${viewport.width}px`, async ({ page }) => {
       await page.setViewportSize(viewport);
       await page.goto('/dev/object-cards');
@@ -247,10 +282,51 @@ test.describe('Object fill at phone widths', () => {
       expect(minSize).toBeGreaterThanOrEqual(32);
     });
 
-    test(`math lessons m1-m3 stay in-card, stable, and unscrollable at ${viewport.width}px`, async ({
+    test(`alphabet tap-picture stays near the full card inner box at ${viewport.width}px`, async ({
       page,
     }) => {
-      test.setTimeout(240000);
+      await page.setViewportSize(viewport);
+      await seedProgress(page, { currentTrack: 'alphabet', completedLessons: [] });
+      await page.goto('/lesson/a1l1?ex=1');
+      await page.waitForTimeout(400);
+      const stats = await page.evaluate(measurePage);
+      const info = await page.evaluate(() => {
+        const cluster = document.querySelector('.object-cluster') as HTMLElement | null;
+        const card = cluster?.closest('.object-choice-card') as HTMLElement | null;
+        const item = cluster?.querySelector('.illus');
+        const style = card ? getComputedStyle(card) : null;
+        const padX =
+          (Number.parseFloat(style?.paddingLeft || '0') || 0) +
+          (Number.parseFloat(style?.paddingRight || '0') || 0);
+        const innerWidth = (card?.clientWidth ?? 0) - padX;
+        return {
+          layout: cluster?.getAttribute('data-layout'),
+          size: Number.parseInt(cluster?.style.getPropertyValue('--object-size') || '0', 10),
+          itemW: item?.getBoundingClientRect().width ?? 0,
+          innerWidth,
+        };
+      });
+      expect(info.layout).toBe('picture');
+      expect(info.size).toBeGreaterThan(info.innerWidth * 0.7);
+      expect(info.size).toBeLessThanOrEqual(info.innerWidth);
+      expect(stats.singles.length).toBeGreaterThan(0);
+      for (const item of stats.singles) {
+        expect(item.ratio).toBeGreaterThan(0.7);
+      }
+      for (const item of stats.contained) {
+        expect(item.overflow).toBeLessThanOrEqual(2);
+      }
+      for (const scroller of stats.innerScrolls) {
+        expect(scroller.overflow, scroller.className).toBeLessThanOrEqual(2);
+      }
+    });
+  }
+
+  for (const viewport of LESSON_VIEWPORTS) {
+    test(`math lessons m1-m3 stay in-card, stable, and unscrollable at ${viewport.width}x${viewport.height}`, async ({
+      page,
+    }) => {
+      test.setTimeout(360000);
       await page.setViewportSize(viewport);
       await seedProgress(page, { completedLessons: MATH_M1_M3_IDS });
 
@@ -262,23 +338,38 @@ test.describe('Object fill at phone widths', () => {
           const hasItems = page.locator(
             '.object-cluster, [data-digit-display], [data-digit-sequence], [data-dice-face], [data-object-display], [data-match-tray]'
           );
+          await page.waitForTimeout(viewport.height <= 667 ? 150 : 200);
+          const first = await page.evaluate(measurePage);
+          expect(first.pageOverflow, path).toBeLessThanOrEqual(2);
+          expect(first.answersBottom, path).toBeLessThanOrEqual(viewport.height + 2);
+          expect(first.rawGlyphs, path).toEqual([]);
+          if (first.countCardHeight > 0) {
+            expect(first.countCardHeight, path).toBeLessThanOrEqual(viewport.height * 0.55 + 2);
+          }
+          for (const scroller of first.innerScrolls) {
+            expect(scroller.overflow, `${path} ${scroller.className}`).toBeLessThanOrEqual(2);
+          }
           if ((await hasItems.count()) === 0) {
-            const stats = await page.evaluate(measurePage);
-            for (const scroller of stats.innerScrolls) {
-              expect(scroller.overflow, `${path} ${scroller.className}`).toBeLessThanOrEqual(2);
-            }
             continue;
           }
           await expect(hasItems.first()).toBeVisible();
-          await page.waitForTimeout(200);
-          const first = await page.evaluate(measurePage);
-          await page.waitForTimeout(1000);
+          await page.waitForTimeout(viewport.height <= 667 ? 250 : 1000);
           const stats = await page.evaluate(measurePage);
           expect(stats.sizeSignature, path).toBe(first.sizeSignature);
+          expect(stats.pageOverflow, path).toBeLessThanOrEqual(2);
+          expect(stats.answersBottom, path).toBeLessThanOrEqual(viewport.height + 2);
+          expect(stats.rawGlyphs, path).toEqual([]);
+          if (stats.countCardHeight > 0) {
+            expect(stats.countCardHeight, path).toBeLessThanOrEqual(viewport.height * 0.55 + 2);
+          }
           if (stats.sizeCount > 0) {
             expect(stats.minSize, path).toBeGreaterThanOrEqual(32);
           }
           for (const item of stats.singles) {
+            expect(item.width, path).toBeGreaterThanOrEqual(32);
+            expect(item.ratio, path).toBeGreaterThanOrEqual(0.65);
+          }
+          for (const item of stats.dice) {
             expect(item.width, path).toBeGreaterThanOrEqual(32);
             expect(item.ratio, path).toBeGreaterThanOrEqual(0.65);
           }
@@ -326,45 +417,6 @@ test.describe('Object fill at phone widths', () => {
             expect(trayBox!.y + trayBox!.height).toBeLessThanOrEqual(checkBox!.y + 1);
           }
         }
-      }
-    });
-
-    test(`alphabet tap-picture stays near the full card inner box at ${viewport.width}px`, async ({
-      page,
-    }) => {
-      await page.setViewportSize(viewport);
-      await seedProgress(page, { currentTrack: 'alphabet', completedLessons: [] });
-      await page.goto('/lesson/a1l1?ex=1');
-      await page.waitForTimeout(400);
-      const stats = await page.evaluate(measurePage);
-      const info = await page.evaluate(() => {
-        const cluster = document.querySelector('.object-cluster') as HTMLElement | null;
-        const card = cluster?.closest('.object-choice-card') as HTMLElement | null;
-        const item = cluster?.querySelector('.illus');
-        const style = card ? getComputedStyle(card) : null;
-        const padX =
-          (Number.parseFloat(style?.paddingLeft || '0') || 0) +
-          (Number.parseFloat(style?.paddingRight || '0') || 0);
-        const innerWidth = (card?.clientWidth ?? 0) - padX;
-        return {
-          layout: cluster?.getAttribute('data-layout'),
-          size: Number.parseInt(cluster?.style.getPropertyValue('--object-size') || '0', 10),
-          itemW: item?.getBoundingClientRect().width ?? 0,
-          innerWidth,
-        };
-      });
-      expect(info.layout).toBe('picture');
-      expect(info.size).toBeGreaterThan(info.innerWidth * 0.7);
-      expect(info.size).toBeLessThanOrEqual(info.innerWidth);
-      expect(stats.singles.length).toBeGreaterThan(0);
-      for (const item of stats.singles) {
-        expect(item.ratio).toBeGreaterThan(0.7);
-      }
-      for (const item of stats.contained) {
-        expect(item.overflow).toBeLessThanOrEqual(2);
-      }
-      for (const scroller of stats.innerScrolls) {
-        expect(scroller.overflow, scroller.className).toBeLessThanOrEqual(2);
       }
     });
   }

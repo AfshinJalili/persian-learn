@@ -47,7 +47,7 @@ describe('BuildWordExercise undo', () => {
     expect(onAnswerChange).toHaveBeenLastCalledWith('نا');
     expect(container.querySelector('[data-build-placed="ا"]')).toBeTruthy();
 
-    await user.click(container.querySelector('[data-build-placed="ا"]') as HTMLElement);
+    await user.click(container.querySelector('[data-build-undo="ا"]') as HTMLElement);
     expect(container.querySelector('[data-build-placed="ا"]')).toBeNull();
     expect(onAnswerChange).toHaveBeenLastCalledWith('ن');
 

@@ -121,10 +121,33 @@ describe('ObjectCluster', () => {
     expect(cluster.style.getPropertyValue('--object-cols')).toBe('2');
   });
 
-  it('marks hand emoji items so CSS can keep the glyph inside the square', () => {
-    const { container } = render(<ObjectCluster token="✋" boxWidth={120} boxHeight={120} />);
-    const item = container.querySelector('.illus') as HTMLElement | null;
-    expect(item).toHaveAttribute('data-glyph', 'hand');
+  it('renders hand tokens as SVG drawings instead of emoji glyphs', () => {
+    const tokens = ['☝️', '✌️', '✋', '👆', '☝️\u{1F3FB}', '✌'];
+    for (const token of tokens) {
+      const { container, unmount } = render(
+        <ObjectCluster token={token} boxWidth={120} boxHeight={120} />
+      );
+      const item = container.querySelector('.illus') as HTMLElement | null;
+      expect(item).toHaveAttribute('data-glyph', 'hand');
+      expect(container.querySelector('svg')).toBeTruthy();
+      expect(container.querySelector('.glyph')).toBeNull();
+      unmount();
+    }
+  });
+
+  it('renders dice faces as a single pip SVG instead of emoji glyphs', () => {
+    const tokens = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+    for (const token of tokens) {
+      const { container, unmount } = render(
+        <ObjectCluster token={token} boxWidth={120} boxHeight={120} />
+      );
+      const cluster = container.querySelector('.object-cluster') as HTMLElement | null;
+      expect(cluster).toHaveAttribute('data-count', '1');
+      expect(container.querySelector('svg')).toBeTruthy();
+      expect(container.querySelectorAll('circle').length).toBeGreaterThan(0);
+      expect(container.querySelector('.glyph')).toBeNull();
+      unmount();
+    }
   });
 
   it('applies the computed size on each item', () => {

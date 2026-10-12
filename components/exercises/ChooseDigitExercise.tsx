@@ -31,14 +31,13 @@ export default function ChooseDigitExercise({
 }: ChooseDigitExerciseProps) {
   const { display } = exercise.payload as { display: string };
   const choices = exerciseChoices(exercise);
-  const diceCount = DICE_PIP_COUNTS[display] ?? 0;
-  const objectDisplay = diceCount === 0 && looksLikeObjects(display);
-  const sequence = diceCount === 0 && !objectDisplay && isSequenceDisplay(display);
+  const diceFace = Boolean(DICE_PIP_COUNTS[display]);
+  const objectDisplay = diceFace || looksLikeObjects(display);
+  const sequence = !objectDisplay && isSequenceDisplay(display);
   const tokens = sequence ? sequenceTokens(display) : [display];
   const { ref, box } = useSharedClusterSize([
-    Math.max(1, diceCount || (objectDisplay ? splitObjectTokens(display).length : tokens.length)),
+    Math.max(1, objectDisplay ? splitObjectTokens(display).length : tokens.length),
   ]);
-  const pips = Array.from({ length: diceCount }, () => '🔵');
   const fontSize = digitDisplayFontSize(box.width, box.height, box.offsetWidth, tokens.length);
 
   return (
@@ -47,10 +46,10 @@ export default function ChooseDigitExercise({
         <SpeakerButton text={exercise.audio_script} />
         <h2 className={exerciseHeadingClass(exercise)}>{exerciseHeading(exercise)}</h2>
       </div>
-      {diceCount > 0 ? (
+      {diceFace ? (
         <div ref={ref} className="card object-count-card" data-dice-face={display}>
           <ObjectCluster
-            tokens={pips}
+            token={display}
             boxWidth={box.width}
             boxHeight={box.height}
             cardWidth={box.offsetWidth}

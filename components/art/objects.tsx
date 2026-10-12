@@ -191,11 +191,141 @@ export function PencilSvg() {
   );
 }
 
+const HAND_FILL = '#A85A32';
+const HAND_LINE = '#5A3A18';
+
+function HandFinger({
+  x,
+  y,
+  width,
+  height,
+}: {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}) {
+  return (
+    <rect
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      rx={width / 2}
+      fill={HAND_FILL}
+      stroke={HAND_LINE}
+      strokeWidth="3"
+    />
+  );
+}
+
+export function IndexHandSvg() {
+  return (
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <HandFinger x={42} y={8} width={16} height={52} />
+      <rect x="28" y="50" width="44" height="40" rx="16" fill={HAND_FILL} stroke={HAND_LINE} strokeWidth="3" />
+      <HandFinger x={10} y={58} width={22} height={12} />
+    </svg>
+  );
+}
+
+export function VictoryHandSvg() {
+  return (
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <g transform="rotate(-16 40 58)">
+        <HandFinger x={32} y={8} width={14} height={54} />
+      </g>
+      <g transform="rotate(16 60 58)">
+        <HandFinger x={54} y={8} width={14} height={54} />
+      </g>
+      <rect x="26" y="52" width="48" height="38" rx="16" fill={HAND_FILL} stroke={HAND_LINE} strokeWidth="3" />
+      <HandFinger x={8} y={60} width={22} height={12} />
+    </svg>
+  );
+}
+
+export function RaisedHandSvg() {
+  return (
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <HandFinger x={16} y={20} width={11} height={42} />
+      <HandFinger x={30} y={12} width={11} height={50} />
+      <HandFinger x={44} y={8} width={12} height={54} />
+      <HandFinger x={59} y={12} width={11} height={50} />
+      <HandFinger x={73} y={22} width={11} height={40} />
+      <rect x="18" y="50" width="64" height="40" rx="16" fill={HAND_FILL} stroke={HAND_LINE} strokeWidth="3" />
+      <HandFinger x={4} y={58} width={20} height={12} />
+    </svg>
+  );
+}
+
 export function RedDotSvg() {
   return (
     <svg viewBox="0 0 100 100" aria-hidden="true">
       <circle cx="50" cy="50" r="38" fill="#C8102E" />
       <circle cx="38" cy="38" r="12" fill="#7B2A55" opacity="0.45" />
+    </svg>
+  );
+}
+
+export function EmptyDotSvg() {
+  return (
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="34" fill="#F4E6D0" stroke="#4A5A51" strokeWidth="6" />
+    </svg>
+  );
+}
+
+const DICE_PIP_LAYOUT: Record<number, Array<[number, number]>> = {
+  1: [[50, 50]],
+  2: [
+    [32, 32],
+    [68, 68],
+  ],
+  3: [
+    [32, 32],
+    [50, 50],
+    [68, 68],
+  ],
+  4: [
+    [32, 32],
+    [68, 32],
+    [32, 68],
+    [68, 68],
+  ],
+  5: [
+    [32, 32],
+    [68, 32],
+    [50, 50],
+    [32, 68],
+    [68, 68],
+  ],
+  6: [
+    [32, 26],
+    [32, 50],
+    [32, 74],
+    [68, 26],
+    [68, 50],
+    [68, 74],
+  ],
+};
+
+export function PlateSvg() {
+  return (
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <ellipse cx="50" cy="52" rx="38" ry="28" fill="#D5DCD7" stroke="#4A5A51" strokeWidth="4" />
+      <ellipse cx="50" cy="50" rx="24" ry="16" fill="#F4E6D0" stroke="#4A5A51" strokeWidth="3" />
+    </svg>
+  );
+}
+
+export function DiceSvg({ pips }: { pips: number }) {
+  const spots = DICE_PIP_LAYOUT[pips] ?? DICE_PIP_LAYOUT[1];
+  return (
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <rect x="8" y="8" width="84" height="84" rx="18" fill="#1B2A22" />
+      {spots?.map(([cx, cy]) => (
+        <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="8" fill="#F4E6D0" />
+      ))}
     </svg>
   );
 }
@@ -231,9 +361,17 @@ const EMOJI_ART: Record<string, ReactNode> = {
   '⏰': <ClockSvg />,
   '🔵': <DotSvg />,
   '🔴': <RedDotSvg />,
+  '⚪': <EmptyDotSvg />,
   '🍅': <TomatoSvg />,
   '🧅': <OnionSvg />,
   '✏️': <PencilSvg />,
+  '🍽️': <PlateSvg />,
+  '⚀': <DiceSvg pips={1} />,
+  '⚁': <DiceSvg pips={2} />,
+  '⚂': <DiceSvg pips={3} />,
+  '⚃': <DiceSvg pips={4} />,
+  '⚄': <DiceSvg pips={5} />,
+  '⚅': <DiceSvg pips={6} />,
 };
 
 function splitGraphemes(value: string): string[] {
@@ -260,7 +398,7 @@ export const OBJECT_MATCH_LIST_FALLBACK = { width: 342, height: 280 };
 export const MATCH_LIST_GAP = 4;
 export const MATCH_ROW_PADDING = 12;
 export const MATCH_ROW_GAP = 8;
-export const MATCH_DIGIT_SLOT = 40;
+export const MATCH_DIGIT_SLOT = 48;
 
 export const DICE_PIP_COUNTS: Record<string, number> = {
   '⚀': 1,
@@ -271,15 +409,29 @@ export const DICE_PIP_COUNTS: Record<string, number> = {
   '⚅': 6,
 };
 
-const HAND_TOKENS = new Set(['☝️', '✌️', '✋', '👆']);
+export function normalizeObjectToken(token: string): string {
+  return token
+    .replace(/\uFE0F/g, '')
+    .replace(/\uFE0E/g, '')
+    .replace(/\u200D/g, '')
+    .replace(/\u20E3/g, '')
+    .replace(/[\u{1F3FB}-\u{1F3FF}]/gu, '');
+}
 
-const EXTRA_OBJECT_TOKENS = new Set([
-  ...HAND_TOKENS,
-  ...Object.keys(DICE_PIP_COUNTS),
-]);
+const HAND_ART: Record<string, ReactNode> = {
+  '\u261D': <IndexHandSvg />,
+  '\u{1F446}': <IndexHandSvg />,
+  '\u270C': <VictoryHandSvg />,
+  '\u270B': <RaisedHandSvg />,
+};
 
 function isHandToken(token: string): boolean {
-  return HAND_TOKENS.has(token);
+  return normalizeObjectToken(token) in HAND_ART;
+}
+
+function objectArtForToken(token: string): ReactNode | undefined {
+  const key = normalizeObjectToken(token);
+  return EMOJI_ART[token] ?? EMOJI_ART[key] ?? HAND_ART[key];
 }
 
 export type ObjectClusterLayout = 'grid' | 'row' | 'match' | 'picture';
@@ -498,7 +650,7 @@ function SingleObjectArt({
   size: number;
   fluid?: boolean;
 }) {
-  const art = EMOJI_ART[token];
+  const art = objectArtForToken(token);
   const hand = isHandToken(token);
   return (
     <span
@@ -509,11 +661,7 @@ function SingleObjectArt({
       {art ?? (
         <span
           className="glyph"
-          style={
-            fluid || hand
-              ? undefined
-              : { fontSize: Math.min(size, 72) }
-          }
+          style={fluid ? undefined : { fontSize: Math.min(size, 72) }}
         >
           {token}
         </span>
@@ -592,7 +740,8 @@ export function ObjectArt({
 }
 
 export function looksLikeObjects(token: string): boolean {
-  return splitGraphemes(token).some(
-    (part) => Boolean(EMOJI_ART[part]) || EXTRA_OBJECT_TOKENS.has(part)
-  );
+  return splitGraphemes(token).some((part) => {
+    const key = normalizeObjectToken(part);
+    return Boolean(objectArtForToken(part) || DICE_PIP_COUNTS[part] || DICE_PIP_COUNTS[key]);
+  });
 }

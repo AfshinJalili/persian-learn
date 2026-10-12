@@ -212,18 +212,7 @@ export default function LessonPage() {
         </div>
       </div>
 
-      <div
-        className={
-          currentExercise.type === 'match_pairs' || currentExercise.type === 'tap_picture'
-            ? 'content content-fit'
-            : 'content'
-        }
-        style={
-          currentExercise.type === 'match_pairs' || currentExercise.type === 'tap_picture'
-            ? { overflow: 'hidden' }
-            : undefined
-        }
-      >
+      <div className="content content-fit" style={{ overflow: 'hidden' }}>
         <ExerciseRenderer
           key={currentExercise.id}
           exercise={currentExercise}

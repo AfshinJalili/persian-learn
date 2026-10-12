@@ -6,9 +6,11 @@ import {
   BreadSvg,
   ClockSvg,
   CypressSvg,
+  DiceSvg,
   DotSvg,
   EggSvg,
   HouseSvg,
+  IndexHandSvg,
   KeySvg,
   MoonSvg,
   OnionSvg,
@@ -16,11 +18,13 @@ import {
   PencilSvg,
   PhoneSvg,
   PomegranateSvg,
+  RaisedHandSvg,
   RedDotSvg,
   SunSvg,
   TeaSvg,
   TomatoSvg,
   TulipSvg,
+  VictoryHandSvg,
   WaterSvg,
 } from '../components/art/objects';
 
@@ -76,6 +80,10 @@ const COUNTING_ART = [
   ['onion', OnionSvg],
   ['pencil', PencilSvg],
   ['red-dot', RedDotSvg],
+  ['index-hand', IndexHandSvg],
+  ['victory-hand', VictoryHandSvg],
+  ['raised-hand', RaisedHandSvg],
+  ['dice', () => createElement(DiceSvg, { pips: 5 })],
 ] as const;
 
 describe('counting art contrast', () => {

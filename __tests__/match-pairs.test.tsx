@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { playAudio } from '@/lib/audio';
 import MatchPairsExercise from '../components/exercises/MatchPairsExercise';
+import { MATCH_UNDO_HINT, resetMatchUndoHintForTests } from '../lib/match-undo-hint';
 import type { Exercise } from '../lib/types';
 
 jest.mock('@/lib/audio', () => ({
@@ -345,6 +346,7 @@ describe('MatchPairsExercise object rows', () => {
 describe('MatchPairsExercise apple tray', () => {
   beforeEach(() => {
     (playAudio as jest.Mock).mockClear();
+    resetMatchUndoHintForTests();
   });
 
   it('starts with chips in the tray and empty row slots', () => {
@@ -429,7 +431,7 @@ describe('MatchPairsExercise apple tray', () => {
     });
     onAnswerChange.mockClear();
 
-    await user.click(container.querySelector('[data-match-placed="۲"]') as HTMLElement);
+    await user.click(container.querySelector('[data-match-undo="۲"]') as HTMLElement);
     expect(container.querySelector('[data-match-placed="۲"]')).toBeNull();
     const trayChips = [...container.querySelectorAll('[data-match-digit]')].map(
       (node) => node.getAttribute('data-match-digit')
@@ -471,10 +473,56 @@ describe('MatchPairsExercise apple tray', () => {
     );
 
     const placed = container.querySelector('[data-match-placed="۱"]') as HTMLButtonElement;
+    const undo = container.querySelector('[data-match-undo="۱"]') as HTMLButtonElement;
     expect(placed).toBeDisabled();
+    expect(undo).toBeDisabled();
+    expect(undo.className).toContain('match-chip-undo');
+    fireEvent.click(undo);
     fireEvent.click(placed);
     expect(container.querySelector('[data-match-placed="۱"]')).toBeTruthy();
     expect(container.querySelector('[data-match-digit="۱"]')).toBeNull();
+  });
+
+  it('moves a placed chip to another row before check', async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <MatchPairsExercise
+        exercise={appleExercise()}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+
+    await user.click(screen.getByRole('button', { name: '۲' }));
+    await user.click(screen.getByRole('button', { name: '🍎🍎' }));
+    expect(container.querySelector('[data-match-placed="۲"]')?.closest('.match-object-row')?.querySelector('[data-match-slot="🍎🍎"]')).toBeTruthy();
+
+    await user.click(container.querySelector('[data-match-placed="۲"]') as HTMLElement);
+    await user.click(screen.getByRole('button', { name: '🍎' }));
+    expect(container.querySelector('[data-match-placed="۲"]')?.closest('.match-object-row')?.querySelector('[data-match-slot="🍎"]')).toBeTruthy();
+    expect(container.querySelector('[data-match-slot="🍎🍎"]')?.parentElement?.querySelector('[data-match-placed]')).toBeNull();
+  });
+
+  it('plays the undo hint once on the first placement', async () => {
+    const user = userEvent.setup();
+    render(
+      <MatchPairsExercise
+        exercise={appleExercise()}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+
+    await user.click(screen.getByRole('button', { name: '۱' }));
+    await user.click(screen.getByRole('button', { name: '🍎' }));
+    expect(playAudio).toHaveBeenCalledWith(MATCH_UNDO_HINT, false);
+
+    (playAudio as jest.Mock).mockClear();
+    await user.click(screen.getByRole('button', { name: '۲' }));
+    await user.click(screen.getByRole('button', { name: '🍎🍎' }));
+    expect(playAudio).not.toHaveBeenCalledWith(MATCH_UNDO_HINT, false);
   });
 });
 

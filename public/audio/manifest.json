@@ -1,6 +1,6 @@
 {
   "voice": "avalai:gemini-2.5-flash-tts:Sulafat",
-  "count": 2626,
+  "count": 2627,
   "items": [
     {
       "hash": "c16919cdbe7d610669612c69cacdd4bf",
@@ -3441,6 +3441,10 @@
     {
       "hash": "6efb0b14fc864497b438232613a091b0",
       "text": "برابر"
+    },
+    {
+      "hash": "ec51d07d6034943552bef70ca257f6da",
+      "text": "برای پس گرفتن، ضربدر را بزنید"
     },
     {
       "hash": "2d7624629d902a706a1ac5eef1f5bc4f",

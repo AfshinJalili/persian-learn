@@ -60,6 +60,8 @@ describe('ChooseDigitExercise', () => {
     );
     expect(container.querySelector('[data-object-display] .object-cluster')).toBeTruthy();
     expect(container.querySelector('[data-object-display] .illus[data-glyph="hand"]')).toBeTruthy();
+    expect(container.querySelector('[data-object-display] svg')).toBeTruthy();
+    expect(container.querySelector('[data-object-display] .glyph')).toBeNull();
     expect(container.querySelector('[data-digit-display]')).toBeNull();
   });
 
@@ -80,6 +82,27 @@ describe('ChooseDigitExercise', () => {
     const cluster = container.querySelector('[data-object-display] .object-cluster') as HTMLElement | null;
     expect(cluster).toHaveAttribute('data-count', '2');
     expect(container.querySelectorAll('[data-object-display] .illus[data-glyph="hand"]')).toHaveLength(2);
+    expect(container.querySelectorAll('[data-object-display] svg')).toHaveLength(2);
+    expect(container.querySelector('[data-object-display] .glyph')).toBeNull();
     expect(container.querySelector('[data-digit-display]')).toBeNull();
+  });
+
+  it('renders a dice face as a single SVG that can fill the card', () => {
+    const { container } = render(
+      <ChooseDigitExercise
+        exercise={exercise({
+          id: 'm2l3e2',
+          payload: { display: '⚄' },
+          answer: '۵',
+        })}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+    const cluster = container.querySelector('[data-dice-face] .object-cluster') as HTMLElement | null;
+    expect(cluster).toHaveAttribute('data-count', '1');
+    expect(container.querySelector('[data-dice-face] svg')).toBeTruthy();
+    expect(container.querySelector('[data-dice-face] .glyph')).toBeNull();
   });
 });

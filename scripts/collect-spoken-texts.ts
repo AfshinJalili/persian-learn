@@ -3,6 +3,7 @@ import { join } from 'path';
 import { spokenOption } from '../lib/spoken-option';
 import { homeGreeting, lessonCompleteSpoken, LEARNER_NAME, onboardingSpokenWelcome } from '../lib/learner';
 import { spokenTextKey } from '../lib/audio-id';
+import { MATCH_UNDO_HINT } from '../lib/match-undo-hint';
 
 const ROOT = join(__dirname, '..');
 
@@ -31,6 +32,7 @@ const UI_PHRASES = [
   'کدام کمتر است؟',
   'کدام بیشتر است؟',
   'بعداً دوباره می‌بینیم.',
+  MATCH_UNDO_HINT,
   homeGreeting(),
   `خوشحالم که شما را می‌شناسم، ${LEARNER_NAME}!`,
 ];

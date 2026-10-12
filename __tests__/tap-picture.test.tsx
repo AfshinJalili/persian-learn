@@ -122,6 +122,35 @@ describe('TapPictureExercise', () => {
     expect(size).toBe(81);
   });
 
+  it('renders dice answers as pip SVGs instead of emoji glyphs', () => {
+    const { container } = render(
+      <TapPictureExercise
+        exercise={{
+          id: 'm2l3e7',
+          type: 'tap_picture',
+          prompt: '۴',
+          audio_script: 'کدام تاس همین تعداد خال دارد؟',
+          payload: { display: '۴' },
+          answer: '⚃',
+          distractors: ['⚂', '⚄'],
+          feedback_correct: 'ok',
+          feedback_wrong: 'no',
+        }}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+    const clusters = [...container.querySelectorAll('.object-cluster')] as HTMLElement[];
+    expect(clusters).toHaveLength(3);
+    for (const cluster of clusters) {
+      expect(cluster).toHaveAttribute('data-count', '1');
+      expect(cluster.querySelector('svg')).toBeTruthy();
+      expect(cluster.querySelector('.glyph')).toBeNull();
+    }
+    expect(container.querySelectorAll('svg')).toHaveLength(3);
+  });
+
   it('keeps two picture choices in a two-column grid', () => {
     const { container } = render(
       <TapPictureExercise

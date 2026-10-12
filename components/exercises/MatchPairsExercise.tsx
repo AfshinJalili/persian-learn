@@ -5,6 +5,7 @@ import { playOptionAudio } from '@/lib/spoken-option';
 import { canonicalizePairs } from '@/lib/answers';
 import { shuffleSeeded } from '@/lib/shuffle';
 import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
+import { maybePlayMatchUndoHint } from '@/lib/match-undo-hint';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import {
@@ -56,7 +57,7 @@ function MatchObjectRow({
         type="button"
         aria-label={option}
         data-match-slot={option}
-        disabled={locked || Boolean(placed)}
+        disabled={locked}
         onClick={() => onSelect('right', option)}
         className="match-object-apples"
       >
@@ -69,16 +70,28 @@ function MatchObjectRow({
         />
       </button>
       {placed ? (
-        <button
-          type="button"
-          aria-label={placed[0]}
-          data-match-placed={placed[0]}
-          disabled={locked}
-          onClick={() => onUndo(option)}
-          className="card match-digit-slot"
-        >
-          <span className="glyph">{placed[0]}</span>
-        </button>
+        <span className="match-digit-placed-wrap">
+          <button
+            type="button"
+            aria-label={placed[0]}
+            data-match-placed={placed[0]}
+            disabled={locked}
+            onClick={() => onSelect('left', placed[0])}
+            className="card match-digit-slot match-digit-slot-placed"
+          >
+            <span className="glyph">{placed[0]}</span>
+          </button>
+          <button
+            type="button"
+            aria-label="پس گرفتن"
+            data-match-undo={placed[0]}
+            disabled={locked}
+            onClick={() => onUndo(option)}
+            className="match-chip-undo"
+          >
+            ✕
+          </button>
+        </span>
       ) : (
         <span className="match-digit-slot match-digit-slot-empty" />
       )}
@@ -152,10 +165,10 @@ export default function MatchPairsExercise({
     setSelected(next);
   };
 
-  const publishPairs = (next: Array<[string, string]>) => {
+  const publishPairs = (next: Array<[string, string]>, keep?: Selection | null) => {
     const wasComplete = pairs.length === answerPairs.length;
     setPairs(next);
-    rememberSelection(null);
+    rememberSelection(next.length === answerPairs.length ? null : (keep ?? null));
     if (next.length === answerPairs.length) {
       onAnswerChange(canonicalizePairs(next.map((pair) => pair.join('=')).join('|')));
       return;
@@ -166,8 +179,16 @@ export default function MatchPairsExercise({
   };
 
   const placePair = (left: string, right: string) => {
-    if (disabled || isLeftUsed(left) || isRightUsed(right)) return;
-    publishPairs([...pairs, [left, right]]);
+    if (disabled) return;
+    const occupant = pairForRight(right);
+    if (occupant?.[0] === left) {
+      rememberSelection({ side: 'left', value: left });
+      return;
+    }
+    const next = pairs.filter(([value, slot]) => value !== left && slot !== right);
+    next.push([left, right]);
+    maybePlayMatchUndoHint();
+    publishPairs(next);
   };
 
   const undoByRight = (right: string) => {
@@ -182,11 +203,21 @@ export default function MatchPairsExercise({
 
   const handleSelect = (side: Side, option: string) => {
     if (disabled) return;
-    if (side === 'left' && isLeftUsed(option)) {
+    if (side === 'left' && isLeftUsed(option) && !objectLayout) {
       undoByLeft(option);
       return;
     }
     if (side === 'right' && isRightUsed(option)) {
+      const current = selectedRef.current;
+      if (objectLayout && current?.side === 'left') {
+        placePair(current.value, option);
+        return;
+      }
+      if (objectLayout) {
+        const placed = pairForRight(option);
+        if (placed) rememberSelection({ side: 'left', value: placed[0] });
+        return;
+      }
       undoByRight(option);
       return;
     }
@@ -214,7 +245,7 @@ export default function MatchPairsExercise({
 
   const handleSlotDrop = (option: string, event: DragEvent<HTMLElement>) => {
     event.preventDefault();
-    if (disabled || isRightUsed(option)) return;
+    if (disabled) return;
     const digit = event.dataTransfer.getData('text/plain') || (
       selectedRef.current?.side === 'left' ? selectedRef.current.value : ''
     );

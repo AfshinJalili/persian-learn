@@ -4,6 +4,7 @@ import { Exercise } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import { shuffleSeeded } from '@/lib/shuffle';
 import { playOptionAudio } from '@/lib/spoken-option';
+import { maybePlayMatchUndoHint } from '@/lib/match-undo-hint';
 import SpeakerButton from '@/components/SpeakerButton';
 
 interface BuildWordExerciseProps {
@@ -33,6 +34,7 @@ export default function BuildWordExercise({
     const newSelected = [...selectedLetters, letter];
     setSelectedLetters(newSelected);
     onAnswerChange(newSelected.join(''));
+    maybePlayMatchUndoHint();
     playOptionAudio(letter, tiles).catch(() => {});
   };
 
@@ -65,17 +67,28 @@ export default function BuildWordExercise({
           <div className="text-2xl text-brown-400">حروف را انتخاب کنید</div>
         ) : (
           selectedLetters.map((letter, index) => (
-            <button
-              type="button"
-              key={`${letter}-${index}`}
-              aria-label={letter}
-              data-build-placed={letter}
-              disabled={disabled}
-              onClick={() => handlePlacedClick(index)}
-              className="bg-[var(--blue-100)] border-4 border-[var(--blue-700)] rounded-2xl w-16 h-20 flex items-center justify-center"
-            >
-              <span className="text-5xl font-bold text-brown-900 leading-none">{letter}</span>
-            </button>
+            <span key={`${letter}-${index}`} className="build-placed-wrap match-digit-placed-wrap">
+              <button
+                type="button"
+                aria-label={letter}
+                data-build-placed={letter}
+                disabled={disabled}
+                onClick={() => handlePlacedClick(index)}
+                className="bg-[var(--blue-100)] border-4 border-[var(--blue-700)] rounded-2xl w-16 h-20 min-h-[48px] flex items-center justify-center match-digit-slot-placed"
+              >
+                <span className="text-5xl font-bold text-brown-900 leading-none">{letter}</span>
+              </button>
+              <button
+                type="button"
+                aria-label="پس گرفتن"
+                data-build-undo={letter}
+                disabled={disabled}
+                onClick={() => handlePlacedClick(index)}
+                className="match-chip-undo"
+              >
+                ✕
+              </button>
+            </span>
           ))
         )}
       </div>

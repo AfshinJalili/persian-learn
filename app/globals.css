@@ -218,6 +218,7 @@ button {
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  container-type: inline-size;
 }
 
 .content::-webkit-scrollbar {
@@ -519,15 +520,69 @@ h2.prompt-numeral {
 }
 
 .object-count-card {
-  container-type: inline-size;
-  min-height: max(260px, calc(70cqi + 72px));
   padding: 16px;
   background: #fff8ec;
   overflow: hidden;
+  max-height: 55dvh;
+}
+
+.app-phone:not(.object-gallery-page) .content > .object-count-card {
+  flex: 1 1 0;
+  min-height: 0;
+  max-height: min(55dvh, 100%);
+  height: auto;
+  padding: 12px;
+}
+
+.app-phone.object-gallery-page .object-count-card {
+  min-height: max(240px, calc(70cqi + 72px));
+  max-height: none;
+}
+
+.app-phone:not(.object-gallery-page) .content > .picture-grid,
+.app-phone:not(.object-gallery-page) .content > .cluster-stack {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.app-phone:not(.object-gallery-page) .content > .grid2:has(.object-choice-card),
+.app-phone:not(.object-gallery-page) .content > .grid3:has(.object-choice-card) {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.app-phone:not(.object-gallery-page) .object-choice-card {
+  min-height: 0;
+}
+
+.object-choice-card:has(.object-cluster[data-count='3'][data-layout='grid']) {
+  padding-inline: 12px;
 }
 
 .picture-grid .object-choice-card {
   padding-inline: 8px;
+}
+
+@media (max-height: 700px) {
+  .content.content-fit {
+    padding-bottom: 12px;
+  }
+
+  .bottom {
+    padding: 12px var(--s-5) 16px;
+  }
+
+  .speaker.md {
+    width: 64px;
+    height: 64px;
+  }
+
+  .speaker.md svg {
+    width: 32px;
+    height: 32px;
+  }
 }
 
 .app-phone.object-gallery-page {
@@ -590,16 +645,13 @@ h2.prompt-numeral {
 
 .object-cluster > .illus[data-glyph='hand'] {
   box-sizing: border-box;
-  padding: 12%;
+  padding: 0;
   overflow: hidden;
 }
 
-.object-cluster > .illus[data-glyph='hand'] .glyph {
-  font-size: 68%;
-  line-height: 1;
-  max-width: 100%;
-  max-height: 100%;
-  overflow: hidden;
+.object-cluster > .illus[data-glyph='hand'] svg {
+  width: 100%;
+  height: 100%;
 }
 
 .digit-sequence {
@@ -807,8 +859,10 @@ h2.prompt-numeral {
 }
 
 .match-digit-slot {
-  width: 40px;
-  height: 40px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
   flex: none;
   align-self: center;
   display: grid;
@@ -817,12 +871,70 @@ h2.prompt-numeral {
 }
 
 .match-digit-slot .glyph {
-  font-size: 26px;
+  font-size: 28px;
 }
 
 .match-digit-slot-empty {
-  border: 2px dashed color-mix(in srgb, var(--line) 45%, transparent);
+  border: 2px dashed var(--line-strong);
   background: transparent;
+}
+
+.match-digit-placed-wrap {
+  position: relative;
+  flex: none;
+  align-self: center;
+}
+
+.match-digit-slot-placed {
+  animation: match-chip-wobble 0.45s ease-out;
+}
+
+.match-chip-undo {
+  position: absolute;
+  top: -10px;
+  inset-inline-start: -10px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--clay-800);
+  background: var(--clay-100);
+  border: 3px solid var(--clay-400);
+  box-shadow: 0 3px 0 var(--clay-400);
+  z-index: 2;
+}
+
+.build-placed-wrap {
+  position: relative;
+  flex: none;
+}
+
+.build-placed-wrap [data-build-placed] {
+  min-height: 48px;
+}
+
+@keyframes match-chip-wobble {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-8deg);
+  }
+  50% {
+    transform: rotate(7deg);
+  }
+  75% {
+    transform: rotate(-4deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 .row-card.match-object-row > button {
