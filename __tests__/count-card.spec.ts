@@ -59,7 +59,8 @@ function measureCountCards() {
     const zone = card.querySelector('.cc-zone') as HTMLElement | null;
     const zoneBox = zone?.getBoundingClientRect();
     const items = [...card.querySelectorAll('.cc-item')].map((item) => {
-      const box = item.getBoundingClientRect();
+      const node = item as HTMLElement;
+      const box = node.getBoundingClientRect();
       const overflow = zoneBox
         ? Math.max(
             zoneBox.top - box.top,
@@ -69,7 +70,7 @@ function measureCountCards() {
             0
           )
         : 0;
-      return { width: Math.round(box.width), overflow };
+      return { width: Math.round(node.offsetWidth), overflow };
     });
     return {
       count: Number(card.getAttribute('data-count') || '0'),
@@ -89,11 +90,19 @@ test.describe('Count cards', () => {
       page,
     }) => {
       await page.setViewportSize(viewport);
+      await page.emulateMedia({ reducedMotion: 'reduce' });
       await page.goto('/dev/count-cards');
+      await page.addStyleTag({
+        content: 'nextjs-portal, [data-nextjs-dev-overlay] { display: none !important; }',
+      });
       await expect(page.locator('[data-count-gallery]')).toBeVisible();
-      await page.waitForTimeout(300);
+      await page.waitForTimeout(800);
       const first = await page.evaluate(measureCountCards);
       expect(first).toHaveLength(10);
+      await page.screenshot({
+        path: `/opt/cursor/artifacts/screenshots/count-1-10-${viewport.width}.png`,
+        fullPage: true,
+      });
       await page.waitForTimeout(400);
       const second = await page.evaluate(measureCountCards);
       expect(second.map((card) => card.sizes)).toEqual(first.map((card) => card.sizes));
@@ -111,7 +120,13 @@ test.describe('Count cards', () => {
     await page.setViewportSize({ width: 375, height: 667 });
     await seedProgress(page);
     await page.goto('/lesson/m1l1');
+    await page.addStyleTag({
+      content: 'nextjs-portal, [data-nextjs-dev-overlay] { display: none !important; }',
+    });
     await expect(page.getByRole('button', { name: 'یک سیب' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'دو گنجشک' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'سه انار' })).toBeVisible();
+    await page.waitForTimeout(500);
     const stats = await page.evaluate(() => {
       const phone = document.querySelector('.app-phone') as HTMLElement | null;
       const content = document.querySelector('.content') as HTMLElement | null;
@@ -127,5 +142,9 @@ test.describe('Count cards', () => {
     expect(stats.heading).toContain('فریبا جان');
     expect(stats.contentScroll).toBeLessThanOrEqual(2);
     expect(stats.phoneH).toBeLessThanOrEqual(667);
+    await page.screenshot({
+      path: '/opt/cursor/artifacts/screenshots/intro-375x667.png',
+      fullPage: false,
+    });
   });
 });
