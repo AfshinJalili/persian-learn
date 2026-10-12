@@ -297,7 +297,9 @@ export function objectClusterLayoutForBox(
     const unclamped =
       layout === 'picture'
         ? innerWidth
-        : Math.min(widthBasis * OBJECT_SINGLE_WIDTH_RATIO, innerWidth);
+        : layout === 'row' || layout === 'match'
+          ? Math.min(widthBasis * OBJECT_SINGLE_WIDTH_RATIO, innerWidth, innerHeight)
+          : Math.min(widthBasis * OBJECT_SINGLE_WIDTH_RATIO, innerWidth);
     return {
       cols: 1,
       rows: 1,
@@ -328,9 +330,9 @@ export function objectClusterLayoutForBox(
     const sizeW = (innerWidth - gap * Math.max(0, cols - 1)) / cols;
     const sizeH = (innerHeight - gap * Math.max(0, rows - 1)) / rows;
     const unclamped =
-      rows === 1 || !Number.isFinite(sizeH) || sizeH < OBJECT_CLUSTER_MIN_SIZE
-        ? sizeW
-        : Math.min(sizeW, sizeH);
+      Number.isFinite(sizeH) && sizeH >= OBJECT_CLUSTER_MIN_SIZE
+        ? Math.min(sizeW, sizeH)
+        : sizeW;
     return {
       cols,
       rows,
