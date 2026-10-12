@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { unlockAudio, playAudio } from '@/lib/audio';
+import { unlockAudio, playAudio, stopAudio } from '@/lib/audio';
+import { OnboardingGate } from '@/lib/onboarding-gate';
 import { getProgress, saveProgress } from '@/lib/progress';
+import BackChevron from '@/components/BackChevron';
 import HodaMascot from '@/components/HodaMascot';
 
 const AVATARS = ['🌷', '☕', '🌲', '🍇', '☀️', '🌙'];
@@ -14,6 +16,7 @@ export default function Onboarding() {
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [selectedAvatar, setSelectedAvatar] = useState('');
   const [selectedName, setSelectedName] = useState('');
+  const gateRef = useRef(new OnboardingGate());
   const router = useRouter();
 
   useEffect(() => {
@@ -23,6 +26,7 @@ export default function Onboarding() {
   }, [step, audioEnabled]);
 
   const handleAudioUnlock = () => {
+    gateRef.current.begin();
     unlockAudio();
     setAudioEnabled(true);
     setStep(1);
@@ -30,8 +34,10 @@ export default function Onboarding() {
   };
 
   const handleSoundCheck = async (canHear: boolean) => {
+    const token = gateRef.current.begin();
     if (canHear) {
       await playAudio('عالی! حالا بیایید شروع کنیم.');
+      if (!gateRef.current.isCurrent(token)) return;
       setStep(2);
     } else {
       await playAudio('لطفاً صدای گوشی خود را بلند کنید.');
@@ -39,38 +45,51 @@ export default function Onboarding() {
   };
 
   const handleAvatarSelect = async (avatar: string) => {
+    const token = gateRef.current.begin();
     setSelectedAvatar(avatar);
     await playAudio('خوب انتخاب کردید!');
+    if (!gateRef.current.isCurrent(token)) return;
     setStep(3);
   };
 
   const handleNameSelect = async (name: string) => {
+    const token = gateRef.current.begin();
     setSelectedName(name);
     await playAudio(`خوشحالم که شما را می‌شناسم، ${name}!`);
+    if (!gateRef.current.isCurrent(token)) return;
     setStep(4);
   };
 
   const handleSkipName = () => {
+    gateRef.current.begin();
     setStep(4);
   };
 
   const handleBack = () => {
+    gateRef.current.cancel();
+    stopAudio();
     setStep((currentStep) => Math.max(currentStep - 1, 0));
   };
 
   const handleTrackSelect = async (track: 'math' | 'alphabet') => {
-    const progress = await getProgress();
-    progress.currentTrack = track;
-    progress.avatar = selectedAvatar || '🌷';
-    progress.name = selectedName;
-    progress.onboarded = true;
-    await saveProgress(progress);
+    const token = gateRef.current.begin();
 
     if (track === 'math') {
       await playAudio('عددها را شروع می‌کنیم!');
     } else {
       await playAudio('حروف الفبا را شروع می‌کنیم!');
     }
+
+    if (!gateRef.current.isCurrent(token)) return;
+
+    const progress = await getProgress();
+    if (!gateRef.current.isCurrent(token)) return;
+    progress.currentTrack = track;
+    progress.avatar = selectedAvatar || '🌷';
+    progress.name = selectedName;
+    progress.onboarded = true;
+    await saveProgress(progress);
+    if (!gateRef.current.isCurrent(token)) return;
 
     router.push('/home');
   };
@@ -99,7 +118,9 @@ export default function Onboarding() {
   if (step === 1) {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-6 relative">
-        <button type="button" onClick={handleBack} aria-label="بازگشت" className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white border-2 border-[var(--line-strong)] text-2xl text-[var(--ink)]">←</button>
+        <button type="button" onClick={handleBack} aria-label="بازگشت" className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white border-2 border-[var(--line-strong)] text-[var(--ink)] flex items-center justify-center">
+          <BackChevron />
+        </button>
         <HodaMascot className="w-40 h-40 mb-8" />
         <h1 className="text-4xl font-black text-[var(--ink)] mb-12 text-center">
           صدا را می‌شنوید؟
@@ -131,7 +152,9 @@ export default function Onboarding() {
   if (step === 2) {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-6 relative">
-        <button type="button" onClick={handleBack} aria-label="بازگشت" className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white border-2 border-[var(--line-strong)] text-2xl text-[var(--ink)]">←</button>
+        <button type="button" onClick={handleBack} aria-label="بازگشت" className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white border-2 border-[var(--line-strong)] text-[var(--ink)] flex items-center justify-center">
+          <BackChevron />
+        </button>
         <h1 className="text-3xl font-black text-[var(--ink)] mb-8 text-center">
           یک تصویر برای خودتان انتخاب کنید
         </h1>
@@ -154,7 +177,9 @@ export default function Onboarding() {
   if (step === 3) {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-6 relative">
-        <button type="button" onClick={handleBack} aria-label="بازگشت" className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white border-2 border-[var(--line-strong)] text-2xl text-[var(--ink)]">←</button>
+        <button type="button" onClick={handleBack} aria-label="بازگشت" className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white border-2 border-[var(--line-strong)] text-[var(--ink)] flex items-center justify-center">
+          <BackChevron />
+        </button>
         <div className="text-8xl mb-8">{selectedAvatar}</div>
         <h1 className="text-3xl font-black text-[var(--ink)] mb-8 text-center">
           چه صدایتان کنیم؟
@@ -185,7 +210,9 @@ export default function Onboarding() {
   if (step === 4) {
     return (
       <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-6 relative">
-        <button type="button" onClick={handleBack} aria-label="بازگشت" className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white border-2 border-[var(--line-strong)] text-2xl text-[var(--ink)]">←</button>
+        <button type="button" onClick={handleBack} aria-label="بازگشت" className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white border-2 border-[var(--line-strong)] text-[var(--ink)] flex items-center justify-center">
+          <BackChevron />
+        </button>
         <h1 className="text-3xl font-black text-[var(--ink)] mb-12 text-center">
           امروز چه یاد بگیریم؟
         </h1>

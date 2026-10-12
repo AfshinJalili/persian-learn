@@ -25,6 +25,19 @@ function lessonById(track: typeof math, id: string) {
   throw new Error(`Lesson ${id} not found`);
 }
 
+function priorLessonIds(track: typeof math, lessonId: string): string[] {
+  const ids: string[] = [];
+  for (const unit of track.units) {
+    for (const lesson of unit.lessons) {
+      if (lesson.id === lessonId) {
+        return ids;
+      }
+      ids.push(lesson.id);
+    }
+  }
+  return ids;
+}
+
 async function hideDevOverlay(page: Page) {
   await page.addStyleTag({
     content: 'nextjs-portal, [data-nextjs-dev-overlay] { display: none !important; }',
@@ -36,12 +49,12 @@ async function snap(page: Page, name: string) {
   await page.screenshot({ path: `${SCREENSHOT_DIR}/${name}`, fullPage: false });
 }
 
-async function seedProgress(page: Page, track: 'math' | 'alphabet') {
+async function seedProgress(page: Page, track: 'math' | 'alphabet', completedLessons: string[] = []) {
   await page.goto('/');
   const progress: UserProgress = {
     currentTrack: track,
     onboarded: true,
-    completedLessons: [],
+    completedLessons,
     completedUnits: [],
     xp: 0,
     streak: 0,
@@ -198,7 +211,11 @@ test.describe('Later exercise types via deep links', () => {
       const source = target.track === 'math' ? math : alphabet;
       const lesson = lessonById(source, target.lessonId);
 
-      await seedProgress(page, target.track === 'alphabet' ? 'math' : 'alphabet');
+      await seedProgress(
+        page,
+        target.track === 'alphabet' ? 'math' : 'alphabet',
+        priorLessonIds(source, target.lessonId)
+      );
       await page.goto(`/lesson/${target.lessonId}`);
       await unlockIfNeeded(page);
 

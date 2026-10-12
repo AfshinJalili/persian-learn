@@ -31,16 +31,33 @@ export function getLesson(track: Track, lessonId: string): Lesson | null {
   return null;
 }
 
+function trackSearchOrder(preferredTrack: 'math' | 'alphabet'): Array<'math' | 'alphabet'> {
+  return preferredTrack === 'alphabet' ? ['alphabet', 'math'] : ['math', 'alphabet'];
+}
+
 export async function loadLessonById(
   lessonId: string,
   preferredTrack: 'math' | 'alphabet',
 ): Promise<Lesson | null> {
-  const order: Array<'math' | 'alphabet'> =
-    preferredTrack === 'alphabet' ? ['alphabet', 'math'] : ['math', 'alphabet'];
-
-  for (const name of order) {
+  for (const name of trackSearchOrder(preferredTrack)) {
     const track = await loadTrack(name);
     const lesson = getLesson(track, lessonId);
+    if (lesson) {
+      return lesson;
+    }
+  }
+
+  return null;
+}
+
+export async function loadAccessibleLesson(
+  lessonId: string,
+  preferredTrack: 'math' | 'alphabet',
+  completedLessons: string[],
+): Promise<Lesson | null> {
+  for (const name of trackSearchOrder(preferredTrack)) {
+    const track = await loadTrack(name);
+    const lesson = resolveLessonAccess(track, lessonId, completedLessons);
     if (lesson) {
       return lesson;
     }
@@ -65,20 +82,29 @@ export function getNextLesson(track: Track, completedLessons: string[]): Lesson 
 }
 
 export function isLessonUnlocked(track: Track, lessonId: string, completedLessons: string[]): boolean {
-  let found = false;
   for (const unit of track.units) {
     for (const lesson of unit.lessons) {
       if (lesson.id === lessonId) {
-        found = true;
-        break;
+        return true;
       }
       if (!completedLessons.includes(lesson.id)) {
         return false;
       }
     }
-    if (found) break;
   }
-  return true;
+  return false;
+}
+
+export function resolveLessonAccess(
+  track: Track,
+  lessonId: string,
+  completedLessons: string[]
+): Lesson | null {
+  const lesson = getLesson(track, lessonId);
+  if (!lesson || !isLessonUnlocked(track, lessonId, completedLessons)) {
+    return null;
+  }
+  return lesson;
 }
 
 export function getUnitProgress(unit: Unit, completedLessons: string[]): number {

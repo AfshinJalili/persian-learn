@@ -1,6 +1,7 @@
 'use client';
 
 import { playAudio } from '@/lib/audio';
+import { comparePrompt } from '@/lib/compare';
 import { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 
@@ -17,7 +18,7 @@ export default function CompareMoreLessExercise({
   onAnswerChange,
   disabled,
 }: CompareMoreLessExerciseProps) {
-  const { left, right } = exercise.payload as { left: string; right: string; ask: string };
+  const { left, right, ask } = exercise.payload as { left: string; right: string; ask: string };
 
   const select = async (value: string, spoken: string) => {
     if (disabled) return;
@@ -29,7 +30,7 @@ export default function CompareMoreLessExercise({
     <div className="flex flex-col items-center gap-8">
       <div className="flex items-center gap-4 w-full">
         <SpeakerButton text={exercise.audio_script} />
-        <div className="text-3xl font-black">کدام بیشتر است؟</div>
+        <div className="text-3xl font-black">{comparePrompt(ask)}</div>
       </div>
 
       <div className="flex items-stretch gap-4 w-full">
