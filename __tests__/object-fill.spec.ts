@@ -124,7 +124,10 @@ function measurePage() {
     (node) => {
       const el = node as HTMLElement;
       const overflowY = getComputedStyle(el).overflowY;
-      const canScroll = overflowY === 'auto' || overflowY === 'scroll';
+      const canScroll =
+        (overflowY === 'auto' || overflowY === 'scroll') &&
+        !el.classList.contains('content-fit') &&
+        !el.classList.contains('match-object-list');
       return {
         className: el.className,
         overflow: canScroll ? el.scrollHeight - el.clientHeight : 0,

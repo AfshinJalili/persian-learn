@@ -188,6 +188,11 @@ export default function LessonPage() {
             ? 'content content-fit'
             : 'content'
         }
+        style={
+          currentExercise.type === 'match_pairs' || currentExercise.type === 'tap_picture'
+            ? { overflow: 'hidden' }
+            : undefined
+        }
       >
         <ExerciseRenderer
           exercise={currentExercise}
