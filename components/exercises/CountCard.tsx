@@ -21,6 +21,7 @@ export const COUNT_WORDS = [
 ] as const;
 
 export const COUNT_CARD_BASE_ZONE = 208;
+export const COUNT_CARD_BASE_HEIGHT = 118;
 export const COUNT_CARD_MIN_SIZE = 32;
 export const COUNT_CARD_GAP_PREFERRED = 12;
 export const COUNT_CARD_GAP_MIN = 8;
@@ -43,7 +44,11 @@ export type CountCardLayout = {
   positions: CountCardPosition[];
 };
 
-export function countCardLayout(n: number, zoneWidth = COUNT_CARD_BASE_ZONE): CountCardLayout {
+export function countCardLayout(
+  n: number,
+  zoneWidth = COUNT_CARD_BASE_ZONE,
+  zoneHeight = COUNT_CARD_BASE_HEIGHT
+): CountCardLayout {
   const count = Math.max(0, Math.min(10, Math.floor(n)));
   if (count <= 0) {
     return {
@@ -63,8 +68,16 @@ export function countCardLayout(n: number, zoneWidth = COUNT_CARD_BASE_ZONE): Co
   const rows = count > 5 ? 2 : 1;
 
   const sizeFor = (gap: number) => {
-    if (count === 1) return Math.max(COUNT_CARD_MIN_SIZE, Math.min(96, Math.floor(zoneWidth)));
-    return Math.floor((zoneWidth - gap * (cols - 1)) / cols);
+    if (count === 1) {
+      return Math.max(
+        COUNT_CARD_MIN_SIZE,
+        Math.min(96, Math.floor(zoneWidth), Math.floor(zoneHeight))
+      );
+    }
+    const fromWidth = Math.floor((zoneWidth - gap * (cols - 1)) / cols);
+    const fromHeight =
+      rows === 1 ? Math.floor(zoneHeight) : Math.floor((zoneHeight - gap) / rows);
+    return Math.min(fromWidth, fromHeight);
   };
 
   let gap = COUNT_CARD_GAP_PREFERRED;
@@ -148,9 +161,12 @@ export default function CountCard({
   staggerIndex = 0,
 }: CountCardProps) {
   const zoneRef = useRef<HTMLDivElement>(null);
-  const [zoneWidth, setZoneWidth] = useState(COUNT_CARD_BASE_ZONE);
+  const [zone, setZone] = useState({
+    width: COUNT_CARD_BASE_ZONE,
+    height: COUNT_CARD_BASE_HEIGHT,
+  });
   const glyph = splitObjectTokens(token)[0] ?? token;
-  const layout = countCardLayout(count, zoneWidth);
+  const layout = countCardLayout(count, zone.width, zone.height);
   const liveWord =
     playing && highlightIndex != null ? countWord(highlightIndex + 1) : playing ? label : '';
 
@@ -159,9 +175,15 @@ export default function CountCard({
     if (!node) return;
 
     const update = () => {
-      const width = Math.round(node.getBoundingClientRect().width);
+      const box = node.getBoundingClientRect();
+      const width = Math.round(box.width);
+      const height = Math.round(box.height);
       if (width > 0) {
-        setZoneWidth((current) => (current === width ? current : width));
+        setZone((current) =>
+          current.width === width && current.height === (height > 0 ? height : current.height)
+            ? current
+            : { width, height: height > 0 ? height : COUNT_CARD_BASE_HEIGHT }
+        );
       }
     };
 
@@ -197,7 +219,10 @@ export default function CountCard({
       data-count-card
       data-heard={heard ? 'true' : 'false'}
       className={className}
-      style={{ animationDelay: `${staggerIndex * 120}ms`, minHeight: layout.height + 24 }}
+      style={{
+        animationDelay: `${staggerIndex * 120}ms`,
+        minHeight: Math.max(layout.height + 24, COUNT_CARD_BASE_HEIGHT),
+      }}
       onClick={onPlay}
       onKeyDown={handleKeyDown}
     >

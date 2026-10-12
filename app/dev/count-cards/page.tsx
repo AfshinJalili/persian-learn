@@ -22,7 +22,7 @@ export default function CountCardsGalleryPage() {
       data-count-gallery
       style={{ height: 'auto', maxHeight: 'none', overflow: 'visible' }}
     >
-      <div className="content" style={{ paddingTop: 16, gap: 14, overflow: 'visible' }}>
+      <div className="content" style={{ padding: '16px', gap: 14, overflow: 'visible' }}>
         <h1>آزمون اندازه: ۱ تا ۱۰</h1>
         <div className="cc-list" style={{ flex: 'none' }}>
           {GALLERY.map((card) => (
