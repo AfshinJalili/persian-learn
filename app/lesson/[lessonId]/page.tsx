@@ -37,6 +37,10 @@ export default function LessonPage() {
   useEffect(() => {
     async function load() {
       const progress = await getProgress();
+      if (!progress.onboarded) {
+        router.replace('/');
+        return;
+      }
       const track = await loadTrack(progress.currentTrack);
       const lessonData = resolveLessonAccess(track, lessonId, progress.completedLessons);
 
@@ -136,7 +140,9 @@ export default function LessonPage() {
 
     await completeLesson(lessonId, xpEarned, weakItems);
     await playAudio('آفرین! درس تمام شد.');
-    router.push(`/lesson-complete?xp=${xpEarned}&lesson=${encodeURIComponent(lesson.title)}`);
+    router.push(
+      `/lesson-complete?xp=${xpEarned}&lesson=${encodeURIComponent(lesson.title)}&id=${encodeURIComponent(lessonId)}`
+    );
   };
 
   const handleTraced = (answer: string) => {

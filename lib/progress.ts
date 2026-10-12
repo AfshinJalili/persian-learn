@@ -1,6 +1,7 @@
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 import type { UserProgress, LessonProgress } from './types';
 import { addDays, isSamePersianWeek, todayDateString, diffDays } from './calendar';
+import { hydrateAudioSpeed } from './audio';
 
 interface ProgressDB extends DBSchema {
   progress: {
@@ -94,8 +95,10 @@ export function applyLessonCompletion(
       }
     } else {
       const daysSince = diffDays(next.lastActivityDate, today);
-      if (daysSince <= 3 && next.restDaysUsed < 2) {
-        next.restDaysUsed += 1;
+      const skipped = Math.max(0, daysSince - 1);
+      const remaining = 2 - next.restDaysUsed;
+      if (skipped > 0 && skipped <= remaining) {
+        next.restDaysUsed += skipped;
       } else {
         next.streak = 1;
         if (next.streakBest === 0) {
@@ -137,6 +140,7 @@ export async function getProgress(): Promise<UserProgress> {
   if (!progress) {
     const created = defaultProgress();
     await saveProgress(created);
+    hydrateAudioSpeed(created.speechRate);
     return created;
   }
 
@@ -145,6 +149,7 @@ export async function getProgress(): Promise<UserProgress> {
   if (rolled.dailyLessonsCompleted !== normalized.dailyLessonsCompleted) {
     await saveProgress(rolled);
   }
+  hydrateAudioSpeed(rolled.speechRate);
   return rolled;
 }
 

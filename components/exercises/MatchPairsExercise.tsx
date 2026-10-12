@@ -48,6 +48,12 @@ export default function MatchPairsExercise({
     setPairs([]);
   }, [exercise.id]);
 
+  useEffect(() => {
+    if (userAnswer !== '') return;
+    setSelected(null);
+    setPairs([]);
+  }, [userAnswer]);
+
   const handleLeftClick = async (option: string) => {
     if (disabled) return;
     setSelected(option);
@@ -71,8 +77,6 @@ export default function MatchPairsExercise({
   const isLeftUsed = (option: string) => pairs.some(([left]) => left === option);
   const isRightUsed = (option: string) => pairs.some(([, right]) => right === option);
   const pairForRight = (option: string) => pairs.find(([, right]) => right === option);
-
-  void userAnswer;
 
   return (
     <>

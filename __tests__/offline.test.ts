@@ -24,5 +24,7 @@ describe('service worker', () => {
     expect(source).toContain("pathname.startsWith('/lesson/')");
     expect(source).toContain("cache-first");
     expect(source).toContain('stale-while-revalidate');
+    expect(offlineStrategy('/_next/static/chunks/app.js')).toBe('cache-first');
+    expect(offlineStrategy('/lesson/m1l1')).toBe('stale-while-revalidate');
   });
 });

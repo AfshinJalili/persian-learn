@@ -20,6 +20,8 @@ function progress(overrides: Partial<UserProgress>): UserProgress {
     avatar: '',
     name: '',
     startDate: '2026-01-01T00:00:00.000Z',
+    speechRate: 1,
+    autoplay: true,
     ...overrides,
   };
 }
@@ -82,6 +84,30 @@ describe('daily counter rollover', () => {
       '2026-10-12'
     );
     expect(rolled.dailyLessonsCompleted).toBe(2);
+  });
+});
+
+describe('rest day charging', () => {
+  it('charges daysSince-1 rest days for a multi-day gap', () => {
+    const next = applyLessonCompletion(
+      progress({ lastActivityDate: '2026-10-10', streak: 4, restDaysUsed: 0 }),
+      'm1l1',
+      10,
+      '2026-10-13'
+    );
+    expect(next.restDaysUsed).toBe(2);
+    expect(next.streak).toBe(4);
+  });
+
+  it('resets the streak when skipped days exceed the remaining allowance', () => {
+    const next = applyLessonCompletion(
+      progress({ lastActivityDate: '2026-10-10', streak: 4, restDaysUsed: 1 }),
+      'm1l1',
+      10,
+      '2026-10-13'
+    );
+    expect(next.streak).toBe(1);
+    expect(next.restDaysUsed).toBe(1);
   });
 });
 

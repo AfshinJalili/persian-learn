@@ -23,6 +23,7 @@ export default function LessonCompletePage() {
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [xpEarned, setXpEarned] = useState(10);
   const [lessonTitle, setLessonTitle] = useState('');
+  const [lessonId, setLessonId] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -31,6 +32,7 @@ export default function LessonCompletePage() {
       const xp = Number(params.get('xp') ?? '10');
       setXpEarned(Number.isFinite(xp) && xp > 0 ? xp : 10);
       setLessonTitle(params.get('lesson') ?? '');
+      setLessonId(params.get('id') ?? '');
       const prog = await getProgress();
       setProgress(prog);
       try {
@@ -110,7 +112,11 @@ export default function LessonCompletePage() {
           ادامه
           <ArrowLeft strokeWidth={2.6} />
         </button>
-        <button type="button" className="btn btn-ghost" onClick={() => router.push('/home')}>
+        <button
+          type="button"
+          className="btn btn-ghost"
+          onClick={() => router.push(lessonId ? `/lesson/${lessonId}` : '/home')}
+        >
           همین درس را دوباره بخوانیم
         </button>
       </div>
