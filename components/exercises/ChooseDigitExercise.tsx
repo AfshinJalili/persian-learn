@@ -2,6 +2,7 @@
 
 import { Exercise } from '@/lib/types';
 import { exerciseChoices } from '@/lib/shuffle';
+import { exerciseHeading } from '@/lib/exercise-copy';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
 
@@ -10,6 +11,7 @@ interface ChooseDigitExerciseProps {
   userAnswer: string;
   onAnswerChange: (answer: string) => void;
   disabled: boolean;
+  answerState?: 'idle' | 'correct' | 'wrong';
 }
 
 export default function ChooseDigitExercise({
@@ -17,34 +19,42 @@ export default function ChooseDigitExercise({
   userAnswer,
   onAnswerChange,
   disabled,
+  answerState = 'idle',
 }: ChooseDigitExerciseProps) {
   const { display } = exercise.payload as { display: string };
   const choices = exerciseChoices(exercise);
 
   return (
-    <div className="flex flex-col items-center gap-8">
-      <div className="flex items-center gap-4 w-full">
+    <>
+      <div className="prompt">
         <SpeakerButton text={exercise.audio_script} />
-        <div className="text-3xl font-black">{exercise.prompt}</div>
+        <h2>{exerciseHeading(exercise)}</h2>
       </div>
-
-      <div className="bg-cream-100 border-8 border-brown-600 rounded-3xl px-10 py-8 shadow-xl">
-        <div className="text-[120px] font-bold text-brown-900 leading-none">{display}</div>
+      <div className="card h-[180px]">
+        <div className="glyph" style={{ fontSize: 96 }}>
+          {display}
+        </div>
       </div>
-
-      <div className="grid grid-cols-3 gap-4 w-full">
-        {choices.map((choice) => (
-          <ChoiceButton
-            key={choice}
-            selected={userAnswer === choice}
-            disabled={disabled}
-            onClick={() => onAnswerChange(choice)}
-            className="p-6 text-6xl leading-none"
-          >
-            {choice}
-          </ChoiceButton>
-        ))}
+      <div className="grid3">
+        {choices.map((choice) => {
+          const selected = userAnswer === choice;
+          const state =
+            disabled && answerState !== 'idle' && selected ? answerState : 'idle';
+          return (
+            <ChoiceButton
+              key={choice}
+              selected={selected}
+              disabled={disabled}
+              state={state}
+              name={choice}
+              onClick={() => onAnswerChange(choice)}
+              className="h-[120px]"
+            >
+              <span className="glyph">{choice}</span>
+            </ChoiceButton>
+          );
+        })}
       </div>
-    </div>
+    </>
   );
 }

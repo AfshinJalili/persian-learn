@@ -24,13 +24,15 @@ function defaultProgress(): UserProgress {
     streak: 0,
     streakBest: 0,
     lastActivityDate: '',
-    dailyGoal: 1,
+    dailyGoal: 2,
     dailyLessonsCompleted: 0,
     restDaysUsed: 0,
     weakItems: [],
     avatar: '',
     name: '',
     startDate: new Date().toISOString(),
+    speechRate: 1,
+    autoplay: true,
   };
 }
 

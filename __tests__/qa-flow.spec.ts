@@ -25,19 +25,15 @@ async function snap(page: Page, name: string) {
 
 async function completeOnboarding(page: Page, trackLabel: string) {
   await page.goto('/');
-  await expect(page.getByText('برای شنیدن، اینجا بزنید')).toBeVisible();
+  await expect(page.getByText('خوش آمدید')).toBeVisible();
   await snap(page, '01-onboarding-welcome.png');
 
-  await page.getByRole('button', { name: 'شروع' }).click();
-  await expect(page.getByText('صدا را می‌شنوید؟')).toBeVisible();
-  await snap(page, '02-sound-check.png');
-
-  await page.getByRole('button', { name: 'بله، می‌شنوم' }).click();
+  await page.getByRole('button', { name: /شروع/ }).click();
   await expect(page.getByText('یک تصویر برای خودتان انتخاب کنید')).toBeVisible();
   await snap(page, '03-avatar-picker.png');
 
   await page.getByRole('button', { name: '🌷' }).click();
-  await expect(page.getByText('چه صدایتان کنیم؟')).toBeVisible();
+  await expect(page.getByText('شما را چه صدا کنیم؟')).toBeVisible();
   await snap(page, '04-name-picker.png');
 
   await page.getByRole('button', { name: 'بعداً' }).click();
@@ -59,6 +55,7 @@ async function playLesson(page: Page, lesson: ReturnType<typeof lessonById>) {
     if (exercise.type === 'trace_letter') {
       const letter = (exercise.payload as { letter?: string }).letter || exercise.answer;
       await page.getByRole('button').filter({ hasText: letter }).first().click();
+      await page.getByRole('button', { name: /بررسی/ }).click();
       await page.getByRole('button', { name: 'ادامه' }).click();
       continue;
     }
@@ -66,9 +63,16 @@ async function playLesson(page: Page, lesson: ReturnType<typeof lessonById>) {
     if (exercise.type === 'match_pairs') {
       const pairs = exercise.answer.split('|').map((pair) => pair.split('='));
       const columns = page.locator('.grid.grid-cols-2 > div');
-      for (const [left, right] of pairs) {
-        await columns.nth(0).getByRole('button', { name: left, exact: true }).click();
-        await columns.nth(1).getByRole('button', { name: right, exact: true }).click();
+      if (await columns.count()) {
+        for (const [left, right] of pairs) {
+          await columns.nth(0).getByRole('button', { name: left, exact: true }).click();
+          await columns.nth(1).getByRole('button', { name: right, exact: true }).click();
+        }
+      } else {
+        for (const [left, right] of pairs) {
+          await page.getByRole('button', { name: left, exact: true }).click();
+          await page.getByRole('button', { name: right, exact: true }).click();
+        }
       }
       await page.getByRole('button', { name: /بررسی/ }).click();
       await page.getByRole('button', { name: 'ادامه' }).click();

@@ -24,6 +24,7 @@ interface ExerciseRendererProps {
   onContinue: () => void;
   onTraced: (answer: string) => void;
   disabled: boolean;
+  answerState?: 'idle' | 'correct' | 'wrong';
 }
 
 export default function ExerciseRenderer({
@@ -33,6 +34,7 @@ export default function ExerciseRenderer({
   onContinue,
   onTraced,
   disabled,
+  answerState = 'idle',
 }: ExerciseRendererProps) {
   switch (exercise.type) {
     case 'intro':
@@ -44,6 +46,7 @@ export default function ExerciseRenderer({
           userAnswer={userAnswer}
           onAnswerChange={onAnswerChange}
           disabled={disabled}
+          answerState={answerState}
         />
       );
     case 'listen_choose':
@@ -53,6 +56,7 @@ export default function ExerciseRenderer({
           userAnswer={userAnswer}
           onAnswerChange={onAnswerChange}
           disabled={disabled}
+          answerState={answerState}
         />
       );
     case 'count_objects':
@@ -62,6 +66,7 @@ export default function ExerciseRenderer({
           userAnswer={userAnswer}
           onAnswerChange={onAnswerChange}
           disabled={disabled}
+          answerState={answerState}
         />
       );
     case 'choose_digit':
@@ -71,6 +76,7 @@ export default function ExerciseRenderer({
           userAnswer={userAnswer}
           onAnswerChange={onAnswerChange}
           disabled={disabled}
+          answerState={answerState}
         />
       );
     case 'match_pairs':

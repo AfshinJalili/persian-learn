@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Eraser, RotateCcw } from 'lucide-react';
 import { playAudio } from '@/lib/audio';
+import { exerciseHeading } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 
@@ -21,49 +23,61 @@ export default function TraceLetterExercise({ exercise, onComplete }: Props) {
 
   const handleTrace = async () => {
     if (traced) return;
-
     setTraced(true);
-    await playAudio('آفرین!');
-    setTimeout(() => {
-      onComplete(letter);
-    }, 400);
+    onComplete(letter);
+    await playAudio(letter);
+  };
+
+  const handleReset = () => {
+    setTraced(false);
+    onComplete('');
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center gap-4 mb-6">
+    <>
+      <div className="prompt">
         <SpeakerButton text={exercise.audio_script} />
-        <h2 className="text-3xl font-black text-[var(--ink)]">با انگشت بکشید</h2>
+        <h2>{exerciseHeading(exercise)}</h2>
       </div>
-
-      <div className="flex-1 flex flex-col items-center justify-center">
-        <button
-          type="button"
-          className="relative bg-white rounded-3xl p-8 shadow-xl"
-          onClick={handleTrace}
-        >
-          <div
-            className={`font-black transition-all duration-300 ${
-              traced ? 'text-[var(--green-700)]' : 'text-[var(--ink-2)]'
-            }`}
-            style={{ fontSize: '160px', lineHeight: '1.3' }}
-          >
-            {letter}
-          </div>
-
-          {!traced && (
-            <div className="absolute top-1/2 right-1/4 -translate-y-1/2 text-6xl animate-bounce">
-              👆
-            </div>
+      <button
+        type="button"
+        className="card"
+        style={{ height: 380, background: '#fff', position: 'relative' }}
+        onClick={handleTrace}
+        aria-label={letter}
+      >
+        <span className="body-lg" style={{ position: 'absolute', top: 12, right: 20, color: 'var(--ink-2)', fontWeight: 700 }}>
+          از دایرهٔ سبز شروع کنید
+        </span>
+        <svg viewBox="0 0 320 300" width="300" height="282" aria-hidden="true">
+          <path d="M266 140 C 280 186, 262 206, 226 206 L 100 206 C 62 206, 46 186, 52 150" fill="none" stroke="#E6E9E7" strokeWidth="46" strokeLinecap="round" />
+          <path d="M266 140 C 280 186, 262 206, 226 206 L 100 206 C 62 206, 46 186, 52 150" fill="none" stroke="#9AA59F" strokeWidth="4" strokeDasharray="4 12" strokeLinecap="round" />
+          {traced && (
+            <path d="M266 140 C 280 186, 262 206, 226 206 L 100 206 C 62 206, 46 186, 52 150" fill="none" stroke="#58CC02" strokeWidth="30" strokeLinecap="round" />
           )}
-
-          {traced && <div className="absolute top-4 left-4 text-5xl">✓</div>}
+          {!traced && (
+            <path d="M266 140 C 280 186, 262 206, 226 206 L 176 206" fill="none" stroke="#58CC02" strokeWidth="30" strokeLinecap="round" />
+          )}
+          <circle cx="160" cy="262" r="17" fill="#E6E9E7" stroke="#9AA59F" strokeWidth="4" strokeDasharray="4 7" />
+          <circle cx="266" cy="140" r="20" fill="#1F6408" />
+          <text x="266" y="149" textAnchor="middle" fill="#fff" style={{ font: '800 24px Vazirmatn' }}>
+            ۱
+          </text>
+          <path d="M200 112 h-70 m14 -12 l-14 12 l14 12" stroke="#0D4F9E" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        <span className="glyph" style={{ position: 'absolute', opacity: 0 }}>
+          {letter}
+        </span>
+      </button>
+      <div className="btn-row">
+        <button type="button" className="btn btn-secondary" style={{ flex: 1 }} onClick={handleReset}>
+          <RotateCcw strokeWidth={2.6} />
+          دوباره نشانم بده
         </button>
-
-        <p className="text-xl text-[var(--ink-2)] mt-6 text-center">
-          روی حرف بزنید تا ادامه دهید
-        </p>
+        <button type="button" className="icon-btn" style={{ width: 64, height: 64 }} aria-label="پاک کردن" onClick={handleReset}>
+          <Eraser strokeWidth={2.6} />
+        </button>
       </div>
-    </div>
+    </>
   );
 }

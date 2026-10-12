@@ -68,6 +68,8 @@ export interface UserProgress {
   avatar: string;
   name: string;
   startDate: string;
+  speechRate: number;
+  autoplay: boolean;
 }
 
 export interface LessonProgress {

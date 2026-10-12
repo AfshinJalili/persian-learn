@@ -3,8 +3,10 @@
 import { useEffect, useMemo, useState } from 'react';
 import { playAudio } from '@/lib/audio';
 import { shuffleSeeded } from '@/lib/shuffle';
+import { exerciseHeading } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
+import { ObjectArt, looksLikeObjects } from '@/components/art/objects';
 
 interface Props {
   exercise: Exercise;
@@ -36,6 +38,10 @@ export default function MatchPairsExercise({
     [answerPairs, exercise.id]
   );
 
+  const objectLayout =
+    rightOptions.every(looksLikeObjects) &&
+    leftOptions.every((item) => /^[0-9۰-۹]+$/.test(item));
+
   useEffect(() => {
     setSelected(null);
     setPairs([]);
@@ -61,88 +67,127 @@ export default function MatchPairsExercise({
     await playAudio(option);
   };
 
-  const handleRemove = (index: number) => {
-    const newPairs = pairs.filter((_, i) => i !== index);
-    setPairs(newPairs);
-    onAnswerChange('');
-  };
-
   const isLeftUsed = (option: string) => pairs.some(([left]) => left === option);
   const isRightUsed = (option: string) => pairs.some(([, right]) => right === option);
+  const pairForRight = (option: string) => pairs.find(([, right]) => right === option);
 
   void userAnswer;
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center gap-4 mb-6">
+    <>
+      <div className="prompt">
         <SpeakerButton text={exercise.audio_script} />
-        <h2 className="text-3xl font-black text-[var(--ink)]">جفت کردن</h2>
+        <h2>{exerciseHeading(exercise)}</h2>
       </div>
-
-      <div className="flex-1">
-        <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="space-y-3">
+      {objectLayout ? (
+        <>
+          {rightOptions.map((option) => {
+            const placed = pairForRight(option);
+            const correct =
+              placed && answerPairs.some(([left, right]) => left === placed[0] && right === option);
+            return (
+              <button
+                type="button"
+                key={option}
+                aria-label={option}
+                disabled={disabled || !selected || Boolean(placed)}
+                onClick={() => handleRightClick(option)}
+                className="row-card"
+                style={{
+                  padding: '12px 16px',
+                  borderColor: correct ? 'var(--green-500)' : undefined,
+                  background: correct ? 'var(--green-050)' : undefined,
+                }}
+              >
+                <div style={{ display: 'flex', gap: 4, flex: 1 }}>
+                  <ObjectArt token={option} size={52} />
+                </div>
+                {placed ? (
+                  <span className={`card ${correct ? 'correct' : ''}`} style={{ width: 84, height: 84, flex: 'none', borderRadius: 20 }}>
+                    <span className="glyph" style={{ fontSize: 52 }}>
+                      {placed[0]}
+                    </span>
+                  </span>
+                ) : (
+                  <span
+                    style={{
+                      width: 84,
+                      height: 84,
+                      borderRadius: 20,
+                      border: '3px dashed #767F7A',
+                      background: '#F3F1EA',
+                      flex: 'none',
+                    }}
+                  />
+                )}
+              </button>
+            );
+          })}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: 24,
+              padding: 12,
+              borderRadius: 24,
+              background: 'var(--surface-2)',
+              minHeight: 116,
+              alignItems: 'center',
+            }}
+          >
+            {leftOptions.map((option) =>
+              isLeftUsed(option) ? (
+                <span
+                  key={option}
+                  style={{ width: 88, height: 88, borderRadius: 20, border: '3px dashed var(--line)' }}
+                />
+              ) : (
+                <button
+                  type="button"
+                  key={option}
+                  aria-label={option}
+                  onClick={() => handleLeftClick(option)}
+                  className={`card ${selected === option ? 'selected' : ''}`}
+                  style={{ width: 88, height: 88, borderRadius: 20 }}
+                >
+                  <span className="glyph" style={{ fontSize: 52 }}>
+                    {option}
+                  </span>
+                </button>
+              )
+            )}
+          </div>
+        </>
+      ) : (
+        <div className="grid grid-cols-2 gap-4">
+          <div data-match-column="left" className="space-y-3">
             {leftOptions.map((option) => (
               <button
                 type="button"
                 key={`left-${option}`}
                 onClick={() => handleLeftClick(option)}
                 disabled={disabled || isLeftUsed(option)}
-                className={`h-20 rounded-2xl text-4xl font-black shadow-md w-full ${
-                  isLeftUsed(option) ? 'opacity-30' : ''
-                } ${
-                  selected === option
-                    ? 'bg-[var(--blue-100)] border-4 border-[var(--blue-700)]'
-                    : 'bg-white border-4 border-[var(--line-strong)]'
-                }`}
+                className={`card h-20 w-full ${isLeftUsed(option) ? 'dim' : ''} ${selected === option ? 'selected' : ''}`}
               >
-                {option}
+                <span className="text-4xl font-extrabold">{option}</span>
               </button>
             ))}
           </div>
-
-          <div className="space-y-3">
+          <div data-match-column="right" className="space-y-3">
             {rightOptions.map((option) => (
               <button
                 type="button"
                 key={`right-${option}`}
                 onClick={() => handleRightClick(option)}
                 disabled={disabled || !selected || isRightUsed(option)}
-                className={`h-20 rounded-2xl text-4xl font-black shadow-md w-full ${
-                  isRightUsed(option) ? 'opacity-30' : ''
-                } ${!selected ? 'bg-gray-200' : 'bg-white border-4 border-[var(--line-strong)]'}`}
+                className={`card h-20 w-full ${isRightUsed(option) ? 'dim' : ''}`}
               >
-                {option}
+                <ObjectArt token={option} size={48} />
               </button>
             ))}
           </div>
         </div>
-
-        {pairs.length > 0 && (
-          <div className="space-y-2">
-            {pairs.map((pair, index) => (
-              <div
-                key={`${pair[0]}-${pair[1]}-${index}`}
-                className="flex items-center gap-2 bg-[var(--blue-100)] rounded-2xl p-3"
-              >
-                <div className="flex-1 text-2xl font-bold text-center">{pair[0]}</div>
-                <div className="text-xl">=</div>
-                <div className="flex-1 text-2xl font-bold text-center">{pair[1]}</div>
-                {!disabled && (
-                  <button
-                    type="button"
-                    onClick={() => handleRemove(index)}
-                    className="w-12 h-12 rounded-full bg-[var(--clay-800)] text-white flex items-center justify-center"
-                    aria-label="حذف جفت"
-                  >
-                    ✕
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
+      )}
+    </>
   );
 }

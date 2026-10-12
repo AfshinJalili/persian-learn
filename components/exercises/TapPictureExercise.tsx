@@ -1,14 +1,17 @@
 import { playAudio } from '@/lib/audio';
 import { exerciseChoices } from '@/lib/shuffle';
+import { exerciseHeading } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
+import { ObjectArt } from '@/components/art/objects';
 
 interface Props {
   exercise: Exercise;
   userAnswer: string;
   onAnswerChange: (answer: string) => void;
   disabled: boolean;
+  answerState?: 'idle' | 'correct' | 'wrong';
 }
 
 export default function TapPictureExercise({
@@ -16,8 +19,8 @@ export default function TapPictureExercise({
   userAnswer,
   onAnswerChange,
   disabled,
+  answerState = 'idle',
 }: Props) {
-  const payload = exercise.payload as { display: string };
   const options = exerciseChoices(exercise);
 
   const handleSelect = async (option: string) => {
@@ -27,25 +30,32 @@ export default function TapPictureExercise({
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center gap-4 mb-8">
+    <>
+      <div className="prompt">
         <SpeakerButton text={exercise.audio_script} />
-        <h2 className="text-3xl font-black text-[var(--ink)]">{payload.display}</h2>
+        <h2>{exerciseHeading(exercise)}</h2>
       </div>
-
-      <div className="flex-1 flex flex-col gap-4 justify-center">
-        {options.map((option) => (
-          <ChoiceButton
-            key={option}
-            selected={userAnswer === option}
-            disabled={disabled}
-            onClick={() => handleSelect(option)}
-            className="h-40 text-7xl"
-          >
-            {option}
-          </ChoiceButton>
-        ))}
+      <div className="grid2">
+        {options.map((option) => {
+          const selected = userAnswer === option;
+          const state =
+            disabled && answerState !== 'idle' && selected ? answerState : 'idle';
+          return (
+            <ChoiceButton
+              key={option}
+              selected={selected}
+              disabled={disabled}
+              state={state}
+              dim={disabled && !selected}
+              name={option}
+              onClick={() => handleSelect(option)}
+              className="h-[172px]"
+            >
+              <ObjectArt token={option} size={116} />
+            </ChoiceButton>
+          );
+        })}
       </div>
-    </div>
+    </>
   );
 }

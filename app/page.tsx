@@ -30,8 +30,7 @@ export default function Home() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--bg)]">
         <div className="text-center">
-          <div className="text-6xl mb-4">🦩</div>
-          <div className="text-2xl font-bold text-[var(--ink)]">در حال بارگذاری...</div>
+        <div className="body-lg font-bold text-[var(--ink)]">در حال بارگذاری...</div>
         </div>
       </div>
     );

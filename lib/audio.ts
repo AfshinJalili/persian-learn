@@ -7,11 +7,29 @@ if (typeof window !== 'undefined') {
   speechSynthesis = window.speechSynthesis;
 }
 
-export function unlockAudio() {
+function persistUnlock() {
+  if (typeof sessionStorage !== 'undefined') {
+    sessionStorage.setItem('pl-audio-unlocked', '1');
+  }
+}
+
+function readPersistedUnlock(): boolean {
+  if (typeof sessionStorage === 'undefined') return false;
+  return sessionStorage.getItem('pl-audio-unlocked') === '1';
+}
+
+if (typeof window !== 'undefined' && readPersistedUnlock()) {
   audioUnlocked = true;
 }
 
+export function unlockAudio() {
+  audioUnlocked = true;
+  persistUnlock();
+}
+
 export function isAudioUnlocked(): boolean {
+  if (audioUnlocked) return true;
+  audioUnlocked = readPersistedUnlock();
   return audioUnlocked;
 }
 

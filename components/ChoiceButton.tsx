@@ -6,6 +6,9 @@ interface ChoiceButtonProps {
   onClick: () => void;
   children: ReactNode;
   className?: string;
+  state?: 'idle' | 'correct' | 'wrong';
+  dim?: boolean;
+  name?: string;
 }
 
 export default function ChoiceButton({
@@ -14,17 +17,27 @@ export default function ChoiceButton({
   onClick,
   children,
   className = '',
+  state = 'idle',
+  dim = false,
+  name,
 }: ChoiceButtonProps) {
+  const extras = [
+    selected ? 'selected' : '',
+    state === 'correct' ? 'correct' : '',
+    state === 'wrong' ? 'wrong' : '',
+    dim ? 'dim' : '',
+    className,
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <button
       type="button"
       onClick={onClick}
-      disabled={disabled}
-      className={`rounded-3xl font-bold transition-all shadow-lg ${
-        selected
-          ? 'bg-[var(--blue-100)] border-4 border-[var(--blue-700)] scale-105'
-          : 'bg-white border-4 border-[var(--line-strong)]'
-      } ${disabled ? 'opacity-50' : 'hover:scale-105'} ${className}`}
+      disabled={disabled && state === 'idle'}
+      aria-label={name}
+      className={`card ${extras}`.trim()}
     >
       {children}
     </button>

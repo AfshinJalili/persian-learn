@@ -1,10 +1,10 @@
 'use client';
 
 import { Exercise } from '@/lib/types';
-import { exerciseChoices } from '@/lib/shuffle';
 import { formatPersianNumber } from '@/lib/persian';
+import { exerciseHeading } from '@/lib/exercise-copy';
 import SpeakerButton from '@/components/SpeakerButton';
-import ChoiceButton from '@/components/ChoiceButton';
+import { PomegranateSvg } from '@/components/art/objects';
 
 interface NumberLineExerciseProps {
   exercise: Exercise;
@@ -19,70 +19,85 @@ export default function NumberLineExercise({
   onAnswerChange,
   disabled,
 }: NumberLineExerciseProps) {
-  const { min, max, start, move } = exercise.payload as {
+  const { min, max } = exercise.payload as {
     min: number;
     max: number;
     start: number;
     move: number;
   };
-  const choices = exerciseChoices(exercise);
-  const numbers: number[] = [];
   const safeMin = Number.isFinite(min) ? min : 0;
-  const safeMax = Number.isFinite(max) ? max : 10;
+  const safeMax = Number.isFinite(max) ? max : 5;
+  const numbers: number[] = [];
   for (let i = safeMin; i <= safeMax; i += 1) {
     numbers.push(i);
   }
 
-  return (
-    <div className="flex flex-col items-center gap-8">
-      <div className="flex items-center gap-4 w-full">
-        <SpeakerButton text={exercise.audio_script} />
-        <div className="text-3xl font-black">{exercise.prompt}</div>
-      </div>
+  const selected = userAnswer ? Number(userAnswer.replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)))) : null;
+  const xs = numbers.map((_, index) => {
+    const span = Math.max(numbers.length - 1, 1);
+    return 300 - (index / span) * 280;
+  });
 
-      <div className="bg-cream-100 border-4 border-brown-600 rounded-3xl p-4 w-full overflow-x-auto">
-        <div className="flex justify-between text-lg font-bold text-brown-700 mb-3">
+  return (
+    <>
+      <div className="prompt">
+        <SpeakerButton text={exercise.audio_script} />
+        <h2>{exerciseHeading(exercise)}</h2>
+      </div>
+      <p className="body-lg muted" style={{ marginTop: -8 }}>
+        علامت سبز را روی عدد درست بگذارید.
+      </p>
+      <div className="card" style={{ height: 300, alignContent: 'center', position: 'relative' }}>
+        <svg viewBox="0 0 342 230" width="342" height="230">
+          <line x1="6" y1="144" x2="318" y2="144" stroke="#1B2A22" strokeWidth="5" strokeLinecap="round" />
+          <path d="M4 144l14-10v20z" fill="#1B2A22" />
+          {numbers.map((num, index) => {
+            const x = xs[index] ?? 20;
+            return (
+              <g key={num}>
+                <line x1={x} y1="130" x2={x} y2="158" stroke="#1B2A22" strokeWidth="5" strokeLinecap="round" />
+                <text x={x} y="204" textAnchor="middle" style={{ font: '800 36px Vazirmatn' }} fill="#1B2A22">
+                  {formatPersianNumber(num)}
+                </text>
+                {selected === num && (
+                  <g transform={`translate(${x} 46)`}>
+                    <path d="M0 72c-16-20-26-32-26-46a26 26 0 0 1 52 0c0 14-10 26-26 46z" fill="#1F6408" />
+                    <circle cx="0" cy="26" r="11" fill="#fff" />
+                  </g>
+                )}
+              </g>
+            );
+          })}
+        </svg>
+        <div className="flex justify-between w-[300px] font-bold text-[var(--ink-2)]">
           <span>کمتر</span>
           <span>بیشتر ←</span>
         </div>
-        <div className="relative min-w-[320px]">
-          <div className="absolute inset-x-0 top-3 h-1 bg-brown-600" />
-          <div className="relative flex justify-between">
-            {numbers.map((num) => (
-              <div key={num} className="flex flex-col items-center w-7">
-                <div
-                  className={`w-4 h-4 rounded-full mb-2 ${
-                    num === start ? 'bg-[var(--green-600)] ring-4 ring-green-300' : 'bg-brown-600'
-                  }`}
-                />
-                <div className="text-sm font-bold text-brown-900">
-                  {formatPersianNumber(num)}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="mt-4 text-2xl text-center text-brown-700">
-          شروع: {formatPersianNumber(start ?? 0)}
-          {' • '}
-          حرکت: {move > 0 ? '+' : ''}
-          {formatPersianNumber(move ?? 0)}
+        <div className="absolute inset-0 flex">
+          {numbers.map((num) => (
+            <button
+              key={`hit-${num}`}
+              type="button"
+              disabled={disabled}
+              aria-label={formatPersianNumber(num)}
+              onClick={() => onAnswerChange(formatPersianNumber(num))}
+              className="flex-1 min-h-[56px]"
+            />
+          ))}
         </div>
       </div>
-
-      <div className="grid grid-cols-3 gap-4 w-full">
-        {choices.map((choice) => (
-          <ChoiceButton
-            key={choice}
-            selected={userAnswer === choice}
-            disabled={disabled}
-            onClick={() => onAnswerChange(choice)}
-            className="p-4 text-5xl leading-none"
-          >
-            {choice}
-          </ChoiceButton>
-        ))}
-      </div>
-    </div>
+      {selected !== null && selected >= 0 && selected <= 5 && (
+        <div className="flex items-center gap-2.5 justify-center">
+          {Array.from({ length: selected }, (_, index) => (
+            <span key={index} className="illus" style={{ width: 40, height: 40 }}>
+              <PomegranateSvg />
+            </span>
+          ))}
+          <span className="body-lg" style={{ fontWeight: 700 }}>
+            = {formatPersianNumber(selected)}
+          </span>
+        </div>
+      )}
+    </>
   );
 }

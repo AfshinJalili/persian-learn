@@ -3,6 +3,7 @@
 import { playAudio } from '@/lib/audio';
 import { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
+import { ObjectArt } from '@/components/art/objects';
 
 interface CompareMoreLessExerciseProps {
   exercise: Exercise;
@@ -26,52 +27,37 @@ export default function CompareMoreLessExercise({
   };
 
   return (
-    <div className="flex flex-col items-center gap-8">
-      <div className="flex items-center gap-4 w-full">
+    <>
+      <div className="prompt">
         <SpeakerButton text={exercise.audio_script} />
-        <div className="text-3xl font-black">کدام بیشتر است؟</div>
+        <h2>کدام بیشتر است؟</h2>
       </div>
-
-      <div className="flex items-stretch gap-4 w-full">
+      <div className="grid2">
         <button
           type="button"
           onClick={() => select('left', 'این')}
           disabled={disabled}
-          className={`flex-1 border-4 rounded-3xl p-6 text-5xl min-h-36 ${
-            userAnswer === 'left'
-              ? 'bg-[var(--blue-100)] border-[var(--blue-700)]'
-              : 'bg-white border-brown-600'
-          }`}
+          className={`card h-40 ${userAnswer === 'left' ? 'selected' : ''}`}
         >
-          {left}
+          <ObjectArt token={left} size={96} />
         </button>
-
         <button
           type="button"
           onClick={() => select('right', 'این')}
           disabled={disabled}
-          className={`flex-1 border-4 rounded-3xl p-6 text-5xl min-h-36 ${
-            userAnswer === 'right'
-              ? 'bg-[var(--blue-100)] border-[var(--blue-700)]'
-              : 'bg-white border-brown-600'
-          }`}
+          className={`card h-40 ${userAnswer === 'right' ? 'selected' : ''}`}
         >
-          {right}
+          <ObjectArt token={right} size={96} />
         </button>
       </div>
-
       <button
         type="button"
         onClick={() => select('equal', 'یکسان هستند')}
         disabled={disabled}
-        className={`w-full border-4 rounded-3xl px-6 py-6 text-3xl font-bold ${
-          userAnswer === 'equal'
-            ? 'bg-[var(--blue-100)] border-[var(--blue-700)]'
-            : 'bg-white border-brown-600'
-        }`}
+        className={`card h-20 w-full ${userAnswer === 'equal' ? 'selected' : ''}`}
       >
-        یکسان هستند
+        <span className="body-lg font-bold">یکسان هستند</span>
       </button>
-    </div>
+    </>
   );
 }

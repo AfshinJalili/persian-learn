@@ -1,5 +1,7 @@
 import type { Exercise } from '@/lib/types';
+import { ArrowLeft } from 'lucide-react';
 import SpeakerButton from '@/components/SpeakerButton';
+import { ObjectArt } from '@/components/art/objects';
 
 interface Props {
   exercise: Exercise;
@@ -8,37 +10,23 @@ interface Props {
 
 export default function IntroExercise({ exercise, onContinue }: Props) {
   const payload = exercise.payload as { display: string; visual?: string };
+  const groups = String(payload.display || '')
+    .split(/\s{2,}/)
+    .filter(Boolean);
 
   return (
-    <div className="flex flex-col items-center justify-center h-full">
-      <SpeakerButton text={exercise.audio_script} large />
-
-      <div className="my-8 flex flex-col items-center justify-center gap-4">
-        {String(payload.display || '')
-          .split(/\s{2,}/)
-          .filter(Boolean)
-          .map((group, index) => (
-            <div
-              key={`${group}-${index}`}
-              className="font-black text-[var(--ink)] text-center"
-              style={{ fontSize: '72px', lineHeight: '1.3' }}
-            >
-              {group.trim()}
-            </div>
-          ))}
+    <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
+      <SpeakerButton text={exercise.audio_script} size="xl" />
+      <div className="flex flex-col items-center justify-center gap-4">
+        {groups.map((group, index) => (
+          <ObjectArt key={`${group}-${index}`} token={group.trim()} size={72} />
+        ))}
       </div>
-
-      {payload.visual ? (
-        <div className="text-8xl mb-8">{payload.visual}</div>
-      ) : null}
-
-      <button
-        type="button"
-        onClick={onContinue}
-        className="w-full max-w-md h-16 rounded-2xl bg-[var(--green-700)] text-white text-2xl font-bold shadow-lg flex items-center justify-center gap-2"
-      >
-        <span>ادامه</span>
-        <span>←</span>
+      {payload.visual ? <ObjectArt token={payload.visual} size={96} /> : null}
+      <p className="body-lg">{exercise.audio_script}</p>
+      <button type="button" onClick={onContinue} className="btn btn-primary">
+        ادامه
+        <ArrowLeft strokeWidth={2.6} />
       </button>
     </div>
   );

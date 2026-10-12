@@ -1,14 +1,17 @@
 import { playAudio } from '@/lib/audio';
 import { exerciseChoices } from '@/lib/shuffle';
+import { exerciseHeading } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
+import { ObjectArt } from '@/components/art/objects';
 
 interface Props {
   exercise: Exercise;
   userAnswer: string;
   onAnswerChange: (answer: string) => void;
   disabled: boolean;
+  answerState?: 'idle' | 'correct' | 'wrong';
 }
 
 export default function CountObjectsExercise({
@@ -16,6 +19,7 @@ export default function CountObjectsExercise({
   userAnswer,
   onAnswerChange,
   disabled,
+  answerState = 'idle',
 }: Props) {
   const payload = exercise.payload as { objects: string; count: number };
   const options = exerciseChoices(exercise);
@@ -29,33 +33,46 @@ export default function CountObjectsExercise({
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex items-center gap-4 mb-6">
+    <>
+      <div className="prompt">
         <SpeakerButton text={exercise.audio_script} />
-        <h2 className="text-3xl font-black text-[var(--ink)]">چند؟</h2>
+        <h2>{exerciseHeading(exercise)}</h2>
       </div>
-
-      <div className="bg-white rounded-3xl p-8 mb-6 flex flex-wrap justify-center items-center gap-4 min-h-48 shadow-lg">
-        {objects.map((obj, i) => (
-          <div key={`${obj}-${i}`} className="text-6xl">
-            {obj}
-          </div>
-        ))}
+      <div className="card" style={{ height: 250, background: '#FFF8EC' }}>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: `repeat(${Math.min(count, 3) || 2}, 96px)`,
+            gap: '18px 40px',
+          }}
+        >
+          {objects.map((obj, index) => (
+            <span key={`${obj}-${index}`} className="relative inline-grid">
+              <ObjectArt token={obj} size={96} />
+            </span>
+          ))}
+        </div>
       </div>
-
-      <div className="flex gap-4 justify-center flex-wrap">
-        {options.map((option) => (
-          <ChoiceButton
-            key={option}
-            selected={userAnswer === option}
-            disabled={disabled}
-            onClick={() => handleSelect(option)}
-            className="w-28 h-28 text-7xl"
-          >
-            {option}
-          </ChoiceButton>
-        ))}
+      <div className="grid3">
+        {options.map((option) => {
+          const selected = userAnswer === option;
+          const state =
+            disabled && answerState !== 'idle' && selected ? answerState : 'idle';
+          return (
+            <ChoiceButton
+              key={option}
+              selected={selected}
+              disabled={disabled}
+              state={state}
+              name={option}
+              onClick={() => handleSelect(option)}
+              className="h-[120px]"
+            >
+              <span className="glyph">{option}</span>
+            </ChoiceButton>
+          );
+        })}
       </div>
-    </div>
+    </>
   );
 }
