@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 
 export function AppleSvg() {
   return (
@@ -249,19 +249,26 @@ export function AvatarArt({
   );
 }
 
-function SingleObjectArt({ token, size }: { token: string; size: number }) {
+function SingleObjectArt({
+  token,
+  size,
+  fluid = false,
+}: {
+  token: string;
+  size: number;
+  fluid?: boolean;
+}) {
   const art = EMOJI_ART[token];
-  if (art) {
-    return (
-      <span className="illus" style={{ width: size, height: size }}>
-        {art}
-      </span>
-    );
-  }
-
   return (
-    <span className="glyph" style={{ fontSize: Math.min(size, 72) }}>
-      {token}
+    <span
+      className="illus"
+      style={fluid ? undefined : { width: size, height: size }}
+    >
+      {art ?? (
+        <span className="glyph" style={fluid ? undefined : { fontSize: Math.min(size, 72) }}>
+          {token}
+        </span>
+      )}
     </span>
   );
 }
@@ -282,10 +289,15 @@ export function ObjectCluster({
     <span
       className="object-cluster"
       data-count={count}
-      style={{ gridTemplateColumns: `repeat(${cols}, ${size}px)` }}
+      style={
+        {
+          '--object-cols': cols,
+          '--object-size': `${size}px`,
+        } as CSSProperties
+      }
     >
       {parts.map((part, index) => (
-        <SingleObjectArt key={`${part}-${index}`} token={part} size={size} />
+        <SingleObjectArt key={`${part}-${index}`} token={part} size={size} fluid />
       ))}
     </span>
   );

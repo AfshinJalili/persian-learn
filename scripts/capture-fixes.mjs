@@ -98,9 +98,9 @@ async function main() {
   await page.waitForSelector('text=سرعت صدا');
   await snap(page, '03-profile.png');
 
-  await seed(page, progress({ currentTrack: 'alphabet', completedLessons: [] }));
-  await page.goto(BASE + '/lesson/a1l1?ex=1');
-  await page.waitForTimeout(400);
+  await seed(page, progress({ currentTrack: 'alphabet', completedLessons: ['a1l1'] }));
+  await page.goto(BASE + '/lesson/a1l2?ex=1');
+  await page.waitForSelector('text=آهسته‌تر');
   await snap(page, '04-slow-chip.png');
 
   await seed(page, progress({ completedLessons: ['m1l1', 'm1l2', 'm1l3'] }));
@@ -112,12 +112,19 @@ async function main() {
   await page.waitForSelector('text=ادامه');
   await snap(page, '06-lesson-complete.png');
 
-  const gallery = page.locator('[data-object-gallery]');
-  if (await gallery.count()) {
-    await page.goto(BASE + '/dev/object-cards');
-    await page.waitForSelector('[data-object-gallery]');
-    await snap(page, '07-math-cards-1-to-10.png');
-  }
+  await seed(page, progress({ completedLessons: ['m1l1'] }));
+  await page.goto(BASE + '/home?focus=next');
+  await page.waitForSelector('[data-next-lesson="true"]');
+  await snap(page, '08-home-next-lesson.png');
+
+  await page.goto(BASE + '/dev/object-cards');
+  await page.waitForSelector('[data-object-gallery]');
+  await hideChrome(page);
+  await page.waitForTimeout(300);
+  await page.locator('[data-object-gallery]').screenshot({
+    path: `${OUT}/07-math-cards-1-to-10.png`,
+  });
+  console.log('wrote', `${OUT}/07-math-cards-1-to-10.png`);
 
   await browser.close();
   console.log('done ->', OUT);

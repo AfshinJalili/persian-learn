@@ -4,7 +4,11 @@ import { ObjectCluster } from '@/components/art/objects';
 
 export default function ObjectCardsGalleryPage() {
   return (
-    <div className="app-phone" data-object-gallery>
+    <div
+      className="app-phone object-gallery-page"
+      data-object-gallery
+      style={{ height: 'auto', maxHeight: 'none', overflow: 'visible' }}
+    >
       <div className="content" style={{ paddingTop: 16, gap: 12 }}>
         <h1>۱ تا ۱۰</h1>
         <div className="grid2">

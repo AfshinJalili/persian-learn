@@ -30,6 +30,6 @@ describe('ObjectCluster', () => {
     const cluster = container.querySelector('.object-cluster');
     expect(cluster).toHaveAttribute('data-count', '10');
     expect(cluster?.children).toHaveLength(10);
-    expect(cluster).toHaveStyle({ gridTemplateColumns: 'repeat(5, 28px)' });
+    expect((cluster as HTMLElement).style.getPropertyValue('--object-cols')).toBe('5');
   });
 });

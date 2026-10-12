@@ -484,8 +484,16 @@ h2,
   background: #fff8ec;
 }
 
+.app-phone.object-gallery-page {
+  height: auto;
+  max-height: none;
+  min-height: 100dvh;
+  overflow: visible;
+}
+
 .object-cluster {
   display: grid;
+  grid-template-columns: repeat(var(--object-cols, 1), minmax(0, 1fr));
   gap: 6px;
   place-content: center;
   place-items: center;
@@ -495,6 +503,18 @@ h2,
   max-height: 100%;
   overflow: hidden;
   box-sizing: border-box;
+}
+
+.object-cluster > .illus {
+  width: min(var(--object-size, 64px), 100%);
+  height: auto;
+  max-height: 100%;
+  aspect-ratio: 1;
+}
+
+.object-cluster > .illus .glyph {
+  font-size: 80%;
+  line-height: 1;
 }
 
 .card.selected {
@@ -969,7 +989,9 @@ h2,
   width: 100%;
   height: 56px;
   margin: 0;
-  background: transparent;
+  background: linear-gradient(var(--line-strong), var(--line-strong)) no-repeat center;
+  background-size: 100% 12px;
+  border-radius: var(--r-pill);
   accent-color: var(--green-700);
   cursor: pointer;
 }
