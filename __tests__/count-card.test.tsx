@@ -137,14 +137,15 @@ describe('count-along cancellation', () => {
     const user = userEvent.setup();
     render(<IntroExercise exercise={countingExercise()} onContinue={() => {}} autoplay={false} />);
 
-    await user.click(screen.getByRole('button', { name: 'یک سیب' }));
-    expect(playAudio).toHaveBeenCalledWith('یک', false, expect.any(AbortSignal));
+    await user.click(screen.getByRole('button', { name: 'سه انار' }));
+    expect(playAudio.mock.calls[0]?.[0]).toBe('سه');
+    expect(playAudio).toHaveBeenCalledWith('سه', false, expect.any(AbortSignal));
     const firstSignal = playAudio.mock.calls[0]?.[2];
     expect(firstSignal?.aborted).toBe(false);
 
     await user.click(screen.getByRole('button', { name: 'دو گنجشک' }));
     expect(firstSignal?.aborted).toBe(true);
-    expect(playAudio).toHaveBeenCalledWith('یک', false, expect.any(AbortSignal));
+    expect(playAudio).toHaveBeenCalledWith('دو', false, expect.any(AbortSignal));
     expect(playAudio.mock.calls.length).toBeGreaterThan(1);
   });
 
@@ -186,7 +187,29 @@ describe('Continue gating', () => {
     });
   });
 
-  it('keeps ادامه disabled until every card has been heard', async () => {
+  it('marks a card heard after its first clip even if the rest is cancelled', async () => {
+    const user = userEvent.setup();
+    let first = true;
+    playAudio.mockImplementation((text, slow, signal) => {
+      if (first) {
+        first = false;
+        return Promise.resolve();
+      }
+      return hangUntilAbort(text, slow, signal);
+    });
+    render(<IntroExercise exercise={countingExercise()} onContinue={() => {}} autoplay={false} />);
+
+    await user.click(screen.getByRole('button', { name: 'یک سیب' }));
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'یک سیب' })).toHaveAttribute('data-heard', 'true');
+    });
+
+    await user.click(screen.getByRole('button', { name: 'دو گنجشک' }));
+    expect(screen.getByRole('button', { name: 'یک سیب' })).toHaveAttribute('data-heard', 'true');
+    expect(screen.getByRole('button', { name: 'ادامه' })).toHaveAttribute('aria-disabled', 'true');
+  });
+
+  it('keeps ادامه soft-disabled until every card has been heard', async () => {
     const user = userEvent.setup();
     const onContinue = jest.fn();
     render(
@@ -194,24 +217,32 @@ describe('Continue gating', () => {
     );
 
     const continueBtn = screen.getByRole('button', { name: 'ادامه' });
-    expect(continueBtn).toBeDisabled();
+    expect(continueBtn).not.toBeDisabled();
+    expect(continueBtn).toHaveAttribute('aria-disabled', 'true');
+
+    await user.click(continueBtn);
+    expect(onContinue).not.toHaveBeenCalled();
+    expect(playAudio.mock.calls.some((call) => call[0] === 'اول کارت‌ها را بزنید')).toBe(true);
+    expect(screen.getByRole('button', { name: 'یک سیب' })).toHaveClass('invite');
 
     await user.click(screen.getByRole('button', { name: 'یک سیب' }));
     await waitFor(() => {
       expect(screen.getByRole('button', { name: 'یک سیب' })).toHaveAttribute('data-heard', 'true');
     });
-    expect(continueBtn).toBeDisabled();
+    expect(continueBtn).toHaveAttribute('aria-disabled', 'true');
 
     await user.click(screen.getByRole('button', { name: 'دو گنجشک' }));
     await waitFor(() => {
       expect(screen.getByRole('button', { name: 'دو گنجشک' })).toHaveAttribute('data-heard', 'true');
     });
-    expect(continueBtn).toBeDisabled();
+    expect(continueBtn).toHaveAttribute('aria-disabled', 'true');
 
     await user.click(screen.getByRole('button', { name: 'سه انار' }));
     await waitFor(() => {
-      expect(continueBtn).toBeEnabled();
+      expect(continueBtn).toHaveAttribute('aria-disabled', 'false');
     });
     expect(screen.getByRole('button', { name: 'سه انار' })).toHaveAttribute('data-heard', 'true');
+    await user.click(continueBtn);
+    expect(onContinue).toHaveBeenCalled();
   });
 });

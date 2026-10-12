@@ -1,6 +1,6 @@
 {
   "voice": "avalai:gemini-2.5-flash-tts:Sulafat",
-  "count": 2633,
+  "count": 2634,
   "items": [
     {
       "hash": "c16919cdbe7d610669612c69cacdd4bf",
@@ -10538,6 +10538,11 @@
     {
       "hash": "1924560c74284fccc126401b3f3168db",
       "text": "هر کارت را بزنید تا عددش را بشنوید.",
+      "placeholder": true
+    },
+    {
+      "hash": "4bb97b9c794883dde6de6d335834f593",
+      "text": "اول کارت‌ها را بزنید",
       "placeholder": true
     }
   ]

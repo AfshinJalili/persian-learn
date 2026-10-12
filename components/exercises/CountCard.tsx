@@ -134,6 +134,7 @@ export function countWord(count: number): string {
 }
 
 export const INTRO_HELPER = 'هر کارت را بزنید تا عددش را بشنوید.';
+export const CONTINUE_GATE_HINT = 'اول کارت‌ها را بزنید';
 
 type CountCardProps = {
   count: number;
@@ -231,17 +232,17 @@ export default function CountCard({
           {liveWord}
         </span>
       ) : null}
-      {heard ? (
-        <span className="cc-check" aria-hidden="true">
-          <Check strokeWidth={2.8} />
-        </span>
-      ) : null}
       <div className={`cc-tile${pulse ? ' pulse' : ''}`} aria-hidden="true">
         <span className="cc-num">{formatPersianNumber(count)}</span>
         <span className="cc-word">{countWord(count)}</span>
       </div>
       <span className="cc-spk" aria-hidden="true">
         <SpeakerIcon />
+        {heard ? (
+          <span className="cc-check" data-cc-check aria-hidden="true">
+            <Check strokeWidth={2.8} />
+          </span>
+        ) : null}
       </span>
       <div ref={zoneRef} className="cc-zone" aria-hidden="true">
         <div className="cc-cluster" style={{ width: layout.width, height: layout.height }}>

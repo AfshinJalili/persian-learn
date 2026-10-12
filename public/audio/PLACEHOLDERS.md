@@ -13,5 +13,6 @@ before shipping.
 | سه انار | `8e9cec01fd85d57bd3eb67944ddd29e4` |
 | پنج گنجشک | `949a1ff1665abf9142a598a099e8741a` |
 | هر کارت را بزنید تا عددش را بشنوید. | `1924560c74284fccc126401b3f3168db` |
+| اول کارت‌ها را بزنید | `4bb97b9c794883dde6de6d335834f593` |
 
 Manifest entries for these clips set `"placeholder": true`.

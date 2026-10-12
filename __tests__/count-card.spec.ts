@@ -113,6 +113,17 @@ function measureCountCards() {
             speakerBox.top >= tileBox.bottom - 0.5
           )
         : false;
+    const check = card.querySelector('[data-cc-check]') as HTMLElement | null;
+    const checkBox = check?.getBoundingClientRect();
+    const checkOnTile =
+      tileBox && checkBox
+        ? !(
+            checkBox.right <= tileBox.left + 0.5 ||
+            checkBox.left >= tileBox.right - 0.5 ||
+            checkBox.bottom <= tileBox.top + 0.5 ||
+            checkBox.top >= tileBox.bottom - 0.5
+          )
+        : false;
     return {
       count: Number(card.getAttribute('data-count') || '0'),
       cardWidth: Math.round(cardBox.width),
@@ -127,6 +138,10 @@ function measureCountCards() {
       minGap: items.length > 1 ? minGap : 12,
       speakerSize: speakerBox ? Math.round(Math.min(speakerBox.width, speakerBox.height)) : 0,
       speakerOnTile,
+      checkOnTile,
+      wordSize: tile
+        ? Number.parseFloat(getComputedStyle(tile.querySelector('.cc-word') as Element).fontSize)
+        : 0,
       sizes: items.map((item) => item.width).join(','),
     };
   });
@@ -163,6 +178,7 @@ test.describe('Count cards', () => {
         expect(card.overflowX, `n=${card.count}`).toBeLessThanOrEqual(2);
         expect(card.speakerSize, `n=${card.count}`).toBeGreaterThanOrEqual(48);
         expect(card.speakerOnTile, `n=${card.count}`).toBe(false);
+        expect(card.wordSize, `n=${card.count}`).toBeGreaterThanOrEqual(20);
       }
     });
   }
@@ -186,23 +202,28 @@ test.describe('Count cards', () => {
       const continueBtn = document.querySelector('[data-cc-continue]') as HTMLButtonElement | null;
       const hoopoe = document.querySelector('.cc-hoda-speaker') as HTMLElement | null;
       const helper = document.querySelector('.cc-helper')?.textContent ?? '';
+      const contentStyle = content ? getComputedStyle(content) : null;
       return {
         phoneH: phone?.clientHeight ?? 0,
         contentScroll: content ? Math.max(0, content.scrollHeight - content.clientHeight) : 99,
         cardCount: cards.length,
         heading: document.querySelector('.prompt h2')?.textContent ?? '',
-        continueDisabled: continueBtn?.disabled ?? false,
+        continueNativeDisabled: continueBtn?.disabled ?? false,
+        continueAriaDisabled: continueBtn?.getAttribute('aria-disabled') === 'true',
         hoopoePresent: Boolean(hoopoe),
         helper,
+        sidePad: contentStyle ? Number.parseFloat(contentStyle.paddingInlineStart) : 0,
       };
     });
     expect(stats.cardCount).toBe(3);
     expect(stats.heading).toContain('فریبا جان');
     expect(stats.contentScroll).toBeLessThanOrEqual(2);
     expect(stats.phoneH).toBeLessThanOrEqual(667);
-    expect(stats.continueDisabled).toBe(true);
+    expect(stats.continueNativeDisabled).toBe(false);
+    expect(stats.continueAriaDisabled).toBe(true);
     expect(stats.hoopoePresent).toBe(true);
     expect(stats.helper).toContain('هر کارت را بزنید تا عددش را بشنوید');
+    expect(stats.sidePad).toBe(24);
     await page.screenshot({
       path: '/opt/cursor/artifacts/screenshots/intro-375x667.png',
       fullPage: false,
@@ -234,27 +255,42 @@ test.describe('Count cards', () => {
       content: 'nextjs-portal, [data-nextjs-dev-overlay] { display: none !important; }',
     });
     const continueBtn = page.locator('[data-cc-continue]');
-    await expect(continueBtn).toBeDisabled();
+    await expect(continueBtn).toHaveAttribute('aria-disabled', 'true');
+    await expect(continueBtn).toBeEnabled();
     await page.getByRole('button', { name: 'یک سیب' }).click();
     await expect(page.locator('[data-count-card][data-count="1"]')).toHaveAttribute(
       'data-heard',
       'true',
       { timeout: 10000 }
     );
-    await expect(continueBtn).toBeDisabled();
+    const checkOverlap = await page.evaluate(() => {
+      const card = document.querySelector('[data-count-card][data-count="1"]') as HTMLElement;
+      const tile = card.querySelector('.cc-tile') as HTMLElement;
+      const check = card.querySelector('[data-cc-check]') as HTMLElement;
+      const t = tile.getBoundingClientRect();
+      const c = check.getBoundingClientRect();
+      return !(
+        c.right <= t.left + 0.5 ||
+        c.left >= t.right - 0.5 ||
+        c.bottom <= t.top + 0.5 ||
+        c.top >= t.bottom - 0.5
+      );
+    });
+    expect(checkOverlap).toBe(false);
+    await expect(continueBtn).toHaveAttribute('aria-disabled', 'true');
     await page.getByRole('button', { name: 'دو گنجشک' }).click();
     await expect(page.locator('[data-count-card][data-count="2"]')).toHaveAttribute(
       'data-heard',
       'true',
       { timeout: 10000 }
     );
-    await expect(continueBtn).toBeDisabled();
+    await expect(continueBtn).toHaveAttribute('aria-disabled', 'true');
     await page.getByRole('button', { name: 'سه انار' }).click();
     await expect(page.locator('[data-count-card][data-count="3"]')).toHaveAttribute(
       'data-heard',
       'true',
       { timeout: 10000 }
     );
-    await expect(continueBtn).toBeEnabled();
+    await expect(continueBtn).toHaveAttribute('aria-disabled', 'false');
   });
 });

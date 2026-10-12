@@ -8,6 +8,7 @@ import SpeakerButton from '@/components/SpeakerButton';
 import HodaMascot from '@/components/HodaMascot';
 import { ObjectArt, splitObjectTokens } from '@/components/art/objects';
 import CountCard, {
+  CONTINUE_GATE_HINT,
   INTRO_HELPER,
   countWord,
   isCountingIntro,
@@ -81,6 +82,7 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
   const [highlightIndex, setHighlightIndex] = useState<number | null>(null);
   const [pulseIndex, setPulseIndex] = useState<number | null>(null);
   const [inviteFirst, setInviteFirst] = useState(false);
+  const [nudgeIndex, setNudgeIndex] = useState<number | null>(null);
   const [heard, setHeard] = useState<Set<number>>(() => new Set());
   const [continuePulse, setContinuePulse] = useState(false);
 
@@ -107,10 +109,15 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
     const card = groups[cardIndex];
     if (!card) return;
     setPlayingIndex(cardIndex);
-    setPulseIndex(null);
+    setPulseIndex(cardIndex);
     setInviteFirst(false);
+    setNudgeIndex(null);
     const speed = getAudioSpeed() || 1;
     const perItem = 600 / speed;
+    await playClipOrFallback(countWord(card.count), signal, perItem);
+    if (signal.aborted) return;
+    markHeard(cardIndex);
+    setPulseIndex(null);
     for (let item = 0; item < card.count; item += 1) {
       if (signal.aborted) return;
       setHighlightIndex(item);
@@ -125,7 +132,6 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
     if (signal.aborted) return;
     setPulseIndex(null);
     setPlayingIndex(null);
-    markHeard(cardIndex);
   };
 
   const playCard = (cardIndex: number) => {
@@ -188,6 +194,25 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exercise.id, autoplay, counting]);
 
+  const nudgeNextUnheard = () => {
+    const next = groups.findIndex((_, index) => !heard.has(index));
+    if (next < 0) return;
+    setNudgeIndex(next);
+    window.setTimeout(() => {
+      setNudgeIndex((current) => (current === next ? null : current));
+    }, 900);
+  };
+
+  const handleContinue = () => {
+    if (allHeard) {
+      onContinue();
+      return;
+    }
+    vibrate(10);
+    nudgeNextUnheard();
+    void playAudio(CONTINUE_GATE_HINT, false);
+  };
+
   useEffect(() => {
     if (!allHeard) return undefined;
     setContinuePulse(true);
@@ -244,7 +269,7 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
               playing={playingIndex === index}
               highlightIndex={playingIndex === index ? highlightIndex : null}
               pulse={pulseIndex === index}
-              invite={inviteFirst && index === 0}
+              invite={(inviteFirst && index === 0) || nudgeIndex === index}
               heard={heard.has(index)}
               onPlay={() => playCard(index)}
             />
@@ -255,9 +280,8 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
       <div className="cc-intro-bottom">
         <button
           type="button"
-          onClick={allHeard ? onContinue : undefined}
+          onClick={handleContinue}
           className={`btn ${allHeard ? 'btn-primary' : 'btn-disabled'}${continuePulse ? ' cc-continue-pulse' : ''}`}
-          disabled={!allHeard}
           aria-disabled={!allHeard}
           data-cc-continue
         >
