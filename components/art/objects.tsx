@@ -324,7 +324,7 @@ export function DiceSvg({ pips }: { pips: number }) {
     <svg viewBox="0 0 100 100" aria-hidden="true">
       <rect x="8" y="8" width="84" height="84" rx="18" fill="#1B2A22" />
       {spots?.map(([cx, cy]) => (
-        <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="8" fill="#F4E6D0" />
+        <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="12" fill="#F4E6D0" />
       ))}
     </svg>
   );
@@ -390,15 +390,17 @@ export function splitObjectTokens(token: string): string[] {
 export const OBJECT_CLUSTER_GAP = 8;
 export const OBJECT_MATCH_GAP = 4;
 export const OBJECT_CLUSTER_MIN_SIZE = 32;
-export const OBJECT_SINGLE_WIDTH_RATIO = 0.7;
+export const OBJECT_SINGLE_WIDTH_RATIO = 0.85;
 export const OBJECT_MATCH_SINGLE_MAX = 96;
 export const OBJECT_CARD_INNER_FALLBACK = { width: 81, height: 140 };
 export const OBJECT_MATCH_INNER_FALLBACK = { width: 220, height: 72 };
 export const OBJECT_MATCH_LIST_FALLBACK = { width: 342, height: 280 };
 export const MATCH_LIST_GAP = 4;
-export const MATCH_ROW_PADDING = 8;
+export const MATCH_ROW_PADDING = 16;
 export const MATCH_ROW_GAP = 8;
 export const MATCH_DIGIT_SLOT = 48;
+export const MATCH_UNDO_BADGE = 48;
+export const MATCH_UNDO_GAP = 4;
 
 export const DICE_PIP_COUNTS: Record<string, number> = {
   '⚀': 1,
@@ -481,12 +483,17 @@ export function objectClusterLayoutForBox(
   };
 
   if (count === 3 && (layout === 'grid' || layout === 'picture')) {
-    const unclamped = sizeFor(2, 2);
+    const candidates = [
+      { cols: 2, rows: 2, unclamped: sizeFor(2, 2) },
+      { cols: 1, rows: 3, unclamped: sizeFor(1, 3) },
+      { cols: 3, rows: 1, unclamped: sizeFor(3, 1) },
+    ];
+    const best = candidates.reduce((current, next) =>
+      next.unclamped > current.unclamped + 0.25 ? next : current
+    );
     return {
-      cols: 2,
-      rows: 2,
-      unclamped,
-      size: Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.floor(unclamped)),
+      ...best,
+      size: Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.floor(best.unclamped)),
     };
   }
 
@@ -598,7 +605,12 @@ export function matchApplesBoxFromList(
 ): { width: number; height: number; offsetWidth: number } {
   const rows = Math.max(1, rowCount);
   const rowHeight = (list.height - MATCH_LIST_GAP * Math.max(0, rows - 1)) / rows;
-  const chromeX = MATCH_ROW_PADDING * 2 + MATCH_ROW_GAP + MATCH_DIGIT_SLOT;
+  const chromeX =
+    MATCH_ROW_PADDING * 2 +
+    MATCH_ROW_GAP +
+    MATCH_DIGIT_SLOT +
+    MATCH_UNDO_GAP +
+    MATCH_UNDO_BADGE;
   const chromeY = MATCH_ROW_PADDING * 2;
   return {
     width: Math.max(8, list.width - chromeX),

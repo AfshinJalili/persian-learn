@@ -207,6 +207,23 @@ function measurePage() {
     answersBottom: lastBottom,
     countCardHeight: countCard?.getBoundingClientRect().height ?? 0,
     rawGlyphs,
+    choiceCardHeights: [...document.querySelectorAll('.picture-grid .object-choice-card')].map(
+      (node) => (node as HTMLElement).getBoundingClientRect().height
+    ),
+    badgeOverlap: [...document.querySelectorAll('[data-match-placed]')].map((chip) => {
+      const digit = chip.querySelector('.glyph') as HTMLElement | null;
+      const wrap = chip.closest('.match-digit-placed-wrap');
+      const badge = wrap?.querySelector('[data-match-undo]') as HTMLElement | null;
+      if (!digit || !badge) return { overlap: 0, badge: 0 };
+      const a = digit.getBoundingClientRect();
+      const b = badge.getBoundingClientRect();
+      const x = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
+      const y = Math.max(0, Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top));
+      return {
+        overlap: x > 0 && y > 0 ? x * y : 0,
+        badge: Math.min(b.width, b.height),
+      };
+    }),
   };
 }
 
@@ -347,6 +364,9 @@ test.describe('Object fill at phone widths', () => {
           if (first.countCardHeight > 0) {
             expect(first.countCardHeight, path).toBeLessThanOrEqual(viewport.height * 0.55 + 2);
           }
+          for (const height of first.choiceCardHeights) {
+            expect(height, path).toBeLessThanOrEqual(300);
+          }
           for (const scroller of first.innerScrolls) {
             expect(scroller.overflow, `${path} ${scroller.className}`).toBeLessThanOrEqual(2);
           }
@@ -398,10 +418,13 @@ test.describe('Object fill at phone widths', () => {
           if (path === '/lesson/m1l1?ex=2') {
             const three = page.locator('.object-cluster[data-count="3"]');
             await expect(three).toHaveAttribute('data-layout', 'grid');
-            const cols = await three.evaluate((el) =>
-              (el as HTMLElement).style.getPropertyValue('--object-cols')
+            const itemSize = await three.evaluate((el) =>
+              Number.parseInt((el as HTMLElement).style.getPropertyValue('--object-size') || '0', 10)
             );
-            expect(cols, path).toBe('2');
+            expect(itemSize, path).toBeGreaterThanOrEqual(48);
+          }
+          for (const height of stats.choiceCardHeights) {
+            expect(height, path).toBeLessThanOrEqual(300);
           }
           for (const row of stats.matchFills.filter((item) => item.count >= 6)) {
             expect(row.size, path).toBeGreaterThanOrEqual(20);
@@ -417,6 +440,18 @@ test.describe('Object fill at phone widths', () => {
             expect(trayBox).toBeTruthy();
             expect(checkBox).toBeTruthy();
             expect(trayBox!.y + trayBox!.height).toBeLessThanOrEqual(checkBox!.y + 1);
+            const chip = page.locator('[data-match-digit]').first();
+            const row = page.locator('[data-match-slot]').first();
+            if ((await chip.count()) > 0 && (await row.count()) > 0) {
+              await chip.click();
+              await row.click();
+              const placed = await page.evaluate(measurePage);
+              expect(placed.badgeOverlap.length, path).toBeGreaterThan(0);
+              for (const badge of placed.badgeOverlap) {
+                expect(badge.overlap, path).toBe(0);
+                expect(badge.badge, path).toBeGreaterThanOrEqual(48);
+              }
+            }
           }
         }
       }

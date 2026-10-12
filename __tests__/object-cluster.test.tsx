@@ -1,6 +1,11 @@
 import { describe, expect, it } from '@jest/globals';
 import { render } from '@testing-library/react';
 import {
+  MATCH_DIGIT_SLOT,
+  MATCH_ROW_GAP,
+  MATCH_ROW_PADDING,
+  MATCH_UNDO_BADGE,
+  MATCH_UNDO_GAP,
   OBJECT_CLUSTER_MIN_SIZE,
   OBJECT_MATCH_SINGLE_MAX,
   OBJECT_SINGLE_WIDTH_RATIO,
@@ -21,7 +26,7 @@ describe('ObjectCluster', () => {
       size: Math.floor(81 * OBJECT_SINGLE_WIDTH_RATIO),
     });
     expect(objectClusterLayoutForBox(2, 81, 140)).toMatchObject({ cols: 1, rows: 2, size: 66 });
-    expect(objectClusterLayoutForBox(3, 81, 140)).toMatchObject({ cols: 2, rows: 2, size: 36 });
+    expect(objectClusterLayoutForBox(3, 81, 140)).toMatchObject({ cols: 1, rows: 3, size: 41 });
     expect(objectClusterLayoutForBox(4, 81, 140)).toMatchObject({ cols: 2, rows: 2, size: 36 });
     expect(objectClusterLayoutForBox(5, 81, 140)).toMatchObject({ cols: 2, rows: 3, size: 36 });
     expect(objectClusterItemSize(1)).toBe(Math.floor(81 * OBJECT_SINGLE_WIDTH_RATIO));
@@ -83,15 +88,18 @@ describe('ObjectCluster', () => {
       OBJECT_MATCH_SINGLE_MAX
     );
     const apples = matchApplesBoxFromList({ width: 342, height: 280, offsetWidth: 342 }, 3);
+    expect(apples.width).toBe(
+      342 - (MATCH_ROW_PADDING * 2 + MATCH_ROW_GAP + MATCH_DIGIT_SLOT + MATCH_UNDO_GAP + MATCH_UNDO_BADGE)
+    );
     expect(apples.height).toBeLessThan(208);
     expect(objectClusterLayoutForBox(1, apples.width, apples.height, 4, 'row', apples.offsetWidth).size).toBeLessThanOrEqual(
       OBJECT_MATCH_SINGLE_MAX
     );
   });
 
-  it('sizes a single math item to 70% of the card offset width, capped by the inner box', () => {
-    expect(objectClusterLayoutForBox(1, 81, 140, 8, 'grid', 103).size).toBe(72);
-    expect(objectClusterLayoutForBox(1, 100, 140).size).toBe(70);
+  it('sizes a single math item to 85% of the card offset width, capped by the inner box', () => {
+    expect(objectClusterLayoutForBox(1, 81, 140, 8, 'grid', 103).size).toBe(81);
+    expect(objectClusterLayoutForBox(1, 100, 140).size).toBe(85);
     expect(objectClusterLayoutForBox(1, 81, 40, 8, 'grid', 81).size).toBe(40);
     expect(objectClusterLayoutForBox(1, 40, 140).size).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
   });
@@ -104,7 +112,7 @@ describe('ObjectCluster', () => {
     );
   });
 
-  it('lays three items in a dice triangle instead of a single column', () => {
+  it('lays three items in a column when that is larger than a 2x2 triangle', () => {
     const { container } = render(
       <ObjectCluster token="🔵🔵🔵" boxWidth={81} boxHeight={140} />
     );
@@ -112,9 +120,9 @@ describe('ObjectCluster', () => {
     expect(cluster).toHaveAttribute('data-count', '3');
     expect(cluster).toHaveAttribute('data-layout', 'grid');
     expect(cluster?.children).toHaveLength(3);
-    expect((cluster as HTMLElement).style.getPropertyValue('--object-cols')).toBe('2');
-    expect((cluster as HTMLElement).style.getPropertyValue('--object-rows')).toBe('2');
-    expect((cluster as HTMLElement).style.getPropertyValue('--object-size')).toBe('36px');
+    expect((cluster as HTMLElement).style.getPropertyValue('--object-cols')).toBe('1');
+    expect((cluster as HTMLElement).style.getPropertyValue('--object-rows')).toBe('3');
+    expect((cluster as HTMLElement).style.getPropertyValue('--object-size')).toBe('41px');
   });
 
   it('uses a two-column dice layout when that is larger than a stack', () => {
@@ -127,6 +135,13 @@ describe('ObjectCluster', () => {
     );
     const cluster = container.querySelector('.object-cluster') as HTMLElement;
     expect(cluster.style.getPropertyValue('--object-cols')).toBe('2');
+  });
+
+  it('stacks three items when a column is larger than a 2x2 triangle', () => {
+    const layout = objectClusterLayoutForBox(3, 90, 220);
+    expect(layout.cols).toBe(1);
+    expect(layout.rows).toBe(3);
+    expect(layout.size).toBeGreaterThanOrEqual(48);
   });
 
   it('renders hand tokens as SVG drawings instead of emoji glyphs', () => {

@@ -559,14 +559,12 @@ h2.prompt-numeral {
 
 .app-phone:not(.object-gallery-page) .object-choice-card {
   min-height: 0;
+  max-height: 260px;
 }
 
-.object-choice-card:has(.object-cluster[data-count='3'][data-layout='grid']) {
-  padding-inline: 12px;
-}
-
-.picture-grid .object-choice-card {
-  padding-inline: 8px;
+.object-choice-card:has(.object-cluster[data-count='3'][data-layout='grid']),
+.object-choice-card:has([data-glyph='hand']) {
+  padding: 16px;
 }
 
 @media (max-height: 700px) {
@@ -790,7 +788,7 @@ h2.prompt-numeral {
   min-height: 0;
   align-items: stretch;
   gap: 8px;
-  padding: 8px;
+  padding: 16px;
   box-sizing: border-box;
 }
 
@@ -823,24 +821,24 @@ h2.prompt-numeral {
 }
 
 .match-digit-chip {
-  width: 48px;
-  height: 48px;
-  min-width: 48px;
-  min-height: 48px;
+  width: 64px;
+  height: 64px;
+  min-width: 56px;
+  min-height: 56px;
   border-radius: 16px;
   display: grid;
   place-items: center;
 }
 
 .match-digit-chip .glyph {
-  font-size: 28px;
+  font-size: 40px;
 }
 
 .match-digit-chip-used {
-  width: 48px;
-  height: 48px;
-  min-width: 48px;
-  min-height: 48px;
+  width: 64px;
+  height: 64px;
+  min-width: 56px;
+  min-height: 56px;
   border-radius: 16px;
   border: 2px dashed color-mix(in srgb, var(--line) 40%, transparent);
   background: transparent;
@@ -888,9 +886,17 @@ h2.prompt-numeral {
 }
 
 .match-digit-placed-wrap {
-  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
   flex: none;
   align-self: center;
+}
+
+.match-object-row .match-digit-placed-wrap {
+  min-width: calc(48px + 4px + 48px);
 }
 
 .match-digit-slot-placed {
@@ -898,9 +904,8 @@ h2.prompt-numeral {
 }
 
 .match-chip-undo {
-  position: absolute;
-  top: -10px;
-  inset-inline-start: -10px;
+  position: static;
+  inset: auto;
   width: 48px;
   height: 48px;
   min-width: 48px;

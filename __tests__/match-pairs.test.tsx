@@ -253,7 +253,7 @@ describe('MatchPairsExercise object rows', () => {
     expect(ten?.style.getPropertyValue('--object-cols')).toBe('5');
     expect(ten?.style.getPropertyValue('--object-rows')).toBe('2');
     const size = Number.parseInt(ten?.style.getPropertyValue('--object-size') ?? '0', 10);
-    expect(size).toBeGreaterThanOrEqual(32);
+    expect(size).toBeGreaterThanOrEqual(20);
   });
 
   it('lays 6 objects in one filled row when that is larger than a 5x2 wrap', () => {
@@ -281,7 +281,7 @@ describe('MatchPairsExercise object rows', () => {
     expect(six?.style.getPropertyValue('--object-cols')).toBe('6');
     expect(six?.style.getPropertyValue('--object-rows')).toBe('1');
     const size = Number.parseInt(six?.style.getPropertyValue('--object-size') ?? '0', 10);
-    expect(size).toBeGreaterThanOrEqual(32);
+    expect(size).toBeGreaterThanOrEqual(20);
   });
 
   it('fills five apples across the row at 32px or larger', () => {

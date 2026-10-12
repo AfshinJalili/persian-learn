@@ -69,32 +69,34 @@ function MatchObjectRow({
           cardWidth={box.offsetWidth}
         />
       </button>
-      {placed ? (
-        <span className="match-digit-placed-wrap">
-          <button
-            type="button"
-            aria-label={placed[0]}
-            data-match-placed={placed[0]}
-            disabled={locked}
-            onClick={() => onSelect('left', placed[0])}
-            className="card match-digit-slot match-digit-slot-placed"
-          >
-            <span className="glyph">{placed[0]}</span>
-          </button>
-          <button
-            type="button"
-            aria-label="پس گرفتن"
-            data-match-undo={placed[0]}
-            disabled={locked}
-            onClick={() => onUndo(option)}
-            className="match-chip-undo"
-          >
-            ✕
-          </button>
-        </span>
-      ) : (
-        <span className="match-digit-slot match-digit-slot-empty" />
-      )}
+      <span className="match-digit-placed-wrap">
+        {placed ? (
+          <>
+            <button
+              type="button"
+              aria-label={placed[0]}
+              data-match-placed={placed[0]}
+              disabled={locked}
+              onClick={() => onSelect('left', placed[0])}
+              className="card match-digit-slot match-digit-slot-placed"
+            >
+              <span className="glyph">{placed[0]}</span>
+            </button>
+            <button
+              type="button"
+              aria-label="پس گرفتن"
+              data-match-undo={placed[0]}
+              disabled={locked}
+              onClick={() => onUndo(option)}
+              className="match-chip-undo"
+            >
+              ✕
+            </button>
+          </>
+        ) : (
+          <span className="match-digit-slot match-digit-slot-empty" />
+        )}
+      </span>
     </div>
   );
 }
