@@ -257,10 +257,11 @@ test.describe('Object fill at phone widths', () => {
         for (const exercise of lesson.exercises) {
           const path = `/lesson/${lesson.id}?ex=${exercise.index}`;
           await page.goto(path);
+          await expect(page.locator('.app-phone .prompt, .app-phone h2, .app-phone .content').first()).toBeVisible();
           const hasItems = page.locator(
             '.object-cluster, [data-digit-display], [data-digit-sequence], [data-dice-face], [data-object-display], [data-match-tray]'
           );
-          if (exercise.type === 'intro' && (await hasItems.count()) === 0) {
+          if ((await hasItems.count()) === 0) {
             const stats = await page.evaluate(measurePage);
             for (const scroller of stats.innerScrolls) {
               expect(scroller.overflow, `${path} ${scroller.className}`).toBeLessThanOrEqual(2);
