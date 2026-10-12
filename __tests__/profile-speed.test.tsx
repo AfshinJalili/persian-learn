@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ProfilePage from '../app/profile/page';
+import { FAMILY_HELPER_HOLD_MS } from '../lib/use-long-press';
 
 const setAudioSpeed = jest.fn();
 const playAudio = jest.fn<() => Promise<void>>();
@@ -85,8 +86,53 @@ describe('Profile voice speed', () => {
     render(<ProfilePage />);
     const tile = await screen.findByText('آ');
     expect(tile).toHaveClass('letter-tile');
-    expect(screen.getByText('روز پیاپی').querySelector('svg')).toBeTruthy();
-    expect(screen.getByText('امتیاز').querySelector('svg')).toBeTruthy();
-    expect(screen.getByText('حرف').querySelector('svg')).toBeTruthy();
+    expect(screen.getByText('روز پیاپی').closest('.k')?.querySelector('svg')).toBeTruthy();
+    expect(screen.getByText('امتیاز').closest('.k')?.querySelector('svg')).toBeTruthy();
+    expect(screen.getByText('حرف').closest('.k')?.querySelector('svg')).toBeTruthy();
+  });
+
+  it('hides autoplay until a family-helper long-press', async () => {
+    render(<ProfilePage />);
+    await screen.findByText('سرعت صدا');
+    expect(screen.queryByLabelText('پخش خودکار')).not.toBeInTheDocument();
+
+    jest.useFakeTimers();
+    fireEvent.pointerDown(screen.getByLabelText('تنظیمات خانواده'), { button: 0 });
+    act(() => {
+      jest.advanceTimersByTime(FAMILY_HELPER_HOLD_MS);
+    });
+    jest.useRealTimers();
+
+    expect(screen.getByLabelText('پخش خودکار')).toBeInTheDocument();
+  });
+
+  it('keeps empty progress tracks empty and fills 1/6 proportionally', async () => {
+    getProgress.mockResolvedValue({
+      currentTrack: 'math',
+      onboarded: true,
+      completedLessons: ['m1l1'],
+      completedUnits: [],
+      xp: 10,
+      streak: 1,
+      streakBest: 1,
+      lastActivityDate: '',
+      dailyGoal: 2,
+      dailyLessonsCompleted: 1,
+      restDaysUsed: 0,
+      activityDates: [],
+      weakItems: [],
+      avatar: 'tulip',
+      name: 'فریبا جون',
+      startDate: '2026-01-01T00:00:00.000Z',
+      speechRate: 1,
+      autoplay: true,
+    });
+    const { container } = render(<ProfilePage />);
+    await screen.findByText('سرعت صدا');
+    const fills = container.querySelectorAll('.track-block .progress > i');
+    expect(fills[0]).toHaveAttribute('data-filled', 'true');
+    expect((fills[0] as HTMLElement).style.width).toBe(`${(1 / 6) * 100}%`);
+    expect(fills[1]).toHaveAttribute('data-filled', 'false');
+    expect((fills[1] as HTMLElement).style.width).toBe('0%');
   });
 });

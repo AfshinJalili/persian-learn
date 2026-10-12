@@ -99,6 +99,10 @@ async function main() {
   await snap(page, '03-profile.png');
   await page.locator('text=نمونه را بشنوید').scrollIntoViewIfNeeded();
   await snap(page, '03-profile-speed.png');
+  await page.getByLabel('تنظیمات خانواده').dispatchEvent('pointerdown', { button: 0 });
+  await page.waitForTimeout(3100);
+  await page.locator('[data-family-helper-panel]').scrollIntoViewIfNeeded();
+  await snap(page, '03-profile-helper.png');
 
   await seed(page, progress({ currentTrack: 'alphabet', completedLessons: ['a1l1'] }));
   await page.goto(BASE + '/lesson/a1l2?ex=1');

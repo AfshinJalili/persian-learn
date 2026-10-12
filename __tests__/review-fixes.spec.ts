@@ -43,6 +43,7 @@ test.describe('Codex review navigation fixes', () => {
 
     await page.getByRole('button', { name: 'من' }).click();
     await expect(page).toHaveURL(/\/profile/);
+    await expect(page.getByLabel('پخش خودکار')).toHaveCount(0);
 
     const tile = page.locator('.letter-tile').first();
     const tileBox = await tile.boundingBox();

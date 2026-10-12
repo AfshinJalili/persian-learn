@@ -4,11 +4,11 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Pencil } from 'lucide-react';
 import { getProgress, saveProgress } from '@/lib/progress';
-import { loadTrack, trackCompletionPercent } from '@/lib/content';
-import type { Track, UserProgress } from '@/lib/types';
+import type { UserProgress } from '@/lib/types';
 import { playAudio, setAudioSpeed } from '@/lib/audio';
 import { LEARNER_NAME } from '@/lib/learner';
 import { formatPersianNumber } from '@/lib/persian';
+import { useLongPress } from '@/lib/use-long-press';
 import BottomNav from '@/components/ui/BottomNav';
 import VoiceSpeedControl from '@/components/ui/VoiceSpeedControl';
 import { FlameIcon, LetterIcon, StarIcon } from '@/components/art/StatIcons';
@@ -18,20 +18,14 @@ const LETTERS = ['آ', 'ب', 'پ', 'ت', 'ث', 'ج', 'چ', 'ح', 'خ', 'د', 'ذ
 
 export default function ProfilePage() {
   const [progress, setProgress] = useState<UserProgress | null>(null);
-  const [mathTrack, setMathTrack] = useState<Track | null>(null);
-  const [alphabetTrack, setAlphabetTrack] = useState<Track | null>(null);
+  const [helperOpen, setHelperOpen] = useState(false);
   const router = useRouter();
+  const helperHold = useLongPress(() => setHelperOpen(true));
 
   useEffect(() => {
     async function load() {
-      const [prog, math, alphabet] = await Promise.all([
-        getProgress(),
-        loadTrack('math'),
-        loadTrack('alphabet'),
-      ]);
+      const prog = await getProgress();
       setProgress(prog);
-      setMathTrack(math);
-      setAlphabetTrack(alphabet);
       setAudioSpeed(prog.speechRate || 1);
     }
     load();
@@ -47,8 +41,10 @@ export default function ProfilePage() {
   });
   const mathDone = progress.completedLessons.filter((id) => id.startsWith('m')).length;
   const alphaDone = progress.completedLessons.filter((id) => id.startsWith('a')).length;
-  const mathUnits = Math.min(6, Math.max(1, Math.ceil(mathDone / 5) || 1));
+  const mathUnits = Math.min(6, mathDone === 0 ? 0 : Math.max(1, Math.ceil(mathDone / 5)));
   const learnedLetters = Math.min(32, alphaDone);
+  const mathPercent = (mathUnits / 6) * 100;
+  const alphabetPercent = (learnedLetters / 32) * 100;
   const avatarId = resolveAvatarId(progress.avatar);
 
   const persist = async (next: UserProgress) => {
@@ -74,13 +70,15 @@ export default function ProfilePage() {
     <div className="app-phone">
       <div className="content" style={{ paddingTop: 4, gap: 10 }}>
         <div className="flex items-center gap-4">
-          <span className="grid place-items-center rounded-full" style={{ width: 80, height: 80, background: '#FDE7EA' }}>
-            <AvatarArt id={avatarId} size={54} />
-          </span>
-          <div style={{ flex: 1 }}>
-            <div className="h1">{LEARNER_NAME}</div>
-            <div className="muted">از {joinedLabel} با ما</div>
-          </div>
+          <button type="button" className="family-helper-target" aria-label="تنظیمات خانواده" {...helperHold}>
+            <span className="grid place-items-center rounded-full" style={{ width: 80, height: 80, background: '#FDE7EA' }}>
+              <AvatarArt id={avatarId} size={54} />
+            </span>
+            <div style={{ flex: 1 }}>
+              <div className="h1">{LEARNER_NAME}</div>
+              <div className="muted">از {joinedLabel} با ما</div>
+            </div>
+          </button>
           <button type="button" className="icon-btn" aria-label="تغییر تصویر" onClick={cycleAvatar}>
             <Pencil strokeWidth={2.6} />
           </button>
@@ -89,21 +87,21 @@ export default function ProfilePage() {
           <div className="stat" style={{ borderColor: '#1F6408' }}>
             <div className="k" style={{ background: '#1F6408', color: '#fff' }}>
               <FlameIcon />
-              روز پیاپی
+              <span className="k-label">روز پیاپی</span>
             </div>
             <div className="v">{formatPersianNumber(progress.streak)}</div>
           </div>
           <div className="stat" style={{ borderColor: '#FFC83D' }}>
             <div className="k" style={{ background: '#FFC83D', color: '#1B2A22' }}>
               <StarIcon />
-              امتیاز
+              <span className="k-label">امتیاز</span>
             </div>
             <div className="v">{formatPersianNumber(progress.xp)}</div>
           </div>
           <div className="stat" style={{ borderColor: '#7B2A55' }}>
             <div className="k" style={{ background: '#7B2A55', color: '#fff' }}>
               <LetterIcon />
-              حرف
+              <span className="k-label">حرف</span>
             </div>
             <div className="v">{formatPersianNumber(learnedLetters)}</div>
           </div>
@@ -120,11 +118,7 @@ export default function ProfilePage() {
               <span className="muted">بخش {formatPersianNumber(mathUnits)} از ۶</span>
             </button>
             <div className="progress" style={{ flex: 'none' }}>
-              <i
-                style={{
-                  width: `${mathTrack ? trackCompletionPercent(progress.completedLessons, mathTrack) : 0}%`,
-                }}
-              />
+              <i data-filled={mathPercent > 0 ? 'true' : 'false'} style={{ width: `${mathPercent}%` }} />
             </div>
           </div>
           <div className="track-block">
@@ -138,7 +132,10 @@ export default function ProfilePage() {
               <span className="muted">{formatPersianNumber(learnedLetters)} حرف از ۳۲</span>
             </button>
             <div className="progress" style={{ flex: 'none' }}>
-              <i style={{ width: `${Math.min(100, (learnedLetters / 32) * 100)}%` }} />
+              <i
+                data-filled={alphabetPercent > 0 ? 'true' : 'false'}
+                style={{ width: `${alphabetPercent}%` }}
+              />
             </div>
           </div>
           <div className="letter-grid">
@@ -159,16 +156,18 @@ export default function ProfilePage() {
             void persist({ ...progress, speechRate: rate });
           }}
         />
-        <div className="row-card justify-between" style={{ padding: '10px 16px' }}>
-          <span style={{ fontWeight: 700 }}>پخش خودکار صدا</span>
-          <button
-            type="button"
-            className={`toggle ${progress.autoplay ? '' : 'off'}`}
-            aria-pressed={progress.autoplay}
-            aria-label="پخش خودکار"
-            onClick={() => persist({ ...progress, autoplay: !progress.autoplay })}
-          />
-        </div>
+        {helperOpen ? (
+          <div className="row-card justify-between" style={{ padding: '10px 16px' }} data-family-helper-panel>
+            <span style={{ fontWeight: 700 }}>پخش خودکار صدا</span>
+            <button
+              type="button"
+              className={`toggle ${progress.autoplay ? '' : 'off'}`}
+              aria-pressed={progress.autoplay}
+              aria-label="پخش خودکار"
+              onClick={() => persist({ ...progress, autoplay: !progress.autoplay })}
+            />
+          </div>
+        ) : null}
       </div>
       <BottomNav active="profile" />
     </div>

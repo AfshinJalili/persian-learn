@@ -7,15 +7,15 @@ import {
 } from '../components/art/objects';
 
 describe('ObjectCluster', () => {
-  it('uses one 28px size and a 5+5 ten-frame for 10', () => {
+  it('uses one 26px size and a 5+5 ten-frame for 10', () => {
     expect(objectClusterColumns(1)).toBe(1);
     expect(objectClusterColumns(2)).toBe(2);
     expect(objectClusterColumns(3)).toBe(3);
     expect(objectClusterColumns(4)).toBe(2);
     expect(objectClusterColumns(10)).toBe(5);
-    expect(objectClusterItemSize(1)).toBe(28);
-    expect(objectClusterItemSize(3)).toBe(28);
-    expect(objectClusterItemSize(10)).toBe(28);
+    expect(objectClusterItemSize(1)).toBe(26);
+    expect(objectClusterItemSize(3)).toBe(26);
+    expect(objectClusterItemSize(10)).toBe(26);
   });
 
   it('renders three items without wrapping to a leftover fourth cell', () => {
@@ -31,6 +31,6 @@ describe('ObjectCluster', () => {
     expect(cluster).toHaveAttribute('data-count', '10');
     expect(cluster?.children).toHaveLength(10);
     expect((cluster as HTMLElement).style.getPropertyValue('--object-cols')).toBe('5');
-    expect((cluster as HTMLElement).style.getPropertyValue('--object-size')).toBe('28px');
+    expect((cluster as HTMLElement).style.getPropertyValue('--object-size')).toBe('26px');
   });
 });

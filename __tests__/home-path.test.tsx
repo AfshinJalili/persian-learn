@@ -6,10 +6,10 @@ const playAudio = jest.fn<(text: string) => Promise<void>>();
 const getProgress = jest.fn();
 const isAudioUnlocked = jest.fn(() => true);
 const isLessonUnlocked = jest.fn((track: unknown, lessonId: string, completed: string[]) => {
-  if (completed.includes(lessonId)) return true;
-  if (lessonId === 'm1l1') return true;
-  if (lessonId === 'm1l2') return completed.includes('m1l1');
-  return false;
+  const order = ['m1l1', 'm1l2', 'm1l3', 'm1l4', 'm1l5'];
+  const index = order.indexOf(lessonId);
+  if (index <= 0) return true;
+  return order.slice(0, index).every((id) => completed.includes(id));
 });
 
 jest.mock('next/navigation', () => ({
@@ -36,7 +36,9 @@ jest.mock('@/lib/content', () => ({
         lessons: [
           { id: 'm1l1', title: 'شروع مسیر', exercises: [] },
           { id: 'm1l2', title: 'نگاه', exercises: [] },
-          { id: 'm1l3', title: 'جایزه', exercises: [] },
+          { id: 'm1l3', title: 'میانه', exercises: [] },
+          { id: 'm1l4', title: 'چپ', exercises: [] },
+          { id: 'm1l5', title: 'جایزه', exercises: [] },
         ],
       },
     ],
@@ -73,7 +75,7 @@ describe('Home path nodes', () => {
     getProgress.mockResolvedValue({
       currentTrack: 'math',
       onboarded: true,
-      completedLessons: ['m1l1'],
+      completedLessons: ['m1l1', 'm1l2', 'm1l3'],
       completedUnits: [],
       xp: 10,
       streak: 1,
@@ -97,6 +99,7 @@ describe('Home path nodes', () => {
     const start = await screen.findByRole('button', { name: 'شروع' });
     expect(start.querySelector('.tooltip')).toHaveTextContent('شروع');
     expect(start.querySelector('.node.current')).toBeTruthy();
+    expect(start.className).toContain('tooltip-flip');
 
     await waitFor(() => {
       expect(screen.getByRole('button', { name: 'جایزه' })).toBeInTheDocument();

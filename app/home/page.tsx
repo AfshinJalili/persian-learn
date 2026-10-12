@@ -183,6 +183,7 @@ export default function HomePage() {
             const { right, top } = nodePosition(lessonIndex, currentUnit.lessons.length);
             const isLast = lessonIndex === currentUnit.lessons.length - 1;
             const kind = nodeKind({ isCompleted, isCurrent, unlocked, isLast });
+            const flipTooltip = isCurrent && right >= 220;
 
             return (
               <button
@@ -192,7 +193,7 @@ export default function HomePage() {
                 data-next-lesson={isCurrent ? 'true' : undefined}
                 onClick={() => handleLessonClick(lesson)}
                 aria-label={isCurrent ? 'شروع' : lesson.title}
-                className="path-hit"
+                className={`path-hit${flipTooltip ? ' tooltip-flip' : ''}`}
                 style={{ right, top }}
               >
                 <span className={`node ${kind}${isCurrent && focusNext ? ' pulse' : ''}`}>
