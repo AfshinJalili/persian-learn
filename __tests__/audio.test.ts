@@ -1,8 +1,23 @@
-import { beforeEach, describe, expect, it } from '@jest/globals';
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { createHash } from 'crypto';
 import { readFileSync } from 'fs';
 import { generateAudioId, spokenTextKey } from '../lib/audio-id';
-import { hydrateAudioSpeed, getAudioSpeed, playAudio, setAudioSpeed } from '../lib/audio';
+import {
+  hydrateAudioSpeed,
+  getAudioSpeed,
+  playAudio,
+  playAudioSequence,
+  setAudioSpeed,
+  stopAudio,
+} from '../lib/audio';
+
+jest.mock('../lib/audio-id', () => {
+  const actual = jest.requireActual('../lib/audio-id') as typeof import('../lib/audio-id');
+  return {
+    ...actual,
+    generateAudioId: jest.fn((text: string) => actual.generateAudioId(text)),
+  };
+});
 
 type Manifest = {
   items: Array<{ hash: string; text: string }>;
@@ -45,7 +60,44 @@ class RecordingAudio {
     return Promise.resolve();
   }
 
-  pause() {}
+  pause() {
+    this.paused = true;
+  }
+}
+
+class HoldAudio {
+  playbackRate = 1;
+  preservesPitch = false;
+  mozPreservesPitch = false;
+  webkitPreservesPitch = false;
+  paused = true;
+  currentTime = 0;
+  src: string;
+  playCalls = 0;
+
+  constructor(src: string) {
+    this.src = src;
+  }
+
+  addEventListener() {}
+
+  play() {
+    this.playCalls += 1;
+    this.paused = false;
+    return Promise.resolve();
+  }
+
+  pause() {
+    this.paused = true;
+  }
+}
+
+function deferred<T>() {
+  let resolve!: (value: T) => void;
+  const promise = new Promise<T>((res) => {
+    resolve = res;
+  });
+  return { promise, resolve };
 }
 
 class MissingAudio {
@@ -168,5 +220,109 @@ describe('playbackRate and preservesPitch', () => {
     setAudioSpeed(0.9);
     await playAudio('سلام');
     expect(created[0]?.playbackRate).toBe(0.9);
+  });
+});
+
+describe('single global audio player', () => {
+  const mockedId = generateAudioId as unknown as jest.Mock<Promise<string>, [string]>;
+
+  beforeEach(() => {
+    stopAudio();
+    mockedId.mockReset();
+    mockedId.mockImplementation((text: string) => {
+      const actual = jest.requireActual('../lib/audio-id') as typeof import('../lib/audio-id');
+      return actual.generateAudioId(text);
+    });
+  });
+
+  it('rapid advance stops the current clip and never starts the previous one', async () => {
+    const firstHash = deferred<string>();
+    const secondHash = deferred<string>();
+    mockedId.mockReturnValueOnce(firstHash.promise).mockReturnValueOnce(secondHash.promise);
+
+    const created: RecordingAudio[] = [];
+    class CaptureAudio extends RecordingAudio {
+      constructor(src: string) {
+        super(src);
+        created.push(this);
+      }
+    }
+    Object.defineProperty(window, 'Audio', {
+      configurable: true,
+      writable: true,
+      value: CaptureAudio,
+    });
+
+    const first = playAudio('سلام درس اول');
+    const second = playAudio('سلام درس دوم');
+    firstHash.resolve('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(created).toHaveLength(0);
+
+    secondHash.resolve('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
+    await second;
+    await first;
+    expect(created).toHaveLength(1);
+    expect(created[0]?.src).toContain('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
+  });
+
+  it('unmount mid-sequence cancels queued prompt-then-options clips', async () => {
+    const created: HoldAudio[] = [];
+    class CaptureAudio extends HoldAudio {
+      constructor(src: string) {
+        super(src);
+        created.push(this);
+      }
+    }
+    Object.defineProperty(window, 'Audio', {
+      configurable: true,
+      writable: true,
+      value: CaptureAudio,
+    });
+
+    const controller = new AbortController();
+    const sequence = playAudioSequence(['سلام', 'یک', 'دو'], { signal: controller.signal });
+
+    await new Promise((resolve) => {
+      const check = () => {
+        if (created.length >= 1) resolve(undefined);
+        else setTimeout(check, 0);
+      };
+      check();
+    });
+    expect(created).toHaveLength(1);
+    expect(created[0]?.playCalls).toBe(1);
+
+    controller.abort();
+    await sequence;
+    expect(created).toHaveLength(1);
+    expect(created[0]?.paused).toBe(true);
+  });
+
+  it('a late-resolving promise from an old step never starts playback', async () => {
+    const lateHash = deferred<string>();
+    mockedId.mockReturnValueOnce(lateHash.promise);
+
+    const created: HoldAudio[] = [];
+    class CaptureAudio extends HoldAudio {
+      constructor(src: string) {
+        super(src);
+        created.push(this);
+      }
+    }
+    Object.defineProperty(window, 'Audio', {
+      configurable: true,
+      writable: true,
+      value: CaptureAudio,
+    });
+
+    const stale = playAudio('صدای مرحله قبل');
+    stopAudio();
+    lateHash.resolve('cccccccccccccccccccccccccccccccc');
+    await stale;
+    await Promise.resolve();
+    await Promise.resolve();
+    expect(created).toHaveLength(0);
   });
 });

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { ArrowLeft, Check, RotateCcw, X } from 'lucide-react';
 import { getProgress, completeLesson } from '@/lib/progress';
@@ -19,6 +19,8 @@ import { formatPersianNumber } from '@/lib/persian';
 export default function LessonPage() {
   const params = useParams();
   const router = useRouter();
+  const push = router.push;
+  const replace = router.replace;
   const lessonId = params.lessonId as string;
   const startIndex =
     typeof window === 'undefined'
@@ -34,38 +36,52 @@ export default function LessonPage() {
   const [xpEarned, setXpEarned] = useState(0);
   const [weakItems, setWeakItems] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [autoplay, setAutoplay] = useState(true);
+  const audioStepRef = useRef<AbortController | null>(null);
+  const promptTimerRef = useRef<number | null>(null);
+
+  const endLessonAudio = () => {
+    if (promptTimerRef.current != null) {
+      window.clearTimeout(promptTimerRef.current);
+      promptTimerRef.current = null;
+    }
+    audioStepRef.current?.abort();
+    audioStepRef.current = null;
+    stopAudio();
+  };
+
+  const startLessonAudio = () => {
+    endLessonAudio();
+    const controller = new AbortController();
+    audioStepRef.current = controller;
+    return controller.signal;
+  };
 
   useEffect(() => {
     async function load() {
       const progress = await getProgress();
       if (!progress.onboarded) {
-        router.replace('/');
+        replace('/');
         return;
       }
       const track = await loadTrack(progress.currentTrack);
       const lessonData = resolveLessonAccess(track, lessonId, progress.completedLessons);
 
       if (!lessonData) {
-        router.push('/home');
+        push('/home');
         return;
       }
 
       setLesson(lessonData);
       setCurrentIndex(Math.min(startIndex, lessonData.exercises.length - 1));
+      setAutoplay(progress.autoplay !== false);
       setLoading(false);
-
-      const first = lessonData.exercises[Math.min(startIndex, lessonData.exercises.length - 1)];
-      if (first && progress.autoplay !== false) {
-        setTimeout(() => {
-          playAudio(first.audio_script).catch(() => {});
-        }, 400);
-      }
     }
 
     load();
 
-    return () => stopAudio();
-  }, [lessonId, router, startIndex]);
+    return () => endLessonAudio();
+  }, [lessonId, push, replace, startIndex]);
 
   const currentExercise = lesson?.exercises[currentIndex];
   const progressPct = useMemo(() => {
@@ -73,10 +89,23 @@ export default function LessonPage() {
     return ((currentIndex + 1) / lesson.exercises.length) * 100;
   }, [currentIndex, lesson]);
 
+  useEffect(() => {
+    if (!currentExercise) return;
+    const signal = startLessonAudio();
+    if (autoplay) {
+      promptTimerRef.current = window.setTimeout(() => {
+        if (signal.aborted) return;
+        playAudio(currentExercise.audio_script, false, signal).catch(() => {});
+      }, 300);
+    }
+    return () => endLessonAudio();
+  }, [currentExercise?.id, autoplay]);
+
   const handleCheck = async () => {
     if (!currentExercise) return;
+    const signal = audioStepRef.current?.signal;
     if (!userAnswer) {
-      await playAudio('اول یک جواب انتخاب کنید');
+      await playAudio('اول یک جواب انتخاب کنید', false, signal);
       return;
     }
 
@@ -89,20 +118,26 @@ export default function LessonPage() {
     if (kind === 'correct') {
       setXpEarned(xpEarned + 10);
       vibrate([50, 50]);
-      await playAudio(currentExercise.feedback_correct);
+      await playAudio(currentExercise.feedback_correct, false, signal);
       return;
     }
 
     vibrate([100]);
     if (kind === 'hint') {
-      await playAudio(currentExercise.feedback_wrong || 'نزدیک بود! دوباره امتحان کنید.');
+      await playAudio(
+        currentExercise.feedback_wrong || 'نزدیک بود! دوباره امتحان کنید.',
+        false,
+        signal
+      );
       return;
     }
 
     setWeakItems([...weakItems, currentExercise.id]);
     const revealed = spokenOption(currentExercise.answer);
     await playAudio(
-      revealed ? `این ${revealed} است. بعداً دوباره می‌بینیم.` : 'بعداً دوباره می‌بینیم.'
+      revealed ? `این ${revealed} است. بعداً دوباره می‌بینیم.` : 'بعداً دوباره می‌بینیم.',
+      false,
+      signal
     );
   };
 
@@ -120,6 +155,7 @@ export default function LessonPage() {
       return;
     }
 
+    endLessonAudio();
     setShowFeedback(false);
     setUserAnswer('');
     setAttempts(0);
@@ -133,18 +169,12 @@ export default function LessonPage() {
     const nextIndex = currentIndex + 1;
     if (nextIndex < exercises.length) {
       setCurrentIndex(nextIndex);
-      const nextExercise = exercises[nextIndex];
-      if (nextExercise) {
-        setTimeout(() => {
-          playAudio(nextExercise.audio_script).catch(() => {});
-        }, 300);
-      }
       return;
     }
 
     await completeLesson(lessonId, xpEarned, weakItems);
     playAudio('آفرین! درس تمام شد.').catch(() => {});
-    router.push(
+    push(
       `/lesson-complete?xp=${xpEarned}&lesson=${encodeURIComponent(lesson.title)}&id=${encodeURIComponent(lessonId)}`
     );
   };
