@@ -87,7 +87,7 @@ function measurePage() {
     .map((item) => {
       const card = cardOf(item);
       if (!card || card.classList.contains('match-object-row')) return null;
-      const offset = card.offsetWidth;
+      const offset = Math.min(card.offsetWidth, card.offsetHeight);
       const width = item.getBoundingClientRect().width;
       return {
         width,
@@ -100,7 +100,7 @@ function measurePage() {
   const digit = document.querySelector('[data-digit-display] .glyph') as HTMLElement | null;
   if (digit) {
     const card = cardOf(digit);
-    const offset = card?.offsetWidth ?? 0;
+    const offset = Math.min(card?.offsetWidth ?? 0, card?.offsetHeight ?? 0);
     const box = digit.getBoundingClientRect();
     const width = Math.max(box.width, box.height);
     singles.push({ width, inner: offset, ratio: offset > 0 ? width / offset : 0 });
@@ -178,7 +178,7 @@ function measurePage() {
   const dice = [...document.querySelectorAll('[data-dice-face] .object-cluster > .illus')].map(
     (item) => {
       const card = cardOf(item);
-      const offset = card?.offsetWidth ?? 0;
+      const offset = Math.min(card?.offsetWidth ?? 0, card?.offsetHeight ?? 0);
       const width = item.getBoundingClientRect().width;
       return { width, inner: offset, ratio: offset > 0 ? width / offset : 0 };
     }
