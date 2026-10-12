@@ -1,0 +1,141 @@
+import { audioUrlForHash, generateAudioId, spokenTextKey } from './audio-id';
+
+export const AUDIO_SPEEDS = [0.9, 1, 1.1, 1.2, 1.3] as const;
+export type AudioSpeed = (typeof AUDIO_SPEEDS)[number];
+
+let currentAudio: HTMLAudioElement | null = null;
+let audioUnlocked = false;
+let audioSpeed = 1.0;
+
+function persistUnlock() {
+  if (typeof sessionStorage !== 'undefined') {
+    sessionStorage.setItem('pl-audio-unlocked', '1');
+  }
+}
+
+function readPersistedUnlock(): boolean {
+  if (typeof sessionStorage === 'undefined') return false;
+  return sessionStorage.getItem('pl-audio-unlocked') === '1';
+}
+
+if (typeof window !== 'undefined' && readPersistedUnlock()) {
+  audioUnlocked = true;
+}
+
+export function unlockAudio() {
+  audioUnlocked = true;
+  persistUnlock();
+}
+
+export function isAudioUnlocked(): boolean {
+  if (audioUnlocked) return true;
+  audioUnlocked = readPersistedUnlock();
+  return audioUnlocked;
+}
+
+export function setAudioSpeed(speed: number) {
+  audioSpeed = speed;
+}
+
+export function getAudioSpeed(): number {
+  return audioSpeed;
+}
+
+export function hydrateAudioSpeed(rate: number | undefined | null) {
+  if (typeof rate === 'number' && Number.isFinite(rate) && rate > 0) {
+    audioSpeed = rate;
+    return;
+  }
+  audioSpeed = 1;
+}
+
+export async function playAudio(text: string, slow: boolean = false): Promise<void> {
+  stopAudio();
+
+  const speed = slow ? 0.75 : audioSpeed;
+  const key = spokenTextKey(text);
+  if (!key) {
+    return;
+  }
+
+  const audioId = await generateAudioId(key);
+  const audioPath = audioUrlForHash(audioId);
+
+  try {
+    await playAudioFile(audioPath, speed);
+  } catch {
+    /* missing Sulafat clip: stay silent — never use device TTS */
+  }
+}
+
+let settlePlayback: (() => void) | null = null;
+
+function finishPlayback() {
+  const settle = settlePlayback;
+  settlePlayback = null;
+  settle?.();
+}
+
+function applyPlaybackRate(audio: HTMLAudioElement, rate: number) {
+  audio.playbackRate = rate;
+  audio.preservesPitch = true;
+  const prefixed = audio as HTMLAudioElement & {
+    mozPreservesPitch?: boolean;
+    webkitPreservesPitch?: boolean;
+  };
+  prefixed.mozPreservesPitch = true;
+  prefixed.webkitPreservesPitch = true;
+}
+
+function playAudioFile(path: string, rate: number): Promise<void> {
+  return new Promise((resolve, reject) => {
+    settlePlayback = resolve;
+    try {
+      currentAudio = new Audio(path);
+    } catch (err) {
+      settlePlayback = null;
+      reject(err);
+      return;
+    }
+    applyPlaybackRate(currentAudio, rate);
+
+    currentAudio.addEventListener('ended', () => {
+      currentAudio = null;
+      finishPlayback();
+    });
+
+    currentAudio.addEventListener('error', (err) => {
+      currentAudio = null;
+      settlePlayback = null;
+      reject(err);
+    });
+
+    currentAudio.play().catch((err) => {
+      currentAudio = null;
+      settlePlayback = null;
+      reject(err);
+    });
+  });
+}
+
+export function stopAudio() {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.currentTime = 0;
+    currentAudio = null;
+  }
+
+  finishPlayback();
+}
+
+export function isPlaying(): boolean {
+  return Boolean(currentAudio && !currentAudio.paused);
+}
+
+export { generateAudioId } from './audio-id';
+
+export function vibrate(pattern: number | number[]) {
+  if (typeof navigator !== 'undefined' && navigator.vibrate) {
+    navigator.vibrate(pattern);
+  }
+}

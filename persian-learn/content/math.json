@@ -1,0 +1,5832 @@
+{
+  "track": "math",
+  "units": [
+    {
+      "id": "m1",
+      "title": "عددهای ۰ تا ۵",
+      "emoji": "🔢",
+      "goal": "شناختن شکل نوشتهٔ رقم‌های ۰ تا ۵ و شمردن اشیای روزمره تا پنج",
+      "lessons": [
+        {
+          "id": "m1l1",
+          "title": "۱ و ۲",
+          "exercises": [
+            {
+              "id": "m1l1e1",
+              "type": "intro",
+              "prompt": "۱",
+              "audio_script": "سلام، خوش آمدید! شما عددها را خوب بلدید؛ حالا شکل نوشتهٔ آن‌ها را یاد می‌گیریم. این عدد «یک» است: یک خط صاف، از بالا به پایین. یک سیب.",
+              "payload": {
+                "display": "۱",
+                "visual": "🍎"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m1l1e2",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "چند سیب می‌بینید؟ بشمارید و عددش را انتخاب کنید.",
+              "payload": {
+                "objects": "🍎",
+                "count": 1
+              },
+              "answer": "۱",
+              "distractors": [
+                "۲",
+                "۰"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "با دقت یکی‌یکی بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m1l1e3",
+              "type": "tap_picture",
+              "prompt": "۱",
+              "audio_script": "این عدد را ببینید. کدام تصویر به همین تعداد استکان چای دارد؟",
+              "payload": {
+                "display": "۱"
+              },
+              "answer": "☕",
+              "distractors": [
+                "☕☕",
+                "🍽️"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "دوباره امتحان کنید."
+            },
+            {
+              "id": "m1l1e4",
+              "type": "intro",
+              "prompt": "۲",
+              "audio_script": "این عدد «دو» است. شبیه یک است، اما بالایش یک دندانهٔ کوچک دارد. دو نان.",
+              "payload": {
+                "display": "۲",
+                "visual": "🍞🍞"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m1l1e5",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "روی میز چند نان هست؟ با حوصله بشمارید.",
+              "payload": {
+                "objects": "🍞",
+                "count": 2
+              },
+              "answer": "۲",
+              "distractors": [
+                "۱",
+                "۳"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ انگشتتان را روی هر کدام بگذارید و دوباره بشمارید."
+            },
+            {
+              "id": "m1l1e6",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "عدد «دو» را پیدا کنید و لمس کنید.",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۲",
+              "distractors": [
+                "۱",
+                "۳"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "m1l1e7",
+              "type": "choose_digit",
+              "prompt": "مثل این",
+              "audio_script": "به این عدد خوب نگاه کنید؛ این «دو» است. همین شکل را در میان گزینه‌ها پیدا کنید.",
+              "payload": {
+                "display": "۲"
+              },
+              "answer": "۲",
+              "distractors": [
+                "۳",
+                "۱"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "m1l1e8",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "کدام عدد «یک» است؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۱",
+              "distractors": [
+                "۲",
+                "۰"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "m1l1e9",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر عدد را به تصویری وصل کنید که همان تعداد گوشی دارد.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۱",
+                    "📱"
+                  ],
+                  [
+                    "۲",
+                    "📱📱"
+                  ]
+                ]
+              },
+              "answer": "۱=📱|۲=📱📱",
+              "distractors": [],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            },
+            {
+              "id": "m1l1e10",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "خوب نگاه کنید. چند گوشی اینجاست؟",
+              "payload": {
+                "objects": "📱",
+                "count": 2
+              },
+              "answer": "۲",
+              "distractors": [
+                "۱",
+                "۳"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "نزدیک بود! یک بار دیگر آرام بشمارید."
+            }
+          ]
+        },
+        {
+          "id": "m1l2",
+          "title": "۳ و ۴",
+          "exercises": [
+            {
+              "id": "m1l2e1",
+              "type": "intro",
+              "prompt": "۳",
+              "audio_script": "این عدد «سه» است. شبیه دو است، اما بالایش دو دندانه دارد. سه استکان چای.",
+              "payload": {
+                "display": "۳",
+                "visual": "☕☕☕"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m1l2e2",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "چند استکان چای می‌بینید؟ بشمارید و عددش را انتخاب کنید.",
+              "payload": {
+                "objects": "☕",
+                "count": 3
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "با دقت یکی‌یکی بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m1l2e3",
+              "type": "tap_picture",
+              "prompt": "۳",
+              "audio_script": "این عدد را ببینید. کدام تصویر به همین تعداد کلید دارد؟",
+              "payload": {
+                "display": "۳"
+              },
+              "answer": "🔑🔑🔑",
+              "distractors": [
+                "🔑🔑",
+                "🔑🔑🔑🔑"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "m1l2e4",
+              "type": "intro",
+              "prompt": "۴",
+              "audio_script": "این عدد «چهار» است. شکلش را خوب نگاه کنید و به خاطر بسپارید. چهار کلید.",
+              "payload": {
+                "display": "۴",
+                "visual": "🔑🔑🔑🔑"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m1l2e5",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "روی میز چند کلید هست؟ با حوصله بشمارید.",
+              "payload": {
+                "objects": "🔑",
+                "count": 4
+              },
+              "answer": "۴",
+              "distractors": [
+                "۳",
+                "۲"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ انگشتتان را روی هر کدام بگذارید و دوباره بشمارید."
+            },
+            {
+              "id": "m1l2e6",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«چهار» را نشان بدهید.",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۴",
+              "distractors": [
+                "۳",
+                "۲"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m1l2e7",
+              "type": "choose_digit",
+              "prompt": "مثل این",
+              "audio_script": "به این عدد خوب نگاه کنید؛ این «چهار» است. همین شکل را در میان گزینه‌ها پیدا کنید.",
+              "payload": {
+                "display": "۴"
+              },
+              "answer": "۴",
+              "distractors": [
+                "۳",
+                "۶"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "m1l2e8",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "عدد «سه» را پیدا کنید و لمس کنید.",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "m1l2e9",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر عدد را به تصویری وصل کنید که همان تعداد سیب دارد.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۱",
+                    "🍎"
+                  ],
+                  [
+                    "۲",
+                    "🍎🍎"
+                  ],
+                  [
+                    "۳",
+                    "🍎🍎🍎"
+                  ],
+                  [
+                    "۴",
+                    "🍎🍎🍎🍎"
+                  ]
+                ]
+              },
+              "answer": "۱=🍎|۲=🍎🍎|۳=🍎🍎🍎|۴=🍎🍎🍎🍎",
+              "distractors": [],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            },
+            {
+              "id": "m1l2e10",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "خوب نگاه کنید. چند سیب اینجاست؟",
+              "payload": {
+                "objects": "🍎",
+                "count": 4
+              },
+              "answer": "۴",
+              "distractors": [
+                "۳",
+                "۲"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "نزدیک بود! یک بار دیگر آرام بشمارید."
+            }
+          ]
+        },
+        {
+          "id": "m1l3",
+          "title": "۵ و صفر",
+          "exercises": [
+            {
+              "id": "m1l3e1",
+              "type": "intro",
+              "prompt": "۵",
+              "audio_script": "این عدد «پنج» است. شکلش گرد است، مثل یک قلب وارونه. پنج پرتقال.",
+              "payload": {
+                "display": "۵",
+                "visual": "🍊🍊🍊🍊🍊"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m1l3e2",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "چند پرتقال می‌بینید؟ بشمارید و عددش را انتخاب کنید.",
+              "payload": {
+                "objects": "🍊",
+                "count": 5
+              },
+              "answer": "۵",
+              "distractors": [
+                "۴",
+                "۳"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "با دقت یکی‌یکی بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m1l3e3",
+              "type": "tap_picture",
+              "prompt": "۵",
+              "audio_script": "این عدد را ببینید. کدام تصویر به همین تعداد تخم‌مرغ دارد؟",
+              "payload": {
+                "display": "۵"
+              },
+              "answer": "🥚🥚🥚🥚🥚",
+              "distractors": [
+                "🥚🥚🥚🥚",
+                "🥚🥚🥚"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "دوباره امتحان کنید."
+            },
+            {
+              "id": "m1l3e4",
+              "type": "intro",
+              "prompt": "۰",
+              "audio_script": "این «صفر» است. صفر یعنی هیچ. اگر در بشقاب هیچ سیبی نباشد، می‌گوییم صفر سیب. در فارسی، صفر فقط یک نقطهٔ کوچک است. مراقب باشید آن را با پنج اشتباه نکنید.",
+              "payload": {
+                "display": "۰",
+                "visual": "🍽️"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m1l3e5",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "روی میز چند سیب هست؟ با حوصله بشمارید.",
+              "payload": {
+                "objects": "🍎",
+                "count": 0
+              },
+              "answer": "۰",
+              "distractors": [
+                "۱",
+                "۲"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ انگشتتان را روی هر کدام بگذارید و دوباره بشمارید."
+            },
+            {
+              "id": "m1l3e6",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "کدام عدد «صفر» است؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۰",
+              "distractors": [
+                "۱",
+                "۲"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "m1l3e7",
+              "type": "choose_digit",
+              "prompt": "مثل این",
+              "audio_script": "به این عدد خوب نگاه کنید؛ این «صفر» است. همین شکل را در میان گزینه‌ها پیدا کنید.",
+              "payload": {
+                "display": "۰"
+              },
+              "answer": "۰",
+              "distractors": [
+                "۵",
+                "۱"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "m1l3e8",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«پنج» را نشان بدهید.",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۵",
+              "distractors": [
+                "۴",
+                "۳"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m1l3e9",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر عدد را به تصویری وصل کنید که همان تعداد نان دارد.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۰",
+                    "🍽️"
+                  ],
+                  [
+                    "۳",
+                    "🍞🍞🍞"
+                  ],
+                  [
+                    "۴",
+                    "🍞🍞🍞🍞"
+                  ],
+                  [
+                    "۵",
+                    "🍞🍞🍞🍞🍞"
+                  ]
+                ]
+              },
+              "answer": "۰=🍽️|۳=🍞🍞🍞|۴=🍞🍞🍞🍞|۵=🍞🍞🍞🍞🍞",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            },
+            {
+              "id": "m1l3e10",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "خوب نگاه کنید. چند نان اینجاست؟",
+              "payload": {
+                "objects": "🍞",
+                "count": 5
+              },
+              "answer": "۵",
+              "distractors": [
+                "۴",
+                "۳"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "نزدیک بود! یک بار دیگر آرام بشمارید."
+            }
+          ]
+        },
+        {
+          "id": "m1l4",
+          "title": "مرور ۰ تا ۵",
+          "exercises": [
+            {
+              "id": "m1l4e1",
+              "type": "intro",
+              "prompt": "۰ ۱ ۲ ۳ ۴ ۵",
+              "audio_script": "بیایید همهٔ عددهایی را که یاد گرفتید با هم مرور کنیم: صفر، یک، دو، سه، چهار، پنج. روی خط عدد، هر قدم که جلو می‌رویم، یکی بیشتر می‌شود.",
+              "payload": {
+                "display": "۰ ۱ ۲ ۳ ۴ ۵",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m1l4e2",
+              "type": "number_line",
+              "prompt": "کدام عدد؟",
+              "audio_script": "روی خط عدد از «دو» شروع کنید و یک قدم جلو بروید. به کدام عدد می‌رسید؟",
+              "payload": {
+                "min": 0,
+                "max": 10,
+                "start": 2,
+                "move": 1
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "قدم‌ها را یکی‌یکی بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m1l4e3",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "عددها به ترتیب آمده‌اند، اما یکی جا افتاده. جای خالی کدام عدد است؟",
+              "payload": {
+                "display": "۱ ۲ ۳ ؟ ۵"
+              },
+              "answer": "۴",
+              "distractors": [
+                "۳",
+                "۵"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "m1l4e4",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "چند گل می‌بینید؟ بشمارید و عددش را انتخاب کنید.",
+              "payload": {
+                "objects": "🌷",
+                "count": 3
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "با دقت یکی‌یکی بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m1l4e5",
+              "type": "number_line",
+              "prompt": "کدام عدد؟",
+              "audio_script": "روی خط عدد از «یک» شروع کنید و سه قدم جلو بروید. به کدام عدد می‌رسید؟",
+              "payload": {
+                "min": 0,
+                "max": 10,
+                "start": 1,
+                "move": 3
+              },
+              "answer": "۴",
+              "distractors": [
+                "۳",
+                "۵"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ از اول، آرام جلو بروید."
+            },
+            {
+              "id": "m1l4e6",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "عدد «صفر» را پیدا کنید و لمس کنید.",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۰",
+              "distractors": [
+                "۱",
+                "۲"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "m1l4e7",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "یک عدد جا افتاده. کدام عدد باید اینجا باشد؟",
+              "payload": {
+                "display": "۰ ۱ ؟ ۳"
+              },
+              "answer": "۲",
+              "distractors": [
+                "۱",
+                "۴"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "m1l4e8",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "روی میز چند گوشی هست؟ با حوصله بشمارید.",
+              "payload": {
+                "objects": "📱",
+                "count": 4
+              },
+              "answer": "۴",
+              "distractors": [
+                "۳",
+                "۵"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ انگشتتان را روی هر کدام بگذارید و دوباره بشمارید."
+            },
+            {
+              "id": "m1l4e9",
+              "type": "number_line",
+              "prompt": "کدام عدد؟",
+              "audio_script": "روی خط عدد از «پنج» شروع کنید و یک قدم به عقب برگردید. به کدام عدد می‌رسید؟",
+              "payload": {
+                "min": 0,
+                "max": 10,
+                "start": 5,
+                "move": -1
+              },
+              "answer": "۴",
+              "distractors": [
+                "۳",
+                "۵"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "قدم‌ها را یکی‌یکی بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m1l4e10",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر عدد را به تصویری وصل کنید که همان تعداد تخم‌مرغ دارد.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۰",
+                    "🍽️"
+                  ],
+                  [
+                    "۲",
+                    "🥚🥚"
+                  ],
+                  [
+                    "۴",
+                    "🥚🥚🥚🥚"
+                  ],
+                  [
+                    "۵",
+                    "🥚🥚🥚🥚🥚"
+                  ]
+                ]
+              },
+              "answer": "۰=🍽️|۲=🥚🥚|۴=🥚🥚🥚🥚|۵=🥚🥚🥚🥚🥚",
+              "distractors": [],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            },
+            {
+              "id": "m1l4e11",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "کدام عدد «سه» است؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m2",
+      "title": "عددهای ۶ تا ۱۰",
+      "emoji": "🔟",
+      "goal": "شناختن شکل نوشتهٔ رقم‌های ۶ تا ۹ و عدد ۱۰، و شمردن تا ده",
+      "lessons": [
+        {
+          "id": "m2l1",
+          "title": "۶ و ۷",
+          "exercises": [
+            {
+              "id": "m2l1e1",
+              "type": "intro",
+              "prompt": "۶",
+              "audio_script": "این عدد «شش» است. یک خط از بالا به پایین، که سرش کمی خمیده است. شش گل.",
+              "payload": {
+                "display": "۶",
+                "visual": "🌷🌷🌷🌷🌷🌷"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m2l1e2",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "خوب نگاه کنید. چند گل اینجاست؟",
+              "payload": {
+                "objects": "🌷",
+                "count": 6
+              },
+              "answer": "۶",
+              "distractors": [
+                "۵",
+                "۷"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "نزدیک بود! یک بار دیگر آرام بشمارید."
+            },
+            {
+              "id": "m2l1e3",
+              "type": "tap_picture",
+              "prompt": "۶",
+              "audio_script": "این عدد را ببینید. کدام تصویر به همین تعداد سیب دارد؟",
+              "payload": {
+                "display": "۶"
+              },
+              "answer": "🍎🍎🍎🍎🍎🍎",
+              "distractors": [
+                "🍎🍎🍎🍎🍎",
+                "🍎🍎🍎🍎🍎🍎🍎"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "دوباره امتحان کنید."
+            },
+            {
+              "id": "m2l1e4",
+              "type": "intro",
+              "prompt": "۷",
+              "audio_script": "این عدد «هفت» است. شکلش مثل یک ظرف باز است که دهانش رو به بالاست. هفت تخم‌مرغ.",
+              "payload": {
+                "display": "۷",
+                "visual": "🥚🥚🥚🥚🥚🥚🥚"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m2l1e5",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "چند تخم‌مرغ می‌بینید؟ بشمارید و عددش را انتخاب کنید.",
+              "payload": {
+                "objects": "🥚",
+                "count": 7
+              },
+              "answer": "۷",
+              "distractors": [
+                "۶",
+                "۵"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "با دقت یکی‌یکی بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m2l1e6",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«هفت» را نشان بدهید.",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۷",
+              "distractors": [
+                "۶",
+                "۵"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m2l1e7",
+              "type": "choose_digit",
+              "prompt": "مثل این",
+              "audio_script": "به این عدد خوب نگاه کنید؛ این «هفت» است. همین شکل را در میان گزینه‌ها پیدا کنید.",
+              "payload": {
+                "display": "۷"
+              },
+              "answer": "۷",
+              "distractors": [
+                "۸",
+                "۶"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "m2l1e8",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "عدد «شش» را پیدا کنید و لمس کنید.",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۶",
+              "distractors": [
+                "۵",
+                "۷"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "m2l1e9",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر عدد را به تصویری وصل کنید که همان تعداد پرتقال دارد.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۴",
+                    "🍊🍊🍊🍊"
+                  ],
+                  [
+                    "۵",
+                    "🍊🍊🍊🍊🍊"
+                  ],
+                  [
+                    "۶",
+                    "🍊🍊🍊🍊🍊🍊"
+                  ],
+                  [
+                    "۷",
+                    "🍊🍊🍊🍊🍊🍊🍊"
+                  ]
+                ]
+              },
+              "answer": "۴=🍊🍊🍊🍊|۵=🍊🍊🍊🍊🍊|۶=🍊🍊🍊🍊🍊🍊|۷=🍊🍊🍊🍊🍊🍊🍊",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            },
+            {
+              "id": "m2l1e10",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "روی میز چند پرتقال هست؟ با حوصله بشمارید.",
+              "payload": {
+                "objects": "🍊",
+                "count": 7
+              },
+              "answer": "۷",
+              "distractors": [
+                "۶",
+                "۵"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ انگشتتان را روی هر کدام بگذارید و دوباره بشمارید."
+            }
+          ]
+        },
+        {
+          "id": "m2l2",
+          "title": "۸ و ۹",
+          "exercises": [
+            {
+              "id": "m2l2e1",
+              "type": "intro",
+              "prompt": "۸",
+              "audio_script": "این عدد «هشت» است. درست برعکس هفت است: دهانش رو به پایین، مثل یک بام. هفت رو به بالا، هشت رو به پایین. هشت گوجه‌فرنگی.",
+              "payload": {
+                "display": "۸",
+                "visual": "🍅🍅🍅🍅🍅🍅🍅🍅"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m2l2e2",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "خوب نگاه کنید. چند گوجه‌فرنگی اینجاست؟",
+              "payload": {
+                "objects": "🍅",
+                "count": 8
+              },
+              "answer": "۸",
+              "distractors": [
+                "۷",
+                "۹"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "نزدیک بود! یک بار دیگر آرام بشمارید."
+            },
+            {
+              "id": "m2l2e3",
+              "type": "tap_picture",
+              "prompt": "۸",
+              "audio_script": "این عدد را ببینید. کدام تصویر به همین تعداد استکان چای دارد؟",
+              "payload": {
+                "display": "۸"
+              },
+              "answer": "☕☕☕☕☕☕☕☕",
+              "distractors": [
+                "☕☕☕☕☕☕☕",
+                "☕☕☕☕☕☕☕☕☕"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "m2l2e4",
+              "type": "intro",
+              "prompt": "۹",
+              "audio_script": "این عدد «نه» است. بالایش یک دایرهٔ کوچک دارد و پایینش یک دم صاف. نه مداد.",
+              "payload": {
+                "display": "۹",
+                "visual": "✏️✏️✏️✏️✏️✏️✏️✏️✏️"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m2l2e5",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "چند مداد می‌بینید؟ بشمارید و عددش را انتخاب کنید.",
+              "payload": {
+                "objects": "✏️",
+                "count": 9
+              },
+              "answer": "۹",
+              "distractors": [
+                "۸",
+                "۷"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "با دقت یکی‌یکی بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m2l2e6",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "کدام عدد «نه» است؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۹",
+              "distractors": [
+                "۸",
+                "۷"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "m2l2e7",
+              "type": "choose_digit",
+              "prompt": "مثل این",
+              "audio_script": "به این عدد خوب نگاه کنید؛ این «نه» است. همین شکل را در میان گزینه‌ها پیدا کنید.",
+              "payload": {
+                "display": "۹"
+              },
+              "answer": "۹",
+              "distractors": [
+                "۵",
+                "۱"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "m2l2e8",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«هشت» را نشان بدهید.",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۸",
+              "distractors": [
+                "۷",
+                "۹"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m2l2e9",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر عدد را به تصویری وصل کنید که همان تعداد کلید دارد.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۶",
+                    "🔑🔑🔑🔑🔑🔑"
+                  ],
+                  [
+                    "۷",
+                    "🔑🔑🔑🔑🔑🔑🔑"
+                  ],
+                  [
+                    "۸",
+                    "🔑🔑🔑🔑🔑🔑🔑🔑"
+                  ],
+                  [
+                    "۹",
+                    "🔑🔑🔑🔑🔑🔑🔑🔑🔑"
+                  ]
+                ]
+              },
+              "answer": "۶=🔑🔑🔑🔑🔑🔑|۷=🔑🔑🔑🔑🔑🔑🔑|۸=🔑🔑🔑🔑🔑🔑🔑🔑|۹=🔑🔑🔑🔑🔑🔑🔑🔑🔑",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            },
+            {
+              "id": "m2l2e10",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "روی میز چند کلید هست؟ با حوصله بشمارید.",
+              "payload": {
+                "objects": "🔑",
+                "count": 9
+              },
+              "answer": "۹",
+              "distractors": [
+                "۸",
+                "۷"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ انگشتتان را روی هر کدام بگذارید و دوباره بشمارید."
+            }
+          ]
+        },
+        {
+          "id": "m2l3",
+          "title": "۱۰",
+          "exercises": [
+            {
+              "id": "m2l3e1",
+              "type": "intro",
+              "prompt": "۱۰",
+              "audio_script": "این عدد «ده» است. ده دو رقم دارد: یک و صفر، کنار هم. اول یک، بعد صفر. درست به اندازهٔ انگشت‌های دو دست‌تان!",
+              "payload": {
+                "display": "۱۰",
+                "visual": "🍎🍎🍎🍎🍎🍎🍎🍎🍎🍎"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m2l3e2",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "خوب نگاه کنید. چند سیب اینجاست؟",
+              "payload": {
+                "objects": "🍎",
+                "count": 10
+              },
+              "answer": "۱۰",
+              "distractors": [
+                "۹",
+                "۸"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "نزدیک بود! یک بار دیگر آرام بشمارید."
+            },
+            {
+              "id": "m2l3e3",
+              "type": "choose_digit",
+              "prompt": "مثل این",
+              "audio_script": "این «ده» است: یک و صفر کنار هم. همین را پیدا کنید.",
+              "payload": {
+                "display": "۱۰"
+              },
+              "answer": "۱۰",
+              "distractors": [
+                "۱",
+                "۰۱"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "دوباره امتحان کنید."
+            },
+            {
+              "id": "m2l3e4",
+              "type": "number_line",
+              "prompt": "کدام عدد؟",
+              "audio_script": "روی خط عدد از «نه» شروع کنید و یک قدم جلو بروید. به کدام عدد می‌رسید؟",
+              "payload": {
+                "min": 0,
+                "max": 10,
+                "start": 9,
+                "move": 1
+              },
+              "answer": "۱۰",
+              "distractors": [
+                "۹",
+                "۸"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ از اول، آرام جلو بروید."
+            },
+            {
+              "id": "m2l3e5",
+              "type": "tap_picture",
+              "prompt": "۱۰",
+              "audio_script": "این عدد را ببینید. کدام تصویر به همین تعداد تخم‌مرغ دارد؟",
+              "payload": {
+                "display": "۱۰"
+              },
+              "answer": "🥚🥚🥚🥚🥚🥚🥚🥚🥚🥚",
+              "distractors": [
+                "🥚🥚🥚🥚🥚🥚🥚🥚🥚",
+                "🥚🥚🥚🥚🥚🥚🥚🥚"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "m2l3e6",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "عدد «ده» را پیدا کنید و لمس کنید.",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۱۰",
+              "distractors": [
+                "۹",
+                "۸"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "m2l3e7",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "هفت، هشت، نه... بعدش کدام عدد می‌آید؟",
+              "payload": {
+                "display": "۷ ۸ ۹ ؟"
+              },
+              "answer": "۱۰",
+              "distractors": [
+                "۶",
+                "۱"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "m2l3e8",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "چند استکان چای می‌بینید؟ بشمارید و عددش را انتخاب کنید.",
+              "payload": {
+                "objects": "☕",
+                "count": 9
+              },
+              "answer": "۹",
+              "distractors": [
+                "۸",
+                "۱۰"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "با دقت یکی‌یکی بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m2l3e9",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر عدد را به تصویری وصل کنید که همان تعداد نان دارد.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۸",
+                    "🍞🍞🍞🍞🍞🍞🍞🍞"
+                  ],
+                  [
+                    "۹",
+                    "🍞🍞🍞🍞🍞🍞🍞🍞🍞"
+                  ],
+                  [
+                    "۱۰",
+                    "🍞🍞🍞🍞🍞🍞🍞🍞🍞🍞"
+                  ]
+                ]
+              },
+              "answer": "۸=🍞🍞🍞🍞🍞🍞🍞🍞|۹=🍞🍞🍞🍞🍞🍞🍞🍞🍞|۱۰=🍞🍞🍞🍞🍞🍞🍞🍞🍞🍞",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            },
+            {
+              "id": "m2l3e10",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "روی میز چند کلید هست؟ با حوصله بشمارید.",
+              "payload": {
+                "objects": "🔑",
+                "count": 10
+              },
+              "answer": "۱۰",
+              "distractors": [
+                "۹",
+                "۸"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ انگشتتان را روی هر کدام بگذارید و دوباره بشمارید."
+            }
+          ]
+        },
+        {
+          "id": "m2l4",
+          "title": "مرور ۰ تا ۱۰",
+          "exercises": [
+            {
+              "id": "m2l4e1",
+              "type": "intro",
+              "prompt": "۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹ ۱۰",
+              "audio_script": "خسته نباشید! حالا همهٔ عددها را از صفر تا ده بلدید. با هم بشماریم: صفر، یک، دو، سه، چهار، پنج، شش، هفت، هشت، نه، ده.",
+              "payload": {
+                "display": "۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹ ۱۰",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m2l4e2",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "یک عدد جا افتاده. جای خالی کدام عدد است؟",
+              "payload": {
+                "display": "۵ ۶ ؟ ۸"
+              },
+              "answer": "۷",
+              "distractors": [
+                "۶",
+                "۹"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "m2l4e3",
+              "type": "number_line",
+              "prompt": "کدام عدد؟",
+              "audio_script": "روی خط عدد از «شش» شروع کنید و دو قدم جلو بروید. به کدام عدد می‌رسید؟",
+              "payload": {
+                "min": 0,
+                "max": 10,
+                "start": 6,
+                "move": 2
+              },
+              "answer": "۸",
+              "distractors": [
+                "۷",
+                "۹"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "قدم‌ها را یکی‌یکی بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m2l4e4",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "خوب نگاه کنید. چند پیاز اینجاست؟",
+              "payload": {
+                "objects": "🧅",
+                "count": 7
+              },
+              "answer": "۷",
+              "distractors": [
+                "۶",
+                "۸"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "نزدیک بود! یک بار دیگر آرام بشمارید."
+            },
+            {
+              "id": "m2l4e5",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "کدام عدد «هشت» است؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۸",
+              "distractors": [
+                "۷",
+                "۹"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "m2l4e6",
+              "type": "number_line",
+              "prompt": "کدام عدد؟",
+              "audio_script": "روی خط عدد از «ده» شروع کنید و سه قدم به عقب برگردید. به کدام عدد می‌رسید؟",
+              "payload": {
+                "min": 0,
+                "max": 10,
+                "start": 10,
+                "move": -3
+              },
+              "answer": "۷",
+              "distractors": [
+                "۶",
+                "۸"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ از اول، آرام جلو بروید."
+            },
+            {
+              "id": "m2l4e7",
+              "type": "choose_digit",
+              "prompt": "مثل این",
+              "audio_script": "به این عدد خوب نگاه کنید؛ این «هفت» است. همین شکل را در میان گزینه‌ها پیدا کنید.",
+              "payload": {
+                "display": "۷"
+              },
+              "answer": "۷",
+              "distractors": [
+                "۸",
+                "۶"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "دوباره امتحان کنید."
+            },
+            {
+              "id": "m2l4e8",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "چند پرتقال می‌بینید؟ بشمارید و عددش را انتخاب کنید.",
+              "payload": {
+                "objects": "🍊",
+                "count": 6
+              },
+              "answer": "۶",
+              "distractors": [
+                "۵",
+                "۷"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "با دقت یکی‌یکی بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m2l4e9",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "این بار عددها برعکس آمده‌اند: از بزرگ به کوچک. جای خالی کدام عدد است؟",
+              "payload": {
+                "display": "۹ ؟ ۷ ۶"
+              },
+              "answer": "۸",
+              "distractors": [
+                "۱۰",
+                "۷"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "m2l4e10",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر عدد را به تصویری وصل کنید که همان تعداد گل دارد.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۳",
+                    "🌷🌷🌷"
+                  ],
+                  [
+                    "۶",
+                    "🌷🌷🌷🌷🌷🌷"
+                  ],
+                  [
+                    "۹",
+                    "🌷🌷🌷🌷🌷🌷🌷🌷🌷"
+                  ]
+                ]
+              },
+              "answer": "۳=🌷🌷🌷|۶=🌷🌷🌷🌷🌷🌷|۹=🌷🌷🌷🌷🌷🌷🌷🌷🌷",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            },
+            {
+              "id": "m2l4e11",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«نه» را نشان بدهید.",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۹",
+              "distractors": [
+                "۸",
+                "۱۰"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m3",
+      "title": "بیشتر، کمتر، برابر",
+      "emoji": "⚖️",
+      "goal": "مقایسهٔ دو دسته از اشیا و دو عدد نوشته‌شده: کدام بیشتر، کدام کمتر و کی برابرند",
+      "lessons": [
+        {
+          "id": "m3l1",
+          "title": "بیشتر",
+          "exercises": [
+            {
+              "id": "m3l1e1",
+              "type": "intro",
+              "prompt": "بیشتر",
+              "audio_script": "وقتی دو دسته را کنار هم می‌گذاریم، دسته‌ای که تعدادش زیادتر است «بیشتر» است. سه سیب از یک سیب بیشتر است.",
+              "payload": {
+                "display": "بیشتر",
+                "visual": "🍎🍎🍎  🍎"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m3l1e2",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام طرف بیشتر است؟ آن طرف را لمس کنید.",
+              "payload": {
+                "left": "🍎🍎🍎",
+                "right": "🍎",
+                "ask": "more"
+              },
+              "answer": "left",
+              "distractors": [
+                "right",
+                "equal"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            },
+            {
+              "id": "m3l1e3",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام دسته بیشتر است؟",
+              "payload": {
+                "left": "☕☕",
+                "right": "☕☕☕☕☕",
+                "ask": "more"
+              },
+              "answer": "right",
+              "distractors": [
+                "left",
+                "equal"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m3l1e4",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "خوب نگاه کنید؛ کدام طرف بیشتر دارد؟",
+              "payload": {
+                "left": "🔑🔑🔑🔑",
+                "right": "🔑🔑🔑🔑🔑🔑",
+                "ask": "more"
+              },
+              "answer": "right",
+              "distractors": [
+                "left",
+                "equal"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            },
+            {
+              "id": "m3l1e5",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "کدام عدد بیشتر است: دو یا هفت؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۷",
+              "distractors": [
+                "۲"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "m3l1e6",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام طرف بیشتر است؟ آن طرف را لمس کنید.",
+              "payload": {
+                "left": "🍞🍞🍞🍞🍞🍞🍞",
+                "right": "🍞🍞🍞",
+                "ask": "more"
+              },
+              "answer": "left",
+              "distractors": [
+                "right",
+                "equal"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m3l1e7",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "روی میز چند تخم‌مرغ هست؟ با حوصله بشمارید.",
+              "payload": {
+                "objects": "🥚",
+                "count": 6
+              },
+              "answer": "۶",
+              "distractors": [
+                "۵",
+                "۷"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ انگشتتان را روی هر کدام بگذارید و دوباره بشمارید."
+            },
+            {
+              "id": "m3l1e8",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "این یکی کمی سخت‌تر است! کدام طرف بیشتر است؟ اگر لازم شد، بشمارید.",
+              "payload": {
+                "left": "🌷🌷🌷🌷🌷🌷🌷🌷",
+                "right": "🌷🌷🌷🌷🌷🌷🌷🌷🌷",
+                "ask": "more"
+              },
+              "answer": "right",
+              "distractors": [
+                "left",
+                "equal"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            },
+            {
+              "id": "m3l1e9",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "حالا فقط دو عدد می‌بینید، بدون تصویر. کدام عدد بیشتر است؟",
+              "payload": {
+                "left": "۶",
+                "right": "۴",
+                "ask": "more"
+              },
+              "answer": "left",
+              "distractors": [
+                "right",
+                "equal"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m3l1e10",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام دسته بیشتر است؟",
+              "payload": {
+                "left": "📱📱📱📱📱",
+                "right": "📱📱",
+                "ask": "more"
+              },
+              "answer": "left",
+              "distractors": [
+                "right",
+                "equal"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            }
+          ]
+        },
+        {
+          "id": "m3l2",
+          "title": "کمتر",
+          "exercises": [
+            {
+              "id": "m3l2e1",
+              "type": "intro",
+              "prompt": "کمتر",
+              "audio_script": "حالا برعکس: دسته‌ای که تعدادش کمتر است «کمتر» است. دو نان از پنج نان کمتر است.",
+              "payload": {
+                "display": "کمتر",
+                "visual": "🍞🍞  🍞🍞🍞🍞🍞"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m3l2e2",
+              "type": "compare_more_less",
+              "prompt": "کدام کمتر؟",
+              "audio_script": "کدام طرف کمتر است؟ آن طرف را لمس کنید.",
+              "payload": {
+                "left": "🍞🍞",
+                "right": "🍞🍞🍞🍞🍞",
+                "ask": "less"
+              },
+              "answer": "left",
+              "distractors": [
+                "right",
+                "equal"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m3l2e3",
+              "type": "compare_more_less",
+              "prompt": "کدام کمتر؟",
+              "audio_script": "کدام دسته کمتر است؟",
+              "payload": {
+                "left": "🍊🍊🍊🍊🍊🍊",
+                "right": "🍊🍊🍊",
+                "ask": "less"
+              },
+              "answer": "right",
+              "distractors": [
+                "left",
+                "equal"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            },
+            {
+              "id": "m3l2e4",
+              "type": "compare_more_less",
+              "prompt": "کدام کمتر؟",
+              "audio_script": "خوب نگاه کنید؛ کدام طرف کمتر دارد؟",
+              "payload": {
+                "left": "🥚",
+                "right": "🥚🥚🥚🥚",
+                "ask": "less"
+              },
+              "answer": "left",
+              "distractors": [
+                "right",
+                "equal"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m3l2e5",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "کدام عدد کمتر است: نه یا چهار؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۴",
+              "distractors": [
+                "۹"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "m3l2e6",
+              "type": "compare_more_less",
+              "prompt": "کدام کمتر؟",
+              "audio_script": "کدام طرف کمتر است؟ آن طرف را لمس کنید.",
+              "payload": {
+                "left": "🍅🍅🍅🍅🍅🍅🍅",
+                "right": "🍅🍅🍅🍅🍅",
+                "ask": "less"
+              },
+              "answer": "right",
+              "distractors": [
+                "left",
+                "equal"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            },
+            {
+              "id": "m3l2e7",
+              "type": "compare_more_less",
+              "prompt": "کدام کمتر؟",
+              "audio_script": "فقط دو عدد. کدام عدد کمتر است؟",
+              "payload": {
+                "left": "۳",
+                "right": "۸",
+                "ask": "less"
+              },
+              "answer": "left",
+              "distractors": [
+                "right",
+                "equal"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m3l2e8",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "دقت کنید، این بار سؤال فرق دارد: کدام طرف بیشتر است؟",
+              "payload": {
+                "left": "🍎🍎🍎🍎",
+                "right": "🍎🍎",
+                "ask": "more"
+              },
+              "answer": "left",
+              "distractors": [
+                "right",
+                "equal"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            },
+            {
+              "id": "m3l2e9",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "خوب نگاه کنید. چند کلید اینجاست؟",
+              "payload": {
+                "objects": "🔑",
+                "count": 3
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "نزدیک بود! یک بار دیگر آرام بشمارید."
+            },
+            {
+              "id": "m3l2e10",
+              "type": "compare_more_less",
+              "prompt": "کدام کمتر؟",
+              "audio_script": "خیلی نزدیک‌اند! کدام طرف کمتر است؟ بشمارید.",
+              "payload": {
+                "left": "☕☕☕☕☕☕☕☕☕",
+                "right": "☕☕☕☕☕☕☕☕☕☕",
+                "ask": "less"
+              },
+              "answer": "left",
+              "distractors": [
+                "right",
+                "equal"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            }
+          ]
+        },
+        {
+          "id": "m3l3",
+          "title": "برابر",
+          "exercises": [
+            {
+              "id": "m3l3e1",
+              "type": "intro",
+              "prompt": "=",
+              "audio_script": "وقتی دو دسته به یک اندازه باشند، می‌گوییم «برابر» یا «مساوی». سه استکان چای و سه نان برابرند؛ برای هر استکان، یک نان. علامت مساوی دو خط کوتاه است، یکی بالای دیگری.",
+              "payload": {
+                "display": "=",
+                "visual": "☕☕☕  🍞🍞🍞"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m3l3e2",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام طرف بیشتر است؟ اگر برابرند، علامت مساوی را بزنید.",
+              "payload": {
+                "left": "🍎🍎🍎",
+                "right": "🍊🍊🍊",
+                "ask": "more"
+              },
+              "answer": "equal",
+              "distractors": [
+                "left",
+                "right"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            },
+            {
+              "id": "m3l3e3",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام طرف بیشتر است؟ اگر برابرند، علامت مساوی را بزنید.",
+              "payload": {
+                "left": "🔑🔑",
+                "right": "📱📱📱",
+                "ask": "more"
+              },
+              "answer": "right",
+              "distractors": [
+                "left",
+                "equal"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m3l3e4",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام طرف بیشتر است؟ اگر برابرند، علامت مساوی را بزنید.",
+              "payload": {
+                "left": "☕☕☕☕",
+                "right": "🍞🍞🍞🍞",
+                "ask": "more"
+              },
+              "answer": "equal",
+              "distractors": [
+                "left",
+                "right"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            },
+            {
+              "id": "m3l3e5",
+              "type": "tap_picture",
+              "prompt": "برابر؟",
+              "audio_script": "برای هر استکان چای یک نان می‌خواهیم. کدام دستهٔ نان درست به اندازهٔ استکان‌هاست؟",
+              "payload": {
+                "display": "☕☕☕☕"
+              },
+              "answer": "🍞🍞🍞🍞",
+              "distractors": [
+                "🍞🍞🍞",
+                "🍞🍞🍞🍞🍞"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "m3l3e6",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام طرف بیشتر است؟ اگر برابرند، علامت مساوی را بزنید.",
+              "payload": {
+                "left": "🌷🌷🌷🌷🌷🌷",
+                "right": "🍎🍎🍎🍎",
+                "ask": "more"
+              },
+              "answer": "left",
+              "distractors": [
+                "right",
+                "equal"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m3l3e7",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام طرف بیشتر است؟ اگر برابرند، علامت مساوی را بزنید.",
+              "payload": {
+                "left": "🥚🥚🥚🥚🥚",
+                "right": "🍅🍅🍅🍅🍅",
+                "ask": "more"
+              },
+              "answer": "equal",
+              "distractors": [
+                "left",
+                "right"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            },
+            {
+              "id": "m3l3e8",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر عدد را به دسته‌ای وصل کنید که با آن برابر است.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۲",
+                    "🍎🍎"
+                  ],
+                  [
+                    "۵",
+                    "🍊🍊🍊🍊🍊"
+                  ],
+                  [
+                    "۷",
+                    "🌷🌷🌷🌷🌷🌷🌷"
+                  ]
+                ]
+              },
+              "answer": "۲=🍎🍎|۵=🍊🍊🍊🍊🍊|۷=🌷🌷🌷🌷🌷🌷🌷",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            },
+            {
+              "id": "m3l3e9",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "دو عدد را ببینید. کدام بیشتر است؟ اگر برابرند، علامت مساوی را بزنید.",
+              "payload": {
+                "left": "۵",
+                "right": "۵",
+                "ask": "more"
+              },
+              "answer": "equal",
+              "distractors": [
+                "left",
+                "right"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m3l3e10",
+              "type": "count_objects",
+              "prompt": "چند؟",
+              "audio_script": "چند پرتقال می‌بینید؟ بشمارید و عددش را انتخاب کنید.",
+              "payload": {
+                "objects": "🍊",
+                "count": 7
+              },
+              "answer": "۷",
+              "distractors": [
+                "۶",
+                "۸"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "با دقت یکی‌یکی بشمارید و دوباره امتحان کنید."
+            }
+          ]
+        },
+        {
+          "id": "m3l4",
+          "title": "کدام عدد بزرگ‌تر است؟",
+          "exercises": [
+            {
+              "id": "m3l4e1",
+              "type": "intro",
+              "prompt": "۳  ۷",
+              "audio_script": "حالا فقط به عددها نگاه می‌کنیم، بدون شمردن. هر عددی که در شمارش دیرتر می‌آید، بیشتر است. هفت بعد از سه می‌آید، پس هفت از سه بیشتر است.",
+              "payload": {
+                "display": "۳  ۷",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m3l4e2",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام عدد بیشتر است؟",
+              "payload": {
+                "left": "۲",
+                "right": "۹",
+                "ask": "more"
+              },
+              "answer": "right",
+              "distractors": [
+                "left",
+                "equal"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            },
+            {
+              "id": "m3l4e3",
+              "type": "compare_more_less",
+              "prompt": "کدام کمتر؟",
+              "audio_script": "کدام عدد کمتر است؟",
+              "payload": {
+                "left": "۸",
+                "right": "۵",
+                "ask": "less"
+              },
+              "answer": "right",
+              "distractors": [
+                "left",
+                "equal"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m3l4e4",
+              "type": "number_line",
+              "prompt": "کدام عدد؟",
+              "audio_script": "کدام عدد یکی بیشتر از «چهار» است؟ روی خط عدد یک قدم جلو بروید.",
+              "payload": {
+                "min": 0,
+                "max": 10,
+                "start": 4,
+                "move": 1
+              },
+              "answer": "۵",
+              "distractors": [
+                "۴",
+                "۶"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "قدم‌ها را یکی‌یکی بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m3l4e5",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "ده یا نه؟ کدام بیشتر است؟",
+              "payload": {
+                "left": "۱۰",
+                "right": "۹",
+                "ask": "more"
+              },
+              "answer": "left",
+              "distractors": [
+                "right",
+                "equal"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            },
+            {
+              "id": "m3l4e6",
+              "type": "number_line",
+              "prompt": "کدام عدد؟",
+              "audio_script": "کدام عدد یکی کمتر از «هشت» است؟ روی خط عدد یک قدم به عقب برگردید.",
+              "payload": {
+                "min": 0,
+                "max": 10,
+                "start": 8,
+                "move": -1
+              },
+              "answer": "۷",
+              "distractors": [
+                "۶",
+                "۸"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ از اول، آرام جلو بروید."
+            },
+            {
+              "id": "m3l4e7",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "از این سه عدد، کدام از همه بیشتر است؟",
+              "payload": {
+                "display": "۲ ۹ ۵"
+              },
+              "answer": "۹",
+              "distractors": [
+                "۲",
+                "۵"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "m3l4e8",
+              "type": "compare_more_less",
+              "prompt": "کدام کمتر؟",
+              "audio_script": "صفر یا یک؟ کدام کمتر است؟",
+              "payload": {
+                "left": "۰",
+                "right": "۱",
+                "ask": "less"
+              },
+              "answer": "left",
+              "distractors": [
+                "right",
+                "equal"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m3l4e9",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "از این سه عدد، کدام از همه کمتر است؟",
+              "payload": {
+                "display": "۶ ۱ ۸"
+              },
+              "answer": "۱",
+              "distractors": [
+                "۶",
+                "۸"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "دوباره امتحان کنید."
+            },
+            {
+              "id": "m3l4e10",
+              "type": "compare_more_less",
+              "prompt": "کدام کمتر؟",
+              "audio_script": "کدام عدد کمتر است؟ اگر برابرند، علامت مساوی را بزنید.",
+              "payload": {
+                "left": "۴",
+                "right": "۴",
+                "ask": "less"
+              },
+              "answer": "equal",
+              "distractors": [
+                "left",
+                "right"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m4",
+      "title": "جمع تا ۱۰",
+      "emoji": "➕",
+      "goal": "کنار هم گذاشتن دو دسته از اشیا و شمردن همه؛ آشنایی با علامت + و = و جمع کردن تا ده",
+      "lessons": [
+        {
+          "id": "m4l1",
+          "title": "کنار هم گذاشتن",
+          "exercises": [
+            {
+              "id": "m4l1e1",
+              "type": "intro",
+              "prompt": "🍎🍎 + 🍎🍎🍎",
+              "audio_script": "وقتی دو دسته را کنار هم می‌گذاریم و همه را با هم می‌شماریم، می‌گوییم «جمع». دو سیب و سه سیب، روی هم می‌شود پنج سیب.",
+              "payload": {
+                "display": "🍎🍎 + 🍎🍎🍎",
+                "visual": "🍎🍎🍎🍎🍎"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m4l1e2",
+              "type": "equation",
+              "prompt": "۲ + ۱ = ؟",
+              "audio_script": "دو سیب و یک سیب؛ روی هم چند سیب می‌شود؟",
+              "payload": {
+                "a": 2,
+                "op": "+",
+                "b": 1,
+                "objects": "🍎"
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m4l1e3",
+              "type": "equation",
+              "prompt": "۳ + ۲ = ؟",
+              "audio_script": "سه استکان چای و دو استکان چای؛ روی هم چند استکان چای می‌شود؟",
+              "payload": {
+                "a": 3,
+                "op": "+",
+                "b": 2,
+                "objects": "☕"
+              },
+              "answer": "۵",
+              "distractors": [
+                "۴",
+                "۶"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m4l1e4",
+              "type": "equation",
+              "prompt": "۱ + ۴ = ؟",
+              "audio_script": "یک نان و چهار نان؛ روی هم چند نان می‌شود؟",
+              "payload": {
+                "a": 1,
+                "op": "+",
+                "b": 4,
+                "objects": "🍞"
+              },
+              "answer": "۵",
+              "distractors": [
+                "۴",
+                "۶"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m4l1e5",
+              "type": "tap_picture",
+              "prompt": "۳ + ۱",
+              "audio_script": "سه کلید و یک کلید دیگر. کدام تصویر همهٔ کلیدها را با هم نشان می‌دهد؟",
+              "payload": {
+                "display": "۳ + ۱"
+              },
+              "answer": "🔑🔑🔑🔑",
+              "distractors": [
+                "🔑🔑🔑",
+                "🔑🔑🔑🔑🔑"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "m4l1e6",
+              "type": "equation",
+              "prompt": "۲ + ۲ = ؟",
+              "audio_script": "دو تخم‌مرغ و دو تخم‌مرغ؛ روی هم چند تخم‌مرغ می‌شود؟",
+              "payload": {
+                "a": 2,
+                "op": "+",
+                "b": 2,
+                "objects": "🥚"
+              },
+              "answer": "۴",
+              "distractors": [
+                "۳",
+                "۵"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m4l1e7",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "دو استکان چای ریختید و بعد یک استکان دیگر هم ریختید. حالا روی هم چند استکان چای دارید؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m4l1e8",
+              "type": "equation",
+              "prompt": "۴ + ۳ = ؟",
+              "audio_script": "چهار گل و سه گل؛ روی هم چند گل می‌شود؟",
+              "payload": {
+                "a": 4,
+                "op": "+",
+                "b": 3,
+                "objects": "🌷"
+              },
+              "answer": "۷",
+              "distractors": [
+                "۶",
+                "۸"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m4l1e9",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر جمع را به جوابش وصل کنید. اگر لازم شد، سیب‌ها را بشمارید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "🍎 + 🍎",
+                    "۲"
+                  ],
+                  [
+                    "🍎🍎 + 🍎",
+                    "۳"
+                  ],
+                  [
+                    "🍎🍎 + 🍎🍎",
+                    "۴"
+                  ]
+                ]
+              },
+              "answer": "🍎 + 🍎=۲|🍎🍎 + 🍎=۳|🍎🍎 + 🍎🍎=۴",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            },
+            {
+              "id": "m4l1e10",
+              "type": "equation",
+              "prompt": "۵ + ۱ = ؟",
+              "audio_script": "پنج پرتقال و یک پرتقال؛ روی هم چند پرتقال می‌شود؟",
+              "payload": {
+                "a": 5,
+                "op": "+",
+                "b": 1,
+                "objects": "🍊"
+              },
+              "answer": "۶",
+              "distractors": [
+                "۵",
+                "۷"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            }
+          ]
+        },
+        {
+          "id": "m4l2",
+          "title": "علامت + و =",
+          "exercises": [
+            {
+              "id": "m4l2e1",
+              "type": "intro",
+              "prompt": "+  =",
+              "audio_script": "این علامت «به‌اضافه» است؛ یعنی «اضافه کنید». این یکی «مساوی» است؛ یعنی «می‌شود». مثلاً: دو به‌اضافهٔ سه، مساوی پنج.",
+              "payload": {
+                "display": "۲ + ۳ = ۵",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m4l2e2",
+              "type": "equation",
+              "prompt": "۱ + ۲ = ؟",
+              "audio_script": "«یک» به‌اضافهٔ «دو» چند می‌شود؟",
+              "payload": {
+                "a": 1,
+                "op": "+",
+                "b": 2,
+                "objects": ""
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m4l2e3",
+              "type": "equation",
+              "prompt": "۳ + ۳ = ؟",
+              "audio_script": "«سه» به‌اضافهٔ «سه» چند می‌شود؟",
+              "payload": {
+                "a": 3,
+                "op": "+",
+                "b": 3,
+                "objects": ""
+              },
+              "answer": "۶",
+              "distractors": [
+                "۵",
+                "۷"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m4l2e4",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "دو به‌اضافهٔ دو چند می‌شود؟ عدد درست را انتخاب کنید.",
+              "payload": {
+                "display": "۲ + ۲ = ؟"
+              },
+              "answer": "۴",
+              "distractors": [
+                "۳",
+                "۵"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "m4l2e5",
+              "type": "equation",
+              "prompt": "۴ + ۲ = ؟",
+              "audio_script": "«چهار» به‌اضافهٔ «دو» چند می‌شود؟",
+              "payload": {
+                "a": 4,
+                "op": "+",
+                "b": 2,
+                "objects": ""
+              },
+              "answer": "۶",
+              "distractors": [
+                "۵",
+                "۷"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m4l2e6",
+              "type": "number_line",
+              "prompt": "کدام عدد؟",
+              "audio_script": "سه به‌اضافهٔ چهار: روی خط عدد از «سه» شروع کنید و چهار قدم جلو بروید. به کدام عدد می‌رسید؟",
+              "payload": {
+                "min": 0,
+                "max": 10,
+                "start": 3,
+                "move": 4
+              },
+              "answer": "۷",
+              "distractors": [
+                "۶",
+                "۸"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "قدم‌ها را یکی‌یکی بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m4l2e7",
+              "type": "equation",
+              "prompt": "۵ + ۳ = ؟",
+              "audio_script": "«پنج» به‌اضافهٔ «سه» چند می‌شود؟",
+              "payload": {
+                "a": 5,
+                "op": "+",
+                "b": 3,
+                "objects": ""
+              },
+              "answer": "۸",
+              "distractors": [
+                "۷",
+                "۹"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m4l2e8",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر جمع را به جوابش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۱ + ۱",
+                    "۲"
+                  ],
+                  [
+                    "۲ + ۳",
+                    "۵"
+                  ],
+                  [
+                    "۴ + ۴",
+                    "۸"
+                  ]
+                ]
+              },
+              "answer": "۱ + ۱=۲|۲ + ۳=۵|۴ + ۴=۸",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            },
+            {
+              "id": "m4l2e9",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "شش به‌اضافهٔ یک چند می‌شود؟",
+              "payload": {
+                "display": "۶ + ۱ = ؟"
+              },
+              "answer": "۷",
+              "distractors": [
+                "۶",
+                "۸"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "m4l2e10",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "پنج به‌اضافهٔ دو چند می‌شود؟ جوابش را پیدا کنید.",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۷",
+              "distractors": [
+                "۶",
+                "۸"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            }
+          ]
+        },
+        {
+          "id": "m4l3",
+          "title": "جمع تا ۱۰",
+          "exercises": [
+            {
+              "id": "m4l3e1",
+              "type": "intro",
+              "prompt": "۵ + ۵ = ۱۰",
+              "audio_script": "حالا جمع‌هایی را تمرین می‌کنیم که به ده می‌رسند. مثل انگشت‌های دو دست: پنج و پنج، می‌شود ده.",
+              "payload": {
+                "display": "۵ + ۵ = ۱۰",
+                "visual": "✋✋"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m4l3e2",
+              "type": "equation",
+              "prompt": "۵ + ۵ = ؟",
+              "audio_script": "«پنج» به‌اضافهٔ «پنج» چند می‌شود؟",
+              "payload": {
+                "a": 5,
+                "op": "+",
+                "b": 5,
+                "objects": ""
+              },
+              "answer": "۱۰",
+              "distractors": [
+                "۹",
+                "۸"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m4l3e3",
+              "type": "equation",
+              "prompt": "۶ + ۴ = ؟",
+              "audio_script": "«شش» به‌اضافهٔ «چهار» چند می‌شود؟",
+              "payload": {
+                "a": 6,
+                "op": "+",
+                "b": 4,
+                "objects": ""
+              },
+              "answer": "۱۰",
+              "distractors": [
+                "۹",
+                "۸"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m4l3e4",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "هفت به‌اضافهٔ چند می‌شود ده؟ عدد جا افتاده را پیدا کنید.",
+              "payload": {
+                "display": "۷ + ؟ = ۱۰"
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "دوباره امتحان کنید."
+            },
+            {
+              "id": "m4l3e5",
+              "type": "equation",
+              "prompt": "۷ + ۳ = ؟",
+              "audio_script": "«هفت» به‌اضافهٔ «سه» چند می‌شود؟",
+              "payload": {
+                "a": 7,
+                "op": "+",
+                "b": 3,
+                "objects": ""
+              },
+              "answer": "۱۰",
+              "distractors": [
+                "۹",
+                "۸"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m4l3e6",
+              "type": "number_line",
+              "prompt": "کدام عدد؟",
+              "audio_script": "شش به‌اضافهٔ سه: از «شش» شروع کنید و سه قدم جلو بروید.",
+              "payload": {
+                "min": 0,
+                "max": 10,
+                "start": 6,
+                "move": 3
+              },
+              "answer": "۹",
+              "distractors": [
+                "۸",
+                "۱۰"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ از اول، آرام جلو بروید."
+            },
+            {
+              "id": "m4l3e7",
+              "type": "equation",
+              "prompt": "۸ + ۲ = ؟",
+              "audio_script": "«هشت» به‌اضافهٔ «دو» چند می‌شود؟",
+              "payload": {
+                "a": 8,
+                "op": "+",
+                "b": 2,
+                "objects": ""
+              },
+              "answer": "۱۰",
+              "distractors": [
+                "۹",
+                "۸"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m4l3e8",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "چه عددی به‌اضافهٔ یک می‌شود ده؟",
+              "payload": {
+                "display": "؟ + ۱ = ۱۰"
+              },
+              "answer": "۹",
+              "distractors": [
+                "۸",
+                "۱۰"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "m4l3e9",
+              "type": "equation",
+              "prompt": "۹ + ۱ = ؟",
+              "audio_script": "«نه» به‌اضافهٔ «یک» چند می‌شود؟",
+              "payload": {
+                "a": 9,
+                "op": "+",
+                "b": 1,
+                "objects": ""
+              },
+              "answer": "۱۰",
+              "distractors": [
+                "۹",
+                "۸"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m4l3e10",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر جمع را به جوابش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۸ + ۲",
+                    "۱۰"
+                  ],
+                  [
+                    "۳ + ۴",
+                    "۷"
+                  ],
+                  [
+                    "۶ + ۳",
+                    "۹"
+                  ]
+                ]
+              },
+              "answer": "۸ + ۲=۱۰|۳ + ۴=۷|۶ + ۳=۹",
+              "distractors": [],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            }
+          ]
+        },
+        {
+          "id": "m4l4",
+          "title": "جمع در کارهای روزانه",
+          "exercises": [
+            {
+              "id": "m4l4e1",
+              "type": "intro",
+              "prompt": "🍞🍞 + 🍞🍞🍞",
+              "audio_script": "شما هر روز جمع می‌کنید، حتی بی‌آنکه حواستان باشد: وقتی نان‌ها را می‌شمارید یا برای مهمان‌ها استکان می‌چینید. بیایید چند نمونهٔ روزمره را حل کنیم.",
+              "payload": {
+                "display": "🍞🍞 + 🍞🍞🍞",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m4l4e2",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "سر سفره سه نان هست و دو نان دیگر هم می‌خرید. روی هم چند نان دارید؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۵",
+              "distractors": [
+                "۴",
+                "۶"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "m4l4e3",
+              "type": "equation",
+              "prompt": "۲ + ۶ = ؟",
+              "audio_script": "در یخچال دو تخم‌مرغ هست و شش تخم‌مرغ دیگر هم می‌خرید. روی هم چند تخم‌مرغ می‌شود؟",
+              "payload": {
+                "a": 2,
+                "op": "+",
+                "b": 6,
+                "objects": "🥚"
+              },
+              "answer": "۸",
+              "distractors": [
+                "۷",
+                "۹"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m4l4e4",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "چهار مهمان آمده‌اند و سه مهمان دیگر هم در راه‌اند. چند استکان چای لازم دارید؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۷",
+              "distractors": [
+                "۶",
+                "۸"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m4l4e5",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام طرف بیشتر است؟ اول جمع را حساب کنید.",
+              "payload": {
+                "left": "۳ + ۲",
+                "right": "۴",
+                "ask": "more"
+              },
+              "answer": "left",
+              "distractors": [
+                "right",
+                "equal"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m4l4e6",
+              "type": "equation",
+              "prompt": "۴ + ۴ = ؟",
+              "audio_script": "چهار گوجه‌فرنگی در سبد است و چهار تا هم روی میز. روی هم چند گوجه‌فرنگی؟",
+              "payload": {
+                "a": 4,
+                "op": "+",
+                "b": 4,
+                "objects": "🍅"
+              },
+              "answer": "۸",
+              "distractors": [
+                "۷",
+                "۹"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m4l4e7",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "یک گلدان شش گل دارد و گلدان دیگر سه گل. روی هم چند گل؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۹",
+              "distractors": [
+                "۸",
+                "۱۰"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "m4l4e8",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام طرف بیشتر است؟ اگر برابرند، علامت مساوی را بزنید.",
+              "payload": {
+                "left": "۵ + ۱",
+                "right": "۲ + ۴",
+                "ask": "more"
+              },
+              "answer": "equal",
+              "distractors": [
+                "left",
+                "right"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            },
+            {
+              "id": "m4l4e9",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "دو کلید خانه دارید و یک کلید ماشین. روی هم چند کلید است؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "m4l4e10",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر جمع را به جوابش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "☕☕ + ☕",
+                    "۳"
+                  ],
+                  [
+                    "🍊🍊🍊 + 🍊🍊",
+                    "۵"
+                  ],
+                  [
+                    "🌷🌷🌷🌷 + 🌷🌷",
+                    "۶"
+                  ]
+                ]
+              },
+              "answer": "☕☕ + ☕=۳|🍊🍊🍊 + 🍊🍊=۵|🌷🌷🌷🌷 + 🌷🌷=۶",
+              "distractors": [],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m5",
+      "title": "تفریق تا ۱۰",
+      "emoji": "➖",
+      "goal": "برداشتن از یک دسته و شمردن آنچه می‌ماند؛ آشنایی با علامت - و کم کردن تا ده",
+      "lessons": [
+        {
+          "id": "m5l1",
+          "title": "برداشتن",
+          "exercises": [
+            {
+              "id": "m5l1e1",
+              "type": "intro",
+              "prompt": "🍎🍎🍎🍎🍎 - 🍎🍎",
+              "audio_script": "وقتی از یک دسته چند تا برمی‌داریم، می‌گوییم «تفریق» یا «کم کردن». پنج سیب داشتید و دو تا را خوردید؛ سه سیب ماند.",
+              "payload": {
+                "display": "🍎🍎🍎🍎🍎 - 🍎🍎",
+                "visual": "🍎🍎🍎"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m5l1e2",
+              "type": "equation",
+              "prompt": "۴ - ۱ = ؟",
+              "audio_script": "چهار سیب داشتید و یک تا را برداشتید. چند سیب ماند؟",
+              "payload": {
+                "a": 4,
+                "op": "-",
+                "b": 1,
+                "objects": "🍎"
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m5l1e3",
+              "type": "equation",
+              "prompt": "۵ - ۲ = ؟",
+              "audio_script": "پنج پرتقال داشتید و دو تا را برداشتید. چند پرتقال ماند؟",
+              "payload": {
+                "a": 5,
+                "op": "-",
+                "b": 2,
+                "objects": "🍊"
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m5l1e4",
+              "type": "equation",
+              "prompt": "۳ - ۳ = ؟",
+              "audio_script": "سه نان داشتید و هر سه را به همسایه دادید. چند نان ماند؟",
+              "payload": {
+                "a": 3,
+                "op": "-",
+                "b": 3,
+                "objects": "🍞"
+              },
+              "answer": "۰",
+              "distractors": [
+                "۱",
+                "۲"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m5l1e5",
+              "type": "tap_picture",
+              "prompt": "۵ - ۱",
+              "audio_script": "پنج گل در گلدان بود و یکی را برداشتید. کدام تصویر گل‌های باقی‌مانده را نشان می‌دهد؟",
+              "payload": {
+                "display": "۵ - ۱"
+              },
+              "answer": "🌷🌷🌷🌷",
+              "distractors": [
+                "🌷🌷🌷",
+                "🌷🌷🌷🌷🌷"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "m5l1e6",
+              "type": "equation",
+              "prompt": "۶ - ۲ = ؟",
+              "audio_script": "شش تخم‌مرغ داشتید و دو تا را برداشتید. چند تخم‌مرغ ماند؟",
+              "payload": {
+                "a": 6,
+                "op": "-",
+                "b": 2,
+                "objects": "🥚"
+              },
+              "answer": "۴",
+              "distractors": [
+                "۳",
+                "۵"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m5l1e7",
+              "type": "equation",
+              "prompt": "۷ - ۴ = ؟",
+              "audio_script": "هفت استکان چای ریختید و مهمان‌ها چهار تا را برداشتند. چند استکان روی سینی ماند؟",
+              "payload": {
+                "a": 7,
+                "op": "-",
+                "b": 4,
+                "objects": "☕"
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m5l1e8",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "شش پرتقال داشتید و دو تا را پوست گرفتید و خوردید. چند پرتقال ماند؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۴",
+              "distractors": [
+                "۳",
+                "۵"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m5l1e9",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر تفریق را به جوابش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "🍎🍎🍎 - 🍎",
+                    "۲"
+                  ],
+                  [
+                    "🍎🍎🍎🍎 - 🍎",
+                    "۳"
+                  ],
+                  [
+                    "🍎🍎 - 🍎🍎",
+                    "۰"
+                  ]
+                ]
+              },
+              "answer": "🍎🍎🍎 - 🍎=۲|🍎🍎🍎🍎 - 🍎=۳|🍎🍎 - 🍎🍎=۰",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            },
+            {
+              "id": "m5l1e10",
+              "type": "equation",
+              "prompt": "۲ - ۱ = ؟",
+              "audio_script": "دو کلید داشتید و یک تا را برداشتید. چند کلید ماند؟",
+              "payload": {
+                "a": 2,
+                "op": "-",
+                "b": 1,
+                "objects": "🔑"
+              },
+              "answer": "۱",
+              "distractors": [
+                "۰",
+                "۲"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            }
+          ]
+        },
+        {
+          "id": "m5l2",
+          "title": "علامت -",
+          "exercises": [
+            {
+              "id": "m5l2e1",
+              "type": "intro",
+              "prompt": "-",
+              "audio_script": "این علامت «منها» است؛ یعنی «کم کنید». مثلاً: پنج منهای دو، مساوی سه.",
+              "payload": {
+                "display": "۵ - ۲ = ۳",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m5l2e2",
+              "type": "equation",
+              "prompt": "۶ - ۱ = ؟",
+              "audio_script": "«شش» منهای «یک» چند می‌شود؟",
+              "payload": {
+                "a": 6,
+                "op": "-",
+                "b": 1,
+                "objects": ""
+              },
+              "answer": "۵",
+              "distractors": [
+                "۴",
+                "۶"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m5l2e3",
+              "type": "equation",
+              "prompt": "۸ - ۳ = ؟",
+              "audio_script": "«هشت» منهای «سه» چند می‌شود؟",
+              "payload": {
+                "a": 8,
+                "op": "-",
+                "b": 3,
+                "objects": ""
+              },
+              "answer": "۵",
+              "distractors": [
+                "۴",
+                "۶"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m5l2e4",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "هفت منهای دو چند می‌شود؟",
+              "payload": {
+                "display": "۷ - ۲ = ؟"
+              },
+              "answer": "۵",
+              "distractors": [
+                "۴",
+                "۶"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "m5l2e5",
+              "type": "number_line",
+              "prompt": "کدام عدد؟",
+              "audio_script": "هشت منهای سه: روی خط عدد از «هشت» شروع کنید و سه قدم به عقب برگردید.",
+              "payload": {
+                "min": 0,
+                "max": 10,
+                "start": 8,
+                "move": -3
+              },
+              "answer": "۵",
+              "distractors": [
+                "۴",
+                "۶"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "قدم‌ها را یکی‌یکی بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m5l2e6",
+              "type": "equation",
+              "prompt": "۹ - ۴ = ؟",
+              "audio_script": "«نه» منهای «چهار» چند می‌شود؟",
+              "payload": {
+                "a": 9,
+                "op": "-",
+                "b": 4,
+                "objects": ""
+              },
+              "answer": "۵",
+              "distractors": [
+                "۴",
+                "۶"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m5l2e7",
+              "type": "number_line",
+              "prompt": "کدام عدد؟",
+              "audio_script": "پنج منهای دو: از «پنج» دو قدم به عقب برگردید.",
+              "payload": {
+                "min": 0,
+                "max": 10,
+                "start": 5,
+                "move": -2
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ از اول، آرام جلو بروید."
+            },
+            {
+              "id": "m5l2e8",
+              "type": "equation",
+              "prompt": "۵ - ۵ = ؟",
+              "audio_script": "«پنج» منهای «پنج» چند می‌شود؟",
+              "payload": {
+                "a": 5,
+                "op": "-",
+                "b": 5,
+                "objects": ""
+              },
+              "answer": "۰",
+              "distractors": [
+                "۱",
+                "۲"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m5l2e9",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر تفریق را به جوابش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۴ - ۱",
+                    "۳"
+                  ],
+                  [
+                    "۹ - ۲",
+                    "۷"
+                  ],
+                  [
+                    "۶ - ۶",
+                    "۰"
+                  ]
+                ]
+              },
+              "answer": "۴ - ۱=۳|۹ - ۲=۷|۶ - ۶=۰",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            },
+            {
+              "id": "m5l2e10",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "ده منهای چهار چند می‌شود؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۶",
+              "distractors": [
+                "۵",
+                "۷"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            }
+          ]
+        },
+        {
+          "id": "m5l3",
+          "title": "تفریق تا ۱۰",
+          "exercises": [
+            {
+              "id": "m5l3e1",
+              "type": "intro",
+              "prompt": "۱۰ - ۳ = ۷",
+              "audio_script": "از ده هم می‌توانیم کم کنیم. ده انگشت دارید؛ سه انگشت را خم کنید: هفت انگشت می‌ماند.",
+              "payload": {
+                "display": "۱۰ - ۳ = ۷",
+                "visual": "✋✋"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m5l3e2",
+              "type": "equation",
+              "prompt": "۱۰ - ۳ = ؟",
+              "audio_script": "«ده» منهای «سه» چند می‌شود؟",
+              "payload": {
+                "a": 10,
+                "op": "-",
+                "b": 3,
+                "objects": ""
+              },
+              "answer": "۷",
+              "distractors": [
+                "۶",
+                "۸"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m5l3e3",
+              "type": "equation",
+              "prompt": "۱۰ - ۶ = ؟",
+              "audio_script": "«ده» منهای «شش» چند می‌شود؟",
+              "payload": {
+                "a": 10,
+                "op": "-",
+                "b": 6,
+                "objects": ""
+              },
+              "answer": "۴",
+              "distractors": [
+                "۳",
+                "۵"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m5l3e4",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "ده منهای چند می‌شود هشت؟",
+              "payload": {
+                "display": "۱۰ - ؟ = ۸"
+              },
+              "answer": "۲",
+              "distractors": [
+                "۱",
+                "۳"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "دوباره امتحان کنید."
+            },
+            {
+              "id": "m5l3e5",
+              "type": "equation",
+              "prompt": "۹ - ۹ = ؟",
+              "audio_script": "«نه» منهای «نه» چند می‌شود؟",
+              "payload": {
+                "a": 9,
+                "op": "-",
+                "b": 9,
+                "objects": ""
+              },
+              "answer": "۰",
+              "distractors": [
+                "۱",
+                "۲"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m5l3e6",
+              "type": "number_line",
+              "prompt": "کدام عدد؟",
+              "audio_script": "ده منهای چهار: از «ده» چهار قدم به عقب برگردید.",
+              "payload": {
+                "min": 0,
+                "max": 10,
+                "start": 10,
+                "move": -4
+              },
+              "answer": "۶",
+              "distractors": [
+                "۵",
+                "۷"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "قدم‌ها را یکی‌یکی بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m5l3e7",
+              "type": "equation",
+              "prompt": "۷ - ۵ = ؟",
+              "audio_script": "«هفت» منهای «پنج» چند می‌شود؟",
+              "payload": {
+                "a": 7,
+                "op": "-",
+                "b": 5,
+                "objects": ""
+              },
+              "answer": "۲",
+              "distractors": [
+                "۱",
+                "۳"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m5l3e8",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "از چه عددی چهار تا کم کنیم که پنج بماند؟",
+              "payload": {
+                "display": "؟ - ۴ = ۵"
+              },
+              "answer": "۹",
+              "distractors": [
+                "۸",
+                "۱"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "m5l3e9",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر تفریق را به جوابش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۱۰ - ۱",
+                    "۹"
+                  ],
+                  [
+                    "۸ - ۴",
+                    "۴"
+                  ],
+                  [
+                    "۱۰ - ۵",
+                    "۵"
+                  ]
+                ]
+              },
+              "answer": "۱۰ - ۱=۹|۸ - ۴=۴|۱۰ - ۵=۵",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            },
+            {
+              "id": "m5l3e10",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "ده نان خریدید و هفت تا را در فریزر گذاشتید. چند نان بیرون ماند؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            }
+          ]
+        },
+        {
+          "id": "m5l4",
+          "title": "جمع یا تفریق؟",
+          "exercises": [
+            {
+              "id": "m5l4e1",
+              "type": "intro",
+              "prompt": "+  -",
+              "audio_script": "حالا هر دو را با هم تمرین می‌کنیم. خوب به علامت نگاه کنید: + یعنی اضافه کنید، و - یعنی کم کنید.",
+              "payload": {
+                "display": "+  -",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m5l4e2",
+              "type": "equation",
+              "prompt": "۳ + ۴ = ؟",
+              "audio_script": "«سه» به‌اضافهٔ «چهار» چند می‌شود؟",
+              "payload": {
+                "a": 3,
+                "op": "+",
+                "b": 4,
+                "objects": ""
+              },
+              "answer": "۷",
+              "distractors": [
+                "۶",
+                "۸"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m5l4e3",
+              "type": "equation",
+              "prompt": "۸ - ۲ = ؟",
+              "audio_script": "«هشت» منهای «دو» چند می‌شود؟",
+              "payload": {
+                "a": 8,
+                "op": "-",
+                "b": 2,
+                "objects": ""
+              },
+              "answer": "۶",
+              "distractors": [
+                "۵",
+                "۷"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m5l4e4",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "کدام علامت درست است؟ شش و دو چطور می‌شود هشت؟",
+              "payload": {
+                "display": "۶ ؟ ۲ = ۸"
+              },
+              "answer": "+",
+              "distractors": [
+                "-"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "m5l4e5",
+              "type": "equation",
+              "prompt": "۵ + ۴ = ؟",
+              "audio_script": "«پنج» به‌اضافهٔ «چهار» چند می‌شود؟",
+              "payload": {
+                "a": 5,
+                "op": "+",
+                "b": 4,
+                "objects": ""
+              },
+              "answer": "۹",
+              "distractors": [
+                "۸",
+                "۱۰"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m5l4e6",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "پنج تخم‌مرغ داشتید و سه تا را برای املت شکستید. چند تخم‌مرغ ماند؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۲",
+              "distractors": [
+                "۱",
+                "۳"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m5l4e7",
+              "type": "equation",
+              "prompt": "۹ - ۶ = ؟",
+              "audio_script": "«نه» منهای «شش» چند می‌شود؟",
+              "payload": {
+                "a": 9,
+                "op": "-",
+                "b": 6,
+                "objects": ""
+              },
+              "answer": "۳",
+              "distractors": [
+                "۲",
+                "۴"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "دوباره با دقت حساب کنید؛ می‌توانید با انگشت بشمارید."
+            },
+            {
+              "id": "m5l4e8",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "این بار کدام علامت؟ شش و دو چطور می‌شود چهار؟",
+              "payload": {
+                "display": "۶ ؟ ۲ = ۴"
+              },
+              "answer": "-",
+              "distractors": [
+                "+"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "m5l4e9",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "چهار مهمان آمدند و بعد دو مهمان دیگر هم رسیدند. حالا چند مهمان دارید؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۶",
+              "distractors": [
+                "۵",
+                "۷"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "m5l4e10",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کدام را به جوابش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۲ + ۲",
+                    "۴"
+                  ],
+                  [
+                    "۷ - ۲",
+                    "۵"
+                  ],
+                  [
+                    "۳ + ۶",
+                    "۹"
+                  ]
+                ]
+              },
+              "answer": "۲ + ۲=۴|۷ - ۲=۵|۳ + ۶=۹",
+              "distractors": [],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m6",
+      "title": "پول: اسکناس و سکه",
+      "emoji": "💵",
+      "goal": "شناختن اسکناس‌های هزار، دو هزار، پنج هزار و ده هزار تومانی و سکهٔ پانصد تومانی، و شمردن مبلغ‌های ساده",
+      "lessons": [
+        {
+          "id": "m6l1",
+          "title": "اسکناس‌ها",
+          "exercises": [
+            {
+              "id": "m6l1e1",
+              "type": "intro",
+              "prompt": "💵",
+              "audio_script": "در خرید روزانه با «تومان» حساب می‌کنیم. در این درس با چهار اسکناس آشنا می‌شوید: هزار تومانی، دو هزار تومانی، پنج هزار تومانی و ده هزار تومانی. یک نکتهٔ مهم: روی اسکناس، مبلغ به «ریال» نوشته شده است. اگر یک صفر از آخرش بردارید، تومان می‌شود.",
+              "payload": {
+                "display": "💵",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m6l1e2",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "این اسکناس چند تومان است؟",
+              "payload": {
+                "items": [
+                  5000
+                ]
+              },
+              "answer": "۵ هزار تومان",
+              "distractors": [
+                "۴ هزار تومان",
+                "۶ هزار تومان"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m6l1e3",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "اسکناس دو هزار تومانی را پیدا کنید.",
+              "payload": {
+                "choice_kind": "money"
+              },
+              "answer": "۲ هزار تومان",
+              "distractors": [
+                "هزار تومان",
+                "۳ هزار تومان"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "m6l1e4",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "این اسکناس چند تومان است؟",
+              "payload": {
+                "items": [
+                  1000
+                ]
+              },
+              "answer": "هزار تومان",
+              "distractors": [
+                "۲ هزار تومان",
+                "۳ هزار تومان"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            },
+            {
+              "id": "m6l1e5",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "روی اسکناس ریال نوشته شده است. هر کدام را به تومانش وصل کنید؛ یادتان باشد: یک صفر کمتر.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۱۰٬۰۰۰ ریال",
+                    "هزار تومان"
+                  ],
+                  [
+                    "۲۰٬۰۰۰ ریال",
+                    "۲ هزار تومان"
+                  ],
+                  [
+                    "۵۰٬۰۰۰ ریال",
+                    "۵ هزار تومان"
+                  ],
+                  [
+                    "۱۰۰٬۰۰۰ ریال",
+                    "۱۰ هزار تومان"
+                  ]
+                ]
+              },
+              "answer": "۱۰٬۰۰۰ ریال=هزار تومان|۲۰٬۰۰۰ ریال=۲ هزار تومان|۵۰٬۰۰۰ ریال=۵ هزار تومان|۱۰۰٬۰۰۰ ریال=۱۰ هزار تومان",
+              "distractors": [],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            },
+            {
+              "id": "m6l1e6",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "اسکناس ده هزار تومانی کدام است؟",
+              "payload": {
+                "choice_kind": "money"
+              },
+              "answer": "۱۰ هزار تومان",
+              "distractors": [
+                "۹ هزار تومان",
+                "۱۱ هزار تومان"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m6l1e7",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "این اسکناس چند تومان است؟",
+              "payload": {
+                "items": [
+                  10000
+                ]
+              },
+              "answer": "۱۰ هزار تومان",
+              "distractors": [
+                "۹ هزار تومان",
+                "۱۱ هزار تومان"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m6l1e8",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام اسکناس بیشتر می‌ارزد؟",
+              "payload": {
+                "left": "۲ هزار تومان",
+                "right": "۵ هزار تومان",
+                "ask": "more"
+              },
+              "answer": "right",
+              "distractors": [
+                "left",
+                "equal"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m6l1e9",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "اسکناس پنج هزار تومانی را پیدا کنید.",
+              "payload": {
+                "choice_kind": "money"
+              },
+              "answer": "۵ هزار تومان",
+              "distractors": [
+                "۴ هزار تومان",
+                "۶ هزار تومان"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "m6l1e10",
+              "type": "compare_more_less",
+              "prompt": "کدام کمتر؟",
+              "audio_script": "کدام اسکناس کمتر می‌ارزد؟",
+              "payload": {
+                "left": "۱۰ هزار تومان",
+                "right": "هزار تومان",
+                "ask": "less"
+              },
+              "answer": "right",
+              "distractors": [
+                "left",
+                "equal"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            }
+          ]
+        },
+        {
+          "id": "m6l2",
+          "title": "سکه و پول خرد",
+          "exercises": [
+            {
+              "id": "m6l2e1",
+              "type": "intro",
+              "prompt": "🪙",
+              "audio_script": "سکه‌ها این روزها کمتر دست به دست می‌شوند، اما خوب است آن‌ها را بشناسید. این سکهٔ پانصد تومانی است. دو سکهٔ پانصد تومانی، روی هم می‌شود هزار تومان.",
+              "payload": {
+                "display": "🪙",
+                "visual": "🪙🪙 = 💵"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m6l2e2",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "این سکه چند تومان است؟",
+              "payload": {
+                "items": [
+                  500
+                ]
+              },
+              "answer": "۵۰۰ تومان",
+              "distractors": [
+                "هزار تومان",
+                "۲ هزار تومان"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            },
+            {
+              "id": "m6l2e3",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "دو سکهٔ پانصد تومانی روی هم چقدر می‌شود؟",
+              "payload": {
+                "items": [
+                  500,
+                  500
+                ]
+              },
+              "answer": "هزار تومان",
+              "distractors": [
+                "۲ هزار تومان",
+                "۳ هزار تومان"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m6l2e4",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "مبلغ پانصد تومان را پیدا کنید.",
+              "payload": {
+                "choice_kind": "money"
+              },
+              "answer": "۵۰۰ تومان",
+              "distractors": [
+                "هزار تومان",
+                "۵ هزار تومان"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "m6l2e5",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "دو سکه و یک اسکناس هزار تومانی. روی هم چقدر است؟",
+              "payload": {
+                "items": [
+                  500,
+                  500,
+                  1000
+                ]
+              },
+              "answer": "۲ هزار تومان",
+              "distractors": [
+                "هزار تومان",
+                "۳ هزار تومان"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            },
+            {
+              "id": "m6l2e6",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "دو سکهٔ پانصد تومانی و یک اسکناس هزار تومانی. کدام بیشتر است؟ اگر برابرند، علامت مساوی را بزنید.",
+              "payload": {
+                "left": "🪙🪙",
+                "right": "💵",
+                "ask": "more"
+              },
+              "answer": "equal",
+              "distractors": [
+                "left",
+                "right"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m6l2e7",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "این پول‌ها را با هم بشمارید. چقدر است؟",
+              "payload": {
+                "items": [
+                  1000,
+                  500,
+                  500,
+                  1000
+                ]
+              },
+              "answer": "۳ هزار تومان",
+              "distractors": [
+                "۲ هزار تومان",
+                "۴ هزار تومان"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m6l2e8",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر دسته سکه را به مبلغش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "🪙",
+                    "۵۰۰ تومان"
+                  ],
+                  [
+                    "🪙🪙",
+                    "هزار تومان"
+                  ],
+                  [
+                    "🪙🪙🪙🪙",
+                    "۲ هزار تومان"
+                  ]
+                ]
+              },
+              "answer": "🪙=۵۰۰ تومان|🪙🪙=هزار تومان|🪙🪙🪙🪙=۲ هزار تومان",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            },
+            {
+              "id": "m6l2e9",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "چهار سکهٔ پانصد تومانی چقدر می‌شود؟",
+              "payload": {
+                "choice_kind": "money"
+              },
+              "answer": "۲ هزار تومان",
+              "distractors": [
+                "هزار تومان",
+                "۳ هزار تومان"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m6l2e10",
+              "type": "compare_more_less",
+              "prompt": "کدام کمتر؟",
+              "audio_script": "یک سکهٔ پانصد تومانی یا یک اسکناس هزار تومانی؛ کدام کمتر است؟",
+              "payload": {
+                "left": "🪙",
+                "right": "💵",
+                "ask": "less"
+              },
+              "answer": "left",
+              "distractors": [
+                "right",
+                "equal"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            }
+          ]
+        },
+        {
+          "id": "m6l3",
+          "title": "شمردن پول",
+          "exercises": [
+            {
+              "id": "m6l3e1",
+              "type": "intro",
+              "prompt": "💵💵💵",
+              "audio_script": "برای شمردن پول، اسکناس‌های هم‌شکل را کنار هم بگذارید و از بزرگ‌ترین شروع کنید. سه اسکناس هزار تومانی می‌شود سه هزار تومان.",
+              "payload": {
+                "display": "💵💵💵",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m6l3e2",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "سه اسکناس هزار تومانی. روی هم چقدر است؟",
+              "payload": {
+                "items": [
+                  1000,
+                  1000,
+                  1000
+                ]
+              },
+              "answer": "۳ هزار تومان",
+              "distractors": [
+                "۲ هزار تومان",
+                "۴ هزار تومان"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            },
+            {
+              "id": "m6l3e3",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "دو اسکناس دو هزار تومانی. چقدر می‌شود؟",
+              "payload": {
+                "items": [
+                  2000,
+                  2000
+                ]
+              },
+              "answer": "۴ هزار تومان",
+              "distractors": [
+                "۳ هزار تومان",
+                "۵ هزار تومان"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m6l3e4",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "یک پنج هزار تومانی و یک هزار تومانی. روی هم چقدر است؟",
+              "payload": {
+                "items": [
+                  5000,
+                  1000
+                ]
+              },
+              "answer": "۶ هزار تومان",
+              "distractors": [
+                "۵ هزار تومان",
+                "۷ هزار تومان"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            },
+            {
+              "id": "m6l3e5",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "این اسکناس‌ها را بشمارید. از بزرگ‌ترین شروع کنید.",
+              "payload": {
+                "items": [
+                  5000,
+                  2000,
+                  1000
+                ]
+              },
+              "answer": "۸ هزار تومان",
+              "distractors": [
+                "۷ هزار تومان",
+                "۹ هزار تومان"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m6l3e6",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "دو اسکناس پنج هزار تومانی. چقدر می‌شود؟",
+              "payload": {
+                "items": [
+                  5000,
+                  5000
+                ]
+              },
+              "answer": "۱۰ هزار تومان",
+              "distractors": [
+                "۹ هزار تومان",
+                "۱۱ هزار تومان"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            },
+            {
+              "id": "m6l3e7",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "این اسکناس‌ها روی هم چقدر است؟",
+              "payload": {
+                "items": [
+                  2000,
+                  2000,
+                  2000,
+                  1000
+                ]
+              },
+              "answer": "۷ هزار تومان",
+              "distractors": [
+                "۶ هزار تومان",
+                "۸ هزار تومان"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m6l3e8",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "کدام مبلغ نُه هزار تومان است؟",
+              "payload": {
+                "choice_kind": "money"
+              },
+              "answer": "۹ هزار تومان",
+              "distractors": [
+                "۸ هزار تومان",
+                "۱۰ هزار تومان"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "m6l3e9",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "پنج هزار و دو هزار و دو هزار. روی هم چقدر است؟",
+              "payload": {
+                "items": [
+                  5000,
+                  2000,
+                  2000
+                ]
+              },
+              "answer": "۹ هزار تومان",
+              "distractors": [
+                "۸ هزار تومان",
+                "۱۰ هزار تومان"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            },
+            {
+              "id": "m6l3e10",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "اینجا همهٔ اسکناس‌ها هزار تومانی‌اند. هر مبلغ را به دسته‌اش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۲ هزار تومان",
+                    "💵💵"
+                  ],
+                  [
+                    "۵ هزار تومان",
+                    "💵💵💵💵💵"
+                  ],
+                  [
+                    "۳ هزار تومان",
+                    "💵💵💵"
+                  ]
+                ]
+              },
+              "answer": "۲ هزار تومان=💵💵|۵ هزار تومان=💵💵💵💵💵|۳ هزار تومان=💵💵💵",
+              "distractors": [],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            }
+          ]
+        },
+        {
+          "id": "m6l4",
+          "title": "کدام بیشتر است؟",
+          "exercises": [
+            {
+              "id": "m6l4e1",
+              "type": "intro",
+              "prompt": "۵ هزار تومان",
+              "audio_script": "وقتی دو مبلغ را مقایسه می‌کنیم، فقط به عدد کنار «هزار تومان» نگاه کنید. پنج هزار تومان از سه هزار تومان بیشتر است، چون پنج از سه بیشتر است.",
+              "payload": {
+                "display": "۵ هزار تومان  ۳ هزار تومان",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m6l4e2",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام مبلغ بیشتر است؟",
+              "payload": {
+                "left": "۴ هزار تومان",
+                "right": "۷ هزار تومان",
+                "ask": "more"
+              },
+              "answer": "right",
+              "distractors": [
+                "left",
+                "equal"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m6l4e3",
+              "type": "compare_more_less",
+              "prompt": "کدام کمتر؟",
+              "audio_script": "کدام مبلغ کمتر است؟",
+              "payload": {
+                "left": "۹ هزار تومان",
+                "right": "۶ هزار تومان",
+                "ask": "less"
+              },
+              "answer": "right",
+              "distractors": [
+                "left",
+                "equal"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            },
+            {
+              "id": "m6l4e4",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "این اسکناس‌ها چقدر است؟",
+              "payload": {
+                "items": [
+                  2000,
+                  1000
+                ]
+              },
+              "answer": "۳ هزار تومان",
+              "distractors": [
+                "۲ هزار تومان",
+                "۴ هزار تومان"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m6l4e5",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام مبلغ بیشتر است؟",
+              "payload": {
+                "left": "۱۰ هزار تومان",
+                "right": "۸ هزار تومان",
+                "ask": "more"
+              },
+              "answer": "left",
+              "distractors": [
+                "right",
+                "equal"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m6l4e6",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام بیشتر است؟ اگر برابرند، علامت مساوی را بزنید.",
+              "payload": {
+                "left": "۳ هزار تومان",
+                "right": "۳ هزار تومان",
+                "ask": "more"
+              },
+              "answer": "equal",
+              "distractors": [
+                "left",
+                "right"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            },
+            {
+              "id": "m6l4e7",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "کدام مبلغ از همه کمتر است؟ دو هزار، شش هزار یا هشت هزار تومان؟",
+              "payload": {
+                "choice_kind": "money"
+              },
+              "answer": "۲ هزار تومان",
+              "distractors": [
+                "۶ هزار تومان",
+                "۸ هزار تومان"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "m6l4e8",
+              "type": "compare_more_less",
+              "prompt": "کدام کمتر؟",
+              "audio_script": "کدام کمتر است؟",
+              "payload": {
+                "left": "هزار تومان",
+                "right": "۵۰۰ تومان",
+                "ask": "less"
+              },
+              "answer": "right",
+              "distractors": [
+                "left",
+                "equal"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m6l4e9",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "این اسکناس‌ها چقدر است؟",
+              "payload": {
+                "items": [
+                  5000,
+                  1000,
+                  1000
+                ]
+              },
+              "answer": "۷ هزار تومان",
+              "distractors": [
+                "۶ هزار تومان",
+                "۸ هزار تومان"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            },
+            {
+              "id": "m6l4e10",
+              "type": "compare_more_less",
+              "prompt": "کدام بیشتر؟",
+              "audio_script": "کدام مبلغ بیشتر است؟",
+              "payload": {
+                "left": "۷ هزار تومان",
+                "right": "۲ هزار تومان",
+                "ask": "more"
+              },
+              "answer": "left",
+              "distractors": [
+                "right",
+                "equal"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دو طرف را دوباره با دقت نگاه کنید."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m7",
+      "title": "خرید و پرداخت",
+      "emoji": "🛒",
+      "goal": "پرداخت مبلغ دقیق برای خریدهای روزانه (نان، چای، میوه)، جمع کردن قیمت‌ها و حساب کردن باقی پول",
+      "lessons": [
+        {
+          "id": "m7l1",
+          "title": "پرداخت دقیق",
+          "exercises": [
+            {
+              "id": "m7l1e1",
+              "type": "intro",
+              "prompt": "🍞",
+              "audio_script": "فرض کنید در نانوایی هستید و نان سه هزار تومان است. از کیف پولتان اسکناس‌هایی بردارید که روی هم درست سه هزار تومان بشود.",
+              "payload": {
+                "display": "🍞",
+                "visual": "💵💵💵"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m7l1e2",
+              "type": "pay_amount",
+              "prompt": "بپردازید",
+              "audio_script": "نان سه هزار تومان است. درست همین مبلغ را بپردازید.",
+              "payload": {
+                "item": "🍞",
+                "price": 3000,
+                "wallet": [
+                  1000,
+                  1000,
+                  1000,
+                  5000
+                ]
+              },
+              "answer": "۳ هزار تومان",
+              "distractors": [
+                "۲ هزار تومان",
+                "۴ هزار تومان"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m7l1e3",
+              "type": "pay_amount",
+              "prompt": "بپردازید",
+              "audio_script": "یک بسته چای کوچک دو هزار تومان است. پولش را بپردازید.",
+              "payload": {
+                "item": "☕",
+                "price": 2000,
+                "wallet": [
+                  1000,
+                  2000,
+                  5000
+                ]
+              },
+              "answer": "۲ هزار تومان",
+              "distractors": [
+                "هزار تومان",
+                "۳ هزار تومان"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            },
+            {
+              "id": "m7l1e4",
+              "type": "pay_amount",
+              "prompt": "بپردازید",
+              "audio_script": "یک کیسه سیب پنج هزار تومان است. اسکناس درست را بدهید.",
+              "payload": {
+                "item": "🍎",
+                "price": 5000,
+                "wallet": [
+                  1000,
+                  2000,
+                  5000
+                ]
+              },
+              "answer": "۵ هزار تومان",
+              "distractors": [
+                "۴ هزار تومان",
+                "۶ هزار تومان"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m7l1e5",
+              "type": "count_money",
+              "prompt": "چقدر؟",
+              "audio_script": "در کیف پولتان این دو اسکناس هست. چقدر پول دارید؟",
+              "payload": {
+                "items": [
+                  2000,
+                  2000
+                ]
+              },
+              "answer": "۴ هزار تومان",
+              "distractors": [
+                "۳ هزار تومان",
+                "۵ هزار تومان"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            },
+            {
+              "id": "m7l1e6",
+              "type": "pay_amount",
+              "prompt": "بپردازید",
+              "audio_script": "یک شانه تخم‌مرغ کوچک چهار هزار تومان است. بپردازید.",
+              "payload": {
+                "item": "🥚",
+                "price": 4000,
+                "wallet": [
+                  1000,
+                  2000,
+                  2000,
+                  5000
+                ]
+              },
+              "answer": "۴ هزار تومان",
+              "distractors": [
+                "۳ هزار تومان",
+                "۵ هزار تومان"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m7l1e7",
+              "type": "pay_amount",
+              "prompt": "بپردازید",
+              "audio_script": "پیاز شش هزار تومان شد. با یک پنج هزار تومانی و یک هزار تومانی بپردازید.",
+              "payload": {
+                "item": "🧅",
+                "price": 6000,
+                "wallet": [
+                  1000,
+                  2000,
+                  5000,
+                  5000
+                ]
+              },
+              "answer": "۶ هزار تومان",
+              "distractors": [
+                "۵ هزار تومان",
+                "۷ هزار تومان"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            },
+            {
+              "id": "m7l1e8",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "شیر هفت هزار تومان است. کدام مبلغ را باید بدهید؟",
+              "payload": {
+                "choice_kind": "money"
+              },
+              "answer": "۷ هزار تومان",
+              "distractors": [
+                "۶ هزار تومان",
+                "۸ هزار تومان"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m7l1e9",
+              "type": "pay_amount",
+              "prompt": "بپردازید",
+              "audio_script": "گوجه‌فرنگی هشت هزار تومان است. دقیق بپردازید تا باقی پول لازم نباشد.",
+              "payload": {
+                "item": "🍅",
+                "price": 8000,
+                "wallet": [
+                  1000,
+                  2000,
+                  5000,
+                  10000
+                ]
+              },
+              "answer": "۸ هزار تومان",
+              "distractors": [
+                "۷ هزار تومان",
+                "۹ هزار تومان"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m7l1e10",
+              "type": "pay_amount",
+              "prompt": "بپردازید",
+              "audio_script": "پرتقال ده هزار تومان است. پولش را بدهید.",
+              "payload": {
+                "item": "🍊",
+                "price": 10000,
+                "wallet": [
+                  5000,
+                  5000,
+                  10000
+                ]
+              },
+              "answer": "۱۰ هزار تومان",
+              "distractors": [
+                "۹ هزار تومان",
+                "۱۱ هزار تومان"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            }
+          ]
+        },
+        {
+          "id": "m7l2",
+          "title": "باقی پول",
+          "exercises": [
+            {
+              "id": "m7l2e1",
+              "type": "intro",
+              "prompt": "💵 - 🍞",
+              "audio_script": "اگر بیشتر از قیمت پول بدهید، فروشنده باقی‌اش را پس می‌دهد. نان سه هزار تومان است و شما پنج هزار تومان می‌دهید؛ دو هزار تومان باقی پول می‌گیرید.",
+              "payload": {
+                "display": "۵ - ۳ = ۲",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m7l2e2",
+              "type": "make_change",
+              "prompt": "باقی پول؟",
+              "audio_script": "نان سه هزار تومان است و پنج هزار تومان دادید. چقدر باقی پول می‌گیرید؟",
+              "payload": {
+                "item": "🍞",
+                "price": 3000,
+                "paid": 5000
+              },
+              "answer": "۲ هزار تومان",
+              "distractors": [
+                "هزار تومان",
+                "۳ هزار تومان"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m7l2e3",
+              "type": "make_change",
+              "prompt": "باقی پول؟",
+              "audio_script": "چای دو هزار تومان است و پنج هزار تومان دادید. باقی پول چقدر است؟",
+              "payload": {
+                "item": "☕",
+                "price": 2000,
+                "paid": 5000
+              },
+              "answer": "۳ هزار تومان",
+              "distractors": [
+                "۲ هزار تومان",
+                "۴ هزار تومان"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            },
+            {
+              "id": "m7l2e4",
+              "type": "equation",
+              "prompt": "۱۰ - ۴ = ؟",
+              "audio_script": "ده منهای چهار چند می‌شود؟ این همان حساب باقی پول است.",
+              "payload": {
+                "a": 10,
+                "op": "-",
+                "b": 4,
+                "objects": ""
+              },
+              "answer": "۶",
+              "distractors": [
+                "۵",
+                "۷"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر آرام حساب کنید."
+            },
+            {
+              "id": "m7l2e5",
+              "type": "make_change",
+              "prompt": "باقی پول؟",
+              "audio_script": "سیب شش هزار تومان است و یک ده هزار تومانی دادید. چقدر پس می‌گیرید؟",
+              "payload": {
+                "item": "🍎",
+                "price": 6000,
+                "paid": 10000
+              },
+              "answer": "۴ هزار تومان",
+              "distractors": [
+                "۳ هزار تومان",
+                "۵ هزار تومان"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m7l2e6",
+              "type": "make_change",
+              "prompt": "باقی پول؟",
+              "audio_script": "تخم‌مرغ چهار هزار تومان است و پنج هزار تومان دادید. باقی پول؟",
+              "payload": {
+                "item": "🥚",
+                "price": 4000,
+                "paid": 5000
+              },
+              "answer": "هزار تومان",
+              "distractors": [
+                "۲ هزار تومان",
+                "۳ هزار تومان"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            },
+            {
+              "id": "m7l2e7",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "پنیر هشت هزار تومان است و ده هزار تومان دادید. فروشنده چقدر باید پس بدهد؟",
+              "payload": {
+                "choice_kind": "money"
+              },
+              "answer": "۲ هزار تومان",
+              "distractors": [
+                "هزار تومان",
+                "۳ هزار تومان"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "m7l2e8",
+              "type": "make_change",
+              "prompt": "باقی پول؟",
+              "audio_script": "گوجه هفت هزار تومان است و ده هزار تومان دادید. باقی پول چقدر است؟",
+              "payload": {
+                "item": "🍅",
+                "price": 7000,
+                "paid": 10000
+              },
+              "answer": "۳ هزار تومان",
+              "distractors": [
+                "۲ هزار تومان",
+                "۴ هزار تومان"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m7l2e9",
+              "type": "pay_amount",
+              "prompt": "بپردازید",
+              "audio_script": "این بار نان دو هزار تومان است. دقیق بپردازید تا باقی پول لازم نباشد.",
+              "payload": {
+                "item": "🍞",
+                "price": 2000,
+                "wallet": [
+                  1000,
+                  1000,
+                  5000
+                ]
+              },
+              "answer": "۲ هزار تومان",
+              "distractors": [
+                "هزار تومان",
+                "۳ هزار تومان"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            },
+            {
+              "id": "m7l2e10",
+              "type": "make_change",
+              "prompt": "باقی پول؟",
+              "audio_script": "پرتقال پنج هزار تومان است و ده هزار تومان دادید. چقدر پس می‌گیرید؟",
+              "payload": {
+                "item": "🍊",
+                "price": 5000,
+                "paid": 10000
+              },
+              "answer": "۵ هزار تومان",
+              "distractors": [
+                "۴ هزار تومان",
+                "۶ هزار تومان"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            }
+          ]
+        },
+        {
+          "id": "m7l3",
+          "title": "خرید از بقالی",
+          "exercises": [
+            {
+              "id": "m7l3e1",
+              "type": "intro",
+              "prompt": "🛒",
+              "audio_script": "حالا یک خرید کامل: چند چیز برمی‌دارید، قیمت‌ها را با هم جمع می‌کنید، پول می‌دهید و اگر لازم بود باقی پول را می‌گیرید.",
+              "payload": {
+                "display": "🛒",
+                "visual": "🍞☕🍎"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m7l3e2",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "نان سه هزار تومان و چای دو هزار تومان است. روی هم چقدر می‌شود؟",
+              "payload": {
+                "choice_kind": "money"
+              },
+              "answer": "۵ هزار تومان",
+              "distractors": [
+                "۴ هزار تومان",
+                "۶ هزار تومان"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "m7l3e3",
+              "type": "pay_amount",
+              "prompt": "بپردازید",
+              "audio_script": "حالا پول همین نان و چای را بپردازید: پنج هزار تومان.",
+              "payload": {
+                "item": "🍞☕",
+                "price": 5000,
+                "wallet": [
+                  1000,
+                  2000,
+                  5000
+                ]
+              },
+              "answer": "۵ هزار تومان",
+              "distractors": [
+                "۴ هزار تومان",
+                "۶ هزار تومان"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            },
+            {
+              "id": "m7l3e4",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "سیب چهار هزار تومان و پیاز دو هزار تومان است. روی هم چقدر؟",
+              "payload": {
+                "choice_kind": "money"
+              },
+              "answer": "۶ هزار تومان",
+              "distractors": [
+                "۵ هزار تومان",
+                "۷ هزار تومان"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m7l3e5",
+              "type": "make_change",
+              "prompt": "باقی پول؟",
+              "audio_script": "برای سیب و پیاز، شش هزار تومان، یک ده هزار تومانی دادید. باقی پول چقدر است؟",
+              "payload": {
+                "item": "🍎🧅",
+                "price": 6000,
+                "paid": 10000
+              },
+              "answer": "۴ هزار تومان",
+              "distractors": [
+                "۳ هزار تومان",
+                "۵ هزار تومان"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m7l3e6",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "تخم‌مرغ پنج هزار تومان و نان سه هزار تومان است. جمعش چقدر است؟",
+              "payload": {
+                "choice_kind": "money"
+              },
+              "answer": "۸ هزار تومان",
+              "distractors": [
+                "۷ هزار تومان",
+                "۹ هزار تومان"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "m7l3e7",
+              "type": "pay_amount",
+              "prompt": "بپردازید",
+              "audio_script": "هشت هزار تومان را دقیق بپردازید.",
+              "payload": {
+                "item": "🥚🍞",
+                "price": 8000,
+                "wallet": [
+                  1000,
+                  2000,
+                  5000,
+                  5000
+                ]
+              },
+              "answer": "۸ هزار تومان",
+              "distractors": [
+                "۷ هزار تومان",
+                "۹ هزار تومان"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            },
+            {
+              "id": "m7l3e8",
+              "type": "make_change",
+              "prompt": "باقی پول؟",
+              "audio_script": "گوجه و پرتقال روی هم نُه هزار تومان شد و ده هزار تومان دادید. باقی پول؟",
+              "payload": {
+                "item": "🍅🍊",
+                "price": 9000,
+                "paid": 10000
+              },
+              "answer": "هزار تومان",
+              "distractors": [
+                "۲ هزار تومان",
+                "۳ هزار تومان"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اسکناس‌ها را یکی‌یکی دوباره بشمارید."
+            },
+            {
+              "id": "m7l3e9",
+              "type": "compare_more_less",
+              "prompt": "کدام کمتر؟",
+              "audio_script": "بقالی اول این خرید را هفت هزار تومان حساب کرده و بقالی دوم پنج هزار تومان. کدام ارزان‌تر است؟",
+              "payload": {
+                "left": "۷ هزار تومان",
+                "right": "۵ هزار تومان",
+                "ask": "less"
+              },
+              "answer": "right",
+              "distractors": [
+                "left",
+                "equal"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ هر طرف را جدا بشمارید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m7l3e10",
+              "type": "pay_amount",
+              "prompt": "بپردازید",
+              "audio_script": "دو بسته چای، هر کدام دو هزار تومان. روی هم چهار هزار تومان را بپردازید.",
+              "payload": {
+                "item": "☕☕",
+                "price": 4000,
+                "wallet": [
+                  2000,
+                  2000,
+                  5000
+                ]
+              },
+              "answer": "۴ هزار تومان",
+              "distractors": [
+                "۳ هزار تومان",
+                "۵ هزار تومان"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ مبلغ هر اسکناس را دوباره نگاه کنید."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m8",
+      "title": "ساعت: ساعت‌های کامل",
+      "emoji": "🕒",
+      "goal": "خواندن ساعت عقربه‌ای و دیجیتال در ساعت‌های کامل، مثل «ساعت سه»، و ربط دادن آن به کارهای روزانه",
+      "lessons": [
+        {
+          "id": "m8l1",
+          "title": "عقربه‌ها",
+          "exercises": [
+            {
+              "id": "m8l1e1",
+              "type": "intro",
+              "prompt": "🕒",
+              "audio_script": "ساعت دو عقربه دارد. عقربهٔ کوتاه ساعت را نشان می‌دهد و عقربهٔ بلند دقیقه را. وقتی عقربهٔ بلند درست بالا روی دوازده باشد، ساعت «کامل» است. اینجا عقربهٔ کوتاه روی سه است، پس ساعت سه است.",
+              "payload": {
+                "display": "ساعت ۳",
+                "visual": "🕒"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m8l1e2",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "عقربهٔ کوتاه روی کدام عدد است؟ ساعت چند است؟",
+              "payload": {
+                "hour": 3,
+                "style": "analog"
+              },
+              "answer": "ساعت ۳",
+              "distractors": [
+                "ساعت ۹",
+                "ساعت ۴"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "به عقربهٔ کوتاه نگاه کنید؛ روی کدام عدد است؟"
+            },
+            {
+              "id": "m8l1e3",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "ساعت چند است؟ به عقربهٔ کوتاه نگاه کنید.",
+              "payload": {
+                "hour": 6,
+                "style": "analog"
+              },
+              "answer": "ساعت ۶",
+              "distractors": [
+                "ساعت ۱۲",
+                "ساعت ۷"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ دوباره به ساعت نگاه کنید. عقربهٔ کوتاه ساعت را نشان می‌دهد."
+            },
+            {
+              "id": "m8l1e4",
+              "type": "tap_picture",
+              "prompt": "ساعت ۸",
+              "audio_script": "کدام ساعت، ساعت هشت را نشان می‌دهد؟",
+              "payload": {
+                "display": "ساعت ۸"
+              },
+              "answer": "🕗",
+              "distractors": [
+                "🕓",
+                "🕘"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "دوباره امتحان کنید."
+            },
+            {
+              "id": "m8l1e5",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "ساعت چند است؟",
+              "payload": {
+                "hour": 9,
+                "style": "analog"
+              },
+              "answer": "ساعت ۹",
+              "distractors": [
+                "ساعت ۳",
+                "ساعت ۱۰"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "به عقربهٔ کوتاه نگاه کنید؛ روی کدام عدد است؟"
+            },
+            {
+              "id": "m8l1e6",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "عقربهٔ کوتاه کجاست؟ ساعت چند است؟",
+              "payload": {
+                "hour": 1,
+                "style": "analog"
+              },
+              "answer": "ساعت ۱",
+              "distractors": [
+                "ساعت ۱۱",
+                "ساعت ۲"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ دوباره به ساعت نگاه کنید. عقربهٔ کوتاه ساعت را نشان می‌دهد."
+            },
+            {
+              "id": "m8l1e7",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«ساعت پنج» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "time"
+              },
+              "answer": "ساعت ۵",
+              "distractors": [
+                "ساعت ۷",
+                "ساعت ۶"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "m8l1e8",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "ساعت چند است؟",
+              "payload": {
+                "hour": 5,
+                "style": "analog"
+              },
+              "answer": "ساعت ۵",
+              "distractors": [
+                "ساعت ۷",
+                "ساعت ۶"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "به عقربهٔ کوتاه نگاه کنید؛ روی کدام عدد است؟"
+            },
+            {
+              "id": "m8l1e9",
+              "type": "tap_picture",
+              "prompt": "ساعت ۲",
+              "audio_script": "کدام ساعت، ساعت دو را نشان می‌دهد؟",
+              "payload": {
+                "display": "ساعت ۲"
+              },
+              "answer": "🕑",
+              "distractors": [
+                "🕙",
+                "🕒"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "m8l1e10",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "ساعت چند است؟",
+              "payload": {
+                "hour": 10,
+                "style": "analog"
+              },
+              "answer": "ساعت ۱۰",
+              "distractors": [
+                "ساعت ۲",
+                "ساعت ۱۱"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ دوباره به ساعت نگاه کنید. عقربهٔ کوتاه ساعت را نشان می‌دهد."
+            }
+          ]
+        },
+        {
+          "id": "m8l2",
+          "title": "ساعت ۱۱ و ۱۲",
+          "exercises": [
+            {
+              "id": "m8l2e1",
+              "type": "intro",
+              "prompt": "۱۱  ۱۲",
+              "audio_script": "روی ساعت، بعد از ده، یازده و دوازده هم هست. یازده یعنی دو تا یک کنار هم. دوازده یعنی یک و دو کنار هم. وقتی هر دو عقربه بالا روی دوازده باشند، ساعت دوازده است.",
+              "payload": {
+                "display": "۱۱  ۱۲",
+                "visual": "🕛"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m8l2e2",
+              "type": "choose_digit",
+              "prompt": "کدام؟",
+              "audio_script": "روی ساعت، بعد از ده کدام عدد می‌آید؟",
+              "payload": {
+                "display": "۹ ۱۰ ؟ ۱۲"
+              },
+              "answer": "۱۱",
+              "distractors": [
+                "۱",
+                "۱۲"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "m8l2e3",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "هر دو عقربه بالا هستند. ساعت چند است؟",
+              "payload": {
+                "hour": 12,
+                "style": "analog"
+              },
+              "answer": "ساعت ۱۲",
+              "distractors": [
+                "ساعت ۶",
+                "ساعت ۱"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "به عقربهٔ کوتاه نگاه کنید؛ روی کدام عدد است؟"
+            },
+            {
+              "id": "m8l2e4",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "ساعت چند است؟",
+              "payload": {
+                "hour": 11,
+                "style": "analog"
+              },
+              "answer": "ساعت ۱۱",
+              "distractors": [
+                "ساعت ۱",
+                "ساعت ۱۲"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ دوباره به ساعت نگاه کنید. عقربهٔ کوتاه ساعت را نشان می‌دهد."
+            },
+            {
+              "id": "m8l2e5",
+              "type": "tap_picture",
+              "prompt": "ساعت ۱۲",
+              "audio_script": "کدام ساعت، ساعت دوازده را نشان می‌دهد؟",
+              "payload": {
+                "display": "ساعت ۱۲"
+              },
+              "answer": "🕛",
+              "distractors": [
+                "🕕",
+                "🕐"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "m8l2e6",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«ساعت یازده» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "time"
+              },
+              "answer": "ساعت ۱۱",
+              "distractors": [
+                "ساعت ۱",
+                "ساعت ۱۲"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "m8l2e7",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "ساعت چند است؟",
+              "payload": {
+                "hour": 4,
+                "style": "analog"
+              },
+              "answer": "ساعت ۴",
+              "distractors": [
+                "ساعت ۸",
+                "ساعت ۵"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "به عقربهٔ کوتاه نگاه کنید؛ روی کدام عدد است؟"
+            },
+            {
+              "id": "m8l2e8",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر ساعت را به اسمش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "🕐",
+                    "ساعت ۱"
+                  ],
+                  [
+                    "🕚",
+                    "ساعت ۱۱"
+                  ],
+                  [
+                    "🕛",
+                    "ساعت ۱۲"
+                  ]
+                ]
+              },
+              "answer": "🕐=ساعت ۱|🕚=ساعت ۱۱|🕛=ساعت ۱۲",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            },
+            {
+              "id": "m8l2e9",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "ساعت چند است؟",
+              "payload": {
+                "hour": 7,
+                "style": "analog"
+              },
+              "answer": "ساعت ۷",
+              "distractors": [
+                "ساعت ۵",
+                "ساعت ۸"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ دوباره به ساعت نگاه کنید. عقربهٔ کوتاه ساعت را نشان می‌دهد."
+            },
+            {
+              "id": "m8l2e10",
+              "type": "tap_picture",
+              "prompt": "ساعت ۱۱",
+              "audio_script": "کدام ساعت، ساعت یازده را نشان می‌دهد؟",
+              "payload": {
+                "display": "ساعت ۱۱"
+              },
+              "answer": "🕚",
+              "distractors": [
+                "🕐",
+                "🕛"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دوباره امتحان کنید."
+            }
+          ]
+        },
+        {
+          "id": "m8l3",
+          "title": "ساعت و کارهای روزانه",
+          "exercises": [
+            {
+              "id": "m8l3e1",
+              "type": "intro",
+              "prompt": "☀️  🌙",
+              "audio_script": "ساعت‌ها با کارهای روزانهٔ ما گره خورده‌اند: صبحانه، ناهار، شام، نماز، خواب. بیایید ساعت چند کار روزانه را بخوانیم.",
+              "payload": {
+                "display": "☀️  🌙",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m8l3e2",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "این ساعت صبحانهٔ شماست. ساعت چند است؟",
+              "payload": {
+                "hour": 7,
+                "style": "analog"
+              },
+              "answer": "ساعت ۷",
+              "distractors": [
+                "ساعت ۵",
+                "ساعت ۸"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "به عقربهٔ کوتاه نگاه کنید؛ روی کدام عدد است؟"
+            },
+            {
+              "id": "m8l3e3",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "ناهار ساعت یک است. «ساعت یک» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "time"
+              },
+              "answer": "ساعت ۱",
+              "distractors": [
+                "ساعت ۱۱",
+                "ساعت ۲"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "m8l3e4",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "اتوبوس این ساعت می‌رسد. ساعت چند است؟",
+              "payload": {
+                "hour": 8,
+                "style": "analog"
+              },
+              "answer": "ساعت ۸",
+              "distractors": [
+                "ساعت ۴",
+                "ساعت ۹"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ دوباره به ساعت نگاه کنید. عقربهٔ کوتاه ساعت را نشان می‌دهد."
+            },
+            {
+              "id": "m8l3e5",
+              "type": "tap_picture",
+              "prompt": "ساعت ۹",
+              "audio_script": "کلاس ساعت نُه شروع می‌شود. کدام ساعت درست است؟",
+              "payload": {
+                "display": "ساعت ۹"
+              },
+              "answer": "🕘",
+              "distractors": [
+                "🕒",
+                "🕙"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "m8l3e6",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "عصر است و وقت چای. ساعت چند است؟",
+              "payload": {
+                "hour": 4,
+                "style": "analog"
+              },
+              "answer": "ساعت ۴",
+              "distractors": [
+                "ساعت ۸",
+                "ساعت ۵"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "به عقربهٔ کوتاه نگاه کنید؛ روی کدام عدد است؟"
+            },
+            {
+              "id": "m8l3e7",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "شام ساعت هشت است. «ساعت هشت» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "time"
+              },
+              "answer": "ساعت ۸",
+              "distractors": [
+                "ساعت ۴",
+                "ساعت ۹"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "m8l3e8",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "وقت خواب است. ساعت چند است؟",
+              "payload": {
+                "hour": 10,
+                "style": "analog"
+              },
+              "answer": "ساعت ۱۰",
+              "distractors": [
+                "ساعت ۲",
+                "ساعت ۱۱"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ دوباره به ساعت نگاه کنید. عقربهٔ کوتاه ساعت را نشان می‌دهد."
+            },
+            {
+              "id": "m8l3e9",
+              "type": "tap_picture",
+              "prompt": "ساعت ۶",
+              "audio_script": "نوبت دکتر ساعت شش است. کدام ساعت را نشان می‌دهد؟",
+              "payload": {
+                "display": "ساعت ۶"
+              },
+              "answer": "🕕",
+              "distractors": [
+                "🕛",
+                "🕖"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "m8l3e10",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "ساعت سه است. دو ساعت دیگر مهمان می‌آید. مهمان ساعت چند می‌رسد؟",
+              "payload": {
+                "choice_kind": "digit"
+              },
+              "answer": "۵",
+              "distractors": [
+                "۴",
+                "۶"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            }
+          ]
+        },
+        {
+          "id": "m8l4",
+          "title": "ساعت دیجیتال",
+          "exercises": [
+            {
+              "id": "m8l4e1",
+              "type": "intro",
+              "prompt": "۳:۰۰",
+              "audio_script": "روی گوشی و تلویزیون، ساعت با عدد نوشته می‌شود: اول ساعت، بعد دو نقطه، بعد دقیقه. «سه، دو نقطه، صفر صفر» یعنی ساعت سه کامل.",
+              "payload": {
+                "display": "۳:۰۰",
+                "visual": "📱"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "m8l4e2",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "این ساعت گوشی است. ساعت چند است؟",
+              "payload": {
+                "hour": 3,
+                "style": "digital"
+              },
+              "answer": "ساعت ۳",
+              "distractors": [
+                "ساعت ۹",
+                "ساعت ۴"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "به عدد قبل از دو نقطه نگاه کنید؛ همان ساعت است."
+            },
+            {
+              "id": "m8l4e3",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "ساعت چند است؟",
+              "payload": {
+                "hour": 9,
+                "style": "digital"
+              },
+              "answer": "ساعت ۹",
+              "distractors": [
+                "ساعت ۳",
+                "ساعت ۱۰"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "به عدد قبل از دو نقطه نگاه کنید؛ همان ساعت است."
+            },
+            {
+              "id": "m8l4e4",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر ساعت عقربه‌ای را به ساعت دیجیتال همان ساعت وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "🕖",
+                    "۷:۰۰"
+                  ],
+                  [
+                    "🕙",
+                    "۱۰:۰۰"
+                  ],
+                  [
+                    "🕑",
+                    "۲:۰۰"
+                  ]
+                ]
+              },
+              "answer": "🕖=۷:۰۰|🕙=۱۰:۰۰|🕑=۲:۰۰",
+              "distractors": [],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            },
+            {
+              "id": "m8l4e5",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "ساعت چند است؟",
+              "payload": {
+                "hour": 12,
+                "style": "digital"
+              },
+              "answer": "ساعت ۱۲",
+              "distractors": [
+                "ساعت ۶",
+                "ساعت ۱"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "به عدد قبل از دو نقطه نگاه کنید؛ همان ساعت است."
+            },
+            {
+              "id": "m8l4e6",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "ساعت چند است؟",
+              "payload": {
+                "hour": 6,
+                "style": "digital"
+              },
+              "answer": "ساعت ۶",
+              "distractors": [
+                "ساعت ۱۲",
+                "ساعت ۷"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "به عدد قبل از دو نقطه نگاه کنید؛ همان ساعت است."
+            },
+            {
+              "id": "m8l4e7",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "حالا یک ساعت عقربه‌ای. ساعت چند است؟",
+              "payload": {
+                "hour": 11,
+                "style": "analog"
+              },
+              "answer": "ساعت ۱۱",
+              "distractors": [
+                "ساعت ۱",
+                "ساعت ۱۲"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "به عقربهٔ کوتاه نگاه کنید؛ روی کدام عدد است؟"
+            },
+            {
+              "id": "m8l4e8",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "ساعت دیجیتال «چهار، دو نقطه، صفر صفر» را پیدا کنید. ساعت چند است؟",
+              "payload": {
+                "choice_kind": "time"
+              },
+              "answer": "ساعت ۴",
+              "distractors": [
+                "ساعت ۸",
+                "ساعت ۵"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "m8l4e9",
+              "type": "read_clock",
+              "prompt": "ساعت چند؟",
+              "audio_script": "ساعت چند است؟",
+              "payload": {
+                "hour": 8,
+                "style": "digital"
+              },
+              "answer": "ساعت ۸",
+              "distractors": [
+                "ساعت ۴",
+                "ساعت ۹"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "به عدد قبل از دو نقطه نگاه کنید؛ همان ساعت است."
+            },
+            {
+              "id": "m8l4e10",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر ساعت دیجیتال را به اسمش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "۱:۰۰",
+                    "ساعت ۱"
+                  ],
+                  [
+                    "۵:۰۰",
+                    "ساعت ۵"
+                  ],
+                  [
+                    "۱۲:۰۰",
+                    "ساعت ۱۲"
+                  ]
+                ]
+              },
+              "answer": "۱:۰۰=ساعت ۱|۵:۰۰=ساعت ۵|۱۲:۰۰=ساعت ۱۲",
+              "distractors": [],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
