@@ -543,7 +543,15 @@ h2.prompt-numeral {
   max-height: none;
 }
 
-.app-phone:not(.object-gallery-page) .content .picture-grid,
+.app-phone:not(.object-gallery-page) .content .picture-grid {
+  flex: 0 1 260px;
+  min-height: 0;
+  max-height: 260px;
+  overflow: hidden;
+  align-items: stretch;
+  grid-auto-rows: minmax(0, 260px);
+}
+
 .app-phone:not(.object-gallery-page) .content .cluster-stack {
   flex: 1 1 0;
   min-height: 0;
@@ -552,18 +560,18 @@ h2.prompt-numeral {
 
 .app-phone:not(.object-gallery-page) .content .grid2:has(.object-choice-card),
 .app-phone:not(.object-gallery-page) .content .grid3:has(.object-choice-card) {
-  flex: 1 1 0;
-  min-height: 0;
-  overflow: hidden;
-  align-items: start;
-  align-content: start;
-}
-
-.app-phone:not(.object-gallery-page) .object-choice-card,
-.app-phone:not(.object-gallery-page) .grid3 > .card {
+  flex: 0 1 260px;
   min-height: 0;
   max-height: 260px;
-  align-self: start;
+  overflow: hidden;
+  align-items: stretch;
+  grid-auto-rows: minmax(0, 260px);
+}
+
+.app-phone:not(.object-gallery-page) .object-choice-card {
+  min-height: 0;
+  max-height: 260px;
+  height: 100%;
 }
 
 .object-choice-card:has(.object-cluster[data-count='3'][data-layout='grid']),
