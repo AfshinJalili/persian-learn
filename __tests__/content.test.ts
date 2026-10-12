@@ -1,6 +1,5 @@
-import { describe, it, expect, beforeAll } from '@jest/globals';
-import { loadTrack, getLesson, getNextLesson, isLessonUnlocked } from '../lib/content';
-import type { Track } from '../lib/types';
+import { describe, it, expect } from '@jest/globals';
+import { answersEqual } from '../lib/answers';
 
 describe('Content Loading', () => {
   it.skip('should load math track', async () => {
@@ -14,20 +13,14 @@ describe('Content Loading', () => {
 
 describe('Answer Checking', () => {
   it('should validate exact match', () => {
-    const correct = '۲';
-    const answer = '۲';
-    expect(answer).toBe(correct);
+    expect(answersEqual('tap_picture', '۲', '۲')).toBe(true);
   });
 
-  it('should validate match pairs', () => {
-    const correct = '۱=🍎|۲=🍎🍎';
-    const answer = '۱=🍎|۲=🍎🍎';
-    expect(answer).toBe(correct);
+  it('should validate match pairs in any click order', () => {
+    expect(answersEqual('match_pairs', '۱=🍎|۲=🍎🍎', '۲=🍎🍎|۱=🍎')).toBe(true);
   });
 
   it('should detect wrong answer', () => {
-    const correct = '۲';
-    const answer = '۳';
-    expect(answer).not.toBe(correct);
+    expect(answersEqual('tap_picture', '۲', '۳')).toBe(false);
   });
 });

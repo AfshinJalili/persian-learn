@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { getProgress } from '@/lib/progress';
 import { formatPersianNumber } from '@/lib/persian';
+import { isActiveOnWeekday } from '@/lib/calendar';
 import type { UserProgress } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import BottomNav from '@/components/ui/BottomNav';
@@ -33,7 +34,6 @@ export default function StreakPage() {
   }
 
   const iranWeekIndex = (new Date().getDay() + 1) % 7;
-  const filled = Math.min(progress.streak, iranWeekIndex + 1);
   const goal = progress.dailyGoal || 2;
   const done = progress.dailyLessonsCompleted;
   const remaining = Math.max(0, goal - done);
@@ -67,7 +67,7 @@ export default function StreakPage() {
         </div>
         <div className="row-card w-full justify-between" style={{ padding: '12px 14px', gap: 0 }}>
           {DAY_LETTERS.map((letter, index) => {
-            const isFilled = index < filled;
+            const isFilled = isActiveOnWeekday(progress, index);
             const isToday = index === iranWeekIndex;
             return (
               <div key={letter} className="flex flex-col items-center gap-0.5 font-bold">

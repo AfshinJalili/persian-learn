@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Pencil } from 'lucide-react';
 import { getProgress, saveProgress } from '@/lib/progress';
-import type { UserProgress } from '@/lib/types';
+import { loadTrack, trackCompletionPercent } from '@/lib/content';
+import type { Track, UserProgress } from '@/lib/types';
 import { playAudio, setAudioSpeed } from '@/lib/audio';
 import { formatPersianNumber } from '@/lib/persian';
 import BottomNav from '@/components/ui/BottomNav';
@@ -23,12 +24,20 @@ function FlameIcon() {
 
 export default function ProfilePage() {
   const [progress, setProgress] = useState<UserProgress | null>(null);
+  const [mathTrack, setMathTrack] = useState<Track | null>(null);
+  const [alphabetTrack, setAlphabetTrack] = useState<Track | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     async function load() {
-      const prog = await getProgress();
+      const [prog, math, alphabet] = await Promise.all([
+        getProgress(),
+        loadTrack('math'),
+        loadTrack('alphabet'),
+      ]);
       setProgress(prog);
+      setMathTrack(math);
+      setAlphabetTrack(alphabet);
       setAudioSpeed(prog.speechRate || 1);
     }
     load();
@@ -110,7 +119,7 @@ export default function ProfilePage() {
             <span className="muted">بخش {formatPersianNumber(mathUnits)} از ۶</span>
           </button>
           <div className="progress" style={{ flex: 'none' }}>
-            <i style={{ width: `${Math.min(100, mathDone * 8)}%`, background: 'var(--teal-700)' }} />
+            <i style={{ width: `${mathTrack ? trackCompletionPercent(progress.completedLessons, mathTrack) : 0}%`, background: 'var(--teal-700)' }} />
           </div>
           <button
             type="button"

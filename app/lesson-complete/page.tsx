@@ -21,10 +21,14 @@ function FlameIcon() {
 
 export default function LessonCompletePage() {
   const [progress, setProgress] = useState<UserProgress | null>(null);
+  const [xpEarned, setXpEarned] = useState(10);
   const router = useRouter();
 
   useEffect(() => {
     async function load() {
+      const params = new URLSearchParams(window.location.search);
+      const xp = Number(params.get('xp') ?? '10');
+      setXpEarned(Number.isFinite(xp) && xp > 0 ? xp : 10);
       const prog = await getProgress();
       setProgress(prog);
       try {
@@ -82,7 +86,7 @@ export default function LessonCompletePage() {
                   <path d="M12 2.8l2.8 5.8 6.3.8-4.6 4.4 1.2 6.3L12 17l-5.7 3.1 1.2-6.3L2.9 9.4l6.3-.8z" />
                 </svg>
               </span>
-              {formatPersianNumber(10)}+
+              {formatPersianNumber(xpEarned)}+
             </div>
           </div>
           <div className="stat" style={{ borderColor: '#0D4F9E' }}>

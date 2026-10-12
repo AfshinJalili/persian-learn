@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { playAudio } from '@/lib/audio';
+import { canonicalizePairs } from '@/lib/answers';
 import { shuffleSeeded } from '@/lib/shuffle';
 import { exerciseHeading } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
@@ -61,7 +62,7 @@ export default function MatchPairsExercise({
     setSelected(null);
 
     if (newPairs.length === answerPairs.length) {
-      onAnswerChange(newPairs.map((pair) => pair.join('=')).join('|'));
+      onAnswerChange(canonicalizePairs(newPairs.map((pair) => pair.join('=')).join('|')));
     }
 
     await playAudio(option);

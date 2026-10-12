@@ -60,6 +60,7 @@ export interface UserProgress {
   dailyGoal: number;
   dailyLessonsCompleted: number;
   restDaysUsed: number;
+  activityDates: string[];
   weakItems: Array<{
     exerciseId: string;
     missCount: number;
