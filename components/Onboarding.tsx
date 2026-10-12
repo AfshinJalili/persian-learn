@@ -29,6 +29,7 @@ function Dots({ step }: { step: number }) {
 export default function Onboarding() {
   const [step, setStep] = useState(0);
   const [selectedAvatar, setSelectedAvatar] = useState('tulip');
+  const [heardWelcome, setHeardWelcome] = useState(false);
   const gateRef = useRef(new OnboardingGate());
   const router = useRouter();
 
@@ -83,14 +84,16 @@ export default function Onboarding() {
       <div className="app-phone">
         <div className="content center" style={{ paddingTop: 8 }}>
           <Dots step={0} />
-          <div className="bubble">{welcomeBubble()}</div>
-          <HodaMascot className="w-[230px] h-[230px]" />
+          <div className="mascot-speech">
+            <p className="speech-bubble">{welcomeBubble()}</p>
+            <HodaMascot className="w-[230px] h-[230px]" />
+          </div>
           <h1>خوش آمدید</h1>
           <p className="body-lg">با هم، آرام‌آرام عدد و خواندن یاد می‌گیریم.</p>
           <div className="flex items-center gap-4">
-            <SpeakerButton text={WELCOME} />
+            <SpeakerButton text={WELCOME} onPlay={() => setHeardWelcome(true)} />
             <span className="muted" style={{ fontWeight: 700 }}>
-              دوباره گوش کنید
+              {heardWelcome ? 'دوباره گوش کنید' : 'گوش کنید'}
             </span>
           </div>
         </div>

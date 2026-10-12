@@ -64,7 +64,18 @@ describe('Onboarding back navigation', () => {
   it('greets Fariba by name on the welcome screen', () => {
     render(<Onboarding />);
     expect(screen.getByText('سلام فریبا جون!')).toBeInTheDocument();
+    expect(screen.getByText('سلام فریبا جون!').className).toContain('speech-bubble');
     expect(screen.getByText('خوش آمدید')).toBeInTheDocument();
+    expect(screen.getByText('گوش کنید')).toBeInTheDocument();
+    expect(screen.queryByText('دوباره گوش کنید')).not.toBeInTheDocument();
+  });
+
+  it('changes the welcome speaker label after the first play', async () => {
+    const user = userEvent.setup();
+    render(<Onboarding />);
+    await user.click(screen.getByRole('button', { name: 'پخش صدا' }));
+    expect(await screen.findByText('دوباره گوش کنید')).toBeInTheDocument();
+    expect(screen.queryByText('گوش کنید')).not.toBeInTheDocument();
   });
 
   it('advances from Start immediately without waiting for audio', async () => {

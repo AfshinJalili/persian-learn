@@ -33,7 +33,7 @@ export default function TapPictureExercise({
         <SpeakerButton text={exercise.audio_script} />
         <h2>{exerciseHeading(exercise)}</h2>
       </div>
-      <div className="grid2">
+      <div className={options.length === 3 ? 'grid3' : 'grid2'}>
         {options.map((option) => {
           const selected = userAnswer === option;
           const state =

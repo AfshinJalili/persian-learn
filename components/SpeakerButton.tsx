@@ -10,6 +10,7 @@ interface SpeakerButtonProps {
   size?: 'sm' | 'md' | 'xl';
   label?: string;
   className?: string;
+  onPlay?: () => void;
 }
 
 export default function SpeakerButton({
@@ -18,6 +19,7 @@ export default function SpeakerButton({
   size,
   label = 'پخش صدا',
   className = '',
+  onPlay,
 }: SpeakerButtonProps) {
   const [playing, setPlaying] = useState(false);
   const resolved = size ?? (large ? 'xl' : 'md');
@@ -25,6 +27,7 @@ export default function SpeakerButton({
   const handleClick = async (event: MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
     setPlaying(true);
+    onPlay?.();
     try {
       await playAudio(text);
     } catch {

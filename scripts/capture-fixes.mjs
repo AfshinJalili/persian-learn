@@ -97,6 +97,8 @@ async function main() {
   await page.goto(BASE + '/profile');
   await page.waitForSelector('text=سرعت صدا');
   await snap(page, '03-profile.png');
+  await page.locator('text=نمونه را بشنوید').scrollIntoViewIfNeeded();
+  await snap(page, '03-profile-speed.png');
 
   await seed(page, progress({ currentTrack: 'alphabet', completedLessons: ['a1l1'] }));
   await page.goto(BASE + '/lesson/a1l2?ex=1');

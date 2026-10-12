@@ -80,4 +80,13 @@ describe('Profile voice speed', () => {
     await user.click(await screen.findByRole('button', { name: 'نمونه را بشنوید' }));
     expect(playAudio).toHaveBeenCalled();
   });
+
+  it('uses large letter tiles and icons on stat headers', async () => {
+    render(<ProfilePage />);
+    const tile = await screen.findByText('آ');
+    expect(tile).toHaveClass('letter-tile');
+    expect(screen.getByText('روز پیاپی').querySelector('svg')).toBeTruthy();
+    expect(screen.getByText('امتیاز').querySelector('svg')).toBeTruthy();
+    expect(screen.getByText('حرف').querySelector('svg')).toBeTruthy();
+  });
 });

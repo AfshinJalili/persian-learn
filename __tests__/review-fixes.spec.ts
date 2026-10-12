@@ -11,6 +11,7 @@ test.describe('Codex review navigation fixes', () => {
 
   test('the lesson-complete replay button returns to that lesson', async ({ page }) => {
     await page.goto('/');
+    await expect(page.getByText('گوش کنید')).toBeVisible();
     await page.getByRole('button', { name: /شروع/ }).click();
     await expect(page.getByText('یک تصویر برای خودتان انتخاب کنید')).toBeVisible();
     await page.getByRole('button', { name: '🌷' }).click();
@@ -42,6 +43,14 @@ test.describe('Codex review navigation fixes', () => {
 
     await page.getByRole('button', { name: 'من' }).click();
     await expect(page).toHaveURL(/\/profile/);
+
+    const tile = page.locator('.letter-tile').first();
+    const tileBox = await tile.boundingBox();
+    expect(tileBox?.width ?? 0).toBeGreaterThanOrEqual(56);
+    expect(tileBox?.height ?? 0).toBeGreaterThanOrEqual(56);
+
+    const pad = await page.locator('.content').evaluate((element) => parseFloat(getComputedStyle(element).paddingBottom));
+    expect(pad).toBeGreaterThanOrEqual(98 + 16);
   });
 
   test('lesson-complete continue opens home with the next lesson in view', async ({ page }) => {

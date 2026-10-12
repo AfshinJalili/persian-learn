@@ -215,13 +215,7 @@ export function objectClusterColumns(count: number): number {
   return 5;
 }
 
-export function objectClusterItemSize(count: number): number {
-  if (count <= 1) return 64;
-  if (count === 2) return 48;
-  if (count === 3) return 40;
-  if (count === 4) return 48;
-  if (count <= 6) return 36;
-  if (count <= 9) return 32;
+export function objectClusterItemSize(_count: number): number {
   return 28;
 }
 

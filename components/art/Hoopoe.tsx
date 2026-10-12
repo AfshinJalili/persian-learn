@@ -43,7 +43,6 @@ const IDLE = (
     <circle cx="66" cy="79" r="10" fill="#fff" />
     <circle cx="63.5" cy="80" r="6" fill="#1B2A22" />
     <circle cx="61.5" cy="77.5" r="2.2" fill="#fff" />
-    <circle cx="84" cy="96" r="7" fill="#F28B6B" opacity=".55" />
     <path d="M60 100q6 5 13 2" stroke="#3B2A20" strokeWidth="3" fill="none" strokeLinecap="round" />
   </>
 );
@@ -96,7 +95,6 @@ const CHEER = (
     <circle cx="63.5" cy="80" r="6" fill="#1B2A22" />
     <circle cx="61.5" cy="77.5" r="2.2" fill="#fff" />
     <path d="M58 70q8-6 16 0" stroke="#1B2A22" strokeWidth="3" fill="none" strokeLinecap="round" />
-    <circle cx="84" cy="96" r="7" fill="#F28B6B" opacity=".55" />
     <path d="M60 100q6 5 13 2" stroke="#3B2A20" strokeWidth="3" fill="none" strokeLinecap="round" />
   </>
 );

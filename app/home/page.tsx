@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Check, Lock, Star } from 'lucide-react';
+import { Check, Lock, Star, Trophy } from 'lucide-react';
 import { getProgress } from '@/lib/progress';
 import { loadTrack, isLessonUnlocked } from '@/lib/content';
 import type { Track, Lesson, UserProgress } from '@/lib/types';
@@ -13,23 +13,42 @@ import AudioUnlockOverlay from '@/components/AudioUnlockOverlay';
 import SpeakerButton from '@/components/SpeakerButton';
 import BottomNav from '@/components/ui/BottomNav';
 import HodaMascot from '@/components/HodaMascot';
+import { FlameIcon, StarIcon } from '@/components/art/StatIcons';
 import { AvatarArt, PomegranateSvg, resolveAvatarId } from '@/components/art/objects';
 
-function FlameIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 2.5c.6 3.2 5.8 5.6 5.8 11.2A5.8 5.8 0 0 1 12 21.5a5.8 5.8 0 0 1-5.8-5.8c0-3 1.8-4.6 2.8-6 .3 1.8 1.2 2.8 2.2 3.2C10.6 9.6 11 5.6 12 2.5z" fill="#F08A24" />
-      <path d="M12 12.2c.4 1.8 3 2.8 3 5.2a3 3 0 0 1-6 0c0-1.6 1-2.6 1.6-3.4.2.9.6 1.3 1 1.5-.1-1.2 0-2.2.4-3.3z" fill="#FFC83D" />
-    </svg>
-  );
+function nodeKind(args: {
+  isCompleted: boolean;
+  isCurrent: boolean;
+  unlocked: boolean;
+  isLast: boolean;
+}): 'done' | 'current' | 'milestone' | 'locked' {
+  if (args.isCompleted) return 'done';
+  if (args.isCurrent) return 'current';
+  if (args.isLast && args.unlocked) return 'milestone';
+  return 'locked';
 }
 
-function StarIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
-      <path d="M12 2.8l2.8 5.8 6.3.8-4.6 4.4 1.2 6.3L12 17l-5.7 3.1 1.2-6.3L2.9 9.4l6.3-.8z" />
-    </svg>
-  );
+function NodeGlyph({
+  kind,
+  isLast,
+}: {
+  kind: ReturnType<typeof nodeKind>;
+  isLast: boolean;
+}) {
+  switch (kind) {
+    case 'done':
+      return <Check strokeWidth={2.6} />;
+    case 'current':
+      return isLast ? <Trophy strokeWidth={2.2} /> : <Star fill="currentColor" stroke="none" />;
+    case 'milestone':
+      return <Trophy strokeWidth={2.2} />;
+    case 'locked':
+      return <Lock strokeWidth={2.6} />;
+    default: {
+      const _exhaustive: never = kind;
+      return _exhaustive;
+    }
+  }
 }
 
 function nodePosition(index: number, total: number) {
@@ -162,34 +181,25 @@ export default function HomePage() {
             const isCurrent = lesson.id === currentLesson?.id;
             const unlocked = isLessonUnlocked(track, lesson.id, progress.completedLessons);
             const { right, top } = nodePosition(lessonIndex, currentUnit.lessons.length);
-            const isReview = !unlocked && lessonIndex === currentUnit.lessons.length - 1;
-
-            let kind = 'locked';
-            if (isCompleted) kind = 'done';
-            else if (isCurrent) kind = 'current';
-            else if (isReview) kind = 'review locked';
+            const isLast = lessonIndex === currentUnit.lessons.length - 1;
+            const kind = nodeKind({ isCompleted, isCurrent, unlocked, isLast });
 
             return (
-              <div key={lesson.id}>
-                <button
-                  type="button"
-                  ref={isCurrent ? currentLessonRef : undefined}
-                  data-next-lesson={isCurrent ? 'true' : undefined}
-                  onClick={() => handleLessonClick(lesson)}
-                  aria-label={isCurrent ? 'شروع' : lesson.title}
-                  className={`node ${kind}${isCurrent && focusNext ? ' pulse' : ''}`}
-                  style={{ right, top }}
-                >
-                  {isCompleted && <Check strokeWidth={2.6} />}
-                  {isCurrent && <Star fill="currentColor" stroke="none" />}
-                  {!unlocked && !isCompleted && !isCurrent && <Lock strokeWidth={2.6} />}
-                </button>
-                {isCurrent && (
-                  <div className="tooltip" style={{ right: right + 65, top: top + 26 }}>
-                    شروع
-                  </div>
-                )}
-              </div>
+              <button
+                key={lesson.id}
+                type="button"
+                ref={isCurrent ? currentLessonRef : undefined}
+                data-next-lesson={isCurrent ? 'true' : undefined}
+                onClick={() => handleLessonClick(lesson)}
+                aria-label={isCurrent ? 'شروع' : lesson.title}
+                className="path-hit"
+                style={{ right, top }}
+              >
+                <span className={`node ${kind}${isCurrent && focusNext ? ' pulse' : ''}`}>
+                  <NodeGlyph kind={kind} isLast={isLast} />
+                </span>
+                {isCurrent && <span className="tooltip">شروع</span>}
+              </button>
             );
           })}
           <span className="illus" style={{ width: 112, height: 112, position: 'absolute', right: 4, top: 268 }}>
