@@ -61,6 +61,19 @@ describe('Onboarding back navigation', () => {
     });
   });
 
+  it('advances from Start immediately without waiting for audio', async () => {
+    const user = userEvent.setup();
+    const pending = deferred();
+    playAudio.mockImplementation(() => pending.promise);
+
+    render(<Onboarding />);
+    await user.click(screen.getByRole('button', { name: /شروع/ }));
+
+    expect(await screen.findByText('یک تصویر برای خودتان انتخاب کنید')).toBeInTheDocument();
+    expect(stopAudio).toHaveBeenCalled();
+    expect(screen.queryByText('خوش آمدید')).not.toBeInTheDocument();
+  });
+
   it('uses a right-pointing chevron for Back on RTL screens', async () => {
     const user = userEvent.setup();
     render(<Onboarding />);
@@ -84,7 +97,7 @@ describe('Onboarding back navigation', () => {
     expect(screen.queryByText('یک تصویر برای خودتان انتخاب کنید')).not.toBeInTheDocument();
   });
 
-  it('does not save or redirect if Back is pressed during track-selection audio', async () => {
+  it('does not save or redirect if Back is pressed before track selection finishes saving', async () => {
     const user = userEvent.setup();
     playAudio.mockResolvedValue(undefined);
 
@@ -94,11 +107,28 @@ describe('Onboarding back navigation', () => {
     await user.click(screen.getByRole('button', { name: 'ادامه' }));
     await screen.findByText('امروز چه یاد بگیریم؟');
 
-    const pending = deferred();
-    playAudio.mockImplementation(() => pending.promise);
+    const pending = deferred<Record<string, unknown>>();
+    getProgress.mockImplementation(() => pending.promise);
     await user.click(screen.getByText('عددها و حساب'));
     await user.click(screen.getByLabelText('بازگشت'));
-    pending.resolve();
+    pending.resolve({
+      currentTrack: 'math',
+      onboarded: false,
+      completedLessons: [],
+      completedUnits: [],
+      xp: 0,
+      streak: 0,
+      streakBest: 0,
+      lastActivityDate: '',
+      dailyGoal: 1,
+      dailyLessonsCompleted: 0,
+      restDaysUsed: 0,
+      activityDates: [],
+      weakItems: [],
+      avatar: '',
+      name: '',
+      startDate: '2026-01-01T00:00:00.000Z',
+    });
 
     await waitFor(() => {
       expect(screen.getByText('یک تصویر برای خودتان انتخاب کنید')).toBeInTheDocument();

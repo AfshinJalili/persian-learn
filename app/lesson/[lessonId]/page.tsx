@@ -139,7 +139,7 @@ export default function LessonPage() {
     }
 
     await completeLesson(lessonId, xpEarned, weakItems);
-    await playAudio('آفرین! درس تمام شد.');
+    playAudio('آفرین! درس تمام شد.').catch(() => {});
     router.push(
       `/lesson-complete?xp=${xpEarned}&lesson=${encodeURIComponent(lesson.title)}&id=${encodeURIComponent(lessonId)}`
     );

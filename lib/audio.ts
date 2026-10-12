@@ -73,11 +73,21 @@ export async function playAudio(text: string, slow: boolean = false): Promise<vo
   return playWithSpeechSynthesis(key, speed);
 }
 
+let settlePlayback: (() => void) | null = null;
+
+function finishPlayback() {
+  const settle = settlePlayback;
+  settlePlayback = null;
+  settle?.();
+}
+
 function playAudioFile(path: string, rate: number): Promise<void> {
   return new Promise((resolve, reject) => {
+    settlePlayback = resolve;
     try {
       currentAudio = new Audio(path);
     } catch (err) {
+      settlePlayback = null;
       reject(err);
       return;
     }
@@ -85,23 +95,29 @@ function playAudioFile(path: string, rate: number): Promise<void> {
 
     currentAudio.addEventListener('ended', () => {
       currentAudio = null;
-      resolve();
+      finishPlayback();
     });
 
     currentAudio.addEventListener('error', (err) => {
       currentAudio = null;
+      settlePlayback = null;
       reject(err);
     });
 
-    currentAudio.play().catch(reject);
+    currentAudio.play().catch((err) => {
+      currentAudio = null;
+      settlePlayback = null;
+      reject(err);
+    });
   });
 }
 
 function playWithSpeechSynthesis(text: string, rate: number): Promise<void> {
   return new Promise((resolve) => {
+    settlePlayback = resolve;
     const speech = getSpeechSynthesis();
     if (!speech) {
-      resolve();
+      finishPlayback();
       return;
     }
 
@@ -118,13 +134,13 @@ function playWithSpeechSynthesis(text: string, rate: number): Promise<void> {
       utterance.voice = persianVoice;
     }
 
-    utterance.onend = () => resolve();
-    utterance.onerror = () => resolve();
+    utterance.onend = () => finishPlayback();
+    utterance.onerror = () => finishPlayback();
 
     try {
       speech.speak(utterance);
     } catch {
-      resolve();
+      finishPlayback();
     }
   });
 }
@@ -140,6 +156,8 @@ export function stopAudio() {
   if (speech) {
     speech.cancel();
   }
+
+  finishPlayback();
 }
 
 export function isPlaying(): boolean {

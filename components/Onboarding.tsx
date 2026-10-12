@@ -43,15 +43,10 @@ export default function Onboarding() {
     }
   }, [step]);
 
-  const handleStart = async () => {
-    const token = gateRef.current.begin();
+  const handleStart = () => {
+    gateRef.current.begin();
     unlockAudio();
-    try {
-      await playAudio(WELCOME);
-    } catch {
-      /* browsers without Persian TTS still continue */
-    }
-    if (!gateRef.current.isCurrent(token)) return;
+    stopAudio();
     setStep(1);
   };
 
@@ -74,14 +69,10 @@ export default function Onboarding() {
 
   const handleTrackSelect = async (track: 'math' | 'alphabet') => {
     const token = gateRef.current.begin();
-
-    if (track === 'math') {
-      await playAudio('عددها را شروع می‌کنیم!');
-    } else {
-      await playAudio('حروف الفبا را شروع می‌کنیم!');
-    }
-
-    if (!gateRef.current.isCurrent(token)) return;
+    stopAudio();
+    playAudio(track === 'math' ? 'عددها را شروع می‌کنیم!' : 'حروف الفبا را شروع می‌کنیم!').catch(
+      () => {}
+    );
 
     const stored = await getProgress();
     if (!gateRef.current.isCurrent(token)) return;
