@@ -5,7 +5,7 @@ import { playOptionAudio } from '@/lib/spoken-option';
 import { comparePrompt } from '@/lib/compare';
 import { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
-import { ObjectArt } from '@/components/art/objects';
+import { ObjectCluster } from '@/components/art/objects';
 
 interface CompareMoreLessExerciseProps {
   exercise: Exercise;
@@ -43,17 +43,17 @@ export default function CompareMoreLessExercise({
           type="button"
           onClick={() => select('left', left)}
           disabled={disabled}
-          className={`card h-40 ${userAnswer === 'left' ? 'selected' : ''}`}
+          className={`card object-choice-card ${userAnswer === 'left' ? 'selected' : ''}`}
         >
-          <ObjectArt token={left} size={96} />
+          <ObjectCluster token={left} />
         </button>
         <button
           type="button"
           onClick={() => select('right', right)}
           disabled={disabled}
-          className={`card h-40 ${userAnswer === 'right' ? 'selected' : ''}`}
+          className={`card object-choice-card ${userAnswer === 'right' ? 'selected' : ''}`}
         >
-          <ObjectArt token={right} size={96} />
+          <ObjectCluster token={right} />
         </button>
       </div>
       <button

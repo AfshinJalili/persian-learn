@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Check, Lock, Star } from 'lucide-react';
 import { getProgress } from '@/lib/progress';
 import { loadTrack, isLessonUnlocked } from '@/lib/content';
 import type { Track, Lesson, UserProgress } from '@/lib/types';
-import { playAudio } from '@/lib/audio';
-import { homeGreeting } from '@/lib/learner';
+import { isAudioUnlocked, playAudio } from '@/lib/audio';
+import { consumeHomeGreeting, homeGreeting } from '@/lib/learner';
 import { formatPersianNumber } from '@/lib/persian';
 import AudioUnlockOverlay from '@/components/AudioUnlockOverlay';
 import SpeakerButton from '@/components/SpeakerButton';
@@ -44,6 +44,8 @@ export default function HomePage() {
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [track, setTrack] = useState<Track | null>(null);
   const [loading, setLoading] = useState(true);
+  const [focusNext, setFocusNext] = useState(false);
+  const currentLessonRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -53,13 +55,24 @@ export default function HomePage() {
 
       const trackData = await loadTrack(prog.currentTrack);
       setTrack(trackData);
+      setFocusNext(new URLSearchParams(window.location.search).get('focus') === 'next');
       setLoading(false);
 
-      playAudio(homeGreeting()).catch(() => {});
+      if (isAudioUnlocked() && consumeHomeGreeting()) {
+        playAudio(homeGreeting()).catch(() => {});
+      }
     }
 
     load();
   }, []);
+
+  useEffect(() => {
+    if (loading) return;
+    const node = currentLessonRef.current;
+    if (node && typeof node.scrollIntoView === 'function') {
+      node.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+  }, [loading, track, progress]);
 
   const handleLessonClick = (lesson: Lesson) => {
     if (!progress || !track) return;
@@ -93,7 +106,7 @@ export default function HomePage() {
 
   return (
     <div className="app-phone">
-      <AudioUnlockOverlay />
+      <AudioUnlockOverlay phrase={homeGreeting()} sessionOnce />
       <div className="home-top">
         <span className="chip" aria-label={`مسیر: ${trackLabel}`}>
           {progress.currentTrack === 'math' ? (
@@ -160,9 +173,11 @@ export default function HomePage() {
               <div key={lesson.id}>
                 <button
                   type="button"
+                  ref={isCurrent ? currentLessonRef : undefined}
+                  data-next-lesson={isCurrent ? 'true' : undefined}
                   onClick={() => handleLessonClick(lesson)}
                   aria-label={isCurrent ? 'شروع' : lesson.title}
-                  className={`node ${kind}`}
+                  className={`node ${kind}${isCurrent && focusNext ? ' pulse' : ''}`}
                   style={{ right, top }}
                 >
                   {isCompleted && <Check strokeWidth={2.6} />}

@@ -4,7 +4,7 @@ import { exerciseHeading } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
-import { ObjectArt } from '@/components/art/objects';
+import { ObjectArt, ObjectCluster, splitObjectTokens } from '@/components/art/objects';
 
 interface Props {
   exercise: Exercise;
@@ -66,12 +66,14 @@ export default function ListenChooseExercise({
               name={option}
               peers={options}
               onClick={() => handleSelect(option)}
-              className="h-[150px]"
+              className="object-choice-card"
             >
               {option.length <= 2 ? (
                 <span className="glyph" style={{ fontSize: 84 }}>
                   {option}
                 </span>
+              ) : splitObjectTokens(option).length > 1 ? (
+                <ObjectCluster token={option} />
               ) : (
                 <ObjectArt token={option} size={72} />
               )}

@@ -62,4 +62,11 @@ describe('LessonCompletePage repeat action', () => {
     await user.click(await screen.findByRole('button', { name: 'همین درس را دوباره بخوانیم' }));
     expect(mockPush).toHaveBeenCalledWith('/lesson/m1l1');
   });
+
+  it('sends ادامه to the home roadmap with the next lesson focused', async () => {
+    const user = userEvent.setup();
+    render(<LessonCompletePage />);
+    await user.click(await screen.findByRole('button', { name: 'ادامه' }));
+    expect(mockPush).toHaveBeenCalledWith('/home?focus=next');
+  });
 });

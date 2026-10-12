@@ -6,10 +6,11 @@ import { Pencil } from 'lucide-react';
 import { getProgress, saveProgress } from '@/lib/progress';
 import { loadTrack, trackCompletionPercent } from '@/lib/content';
 import type { Track, UserProgress } from '@/lib/types';
-import { AUDIO_SPEEDS, playAudio, setAudioSpeed } from '@/lib/audio';
+import { playAudio, setAudioSpeed } from '@/lib/audio';
 import { LEARNER_NAME } from '@/lib/learner';
 import { formatPersianNumber } from '@/lib/persian';
 import BottomNav from '@/components/ui/BottomNav';
+import VoiceSpeedControl from '@/components/ui/VoiceSpeedControl';
 import { AVATARS, AvatarArt, resolveAvatarId } from '@/components/art/objects';
 
 const LETTERS = ['آ', 'ب', 'پ', 'ت', 'ث', 'ج', 'چ', 'ح', 'خ', 'د', 'ذ', 'ر'];
@@ -153,26 +154,12 @@ export default function ProfilePage() {
             ))}
           </div>
         </div>
-        <div className="row-card" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 12, padding: '14px 16px' }}>
-          <span style={{ fontWeight: 700 }}>سرعت صدا</span>
-          <div className="speed-picks">
-            {AUDIO_SPEEDS.map((rate) => (
-              <button
-                key={rate}
-                type="button"
-                className={`speed-pick ${Math.abs(progress.speechRate - rate) < 0.001 ? 'on' : ''}`}
-                aria-pressed={Math.abs(progress.speechRate - rate) < 0.001}
-                aria-label={`${rate.toFixed(1)} برابر`}
-                onClick={async () => {
-                  setAudioSpeed(rate);
-                  await persist({ ...progress, speechRate: rate });
-                }}
-              >
-                {rate.toFixed(1)}×
-              </button>
-            ))}
-          </div>
-        </div>
+        <VoiceSpeedControl
+          value={progress.speechRate || 1}
+          onChange={(rate) => {
+            void persist({ ...progress, speechRate: rate });
+          }}
+        />
         <div className="row-card justify-between" style={{ padding: '10px 16px' }}>
           <span style={{ fontWeight: 700 }}>پخش خودکار صدا</span>
           <button

@@ -1,5 +1,6 @@
 import type { Exercise } from '@/lib/types';
 import { ArrowLeft } from 'lucide-react';
+import { personalizeIntroScript } from '@/lib/learner';
 import SpeakerButton from '@/components/SpeakerButton';
 import { ObjectArt } from '@/components/art/objects';
 
@@ -23,7 +24,7 @@ export default function IntroExercise({ exercise, onContinue }: Props) {
         ))}
       </div>
       {payload.visual ? <ObjectArt token={payload.visual} size={96} /> : null}
-      <p className="body-lg">{exercise.audio_script}</p>
+      <p className="body-lg">{personalizeIntroScript(exercise.audio_script)}</p>
       <button type="button" onClick={onContinue} className="btn btn-primary">
         ادامه
         <ArrowLeft strokeWidth={2.6} />

@@ -61,6 +61,12 @@ describe('Onboarding back navigation', () => {
     });
   });
 
+  it('greets Fariba by name on the welcome screen', () => {
+    render(<Onboarding />);
+    expect(screen.getByText('سلام فریبا جون!')).toBeInTheDocument();
+    expect(screen.getByText('خوش آمدید')).toBeInTheDocument();
+  });
+
   it('advances from Start immediately without waiting for audio', async () => {
     const user = userEvent.setup();
     const pending = deferred();

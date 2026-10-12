@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ProfilePage from '../app/profile/page';
-import { AUDIO_SPEEDS } from '../lib/audio';
 
 const setAudioSpeed = jest.fn();
+const playAudio = jest.fn<() => Promise<void>>();
 const saveProgress = jest.fn<(progress: unknown) => Promise<void>>();
 const getProgress = jest.fn();
 
@@ -14,7 +14,7 @@ jest.mock('next/navigation', () => ({
 
 jest.mock('@/lib/audio', () => ({
   AUDIO_SPEEDS: [0.9, 1, 1.1, 1.2, 1.3],
-  playAudio: jest.fn(() => Promise.resolve()),
+  playAudio: () => playAudio(),
   setAudioSpeed: (speed: number) => setAudioSpeed(speed),
 }));
 
@@ -36,8 +36,10 @@ jest.mock('@/components/ui/BottomNav', () => ({
 describe('Profile voice speed', () => {
   beforeEach(() => {
     setAudioSpeed.mockReset();
+    playAudio.mockReset();
     saveProgress.mockReset();
     getProgress.mockReset();
+    playAudio.mockResolvedValue(undefined);
     saveProgress.mockResolvedValue(undefined);
     getProgress.mockResolvedValue({
       currentTrack: 'math',
@@ -61,15 +63,21 @@ describe('Profile voice speed', () => {
     });
   });
 
-  it('offers 0.9x through 1.3x and saves the chosen rate', async () => {
-    const user = userEvent.setup();
+  it('uses a labeled slider and saves the chosen rate', async () => {
     render(<ProfilePage />);
-    for (const rate of AUDIO_SPEEDS) {
-      expect(await screen.findByRole('button', { name: `${rate.toFixed(1)} برابر` })).toBeInTheDocument();
-    }
+    const slider = await screen.findByRole('slider', { name: 'سرعت صدا' });
+    expect(screen.getByText('آهسته')).toBeInTheDocument();
+    expect(screen.getByText('تند')).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: '1.2 برابر' }));
+    fireEvent.change(slider, { target: { value: '1.2' } });
     expect(setAudioSpeed).toHaveBeenCalledWith(1.2);
     expect(saveProgress).toHaveBeenCalledWith(expect.objectContaining({ speechRate: 1.2 }));
+  });
+
+  it('plays a sample at the chosen speed', async () => {
+    const user = userEvent.setup();
+    render(<ProfilePage />);
+    await user.click(await screen.findByRole('button', { name: 'نمونه را بشنوید' }));
+    expect(playAudio).toHaveBeenCalled();
   });
 });

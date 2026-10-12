@@ -2,15 +2,18 @@
 
 import { useState } from 'react';
 import { isAudioUnlocked, playAudio, unlockAudio } from '@/lib/audio';
+import { consumeHomeGreeting, homeGreeting } from '@/lib/learner';
 import HodaMascot from '@/components/HodaMascot';
 import SpeakerIcon from '@/components/ui/SpeakerIcon';
 
 interface AudioUnlockOverlayProps {
   phrase?: string;
+  sessionOnce?: boolean;
 }
 
 export default function AudioUnlockOverlay({
-  phrase = 'سلام! من هُدی هستم. خوش آمدید.',
+  phrase = homeGreeting(),
+  sessionOnce = false,
 }: AudioUnlockOverlayProps) {
   const [unlocked, setUnlocked] = useState(isAudioUnlocked());
 
@@ -21,6 +24,9 @@ export default function AudioUnlockOverlay({
   const handleUnlock = () => {
     unlockAudio();
     setUnlocked(true);
+    if (sessionOnce && !consumeHomeGreeting()) {
+      return;
+    }
     playAudio(phrase).catch(() => {});
   };
 

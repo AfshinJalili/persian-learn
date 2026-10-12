@@ -1,13 +1,14 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { spokenOption } from '../lib/spoken-option';
-import { homeGreeting, lessonCompleteSpoken, LEARNER_NAME } from '../lib/learner';
+import { homeGreeting, lessonCompleteSpoken, LEARNER_NAME, onboardingSpokenWelcome } from '../lib/learner';
 import { spokenTextKey } from '../lib/audio-id';
 
 const ROOT = join(__dirname, '..');
 
 const UI_PHRASES = [
   'سلام! من هُدی هستم. خوش آمدید.',
+  onboardingSpokenWelcome(),
   'عالی! حالا بیایید شروع کنیم.',
   'لطفاً صدای گوشی خود را بلند کنید.',
   'خوب انتخاب کردید!',

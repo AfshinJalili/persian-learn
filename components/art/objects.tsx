@@ -143,6 +143,15 @@ export function WaterSvg() {
   );
 }
 
+export function DotSvg() {
+  return (
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="38" fill="#1D6AD8" />
+      <circle cx="38" cy="38" r="12" fill="#7EB6FF" opacity="0.7" />
+    </svg>
+  );
+}
+
 export function ClockSvg() {
   return (
     <svg viewBox="0 0 100 100" aria-hidden="true">
@@ -181,6 +190,7 @@ const EMOJI_ART: Record<string, ReactNode> = {
   '🏠': <HouseSvg />,
   '💧': <WaterSvg />,
   '⏰': <ClockSvg />,
+  '🔵': <DotSvg />,
 };
 
 function splitGraphemes(value: string): string[] {
@@ -190,6 +200,29 @@ function splitGraphemes(value: string): string[] {
     );
   }
   return Array.from(value);
+}
+
+export function splitObjectTokens(token: string): string[] {
+  return splitGraphemes(token).filter((part) => part.trim().length > 0);
+}
+
+export function objectClusterColumns(count: number): number {
+  if (count <= 1) return 1;
+  if (count === 2) return 2;
+  if (count === 3) return 3;
+  if (count === 4) return 2;
+  if (count <= 9) return 3;
+  return 5;
+}
+
+export function objectClusterItemSize(count: number): number {
+  if (count <= 1) return 64;
+  if (count === 2) return 48;
+  if (count === 3) return 40;
+  if (count === 4) return 48;
+  if (count <= 6) return 36;
+  if (count <= 9) return 32;
+  return 28;
 }
 
 export function resolveAvatarId(value: string): AvatarId {
@@ -216,24 +249,7 @@ export function AvatarArt({
   );
 }
 
-export function ObjectArt({
-  token,
-  size = 96,
-}: {
-  token: string;
-  size?: number;
-}) {
-  const parts = splitGraphemes(token).filter((part) => part.trim().length > 0);
-  if (parts.length > 1) {
-    return (
-      <span className="flex flex-wrap items-center justify-center gap-1">
-        {parts.map((part, index) => (
-          <ObjectArt key={`${part}-${index}`} token={part} size={Math.max(36, Math.round(size * 0.72))} />
-        ))}
-      </span>
-    );
-  }
-
+function SingleObjectArt({ token, size }: { token: string; size: number }) {
   const art = EMOJI_ART[token];
   if (art) {
     return (
@@ -248,6 +264,46 @@ export function ObjectArt({
       {token}
     </span>
   );
+}
+
+export function ObjectCluster({
+  token,
+  tokens,
+}: {
+  token?: string;
+  tokens?: string[];
+}) {
+  const parts = tokens ?? (token ? splitObjectTokens(token) : []);
+  const count = parts.length;
+  const cols = objectClusterColumns(count);
+  const size = objectClusterItemSize(count);
+
+  return (
+    <span
+      className="object-cluster"
+      data-count={count}
+      style={{ gridTemplateColumns: `repeat(${cols}, ${size}px)` }}
+    >
+      {parts.map((part, index) => (
+        <SingleObjectArt key={`${part}-${index}`} token={part} size={size} />
+      ))}
+    </span>
+  );
+}
+
+export function ObjectArt({
+  token,
+  size = 96,
+}: {
+  token: string;
+  size?: number;
+}) {
+  const parts = splitObjectTokens(token);
+  if (parts.length > 1) {
+    return <ObjectCluster token={token} />;
+  }
+
+  return <SingleObjectArt token={parts[0] ?? token} size={size} />;
 }
 
 export function looksLikeObjects(token: string): boolean {

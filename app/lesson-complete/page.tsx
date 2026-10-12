@@ -106,8 +106,8 @@ export default function LessonCompletePage() {
           </div>
         </div>
       </div>
-      <div className="bottom" style={{ display: 'flex', flexDirection: 'column', gap: 8, paddingBottom: 20 }}>
-        <button type="button" onClick={() => router.push('/home')} className="btn btn-primary">
+      <div className="bottom">
+        <button type="button" onClick={() => router.push('/home?focus=next')} className="btn btn-primary">
           ادامه
           <ArrowLeft strokeWidth={2.6} />
         </button>

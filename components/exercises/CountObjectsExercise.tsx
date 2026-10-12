@@ -3,7 +3,7 @@ import { exerciseHeading } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
-import { ObjectArt } from '@/components/art/objects';
+import { ObjectCluster } from '@/components/art/objects';
 
 interface Props {
   exercise: Exercise;
@@ -36,20 +36,8 @@ export default function CountObjectsExercise({
         <SpeakerButton text={exercise.audio_script} />
         <h2>{exerciseHeading(exercise)}</h2>
       </div>
-      <div className="card" style={{ height: 250, background: '#FFF8EC' }}>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: `repeat(${count === 4 ? 2 : Math.min(count, 3) || 2}, 96px)`,
-            gap: '18px 40px',
-          }}
-        >
-          {objects.map((obj, index) => (
-            <span key={`${obj}-${index}`} className="relative inline-grid">
-              <ObjectArt token={obj} size={96} />
-            </span>
-          ))}
-        </div>
+      <div className="card object-count-card">
+        <ObjectCluster tokens={objects} />
       </div>
       <div className="grid3">
         {options.map((option) => {

@@ -3,7 +3,7 @@ import { exerciseHeading } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
-import { ObjectArt } from '@/components/art/objects';
+import { ObjectCluster } from '@/components/art/objects';
 
 interface Props {
   exercise: Exercise;
@@ -48,9 +48,9 @@ export default function TapPictureExercise({
               name={option}
               peers={options}
               onClick={() => handleSelect(option)}
-              className="h-[172px]"
+              className="object-choice-card"
             >
-              <ObjectArt token={option} size={116} />
+              <ObjectCluster token={option} />
             </ChoiceButton>
           );
         })}
