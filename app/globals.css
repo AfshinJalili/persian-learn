@@ -487,7 +487,7 @@ h2,
 }
 
 .picture-grid .object-choice-card {
-  padding: 20px;
+  padding: 20px 6px;
   place-items: center;
 }
 
@@ -580,14 +580,6 @@ h2,
   gap: 12px;
   width: 100%;
   margin-inline: 0;
-}
-
-.object-cluster-fit {
-  width: max-content;
-  height: max-content;
-  position: relative;
-  left: 50%;
-  translate: -50% 0;
 }
 
 .bottom {
