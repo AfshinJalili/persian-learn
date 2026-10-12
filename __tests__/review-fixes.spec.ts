@@ -317,8 +317,8 @@ test.describe('Codex review navigation fixes', () => {
         fill: apples && apples.clientWidth > 0 ? clusterWidth / apples.clientWidth : 0,
       };
     });
-    expect(sixFill.cols).toBe(5);
-    expect(sixFill.rows).toBe('2');
+    expect(sixFill.cols).toBe(6);
+    expect(sixFill.rows).toBe('1');
     expect(sixFill.size).toBeGreaterThanOrEqual(32);
     expect(sixFill.fill).toBeGreaterThanOrEqual(0.65);
   });
