@@ -581,6 +581,13 @@ h2,
   margin-inline: 0;
 }
 
+.object-cluster-fit {
+  width: fit-content;
+  height: fit-content;
+  justify-self: center;
+  align-self: center;
+}
+
 .bottom {
   display: flex;
   flex-direction: column;

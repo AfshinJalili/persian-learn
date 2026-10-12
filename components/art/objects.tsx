@@ -270,9 +270,11 @@ function SingleObjectArt({
 export function ObjectCluster({
   token,
   tokens,
+  className,
 }: {
   token?: string;
   tokens?: string[];
+  className?: string;
 }) {
   const parts = tokens ?? (token ? splitObjectTokens(token) : []);
   const count = parts.length;
@@ -281,7 +283,7 @@ export function ObjectCluster({
 
   return (
     <span
-      className="object-cluster"
+      className={['object-cluster', className].filter(Boolean).join(' ')}
       data-count={count}
       style={
         {

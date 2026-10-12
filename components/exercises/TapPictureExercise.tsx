@@ -50,7 +50,7 @@ export default function TapPictureExercise({
               onClick={() => handleSelect(option)}
               className="object-choice-card"
             >
-              <ObjectCluster token={option} />
+              <ObjectCluster token={option} className="object-cluster-fit" />
             </ChoiceButton>
           );
         })}
