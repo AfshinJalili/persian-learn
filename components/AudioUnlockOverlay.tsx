@@ -17,10 +17,10 @@ export default function AudioUnlockOverlay({
     return null;
   }
 
-  const handleUnlock = async () => {
+  const handleUnlock = () => {
     unlockAudio();
-    await playAudio(phrase).catch(() => {});
     setUnlocked(true);
+    void playAudio(phrase).catch(() => {});
   };
 
   return (

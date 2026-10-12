@@ -25,6 +25,22 @@ export function getAudioSpeed(): number {
   return audioSpeed;
 }
 
+function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error('audio timeout')), ms);
+    promise.then(
+      (value) => {
+        clearTimeout(timer);
+        resolve(value);
+      },
+      (err) => {
+        clearTimeout(timer);
+        reject(err);
+      },
+    );
+  });
+}
+
 export async function playAudio(text: string, slow: boolean = false): Promise<void> {
   stopAudio();
 
@@ -38,13 +54,17 @@ export async function playAudio(text: string, slow: boolean = false): Promise<vo
   const audioPath = audioUrlForHash(hash);
 
   try {
-    await playAudioFile(audioPath, speed);
+    await withTimeout(playAudioFile(audioPath, speed), 8000);
     return;
   } catch {
     /* fall through to device TTS */
   }
 
-  return playWithSpeechSynthesis(key, speed);
+  try {
+    await withTimeout(playWithSpeechSynthesis(key, speed), 4000);
+  } catch {
+    /* headless browsers and missing voices should not block the UI */
+  }
 }
 
 function playAudioFile(path: string, rate: number): Promise<void> {

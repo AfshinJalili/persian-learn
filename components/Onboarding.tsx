@@ -22,15 +22,11 @@ export default function Onboarding() {
     }
   }, [step, audioEnabled]);
 
-  const handleAudioUnlock = async () => {
+  const handleAudioUnlock = () => {
     unlockAudio();
-    try {
-      await playAudio('سلام! من هُدی هستم. خوش آمدید.');
-    } catch {
-      /* browsers without Persian TTS still continue */
-    }
     setAudioEnabled(true);
     setStep(1);
+    void playAudio('سلام! من هُدی هستم. خوش آمدید.').catch(() => {});
   };
 
   const handleSoundCheck = async (canHear: boolean) => {

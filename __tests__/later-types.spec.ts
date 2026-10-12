@@ -50,6 +50,7 @@ async function seedProgress(page: Page, track: 'math' | 'alphabet') {
     dailyGoal: 1,
     dailyLessonsCompleted: 0,
     restDaysUsed: 0,
+    activityDates: [],
     weakItems: [],
     avatar: '🌷',
     name: 'مادر جان',
@@ -82,10 +83,13 @@ async function seedProgress(page: Page, track: 'math' | 'alphabet') {
 
 async function unlockIfNeeded(page: Page) {
   const prompt = page.getByText('برای شنیدن، اینجا بزنید');
-  if (await prompt.isVisible().catch(() => false)) {
-    await page.getByRole('button', { name: 'شروع' }).click();
-    await expect(prompt).toHaveCount(0);
+  try {
+    await prompt.waitFor({ state: 'visible', timeout: 5000 });
+  } catch {
+    return;
   }
+  await page.locator('.fixed.inset-0').getByRole('button', { name: 'شروع' }).click();
+  await expect(prompt).toHaveCount(0);
 }
 
 async function playChoice(page: Page, answer: string) {
@@ -171,6 +175,22 @@ async function playExercise(page: Page, exercise: Exercise) {
 
 test.describe('Later exercise types via deep links', () => {
   test.use({ viewport: { width: 390, height: 844 } });
+
+  test('fifth path node stays above the tab bar', async ({ page }) => {
+    await seedProgress(page, 'math');
+    await page.goto('/home');
+    await unlockIfNeeded(page);
+    await expect(page.getByText('خانه')).toBeVisible();
+
+    const tab = page.locator('nav').last();
+    const lastNode = page.locator('.relative.flex.flex-col button[aria-label]').last();
+    await lastNode.scrollIntoViewIfNeeded();
+    const tabBox = await tab.boundingBox();
+    const nodeBox = await lastNode.boundingBox();
+    expect(tabBox).toBeTruthy();
+    expect(nodeBox).toBeTruthy();
+    expect(nodeBox!.y + nodeBox!.height).toBeLessThanOrEqual(tabBox!.y + 1);
+  });
 
   for (const target of TARGETS) {
     test(`${target.type} in ${target.lessonId}`, async ({ page }) => {
