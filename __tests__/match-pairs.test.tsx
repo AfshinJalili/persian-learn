@@ -93,6 +93,7 @@ describe('MatchPairsExercise selection order', () => {
     expect(placed).toBeTruthy();
     expect(undo).toBeTruthy();
     expect(undo.className).toContain('match-chip-undo');
+    expect(undo.className).toContain('placed-undo-badge');
     expect(undo.closest('.match-digit-placed-wrap')).toBe(placed.closest('.match-digit-placed-wrap'));
     expect(placed.contains(undo)).toBe(false);
 

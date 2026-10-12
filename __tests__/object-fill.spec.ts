@@ -218,7 +218,7 @@ function measurePage() {
     rawGlyphs,
     choiceCardHeights: [
       ...document.querySelectorAll(
-        '.picture-grid .object-choice-card, .grid3 .object-choice-card, .grid2 .object-choice-card'
+        '.picture-grid .object-choice-card, .grid3 > .card, .grid2 > .card.object-choice-card'
       ),
     ].map((node) => (node as HTMLElement).getBoundingClientRect().height),
     badgeOverlap: [...document.querySelectorAll('[data-match-placed]')].map((chip) => {

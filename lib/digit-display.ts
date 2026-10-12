@@ -1,6 +1,6 @@
 export const SEQUENCE_FONT_MAX = 72;
-export const SEQUENCE_GAP = 12;
-export const SEQUENCE_PAD_X = 12;
+export const SEQUENCE_GAP = 16;
+export const SEQUENCE_PAD_X = 16;
 
 export function isSequenceDisplay(display: string): boolean {
   return /[\s؟?]/.test(display.trim());

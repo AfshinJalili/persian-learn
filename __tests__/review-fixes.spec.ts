@@ -240,6 +240,7 @@ test.describe('Codex review navigation fixes', () => {
   test('gallery object items stay at least 32px and wrap after five', async ({ page }) => {
     await page.goto('/dev/object-cards');
     await expect(page.locator('[data-object-gallery]')).toBeVisible();
+    await page.waitForTimeout(300);
     const sizes = await page.evaluate(() => {
       const items = [...document.querySelectorAll('.object-cluster > .illus, .ten-frame-cell .illus')];
       return items.map((item) => Math.round(item.getBoundingClientRect().width));

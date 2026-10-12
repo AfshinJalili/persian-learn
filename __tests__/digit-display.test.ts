@@ -1,5 +1,7 @@
 import { describe, expect, it } from '@jest/globals';
 import {
+  SEQUENCE_GAP,
+  SEQUENCE_PAD_X,
   digitDisplayFontSize,
   isSequenceDisplay,
   sequenceTokens,
@@ -20,8 +22,10 @@ describe('digit display fitting', () => {
   });
 
   it('fits a four-token sequence with padding and gaps instead of a tight 70% cap', () => {
-    expect(digitDisplayFontSize(300, 200, 332, 4)).toBe(60);
-    expect(digitDisplayFontSize(200, 200, 232, 4)).toBe(35);
+    expect(SEQUENCE_GAP).toBe(16);
+    expect(SEQUENCE_PAD_X).toBe(16);
+    expect(digitDisplayFontSize(300, 200, 332, 4)).toBe(55);
+    expect(digitDisplayFontSize(200, 200, 232, 4)).toBe(30);
     expect(digitDisplayFontSize(400, 200, 432, 4)).toBe(72);
   });
 });

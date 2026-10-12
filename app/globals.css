@@ -568,6 +568,18 @@ h2.prompt-numeral {
   grid-auto-rows: minmax(0, 260px);
 }
 
+.app-phone:not(.object-gallery-page) .content > .grid3:not(:has(.object-choice-card)),
+.app-phone:not(.object-gallery-page) .content > .grid2:not(:has(.object-choice-card)) {
+  flex: 0 0 auto;
+  max-height: 140px;
+}
+
+.app-phone:not(.object-gallery-page) .content > .grid3 > .card:not(.object-choice-card),
+.app-phone:not(.object-gallery-page) .content > .grid2 > .card:not(.object-choice-card) {
+  height: 120px;
+  max-height: 120px;
+}
+
 .app-phone:not(.object-gallery-page) .object-choice-card {
   box-sizing: border-box;
   min-height: 0;
@@ -675,8 +687,8 @@ h2.prompt-numeral {
   white-space: nowrap;
   justify-content: center;
   align-items: center;
-  gap: 12px;
-  padding: 8px 12px;
+  gap: 16px;
+  padding: 12px 16px;
   box-sizing: border-box;
   max-width: 100%;
   max-height: 100%;
@@ -754,13 +766,19 @@ h2.prompt-numeral {
 }
 
 .app-phone:not(.object-gallery-page) .cluster-stack .object-choice-card,
-.content > .cluster-stack .object-choice-card,
-.cluster-stack > .card.object-choice-card {
+.app-phone:not(.object-gallery-page) .content > .cluster-stack .object-choice-card {
   flex: 1 1 0;
   min-height: 0;
   height: auto;
   max-height: none;
   padding: 12px;
+}
+
+.app-phone.object-gallery-page .cluster-stack > .card.object-choice-card {
+  flex: none;
+  min-height: 240px;
+  height: auto;
+  max-height: none;
 }
 
 .gallery-wide {
@@ -936,6 +954,7 @@ h2.prompt-numeral {
   animation: match-chip-wobble 0.45s ease-out;
 }
 
+.placed-undo-badge,
 .match-chip-undo {
   position: static;
   inset: auto;

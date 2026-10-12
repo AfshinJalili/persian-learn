@@ -42,6 +42,7 @@ describe('ChooseDigitExercise', () => {
     const sequence = container.querySelector('.digit-sequence') as HTMLElement | null;
     expect(sequence).toBeTruthy();
     expect(sequence?.className).toContain('digit-sequence');
+    expect(sequence?.querySelectorAll('.glyph')).toHaveLength(4);
     expect(container.querySelector('[data-digit-display]')).toBeNull();
   });
 
