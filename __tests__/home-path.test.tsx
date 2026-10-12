@@ -100,6 +100,7 @@ describe('Home path nodes', () => {
     expect(start.querySelector('.tooltip')).toHaveTextContent('شروع');
     expect(start.querySelector('.node.current')).toBeTruthy();
     expect(start.className).toContain('tooltip-flip');
+    expect(screen.queryByText('hoda')).not.toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByRole('button', { name: 'جایزه' })).toBeInTheDocument();

@@ -119,6 +119,12 @@ export default function HomePage() {
     track.units[0];
 
   const currentLesson = currentUnit.lessons.find((lesson) => !progress.completedLessons.includes(lesson.id));
+  const currentIndex = currentLesson
+    ? currentUnit.lessons.findIndex((lesson) => lesson.id === currentLesson.id)
+    : -1;
+  const currentRight =
+    currentIndex >= 0 ? nodePosition(currentIndex, currentUnit.lessons.length).right : 0;
+  const hideMascot = currentRight >= 220;
   const unitNumber = Number(currentUnit.id.replace(/\D/g, '')) || 1;
   const pathHeight = Math.max(420, (currentUnit.lessons.length - 1) * 88 + 120);
   const trackLabel = progress.currentTrack === 'math' ? 'حساب' : 'حرف';
@@ -203,9 +209,11 @@ export default function HomePage() {
               </button>
             );
           })}
-          <span className="illus" style={{ width: 112, height: 112, position: 'absolute', right: 4, top: 268 }}>
-            <HodaMascot className="w-full h-full" />
-          </span>
+          {hideMascot ? null : (
+            <span className="illus" style={{ width: 112, height: 112, position: 'absolute', right: 4, top: 292 }}>
+              <HodaMascot className="w-full h-full" />
+            </span>
+          )}
         </div>
       </div>
       <BottomNav active="home" />

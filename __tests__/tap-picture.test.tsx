@@ -36,7 +36,7 @@ describe('TapPictureExercise', () => {
         disabled={false}
       />
     );
-    expect(container.querySelector('.grid3')).toBeTruthy();
+    expect(container.querySelector('.grid3.picture-grid')).toBeTruthy();
     expect(container.querySelector('.grid2')).toBeNull();
   });
 

@@ -104,6 +104,36 @@ describe('Profile voice speed', () => {
     jest.useRealTimers();
 
     expect(screen.getByLabelText('پخش خودکار')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'تمام' })).toBeInTheDocument();
+  });
+
+  it('closes the family-helper panel with تمام and after leaving the screen', async () => {
+    const user = userEvent.setup();
+    const { unmount } = render(<ProfilePage />);
+    await screen.findByText('سرعت صدا');
+
+    jest.useFakeTimers();
+    fireEvent.pointerDown(screen.getByLabelText('تنظیمات خانواده'), { button: 0 });
+    act(() => {
+      jest.advanceTimersByTime(FAMILY_HELPER_HOLD_MS);
+    });
+    jest.useRealTimers();
+
+    await user.click(screen.getByRole('button', { name: 'تمام' }));
+    expect(screen.queryByLabelText('پخش خودکار')).not.toBeInTheDocument();
+
+    jest.useFakeTimers();
+    fireEvent.pointerDown(screen.getByLabelText('تنظیمات خانواده'), { button: 0 });
+    act(() => {
+      jest.advanceTimersByTime(FAMILY_HELPER_HOLD_MS);
+    });
+    jest.useRealTimers();
+    expect(screen.getByLabelText('پخش خودکار')).toBeInTheDocument();
+    unmount();
+
+    render(<ProfilePage />);
+    await screen.findByText('سرعت صدا');
+    expect(screen.queryByLabelText('پخش خودکار')).not.toBeInTheDocument();
   });
 
   it('keeps empty progress tracks empty and fills 1/6 proportionally', async () => {

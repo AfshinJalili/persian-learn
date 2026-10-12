@@ -29,6 +29,7 @@ export default function ProfilePage() {
       setAudioSpeed(prog.speechRate || 1);
     }
     load();
+    return () => setHelperOpen(false);
   }, []);
 
   if (!progress) {
@@ -157,15 +158,24 @@ export default function ProfilePage() {
           }}
         />
         {helperOpen ? (
-          <div className="row-card justify-between" style={{ padding: '10px 16px' }} data-family-helper-panel>
-            <span style={{ fontWeight: 700 }}>پخش خودکار صدا</span>
-            <button
-              type="button"
-              className={`toggle ${progress.autoplay ? '' : 'off'}`}
-              aria-pressed={progress.autoplay}
-              aria-label="پخش خودکار"
-              onClick={() => persist({ ...progress, autoplay: !progress.autoplay })}
-            />
+          <div
+            className="row-card"
+            style={{ flexDirection: 'column', alignItems: 'stretch', gap: 12, padding: '12px 16px' }}
+            data-family-helper-panel
+          >
+            <div className="flex justify-between items-center gap-3">
+              <span style={{ fontWeight: 700 }}>پخش خودکار صدا</span>
+              <button
+                type="button"
+                className={`toggle ${progress.autoplay ? '' : 'off'}`}
+                aria-pressed={progress.autoplay}
+                aria-label="پخش خودکار"
+                onClick={() => persist({ ...progress, autoplay: !progress.autoplay })}
+              />
+            </div>
+            <button type="button" className="btn btn-secondary" onClick={() => setHelperOpen(false)}>
+              تمام
+            </button>
           </div>
         ) : null}
       </div>

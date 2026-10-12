@@ -499,13 +499,14 @@ h2,
 }
 
 .object-cluster {
-  --cluster-gap: 4px;
+  --dot: 24px;
+  --cluster-gap: 8px;
   display: grid;
-  grid-template-columns: repeat(
-    var(--object-cols, 1),
-    min(26px, calc((100% - (var(--object-cols, 1) - 1) * var(--cluster-gap)) / var(--object-cols, 1)))
+  grid-template-columns: repeat(var(--object-cols, 1), var(--dot));
+  gap: min(
+    var(--cluster-gap),
+    max(0px, calc((100% - var(--object-cols, 1) * var(--dot)) / max(1, var(--object-cols, 1) - 1)))
   );
-  gap: var(--cluster-gap);
   place-content: center;
   place-items: center;
   width: 100%;
@@ -514,8 +515,9 @@ h2,
 }
 
 .object-cluster > .illus {
-  width: 100%;
-  height: auto;
+  width: var(--dot);
+  height: var(--dot);
+  flex: none;
   aspect-ratio: 1;
 }
 
@@ -563,6 +565,12 @@ h2,
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: var(--s-4);
+}
+
+.picture-grid {
+  gap: 8px;
+  width: calc(100% + 2 * var(--s-5));
+  margin-inline: calc(-1 * var(--s-5));
 }
 
 .bottom {

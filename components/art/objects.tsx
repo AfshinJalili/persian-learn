@@ -216,7 +216,7 @@ export function objectClusterColumns(count: number): number {
 }
 
 export function objectClusterItemSize(_count: number): number {
-  return 26;
+  return 24;
 }
 
 export function resolveAvatarId(value: string): AvatarId {
