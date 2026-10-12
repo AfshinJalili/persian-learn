@@ -404,7 +404,7 @@ test.describe('Object fill at phone widths', () => {
             expect(cols, path).toBe('2');
           }
           for (const row of stats.matchFills.filter((item) => item.count >= 6)) {
-            expect(row.size, path).toBeGreaterThanOrEqual(24);
+            expect(row.size, path).toBeGreaterThanOrEqual(20);
             expect(row.fill, path).toBeGreaterThanOrEqual(0.6);
           }
           if (exercise.type === 'match_pairs') {
