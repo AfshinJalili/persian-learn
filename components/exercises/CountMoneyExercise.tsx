@@ -61,6 +61,8 @@ export default function CountMoneyExercise({
             key={choice}
             selected={userAnswer === choice}
             disabled={disabled}
+            name={choice}
+            peers={choices}
             onClick={() => onAnswerChange(choice)}
             className="p-6 text-3xl"
           >

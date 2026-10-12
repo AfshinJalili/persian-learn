@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { unlockAudio, playAudio, stopAudio } from '@/lib/audio';
+import { LEARNER_NAME } from '@/lib/learner';
 import { OnboardingGate } from '@/lib/onboarding-gate';
 import { getProgress, saveProgress } from '@/lib/progress';
 import BackChevron from '@/components/BackChevron';
@@ -11,10 +12,8 @@ import HodaMascot from '@/components/HodaMascot';
 import SpeakerButton from '@/components/SpeakerButton';
 import { AVATARS, AvatarArt, PomegranateSvg } from '@/components/art/objects';
 
-const NAMES = ['مادر جان', 'خانم جان', 'مامان', 'بانو'];
 const WELCOME = 'سلام! من هُدی هستم. خوش آمدید.';
 const AVATAR_PROMPT = 'یک تصویر برای خودتان انتخاب کنید';
-const NAME_PROMPT = 'شما را چه صدا کنیم؟';
 const TRACK_PROMPT = 'امروز چه یاد بگیریم؟';
 
 function Dots({ step }: { step: number }) {
@@ -30,7 +29,6 @@ function Dots({ step }: { step: number }) {
 export default function Onboarding() {
   const [step, setStep] = useState(0);
   const [selectedAvatar, setSelectedAvatar] = useState('tulip');
-  const [selectedName, setSelectedName] = useState('مادر جان');
   const gateRef = useRef(new OnboardingGate());
   const router = useRouter();
 
@@ -50,14 +48,8 @@ export default function Onboarding() {
     setStep(1);
   };
 
-  const handleContinueFromIdentity = () => {
+  const handleContinueFromAvatar = () => {
     gateRef.current.begin();
-    setStep(2);
-  };
-
-  const handleSkipName = () => {
-    gateRef.current.begin();
-    setSelectedName('');
     setStep(2);
   };
 
@@ -78,7 +70,7 @@ export default function Onboarding() {
     if (!gateRef.current.isCurrent(token)) return;
     stored.currentTrack = track;
     stored.avatar = selectedAvatar || 'tulip';
-    stored.name = selectedName;
+    stored.name = LEARNER_NAME;
     stored.onboarded = true;
     await saveProgress(stored);
     if (!gateRef.current.isCurrent(token)) return;
@@ -132,7 +124,10 @@ export default function Onboarding() {
                 type="button"
                 key={avatar.id}
                 aria-label={avatar.emoji}
-                onClick={() => setSelectedAvatar(avatar.id)}
+                onClick={() => {
+                  setSelectedAvatar(avatar.id);
+                  playAudio(avatar.label).catch(() => {});
+                }}
                 className={`card ${selectedAvatar === avatar.id ? 'selected' : ''}`}
                 style={{ height: 116 }}
               >
@@ -145,30 +140,11 @@ export default function Onboarding() {
               </button>
             ))}
           </div>
-          <div className="flex items-center gap-3">
-            <SpeakerButton text={NAME_PROMPT} size="sm" />
-            <h2 style={{ flex: 1 }}>{NAME_PROMPT}</h2>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            {NAMES.map((name) => (
-              <button
-                type="button"
-                key={name}
-                onClick={() => setSelectedName(name)}
-                className={`chip ${selectedName === name ? 'on' : ''}`}
-              >
-                {name}
-              </button>
-            ))}
-          </div>
         </div>
         <div className="bottom" style={{ display: 'flex', flexDirection: 'column', gap: 12, paddingTop: 16, paddingBottom: 20 }}>
-          <button type="button" className="btn btn-primary" onClick={handleContinueFromIdentity}>
+          <button type="button" className="btn btn-primary" onClick={handleContinueFromAvatar}>
             ادامه
             <ArrowLeft strokeWidth={2.6} />
-          </button>
-          <button type="button" className="btn btn-ghost" onClick={handleSkipName}>
-            بعداً
           </button>
         </div>
       </div>

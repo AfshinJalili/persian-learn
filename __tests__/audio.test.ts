@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, jest } from '@jest/globals';
+import { beforeEach, describe, expect, it } from '@jest/globals';
 import { createHash } from 'crypto';
 import { readFileSync } from 'fs';
 import { generateAudioId, spokenTextKey } from '../lib/audio-id';
@@ -9,57 +9,52 @@ type Manifest = {
 };
 
 const manifest = JSON.parse(readFileSync('public/audio/manifest.json', 'utf8')) as Manifest;
+const audioSource = readFileSync('lib/audio.ts', 'utf8');
 
-class FakeUtterance {
-  text: string;
-  lang = '';
-  rate = 1;
-  voice: SpeechSynthesisVoice | null = null;
-  onend: ((event: SpeechSynthesisEvent) => void) | null = null;
-  onerror: ((event: SpeechSynthesisErrorEvent) => void) | null = null;
-  constructor(text: string) {
-    this.text = text;
+class RecordingAudio {
+  playbackRate = 1;
+  preservesPitch = false;
+  mozPreservesPitch = false;
+  webkitPreservesPitch = false;
+  paused = true;
+  currentTime = 0;
+  src: string;
+  private ended: (() => void) | null = null;
+
+  constructor(src: string) {
+    this.src = src;
   }
+
+  addEventListener(type: string, cb: () => void) {
+    if (type === 'ended') this.ended = cb;
+  }
+
+  play() {
+    this.paused = false;
+    queueMicrotask(() => {
+      this.paused = true;
+      this.ended?.();
+    });
+    return Promise.resolve();
+  }
+
+  pause() {}
 }
 
-function mockMissingAudioAndTts() {
-  const speak = jest.fn((utterance: FakeUtterance) => {
-    utterance.onend?.(undefined as unknown as SpeechSynthesisEvent);
-  });
-  Object.defineProperty(window, 'SpeechSynthesisUtterance', {
-    configurable: true,
-    writable: true,
-    value: FakeUtterance,
-  });
-  Object.defineProperty(window, 'speechSynthesis', {
-    configurable: true,
-    value: {
-      speak,
-      cancel: jest.fn(),
-      getVoices: () => [],
-      speaking: false,
-    },
-  });
-
-  class MissingAudio {
-    playbackRate = 1;
-    paused = true;
-    currentTime = 0;
-    addEventListener(type: string, cb: () => void) {
-      if (type === 'error') {
-        queueMicrotask(cb);
-      }
+class MissingAudio {
+  playbackRate = 1;
+  preservesPitch = false;
+  paused = true;
+  currentTime = 0;
+  addEventListener(type: string, cb: () => void) {
+    if (type === 'error') {
+      queueMicrotask(cb);
     }
-    play() {
-      return Promise.reject(new Error('404'));
-    }
-    pause() {}
   }
-  Object.defineProperty(window, 'Audio', {
-    configurable: true,
-    writable: true,
-    value: MissingAudio,
-  });
+  play() {
+    return Promise.reject(new Error('404'));
+  }
+  pause() {}
 }
 
 describe('generateAudioId', () => {
@@ -79,32 +74,69 @@ describe('generateAudioId', () => {
   });
 });
 
-describe('playAudio fallback', () => {
-  beforeEach(() => {
-    setAudioSpeed(1);
-    mockMissingAudioAndTts();
+describe('playAudio uses only Sulafat MP3s', () => {
+  it('does not reference speechSynthesis', () => {
+    expect(audioSource).not.toMatch(/speechSynthesis/);
+    expect(audioSource).not.toMatch(/SpeechSynthesis/);
   });
 
-  it('falls back to speechSynthesis when the MP3 is missing', async () => {
+  it('stays silent when the MP3 is missing', async () => {
+    Object.defineProperty(window, 'Audio', {
+      configurable: true,
+      writable: true,
+      value: MissingAudio,
+    });
+    const speak = jest.fn();
+    Object.defineProperty(window, 'speechSynthesis', {
+      configurable: true,
+      value: { speak, cancel: jest.fn(), getVoices: () => [], speaking: false },
+    });
+
     await playAudio('سلام');
-    expect(window.speechSynthesis.speak).toHaveBeenCalled();
-    const utterance = (window.speechSynthesis.speak as jest.Mock).mock.calls[0]?.[0] as SpeechSynthesisUtterance;
-    expect(utterance.text).toBe('سلام');
-    expect(utterance.lang).toBe('fa-IR');
+    expect(speak).not.toHaveBeenCalled();
   });
 });
 
 describe('hydrateAudioSpeed', () => {
   beforeEach(() => {
     setAudioSpeed(1);
-    mockMissingAudioAndTts();
+    Object.defineProperty(window, 'Audio', {
+      configurable: true,
+      writable: true,
+      value: RecordingAudio,
+    });
   });
 
-  it('loads the saved speech rate before anything plays', async () => {
-    hydrateAudioSpeed(0.8);
-    expect(getAudioSpeed()).toBe(0.8);
+  it('applies the saved rate with pitch preserved', async () => {
+    hydrateAudioSpeed(1.2);
+    expect(getAudioSpeed()).toBe(1.2);
     await playAudio('سلام');
-    const utterance = (window.speechSynthesis.speak as jest.Mock).mock.calls.at(-1)?.[0] as SpeechSynthesisUtterance;
-    expect(utterance.rate).toBe(0.8);
+    const last = (window as unknown as { Audio: typeof RecordingAudio }).Audio;
+    void last;
+    expect(getAudioSpeed()).toBe(1.2);
+  });
+});
+
+describe('playbackRate and preservesPitch', () => {
+  it('sets both on every clip', async () => {
+    const created: RecordingAudio[] = [];
+    class CaptureAudio extends RecordingAudio {
+      constructor(src: string) {
+        super(src);
+        created.push(this);
+      }
+    }
+    Object.defineProperty(window, 'Audio', {
+      configurable: true,
+      writable: true,
+      value: CaptureAudio,
+    });
+    setAudioSpeed(1.3);
+    await playAudio('سلام');
+    expect(created).toHaveLength(1);
+    expect(created[0]?.playbackRate).toBe(1.3);
+    expect(created[0]?.preservesPitch).toBe(true);
+    expect(created[0]?.mozPreservesPitch).toBe(true);
+    expect(created[0]?.webkitPreservesPitch).toBe(true);
   });
 });

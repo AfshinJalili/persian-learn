@@ -7,6 +7,7 @@ import { getProgress } from '@/lib/progress';
 import { loadTrack, isLessonUnlocked } from '@/lib/content';
 import type { Track, Lesson, UserProgress } from '@/lib/types';
 import { playAudio } from '@/lib/audio';
+import { homeGreeting } from '@/lib/learner';
 import { formatPersianNumber } from '@/lib/persian';
 import AudioUnlockOverlay from '@/components/AudioUnlockOverlay';
 import SpeakerButton from '@/components/SpeakerButton';
@@ -54,11 +55,7 @@ export default function HomePage() {
       setTrack(trackData);
       setLoading(false);
 
-      if (prog.name) {
-        playAudio(`سلام ${prog.name}! بیایید درس امروز را شروع کنیم.`).catch(() => {});
-      } else {
-        playAudio('سلام! بیایید درس امروز را شروع کنیم.').catch(() => {});
-      }
+      playAudio(homeGreeting()).catch(() => {});
     }
 
     load();

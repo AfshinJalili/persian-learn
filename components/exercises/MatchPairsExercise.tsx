@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { playAudio } from '@/lib/audio';
+import { playOptionAudio } from '@/lib/spoken-option';
 import { canonicalizePairs } from '@/lib/answers';
 import { shuffleSeeded } from '@/lib/shuffle';
 import { exerciseHeading } from '@/lib/exercise-copy';
@@ -16,13 +16,16 @@ interface Props {
   disabled: boolean;
 }
 
+type Side = 'left' | 'right';
+type Selection = { side: Side; value: string };
+
 export default function MatchPairsExercise({
   exercise,
   userAnswer,
   onAnswerChange,
   disabled,
 }: Props) {
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<Selection | null>(null);
   const [pairs, setPairs] = useState<Array<[string, string]>>([]);
 
   const answerPairs = useMemo(
@@ -37,6 +40,11 @@ export default function MatchPairsExercise({
       `${exercise.id}-right`
     ),
     [answerPairs, exercise.id]
+  );
+
+  const speakPeers = useMemo(
+    () => [...leftOptions, ...rightOptions],
+    [leftOptions, rightOptions]
   );
 
   const objectLayout =
@@ -54,29 +62,32 @@ export default function MatchPairsExercise({
     setPairs([]);
   }, [userAnswer]);
 
-  const handleLeftClick = async (option: string) => {
+  const isLeftUsed = (option: string) => pairs.some(([left]) => left === option);
+  const isRightUsed = (option: string) => pairs.some(([, right]) => right === option);
+  const pairForRight = (option: string) => pairs.find(([, right]) => right === option);
+
+  const handleSelect = (side: Side, option: string) => {
     if (disabled) return;
-    setSelected(option);
-    await playAudio(option);
-  };
+    if (side === 'left' && isLeftUsed(option)) return;
+    if (side === 'right' && isRightUsed(option)) return;
 
-  const handleRightClick = async (option: string) => {
-    if (disabled || !selected) return;
+    playOptionAudio(option, speakPeers).catch(() => {});
 
-    const newPairs: Array<[string, string]> = [...pairs, [selected, option]];
+    if (!selected || selected.side === side) {
+      setSelected({ side, value: option });
+      return;
+    }
+
+    const left = side === 'left' ? option : selected.value;
+    const right = side === 'right' ? option : selected.value;
+    const newPairs: Array<[string, string]> = [...pairs, [left, right]];
     setPairs(newPairs);
     setSelected(null);
 
     if (newPairs.length === answerPairs.length) {
       onAnswerChange(canonicalizePairs(newPairs.map((pair) => pair.join('=')).join('|')));
     }
-
-    await playAudio(option);
   };
-
-  const isLeftUsed = (option: string) => pairs.some(([left]) => left === option);
-  const isRightUsed = (option: string) => pairs.some(([, right]) => right === option);
-  const pairForRight = (option: string) => pairs.find(([, right]) => right === option);
 
   return (
     <>
@@ -90,14 +101,15 @@ export default function MatchPairsExercise({
             const placed = pairForRight(option);
             const correct =
               placed && answerPairs.some(([left, right]) => left === placed[0] && right === option);
+            const picking = selected?.side === 'right' && selected.value === option;
             return (
               <button
                 type="button"
                 key={option}
                 aria-label={option}
-                disabled={disabled || !selected || Boolean(placed)}
-                onClick={() => handleRightClick(option)}
-                className="row-card"
+                disabled={disabled || Boolean(placed)}
+                onClick={() => handleSelect('right', option)}
+                className={`row-card ${picking ? 'selected' : ''}`}
                 style={{
                   padding: '12px 16px',
                   borderColor: correct ? 'var(--green-500)' : undefined,
@@ -151,8 +163,8 @@ export default function MatchPairsExercise({
                   type="button"
                   key={option}
                   aria-label={option}
-                  onClick={() => handleLeftClick(option)}
-                  className={`card ${selected === option ? 'selected' : ''}`}
+                  onClick={() => handleSelect('left', option)}
+                  className={`card ${selected?.side === 'left' && selected.value === option ? 'selected' : ''}`}
                   style={{ width: 88, height: 88, borderRadius: 20 }}
                 >
                   <span className="glyph" style={{ fontSize: 52 }}>
@@ -171,9 +183,9 @@ export default function MatchPairsExercise({
                 type="button"
                 key={`left-${option}`}
                 aria-label={option}
-                onClick={() => handleLeftClick(option)}
+                onClick={() => handleSelect('left', option)}
                 disabled={disabled || isLeftUsed(option)}
-                className={`card h-20 w-full ${isLeftUsed(option) ? 'dim' : ''} ${selected === option ? 'selected' : ''}`}
+                className={`card h-20 w-full ${isLeftUsed(option) ? 'dim' : ''} ${selected?.side === 'left' && selected.value === option ? 'selected' : ''}`}
               >
                 {looksLikeObjects(option) ? (
                   <ObjectArt token={option} size={48} />
@@ -189,11 +201,15 @@ export default function MatchPairsExercise({
                 type="button"
                 key={`right-${option}`}
                 aria-label={option}
-                onClick={() => handleRightClick(option)}
-                disabled={disabled || !selected || isRightUsed(option)}
-                className={`card h-20 w-full ${isRightUsed(option) ? 'dim' : ''}`}
+                onClick={() => handleSelect('right', option)}
+                disabled={disabled || isRightUsed(option)}
+                className={`card h-20 w-full ${isRightUsed(option) ? 'dim' : ''} ${selected?.side === 'right' && selected.value === option ? 'selected' : ''}`}
               >
-                <ObjectArt token={option} size={48} />
+                {looksLikeObjects(option) ? (
+                  <ObjectArt token={option} size={48} />
+                ) : (
+                  <span className="text-4xl font-extrabold">{option}</span>
+                )}
               </button>
             ))}
           </div>

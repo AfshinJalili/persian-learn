@@ -2,6 +2,7 @@ import { openDB, DBSchema, IDBPDatabase } from 'idb';
 import type { UserProgress, LessonProgress } from './types';
 import { addDays, isSamePersianWeek, todayDateString, diffDays } from './calendar';
 import { hydrateAudioSpeed } from './audio';
+import { LEARNER_NAME } from './learner';
 
 interface ProgressDB extends DBSchema {
   progress: {
@@ -32,7 +33,7 @@ function defaultProgress(): UserProgress {
     activityDates: [],
     weakItems: [],
     avatar: '',
-    name: '',
+    name: LEARNER_NAME,
     startDate: new Date().toISOString(),
     speechRate: 1,
     autoplay: true,

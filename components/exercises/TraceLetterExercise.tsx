@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Eraser, RotateCcw } from 'lucide-react';
-import { playAudio } from '@/lib/audio';
+import { playOptionAudio } from '@/lib/spoken-option';
 import { exerciseHeading } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
@@ -25,7 +25,7 @@ export default function TraceLetterExercise({ exercise, onComplete }: Props) {
     if (traced) return;
     setTraced(true);
     onComplete(letter);
-    await playAudio(letter);
+    playOptionAudio(letter).catch(() => {});
   };
 
   const handleReset = () => {

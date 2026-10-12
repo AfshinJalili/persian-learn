@@ -6,6 +6,7 @@ import { ArrowLeft, Check, RotateCcw, X } from 'lucide-react';
 import { getProgress, completeLesson } from '@/lib/progress';
 import { loadTrack, resolveLessonAccess } from '@/lib/content';
 import { playAudio, stopAudio, vibrate } from '@/lib/audio';
+import { spokenOption } from '@/lib/spoken-option';
 import { answersEqual } from '@/lib/answers';
 import { feedbackKind } from '@/lib/lesson-feedback';
 import type { Lesson as LessonType } from '@/lib/types';
@@ -99,7 +100,10 @@ export default function LessonPage() {
     }
 
     setWeakItems([...weakItems, currentExercise.id]);
-    await playAudio(`این ${currentExercise.answer} است. بعداً دوباره می‌بینیم.`);
+    const revealed = spokenOption(currentExercise.answer);
+    await playAudio(
+      revealed ? `این ${revealed} است. بعداً دوباره می‌بینیم.` : 'بعداً دوباره می‌بینیم.'
+    );
   };
 
   const handleContinue = async () => {

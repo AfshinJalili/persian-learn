@@ -1,5 +1,8 @@
 import { audioUrlForHash, generateAudioId, spokenTextKey } from './audio-id';
 
+export const AUDIO_SPEEDS = [0.9, 1, 1.1, 1.2, 1.3] as const;
+export type AudioSpeed = (typeof AUDIO_SPEEDS)[number];
+
 let currentAudio: HTMLAudioElement | null = null;
 let audioUnlocked = false;
 let audioSpeed = 1.0;
@@ -46,11 +49,6 @@ export function hydrateAudioSpeed(rate: number | undefined | null) {
   audioSpeed = 1;
 }
 
-function getSpeechSynthesis(): SpeechSynthesis | null {
-  if (typeof window === 'undefined') return null;
-  return window.speechSynthesis ?? null;
-}
-
 export async function playAudio(text: string, slow: boolean = false): Promise<void> {
   stopAudio();
 
@@ -65,12 +63,9 @@ export async function playAudio(text: string, slow: boolean = false): Promise<vo
 
   try {
     await playAudioFile(audioPath, speed);
-    return;
   } catch {
-    /* missing MP3, decode error, or autoplay block — use device TTS */
+    /* missing Sulafat clip: stay silent — never use device TTS */
   }
-
-  return playWithSpeechSynthesis(key, speed);
 }
 
 let settlePlayback: (() => void) | null = null;
@@ -79,6 +74,17 @@ function finishPlayback() {
   const settle = settlePlayback;
   settlePlayback = null;
   settle?.();
+}
+
+function applyPlaybackRate(audio: HTMLAudioElement, rate: number) {
+  audio.playbackRate = rate;
+  audio.preservesPitch = true;
+  const prefixed = audio as HTMLAudioElement & {
+    mozPreservesPitch?: boolean;
+    webkitPreservesPitch?: boolean;
+  };
+  prefixed.mozPreservesPitch = true;
+  prefixed.webkitPreservesPitch = true;
 }
 
 function playAudioFile(path: string, rate: number): Promise<void> {
@@ -91,7 +97,7 @@ function playAudioFile(path: string, rate: number): Promise<void> {
       reject(err);
       return;
     }
-    currentAudio.playbackRate = rate;
+    applyPlaybackRate(currentAudio, rate);
 
     currentAudio.addEventListener('ended', () => {
       currentAudio = null;
@@ -112,39 +118,6 @@ function playAudioFile(path: string, rate: number): Promise<void> {
   });
 }
 
-function playWithSpeechSynthesis(text: string, rate: number): Promise<void> {
-  return new Promise((resolve) => {
-    settlePlayback = resolve;
-    const speech = getSpeechSynthesis();
-    if (!speech) {
-      finishPlayback();
-      return;
-    }
-
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'fa-IR';
-    utterance.rate = rate;
-
-    const voices = speech.getVoices();
-    const persianVoice = voices.find(
-      (v) => v.lang.startsWith('fa') || v.name.includes('Persian') || v.name.includes('Farsi')
-    );
-
-    if (persianVoice) {
-      utterance.voice = persianVoice;
-    }
-
-    utterance.onend = () => finishPlayback();
-    utterance.onerror = () => finishPlayback();
-
-    try {
-      speech.speak(utterance);
-    } catch {
-      finishPlayback();
-    }
-  });
-}
-
 export function stopAudio() {
   if (currentAudio) {
     currentAudio.pause();
@@ -152,25 +125,11 @@ export function stopAudio() {
     currentAudio = null;
   }
 
-  const speech = getSpeechSynthesis();
-  if (speech) {
-    speech.cancel();
-  }
-
   finishPlayback();
 }
 
 export function isPlaying(): boolean {
-  if (currentAudio && !currentAudio.paused) {
-    return true;
-  }
-
-  const speech = getSpeechSynthesis();
-  if (speech && speech.speaking) {
-    return true;
-  }
-
-  return false;
+  return Boolean(currentAudio && !currentAudio.paused);
 }
 
 export { generateAudioId } from './audio-id';

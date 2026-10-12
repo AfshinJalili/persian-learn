@@ -3,6 +3,7 @@
 import { Exercise } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import { shuffleSeeded } from '@/lib/shuffle';
+import { playOptionAudio } from '@/lib/spoken-option';
 import SpeakerButton from '@/components/SpeakerButton';
 
 interface BuildWordExerciseProps {
@@ -32,6 +33,7 @@ export default function BuildWordExercise({
     const newSelected = [...selectedLetters, letter];
     setSelectedLetters(newSelected);
     onAnswerChange(newSelected.join(''));
+    playOptionAudio(letter, tiles).catch(() => {});
   };
 
   const handleClear = () => {

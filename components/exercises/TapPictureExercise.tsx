@@ -1,4 +1,3 @@
-import { playAudio } from '@/lib/audio';
 import { exerciseChoices } from '@/lib/shuffle';
 import { exerciseHeading } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
@@ -23,10 +22,9 @@ export default function TapPictureExercise({
 }: Props) {
   const options = exerciseChoices(exercise);
 
-  const handleSelect = async (option: string) => {
+  const handleSelect = (option: string) => {
     if (disabled) return;
     onAnswerChange(option);
-    await playAudio(option);
   };
 
   return (
@@ -48,6 +46,7 @@ export default function TapPictureExercise({
               state={state}
               dim={disabled && !selected}
               name={option}
+              peers={options}
               onClick={() => handleSelect(option)}
               className="h-[172px]"
             >

@@ -25,10 +25,9 @@ export default function ListenChooseExercise({
   const payload = exercise.payload as { choice_kind?: string };
   const isLetter = payload.choice_kind === 'letter' || options.every((option) => option.length <= 2);
 
-  const handleSelect = async (option: string) => {
+  const handleSelect = (option: string) => {
     if (disabled) return;
     onAnswerChange(option);
-    await playAudio(option);
   };
 
   const handleSlow = () => {
@@ -65,6 +64,7 @@ export default function ListenChooseExercise({
               state={state}
               dim={disabled && !selected}
               name={option}
+              peers={options}
               onClick={() => handleSelect(option)}
               className="h-[150px]"
             >

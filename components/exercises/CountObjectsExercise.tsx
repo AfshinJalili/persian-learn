@@ -1,4 +1,3 @@
-import { playAudio } from '@/lib/audio';
 import { exerciseChoices } from '@/lib/shuffle';
 import { exerciseHeading } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
@@ -26,10 +25,9 @@ export default function CountObjectsExercise({
   const count = Number.isFinite(payload.count) ? payload.count : 0;
   const objects = Array.from({ length: Math.max(0, count) }, () => payload.objects || '•');
 
-  const handleSelect = async (option: string) => {
+  const handleSelect = (option: string) => {
     if (disabled) return;
     onAnswerChange(option);
-    await playAudio(option);
   };
 
   return (
@@ -65,6 +63,7 @@ export default function CountObjectsExercise({
               disabled={disabled}
               state={state}
               name={option}
+              peers={options}
               onClick={() => handleSelect(option)}
               className="h-[120px]"
             >

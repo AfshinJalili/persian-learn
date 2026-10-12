@@ -14,7 +14,7 @@ test.describe('Codex review navigation fixes', () => {
     await page.getByRole('button', { name: /شروع/ }).click();
     await expect(page.getByText('یک تصویر برای خودتان انتخاب کنید')).toBeVisible();
     await page.getByRole('button', { name: '🌷' }).click();
-    await page.getByRole('button', { name: 'بعداً' }).click();
+    await page.getByRole('button', { name: 'ادامه' }).click();
     await expect(page.getByText('امروز چه یاد بگیریم؟')).toBeVisible();
     await page.getByRole('button', { name: /عددها و حساب/ }).click();
     await page.waitForURL('**/home');

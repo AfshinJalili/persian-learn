@@ -6,7 +6,8 @@ import { Pencil } from 'lucide-react';
 import { getProgress, saveProgress } from '@/lib/progress';
 import { loadTrack, trackCompletionPercent } from '@/lib/content';
 import type { Track, UserProgress } from '@/lib/types';
-import { playAudio, setAudioSpeed } from '@/lib/audio';
+import { AUDIO_SPEEDS, playAudio, setAudioSpeed } from '@/lib/audio';
+import { LEARNER_NAME } from '@/lib/learner';
 import { formatPersianNumber } from '@/lib/persian';
 import BottomNav from '@/components/ui/BottomNav';
 import { AVATARS, AvatarArt, resolveAvatarId } from '@/components/art/objects';
@@ -84,7 +85,7 @@ export default function ProfilePage() {
             <AvatarArt id={avatarId} size={54} />
           </span>
           <div style={{ flex: 1 }}>
-            <div className="h1">{progress.name || 'سلام'}</div>
+            <div className="h1">{LEARNER_NAME}</div>
             <div className="muted">از {joinedLabel} با ما</div>
           </div>
           <button type="button" className="icon-btn" aria-label="تغییر تصویر" onClick={cycleAvatar}>
@@ -152,30 +153,25 @@ export default function ProfilePage() {
             ))}
           </div>
         </div>
-        <div className="row-card justify-between" style={{ padding: '10px 16px' }}>
+        <div className="row-card" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 12, padding: '14px 16px' }}>
           <span style={{ fontWeight: 700 }}>سرعت صدا</span>
-          <span className="seg">
-            <button
-              type="button"
-              className={progress.speechRate < 1 ? 'on' : ''}
-              onClick={async () => {
-                setAudioSpeed(0.8);
-                await persist({ ...progress, speechRate: 0.8 });
-              }}
-            >
-              آهسته
-            </button>
-            <button
-              type="button"
-              className={progress.speechRate >= 1 ? 'on' : ''}
-              onClick={async () => {
-                setAudioSpeed(1);
-                await persist({ ...progress, speechRate: 1 });
-              }}
-            >
-              عادی
-            </button>
-          </span>
+          <div className="speed-picks">
+            {AUDIO_SPEEDS.map((rate) => (
+              <button
+                key={rate}
+                type="button"
+                className={`speed-pick ${Math.abs(progress.speechRate - rate) < 0.001 ? 'on' : ''}`}
+                aria-pressed={Math.abs(progress.speechRate - rate) < 0.001}
+                aria-label={`${rate.toFixed(1)} برابر`}
+                onClick={async () => {
+                  setAudioSpeed(rate);
+                  await persist({ ...progress, speechRate: rate });
+                }}
+              >
+                {rate.toFixed(1)}×
+              </button>
+            ))}
+          </div>
         </div>
         <div className="row-card justify-between" style={{ padding: '10px 16px' }}>
           <span style={{ fontWeight: 700 }}>پخش خودکار صدا</span>

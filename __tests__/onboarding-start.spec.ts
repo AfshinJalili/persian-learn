@@ -41,18 +41,6 @@ test.describe('Onboarding Start does not wait on audio', () => {
     await page.route('**/audio/**', (route) =>
       route.fulfill({ status: 404, contentType: 'text/plain', body: 'missing' })
     );
-    await page.addInitScript(() => {
-      Object.defineProperty(window, 'speechSynthesis', {
-        configurable: true,
-        value: {
-          speak: () => {},
-          cancel: () => {},
-          getVoices: () => [],
-          speaking: true,
-        },
-      });
-    });
-
     await page.goto('/');
     await expect(page.getByText('خوش آمدید')).toBeVisible();
     await page.getByRole('button', { name: /شروع/ }).click();

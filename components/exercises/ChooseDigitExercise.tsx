@@ -47,6 +47,7 @@ export default function ChooseDigitExercise({
               disabled={disabled}
               state={state}
               name={choice}
+              peers={choices}
               onClick={() => onAnswerChange(choice)}
               className="h-[120px]"
             >

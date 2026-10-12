@@ -1,4 +1,7 @@
+'use client';
+
 import type { ReactNode } from 'react';
+import { playOptionAudio } from '@/lib/spoken-option';
 
 interface ChoiceButtonProps {
   selected: boolean;
@@ -9,6 +12,7 @@ interface ChoiceButtonProps {
   state?: 'idle' | 'correct' | 'wrong';
   dim?: boolean;
   name?: string;
+  peers?: string[];
 }
 
 export default function ChoiceButton({
@@ -20,6 +24,7 @@ export default function ChoiceButton({
   state = 'idle',
   dim = false,
   name,
+  peers,
 }: ChoiceButtonProps) {
   const extras = [
     selected ? 'selected' : '',
@@ -34,7 +39,12 @@ export default function ChoiceButton({
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={() => {
+        if (name) {
+          playOptionAudio(name, peers).catch(() => {});
+        }
+        onClick();
+      }}
       disabled={disabled && state === 'idle'}
       aria-label={name}
       className={`card ${extras}`.trim()}

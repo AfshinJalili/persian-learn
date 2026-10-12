@@ -27,6 +27,52 @@ function exercise(): Exercise {
   };
 }
 
+describe('MatchPairsExercise selection order', () => {
+  it('pairs when the right column is tapped first', async () => {
+    const user = userEvent.setup();
+    const onAnswerChange = jest.fn();
+    render(
+      <MatchPairsExercise
+        exercise={exercise()}
+        userAnswer=""
+        onAnswerChange={onAnswerChange}
+        disabled={false}
+      />
+    );
+
+    expect(screen.getByRole('button', { name: 'بـ' })).not.toBeDisabled();
+    await user.click(screen.getByRole('button', { name: 'بـ' }));
+    await user.click(screen.getByRole('button', { name: 'ب' }));
+    await user.click(screen.getByRole('button', { name: 'نـ' }));
+    await user.click(screen.getByRole('button', { name: 'ن' }));
+
+    await waitFor(() => {
+      expect(onAnswerChange).toHaveBeenCalled();
+    });
+  });
+
+  it('switches selection when another item in the same column is tapped', async () => {
+    const user = userEvent.setup();
+    const onAnswerChange = jest.fn();
+    render(
+      <MatchPairsExercise
+        exercise={exercise()}
+        userAnswer=""
+        onAnswerChange={onAnswerChange}
+        disabled={false}
+      />
+    );
+
+    await user.click(screen.getByRole('button', { name: 'ب' }));
+    await user.click(screen.getByRole('button', { name: 'ن' }));
+    await user.click(screen.getByRole('button', { name: 'نـ' }));
+
+    expect(onAnswerChange).not.toHaveBeenCalled();
+    expect(screen.getByRole('button', { name: 'ب' })).not.toBeDisabled();
+    expect(screen.getByRole('button', { name: 'بـ' })).not.toBeDisabled();
+  });
+});
+
 describe('MatchPairsExercise retry', () => {
   it('clears used pairs when the parent starts a retry', async () => {
     const user = userEvent.setup();

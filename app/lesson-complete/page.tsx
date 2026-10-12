@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { getProgress } from '@/lib/progress';
 import { formatPersianNumber } from '@/lib/persian';
+import { lessonCompleteSpoken, lessonCompleteTitle } from '@/lib/learner';
 import type { UserProgress } from '@/lib/types';
 import HodaMascot from '@/components/HodaMascot';
 import SpeakerButton from '@/components/SpeakerButton';
@@ -56,11 +57,9 @@ export default function LessonCompletePage() {
     return null;
   }
 
-  const title = progress.name ? `آفرین، ${progress.name}!` : 'آفرین!';
+  const title = lessonCompleteTitle();
   const lessonLine = lessonTitle ? `درس «${lessonTitle}» تمام شد.` : 'درس تمام شد.';
-  const spoken = progress.name
-    ? `آفرین، ${progress.name}! ${lessonLine}`
-    : `آفرین! ${lessonLine}`;
+  const spoken = lessonCompleteSpoken('درس تمام شد.');
 
   return (
     <div className="app-phone">

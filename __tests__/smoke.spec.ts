@@ -16,8 +16,8 @@ test.describe('Onboarding', () => {
       await page.getByRole('button', { name: '🌷' }).click();
     }
 
-    await page.waitForSelector('text=بعداً', { timeout: 5000 });
-    await page.click('text=بعداً');
+    await page.waitForSelector('text=ادامه', { timeout: 5000 });
+    await page.click('text=ادامه');
 
     await page.waitForSelector('text=امروز چه یاد بگیریم؟', { timeout: 5000 });
     await page.click('text=عددها و حساب');

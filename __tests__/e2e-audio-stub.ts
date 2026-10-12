@@ -6,6 +6,7 @@ export const test = base.extend({
     await page.addInitScript(() => {
       class ImmediateAudio {
         playbackRate = 1;
+        preservesPitch = true;
         paused = true;
         currentTime = 0;
         src = '';

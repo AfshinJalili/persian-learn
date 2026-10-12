@@ -2,6 +2,7 @@
 
 import { Exercise } from '@/lib/types';
 import { formatPersianNumber } from '@/lib/persian';
+import { playOptionAudio } from '@/lib/spoken-option';
 import { exerciseHeading } from '@/lib/exercise-copy';
 import SpeakerButton from '@/components/SpeakerButton';
 import { PomegranateSvg } from '@/components/art/objects';
@@ -80,7 +81,11 @@ export default function NumberLineExercise({
               type="button"
               disabled={disabled}
               aria-label={formatPersianNumber(num)}
-              onClick={() => onAnswerChange(formatPersianNumber(num))}
+              onClick={() => {
+                const label = formatPersianNumber(num);
+                onAnswerChange(label);
+                playOptionAudio(label).catch(() => {});
+              }}
               className="flex-1 min-h-[56px]"
             />
           ))}

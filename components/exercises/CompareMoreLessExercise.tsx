@@ -1,6 +1,7 @@
 'use client';
 
 import { playAudio } from '@/lib/audio';
+import { playOptionAudio } from '@/lib/spoken-option';
 import { comparePrompt } from '@/lib/compare';
 import { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
@@ -21,10 +22,14 @@ export default function CompareMoreLessExercise({
 }: CompareMoreLessExerciseProps) {
   const { left, right, ask } = exercise.payload as { left: string; right: string; ask: string };
 
-  const select = async (value: string, spoken: string) => {
+  const select = (value: string, token: string) => {
     if (disabled) return;
     onAnswerChange(value);
-    await playAudio(spoken);
+    if (value === 'equal') {
+      playAudio('یکسان هستند').catch(() => {});
+      return;
+    }
+    playOptionAudio(token, [left, right]).catch(() => {});
   };
 
   return (
@@ -36,7 +41,7 @@ export default function CompareMoreLessExercise({
       <div className="grid2">
         <button
           type="button"
-          onClick={() => select('left', 'این')}
+          onClick={() => select('left', left)}
           disabled={disabled}
           className={`card h-40 ${userAnswer === 'left' ? 'selected' : ''}`}
         >
@@ -44,7 +49,7 @@ export default function CompareMoreLessExercise({
         </button>
         <button
           type="button"
-          onClick={() => select('right', 'این')}
+          onClick={() => select('right', right)}
           disabled={disabled}
           className={`card h-40 ${userAnswer === 'right' ? 'selected' : ''}`}
         >

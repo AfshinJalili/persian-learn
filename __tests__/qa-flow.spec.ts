@@ -33,10 +33,9 @@ async function completeOnboarding(page: Page, trackLabel: string) {
   await snap(page, '03-avatar-picker.png');
 
   await page.getByRole('button', { name: '🌷' }).click();
-  await expect(page.getByText('شما را چه صدا کنیم؟')).toBeVisible();
-  await snap(page, '04-name-picker.png');
+  await expect(page.getByText('شما را چه صدا کنیم؟')).toHaveCount(0);
 
-  await page.getByRole('button', { name: 'بعداً' }).click();
+  await page.getByRole('button', { name: 'ادامه' }).click();
   await expect(page.getByText('امروز چه یاد بگیریم؟')).toBeVisible();
   await snap(page, '05-track-picker.png');
 
@@ -111,6 +110,8 @@ test.describe('Mobile QA 390x844', () => {
 
     await page.getByRole('button', { name: 'من' }).click();
     await page.waitForURL('**/profile');
+    await expect(page.getByRole('button', { name: '1.0 برابر' })).toBeVisible();
+    await expect(page.getByRole('button', { name: '1.2 برابر' })).toBeVisible();
     await snap(page, '09-profile.png');
 
     await page.getByRole('button', { name: 'ب الفبا' }).click();

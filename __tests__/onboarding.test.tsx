@@ -97,6 +97,26 @@ describe('Onboarding back navigation', () => {
     expect(screen.queryByText('یک تصویر برای خودتان انتخاب کنید')).not.toBeInTheDocument();
   });
 
+  it('does not ask for a name and saves فریبا جون', async () => {
+    const user = userEvent.setup();
+    render(<Onboarding />);
+    await user.click(screen.getByRole('button', { name: /شروع/ }));
+    await screen.findByText('یک تصویر برای خودتان انتخاب کنید');
+    expect(screen.queryByText('شما را چه صدا کنیم؟')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'بعداً' })).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'ادامه' }));
+    await screen.findByText('امروز چه یاد بگیریم؟');
+    await user.click(screen.getByText('عددها و حساب'));
+
+    await waitFor(() => {
+      expect(saveProgress).toHaveBeenCalled();
+    });
+    expect(saveProgress.mock.calls[0]?.[0]).toEqual(
+      expect.objectContaining({ name: 'فریبا جون', onboarded: true, currentTrack: 'math' })
+    );
+  });
+
   it('does not save or redirect if Back is pressed before track selection finishes saving', async () => {
     const user = userEvent.setup();
     playAudio.mockResolvedValue(undefined);

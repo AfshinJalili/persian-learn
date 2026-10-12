@@ -28,7 +28,7 @@ export default function SpeakerButton({
     try {
       await playAudio(text);
     } catch {
-      /* browsers without Persian TTS still continue */
+      /* missing clip stays silent */
     } finally {
       setPlaying(false);
     }

@@ -849,3 +849,26 @@ h2,
   background: var(--green-700);
   color: #fff;
 }
+
+.speed-picks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.speed-pick {
+  flex: 1 1 28%;
+  min-height: 72px;
+  border: 3px solid var(--line-strong);
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 24px;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.speed-pick.on {
+  background: var(--green-700);
+  color: #fff;
+  border-color: var(--green-800);
+}
