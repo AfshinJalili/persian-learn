@@ -226,7 +226,8 @@ button {
 }
 
 .content:has(.match-pairs-board),
-.content:has(.cluster-stack) {
+.content:has(.cluster-stack),
+.content.content-fit {
   overflow: hidden;
   gap: 12px;
   padding-top: 12px;
@@ -625,7 +626,8 @@ h2.prompt-numeral {
 }
 
 .app-phone:not(.object-gallery-page) .cluster-stack .object-choice-card,
-.content > .cluster-stack .object-choice-card {
+.content > .cluster-stack .object-choice-card,
+.cluster-stack > .card.object-choice-card {
   flex: 1 1 0;
   min-height: 0;
   padding: 12px;

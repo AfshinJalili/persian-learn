@@ -182,7 +182,13 @@ export default function LessonPage() {
         </div>
       </div>
 
-      <div className="content">
+      <div
+        className={
+          currentExercise.type === 'match_pairs' || currentExercise.type === 'tap_picture'
+            ? 'content content-fit'
+            : 'content'
+        }
+      >
         <ExerciseRenderer
           exercise={currentExercise}
           userAnswer={userAnswer}
