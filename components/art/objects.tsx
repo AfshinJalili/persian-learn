@@ -396,7 +396,7 @@ export const OBJECT_CARD_INNER_FALLBACK = { width: 81, height: 140 };
 export const OBJECT_MATCH_INNER_FALLBACK = { width: 220, height: 72 };
 export const OBJECT_MATCH_LIST_FALLBACK = { width: 342, height: 280 };
 export const MATCH_LIST_GAP = 4;
-export const MATCH_ROW_PADDING = 12;
+export const MATCH_ROW_PADDING = 8;
 export const MATCH_ROW_GAP = 8;
 export const MATCH_DIGIT_SLOT = 48;
 
@@ -491,8 +491,9 @@ export function objectClusterLayoutForBox(
   }
 
   if (layout === 'row') {
-    const cols = Math.min(5, count);
-    const rows = count > 5 ? 2 : 1;
+    const oneRowSize = (innerWidth - gap * Math.max(0, count - 1)) / Math.max(1, count);
+    const cols = oneRowSize >= OBJECT_CLUSTER_MIN_SIZE ? count : Math.min(5, count);
+    const rows = cols === count ? 1 : count > 5 ? 2 : 1;
     const sizeW = (innerWidth - gap * Math.max(0, cols - 1)) / cols;
     const sizeH = (innerHeight - gap * Math.max(0, rows - 1)) / rows;
     const unclamped =

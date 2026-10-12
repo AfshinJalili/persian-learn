@@ -39,15 +39,15 @@ describe('ObjectCluster', () => {
   it('fills a wide match-pair box with a row layout above 32px', () => {
     const six = objectClusterLayoutForBox(6, 220, 72, 4, 'row');
     const ten = objectClusterLayoutForBox(10, 220, 72, 4, 'row');
-    expect(six).toMatchObject({ cols: 5, rows: 2 });
+    expect(six).toMatchObject({ cols: 6, rows: 1 });
     expect(six.size).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
     expect(ten).toMatchObject({ cols: 5, rows: 2 });
     expect(ten.size).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
-    expect((5 * six.size + 16) / 220).toBeGreaterThanOrEqual(0.65);
+    expect((6 * six.size + 20) / 220).toBeGreaterThanOrEqual(0.65);
     const capped = objectClusterLayoutForBox(6, 250, 84, 4, 'row');
-    expect(capped).toMatchObject({ cols: 5, rows: 2 });
+    expect(capped).toMatchObject({ cols: 6, rows: 1 });
     expect(capped.size).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
-    expect((5 * capped.size + 16) / 250).toBeGreaterThanOrEqual(0.65);
+    expect((6 * capped.size + 20) / 250).toBeGreaterThanOrEqual(0.65);
   });
 
   it('fills four and five match-pair items across the row at 32px or larger', () => {

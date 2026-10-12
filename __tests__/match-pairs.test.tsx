@@ -256,7 +256,7 @@ describe('MatchPairsExercise object rows', () => {
     expect(size).toBeGreaterThanOrEqual(32);
   });
 
-  it('lays 6 objects in a filled 5x2 row instead of a compact grid with empty cells', () => {
+  it('lays 6 objects in one filled row when 32px items fit', () => {
     const { container } = render(
       <MatchPairsExercise
         exercise={{
@@ -278,8 +278,8 @@ describe('MatchPairsExercise object rows', () => {
     const clusters = [...container.querySelectorAll('.match-object-apples .object-cluster')] as HTMLElement[];
     const six = clusters.find((cluster) => cluster.getAttribute('data-count') === '6');
     expect(six).toHaveAttribute('data-layout', 'row');
-    expect(six?.style.getPropertyValue('--object-cols')).toBe('5');
-    expect(six?.style.getPropertyValue('--object-rows')).toBe('2');
+    expect(six?.style.getPropertyValue('--object-cols')).toBe('6');
+    expect(six?.style.getPropertyValue('--object-rows')).toBe('1');
     const size = Number.parseInt(six?.style.getPropertyValue('--object-size') ?? '0', 10);
     expect(size).toBeGreaterThanOrEqual(32);
   });

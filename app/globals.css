@@ -790,7 +790,7 @@ h2.prompt-numeral {
   min-height: 0;
   align-items: stretch;
   gap: 8px;
-  padding: 12px;
+  padding: 8px;
   box-sizing: border-box;
 }
 
@@ -823,20 +823,24 @@ h2.prompt-numeral {
 }
 
 .match-digit-chip {
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
   border-radius: 16px;
   display: grid;
   place-items: center;
 }
 
 .match-digit-chip .glyph {
-  font-size: 40px;
+  font-size: 28px;
 }
 
 .match-digit-chip-used {
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
   border-radius: 16px;
   border: 2px dashed color-mix(in srgb, var(--line) 40%, transparent);
   background: transparent;
