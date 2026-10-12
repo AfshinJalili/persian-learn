@@ -778,8 +778,12 @@ h2.prompt-numeral {
   font-size: 40px;
 }
 
-.match-digit-tray:empty {
-  display: none;
+.match-digit-chip-used {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  border: 2px dashed color-mix(in srgb, var(--line) 40%, transparent);
+  background: transparent;
 }
 
 .ten-frame-grid {
@@ -821,24 +825,20 @@ h2.prompt-numeral {
   background: transparent;
 }
 
-.match-digit-slot-reject {
-  animation: match-chip-bounce 0.42s ease;
+.row-card.match-object-row > button {
+  min-height: 0;
 }
 
-@keyframes match-chip-bounce {
-  0% {
-    transform: translateX(0);
-  }
-  30% {
-    transform: translateX(10px);
-  }
-  60% {
-    transform: translateX(-8px);
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 0.35;
-  }
+.match-object-row > [data-match-slot] {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
 }
 
 .bottom {

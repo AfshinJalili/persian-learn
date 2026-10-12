@@ -36,6 +36,13 @@ export default function BuildWordExercise({
     playOptionAudio(letter, tiles).catch(() => {});
   };
 
+  const handlePlacedClick = (index: number) => {
+    if (disabled) return;
+    const next = selectedLetters.filter((_, letterIndex) => letterIndex !== index);
+    setSelectedLetters(next);
+    onAnswerChange(next.join(''));
+  };
+
   const handleClear = () => {
     if (disabled) return;
     setSelectedLetters([]);
@@ -58,12 +65,17 @@ export default function BuildWordExercise({
           <div className="text-2xl text-brown-400">حروف را انتخاب کنید</div>
         ) : (
           selectedLetters.map((letter, index) => (
-            <div
+            <button
+              type="button"
               key={`${letter}-${index}`}
+              aria-label={letter}
+              data-build-placed={letter}
+              disabled={disabled}
+              onClick={() => handlePlacedClick(index)}
               className="bg-[var(--blue-100)] border-4 border-[var(--blue-700)] rounded-2xl w-16 h-20 flex items-center justify-center"
             >
               <span className="text-5xl font-bold text-brown-900 leading-none">{letter}</span>
-            </div>
+            </button>
           ))
         )}
       </div>

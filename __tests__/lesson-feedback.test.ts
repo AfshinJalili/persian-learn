@@ -1,6 +1,6 @@
 import { describe, expect, it } from '@jest/globals';
 import { feedbackKind } from '../lib/lesson-feedback';
-import { exerciseChoices, shuffleDeranged, shuffleSeeded } from '../lib/shuffle';
+import { exerciseChoices, shuffleSeeded } from '../lib/shuffle';
 
 describe('feedbackKind', () => {
   it('marks a matching answer as correct', () => {
@@ -30,14 +30,5 @@ describe('shuffleSeeded', () => {
       )
     );
     expect(firsts.size).toBeGreaterThan(1);
-  });
-});
-
-describe('shuffleDeranged', () => {
-  it('never returns the original order for two or more items', () => {
-    const items = ['۱', '۲', '۳'];
-    for (const seed of ['m1l4e2-left', 'm1l4e2-right', 'x', 'y', 'z', 'answer']) {
-      expect(shuffleDeranged(items, seed)).not.toEqual(items);
-    }
   });
 });
