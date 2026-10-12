@@ -15,6 +15,38 @@ interface CompareMoreLessExerciseProps {
   disabled: boolean;
 }
 
+function CompareSide({
+  value,
+  token,
+  selected,
+  disabled,
+  onSelect,
+}: {
+  value: 'left' | 'right';
+  token: string;
+  selected: boolean;
+  disabled: boolean;
+  onSelect: (value: 'left' | 'right', token: string) => void;
+}) {
+  const { ref, box } = useSharedClusterSize([splitObjectTokens(token).length]);
+  return (
+    <button
+      ref={ref}
+      type="button"
+      onClick={() => onSelect(value, token)}
+      disabled={disabled}
+      className={`card object-choice-card ${selected ? 'selected' : ''}`}
+    >
+      <ObjectCluster
+        token={token}
+        boxWidth={box.width}
+        boxHeight={box.height}
+        cardWidth={box.offsetWidth}
+      />
+    </button>
+  );
+}
+
 export default function CompareMoreLessExercise({
   exercise,
   userAnswer,
@@ -22,10 +54,6 @@ export default function CompareMoreLessExercise({
   disabled,
 }: CompareMoreLessExerciseProps) {
   const { left, right, ask } = exercise.payload as { left: string; right: string; ask: string };
-  const { ref, box } = useSharedClusterSize([
-    splitObjectTokens(left).length,
-    splitObjectTokens(right).length,
-  ]);
 
   const select = (value: string, token: string) => {
     if (disabled) return;
@@ -44,38 +72,25 @@ export default function CompareMoreLessExercise({
         <h2>{comparePrompt(ask)}</h2>
       </div>
       <div
-        ref={ref}
         className={objectClusterChoiceGridClass(
           Math.max(splitObjectTokens(left).length, splitObjectTokens(right).length),
           2
         )}
       >
-        <button
-          type="button"
-          onClick={() => select('left', left)}
+        <CompareSide
+          value="left"
+          token={left}
+          selected={userAnswer === 'left'}
           disabled={disabled}
-          className={`card object-choice-card ${userAnswer === 'left' ? 'selected' : ''}`}
-        >
-          <ObjectCluster
-            token={left}
-            boxWidth={box.width}
-            boxHeight={box.height}
-            cardWidth={box.offsetWidth}
-          />
-        </button>
-        <button
-          type="button"
-          onClick={() => select('right', right)}
+          onSelect={select}
+        />
+        <CompareSide
+          value="right"
+          token={right}
+          selected={userAnswer === 'right'}
           disabled={disabled}
-          className={`card object-choice-card ${userAnswer === 'right' ? 'selected' : ''}`}
-        >
-          <ObjectCluster
-            token={right}
-            boxWidth={box.width}
-            boxHeight={box.height}
-            cardWidth={box.offsetWidth}
-          />
-        </button>
+          onSelect={select}
+        />
       </div>
       <button
         type="button"

@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import type { ReactNode, Ref } from 'react';
 import { playOptionAudio } from '@/lib/spoken-option';
 
 interface ChoiceButtonProps {
@@ -13,6 +13,7 @@ interface ChoiceButtonProps {
   dim?: boolean;
   name?: string;
   peers?: string[];
+  ref?: Ref<HTMLButtonElement>;
 }
 
 export default function ChoiceButton({
@@ -25,6 +26,7 @@ export default function ChoiceButton({
   dim = false,
   name,
   peers,
+  ref,
 }: ChoiceButtonProps) {
   const extras = [
     selected ? 'selected' : '',
@@ -38,6 +40,7 @@ export default function ChoiceButton({
 
   return (
     <button
+      ref={ref}
       type="button"
       onClick={() => {
         if (name) {

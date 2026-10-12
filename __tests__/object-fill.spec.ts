@@ -1,4 +1,5 @@
 import { test, expect } from './e2e-audio-stub';
+import math from '../public/content/math.json';
 
 const VIEWPORTS = [
   { width: 375, height: 812 },
@@ -6,19 +7,19 @@ const VIEWPORTS = [
   { width: 412, height: 915 },
 ] as const;
 
-const MATH_BEFORE_M3L2 = [
-  'm1l1',
-  'm1l2',
-  'm1l3',
-  'm1l4',
-  'm1l5',
-  'm2l1',
-  'm2l2',
-  'm2l3',
-  'm2l4',
-  'm2l5',
-  'm3l1',
-];
+const MATH_M1_M3 = math.units
+  .filter((unit) => unit.id === 'm1' || unit.id === 'm2' || unit.id === 'm3')
+  .flatMap((unit) =>
+    unit.lessons.map((lesson) => ({
+      id: lesson.id,
+      exercises: lesson.exercises.map((exercise, index) => ({
+        index,
+        type: exercise.type,
+      })),
+    }))
+  );
+
+const MATH_M1_M3_IDS = MATH_M1_M3.map((lesson) => lesson.id);
 
 async function seedProgress(
   page: import('@playwright/test').Page,
@@ -74,13 +75,13 @@ async function seedProgress(
 function measurePage() {
   const cardOf = (item: Element) =>
     item.closest(
-      '.object-choice-card, .object-count-card, .ten-frame-cell, [data-digit-display], [data-dice-face]'
+      '.object-choice-card, .object-count-card, .ten-frame-cell, [data-digit-display], [data-dice-face], [data-object-display], [data-digit-sequence], .match-object-row'
     ) as HTMLElement | null;
 
   const singles = [...document.querySelectorAll('.object-cluster[data-count="1"] > .illus')]
     .map((item) => {
       const card = cardOf(item);
-      if (!card) return null;
+      if (!card || card.classList.contains('match-object-row')) return null;
       const offset = card.offsetWidth;
       const width = item.getBoundingClientRect().width;
       return {
@@ -116,13 +117,42 @@ function measurePage() {
     }
   );
 
-  const sizes = [
-    ...document.querySelectorAll('.object-cluster > .illus, .ten-frame-cell .illus'),
-  ].map((item) => item.getBoundingClientRect().width);
+  const itemNodes = [
+    ...document.querySelectorAll(
+      '.object-cluster > .illus, .ten-frame-cell .illus, [data-digit-display] .glyph, [data-digit-sequence] .glyph'
+    ),
+  ];
+
+  const sizes = itemNodes
+    .filter((item) => item.matches('.object-cluster > .illus, .ten-frame-cell .illus'))
+    .map((item) => item.getBoundingClientRect().width);
+
+  const contained = itemNodes.map((item) => {
+    const card = cardOf(item);
+    if (!card) return { overflow: 0 };
+    const itemBox = item.getBoundingClientRect();
+    const cardBox = card.getBoundingClientRect();
+    return {
+      overflow: Math.max(
+        cardBox.top - itemBox.top,
+        itemBox.right - cardBox.right,
+        itemBox.bottom - cardBox.bottom,
+        cardBox.left - itemBox.left,
+        0
+      ),
+    };
+  });
+
+  const sizeSignature = itemNodes
+    .map((item) => {
+      const box = item.getBoundingClientRect();
+      return `${Math.round(box.width)}x${Math.round(box.height)}`;
+    })
+    .join('|');
 
   const innerScrolls = [
     ...document.querySelectorAll(
-      '.content.content-fit, .match-object-list, .cluster-stack, .picture-grid'
+      '.content.content-fit, .match-object-list, .cluster-stack, .picture-grid, .object-count-card'
     ),
   ].map((node) => {
     const el = node as HTMLElement;
@@ -136,6 +166,8 @@ function measurePage() {
     singles: singles.filter((item) => item.inner >= 8),
     matchFills,
     innerScrolls,
+    contained,
+    sizeSignature,
     minSize: sizes.length ? Math.min(...sizes.map((size) => Math.round(size))) : 0,
     sizeCount: sizes.length,
   };
@@ -214,71 +246,83 @@ test.describe('Object fill at phone widths', () => {
       expect(minSize).toBeGreaterThanOrEqual(32);
     });
 
-    test(`math lessons fill singles and keep the match tray above بررسی at ${viewport.width}px`, async ({
+    test(`math lessons m1-m3 stay in-card, stable, and unscrollable at ${viewport.width}px`, async ({
       page,
     }) => {
+      test.setTimeout(240000);
       await page.setViewportSize(viewport);
-      await seedProgress(page, { completedLessons: MATH_BEFORE_M3L2 });
+      await seedProgress(page, { completedLessons: MATH_M1_M3_IDS });
 
-      const lessons = [
-        { path: '/lesson/m1l1?ex=1', hasTray: false },
-        { path: '/lesson/m1l1?ex=2', hasTray: false },
-        { path: '/lesson/m1l2?ex=1', hasTray: false },
-        { path: '/lesson/m1l3?ex=1', hasTray: false },
-        { path: '/lesson/m1l4?ex=1', hasTray: true },
-        { path: '/lesson/m2l3?ex=1', hasTray: false },
-        { path: '/lesson/m2l4?ex=8', hasTray: true },
-        { path: '/lesson/m3l2?ex=2', hasTray: false },
-        { path: '/lesson/m3l2?ex=8', hasTray: true },
-      ];
-
-      for (const lesson of lessons) {
-        await page.goto(lesson.path);
-        await expect(
-          page.locator('.object-cluster, [data-digit-display], [data-dice-face], [data-match-tray]').first()
-        ).toBeVisible();
-        await page.waitForTimeout(300);
-        const stats = await page.evaluate(measurePage);
-        expect(stats.minSize, lesson.path).toBeGreaterThanOrEqual(32);
-        expect(stats.sizeCount, lesson.path).toBeGreaterThan(0);
-        for (const item of stats.singles) {
-          expect(item.width, lesson.path).toBeGreaterThanOrEqual(32);
-          expect(item.ratio, lesson.path).toBeGreaterThanOrEqual(0.65);
-        }
-        for (const scroller of stats.innerScrolls) {
-          expect(scroller.overflow, `${lesson.path} ${scroller.className}`).toBeLessThanOrEqual(2);
-        }
-        const list = page.locator('.picture-grid, .match-object-list, .cluster-stack, .object-count-card').first();
-        const listBox = await list.boundingBox();
-        expect(listBox?.x ?? 99, lesson.path).toBeLessThanOrEqual(26);
-        const numeral = page.locator('.prompt-numeral');
-        if ((await numeral.count()) > 0) {
-          const fontSize = await numeral.evaluate((el) => Number.parseFloat(getComputedStyle(el).fontSize));
-          expect(fontSize, lesson.path).toBeGreaterThanOrEqual(48);
-        }
-        if (lesson.path.includes('m1l1?ex=2')) {
-          const three = page.locator('.object-cluster[data-count="3"]');
-          await expect(three).toHaveAttribute('data-layout', 'grid');
-          const cols = await three.evaluate((el) =>
-            (el as HTMLElement).style.getPropertyValue('--object-cols')
+      for (const lesson of MATH_M1_M3) {
+        for (const exercise of lesson.exercises) {
+          const path = `/lesson/${lesson.id}?ex=${exercise.index}`;
+          await page.goto(path);
+          const hasItems = page.locator(
+            '.object-cluster, [data-digit-display], [data-digit-sequence], [data-dice-face], [data-object-display], [data-match-tray]'
           );
-          expect(cols, lesson.path).toBe('2');
-        }
-        for (const row of stats.matchFills.filter((item) => item.count >= 6)) {
-          expect(row.size, lesson.path).toBeGreaterThanOrEqual(32);
-          expect(row.fill, lesson.path).toBeGreaterThanOrEqual(0.6);
-        }
-
-        if (lesson.hasTray) {
-          const tray = page.locator('[data-match-tray]');
-          const check = page.getByRole('button', { name: /بررسی/ });
-          await expect(tray).toBeVisible();
-          await expect(check).toBeVisible();
-          const trayBox = await tray.boundingBox();
-          const checkBox = await check.boundingBox();
-          expect(trayBox).toBeTruthy();
-          expect(checkBox).toBeTruthy();
-          expect(trayBox!.y + trayBox!.height).toBeLessThanOrEqual(checkBox!.y + 1);
+          if (exercise.type === 'intro' && (await hasItems.count()) === 0) {
+            const stats = await page.evaluate(measurePage);
+            for (const scroller of stats.innerScrolls) {
+              expect(scroller.overflow, `${path} ${scroller.className}`).toBeLessThanOrEqual(2);
+            }
+            continue;
+          }
+          await expect(hasItems.first()).toBeVisible();
+          await page.waitForTimeout(200);
+          const first = await page.evaluate(measurePage);
+          await page.waitForTimeout(1000);
+          const stats = await page.evaluate(measurePage);
+          expect(stats.sizeSignature, path).toBe(first.sizeSignature);
+          if (stats.sizeCount > 0) {
+            expect(stats.minSize, path).toBeGreaterThanOrEqual(32);
+          }
+          for (const item of stats.singles) {
+            expect(item.width, path).toBeGreaterThanOrEqual(32);
+            expect(item.ratio, path).toBeGreaterThanOrEqual(0.65);
+          }
+          for (const item of stats.contained) {
+            expect(item.overflow, path).toBeLessThanOrEqual(1);
+          }
+          for (const scroller of stats.innerScrolls) {
+            expect(scroller.overflow, `${path} ${scroller.className}`).toBeLessThanOrEqual(2);
+          }
+          const list = page.locator(
+            '.picture-grid, .match-object-list, .cluster-stack, .object-count-card'
+          );
+          if ((await list.count()) > 0) {
+            const listBox = await list.first().boundingBox();
+            expect(listBox?.x ?? 99, path).toBeLessThanOrEqual(26);
+          }
+          const numeral = page.locator('.prompt-numeral');
+          if ((await numeral.count()) > 0) {
+            const fontSize = await numeral.evaluate((el) =>
+              Number.parseFloat(getComputedStyle(el).fontSize)
+            );
+            expect(fontSize, path).toBeGreaterThanOrEqual(48);
+          }
+          if (path === '/lesson/m1l1?ex=2') {
+            const three = page.locator('.object-cluster[data-count="3"]');
+            await expect(three).toHaveAttribute('data-layout', 'grid');
+            const cols = await three.evaluate((el) =>
+              (el as HTMLElement).style.getPropertyValue('--object-cols')
+            );
+            expect(cols, path).toBe('2');
+          }
+          for (const row of stats.matchFills.filter((item) => item.count >= 6)) {
+            expect(row.size, path).toBeGreaterThanOrEqual(32);
+            expect(row.fill, path).toBeGreaterThanOrEqual(0.6);
+          }
+          if (exercise.type === 'match_pairs') {
+            const tray = page.locator('[data-match-tray]');
+            const check = page.getByRole('button', { name: /بررسی/ });
+            await expect(tray).toBeVisible();
+            await expect(check).toBeVisible();
+            const trayBox = await tray.boundingBox();
+            const checkBox = await check.boundingBox();
+            expect(trayBox).toBeTruthy();
+            expect(checkBox).toBeTruthy();
+            expect(trayBox!.y + trayBox!.height).toBeLessThanOrEqual(checkBox!.y + 1);
+          }
         }
       }
     });

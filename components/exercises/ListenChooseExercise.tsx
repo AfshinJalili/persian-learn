@@ -13,6 +13,7 @@ import {
   looksLikeObjects,
   objectClusterChoiceGridClass,
   splitObjectTokens,
+  type ObjectClusterLayout,
 } from '@/components/art/objects';
 import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 import TurtleIcon from '@/components/ui/TurtleIcon';
@@ -23,6 +24,64 @@ interface Props {
   onAnswerChange: (answer: string) => void;
   disabled: boolean;
   answerState?: 'idle' | 'correct' | 'wrong';
+}
+
+function SizedListenChoice({
+  option,
+  layout,
+  selected,
+  disabled,
+  state,
+  dim,
+  peers,
+  onSelect,
+}: {
+  option: string;
+  layout: ObjectClusterLayout;
+  selected: boolean;
+  disabled: boolean;
+  state: 'idle' | 'correct' | 'wrong';
+  dim: boolean;
+  peers: string[];
+  onSelect: (option: string) => void;
+}) {
+  const object = looksLikeObjects(option);
+  const { ref, box } = useSharedClusterSize(
+    [object ? splitObjectTokens(option).length : 1],
+    { layout }
+  );
+  return (
+    <ChoiceButton
+      ref={ref}
+      selected={selected}
+      disabled={disabled}
+      state={state}
+      dim={dim}
+      name={option}
+      peers={peers}
+      onClick={() => onSelect(option)}
+      className="object-choice-card"
+    >
+      {object ? (
+        <ObjectCluster
+          token={option}
+          layout={layout}
+          boxWidth={box.width}
+          boxHeight={box.height}
+          cardWidth={box.offsetWidth}
+        />
+      ) : option.length <= 2 ? (
+        <span className="glyph" style={{ fontSize: 84 }}>
+          {option}
+        </span>
+      ) : (
+        <ObjectArt
+          token={option}
+          size={Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.min(box.width, box.height))}
+        />
+      )}
+    </ChoiceButton>
+  );
 }
 
 export default function ListenChooseExercise({
@@ -39,7 +98,6 @@ export default function ListenChooseExercise({
     looksLikeObjects(option) ? splitObjectTokens(option).length : 1
   );
   const clusterLayout = exercise.id.startsWith('a') ? 'picture' : 'grid';
-  const { ref, box } = useSharedClusterSize(objectCounts, { layout: clusterLayout });
 
   const handleSelect = (option: string) => {
     if (disabled) return;
@@ -59,7 +117,6 @@ export default function ListenChooseExercise({
         آهسته‌تر
       </button>
       <div
-        ref={ref}
         className={
           looksLikeObjects(options.join(''))
             ? `${objectClusterChoiceGridClass(Math.max(1, ...objectCounts), options.length)} w-full`
@@ -73,36 +130,17 @@ export default function ListenChooseExercise({
           const state =
             disabled && answerState !== 'idle' && selected ? answerState : 'idle';
           return (
-            <ChoiceButton
+            <SizedListenChoice
               key={option}
+              option={option}
+              layout={clusterLayout}
               selected={selected}
               disabled={disabled}
               state={state}
               dim={disabled && !selected}
-              name={option}
               peers={options}
-              onClick={() => handleSelect(option)}
-              className="object-choice-card"
-            >
-              {looksLikeObjects(option) ? (
-                <ObjectCluster
-                  token={option}
-                  layout={clusterLayout}
-                  boxWidth={box.width}
-                  boxHeight={box.height}
-                  cardWidth={box.offsetWidth}
-                />
-              ) : option.length <= 2 ? (
-                <span className="glyph" style={{ fontSize: 84 }}>
-                  {option}
-                </span>
-              ) : (
-                <ObjectArt
-                  token={option}
-                  size={Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.min(box.width, box.height))}
-                />
-              )}
-            </ChoiceButton>
+              onSelect={handleSelect}
+            />
           );
         })}
       </div>

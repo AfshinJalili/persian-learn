@@ -31,26 +31,19 @@ function FillingCard({
 }
 
 function CompareRow({ left, right, token }: { left: number; right: number; token: string }) {
-  const { ref, box } = useSharedClusterSize([left, right]);
   const stacked = objectClusterNeedsWideCard(Math.max(left, right));
   return (
-    <div ref={ref} className={stacked ? 'cluster-stack' : 'grid2'} data-compare={`${left}-${right}`}>
-      <div className="card object-choice-card">
-        <ObjectCluster
-          token={token.repeat(left)}
-          boxWidth={box.width}
-          boxHeight={box.height}
-          cardWidth={box.offsetWidth}
-        />
-      </div>
-      <div className="card object-choice-card">
-        <ObjectCluster
-          token={token.repeat(right)}
-          boxWidth={box.width}
-          boxHeight={box.height}
-          cardWidth={box.offsetWidth}
-        />
-      </div>
+    <div className={stacked ? 'cluster-stack' : 'grid2'} data-compare={`${left}-${right}`}>
+      <FillingCard
+        count={left}
+        token={token}
+        className="card object-choice-card"
+      />
+      <FillingCard
+        count={right}
+        token={token}
+        className="card object-choice-card"
+      />
     </div>
   );
 }
@@ -87,8 +80,8 @@ function MatchPairGalleryRow({ count, token }: { count: number; token: string })
     layout: 'row',
   });
   return (
-    <div ref={ref} className="row-card match-object-row" data-count={count}>
-      <div className="match-object-apples">
+    <div className="row-card match-object-row" data-count={count}>
+      <div ref={ref} className="match-object-apples">
         <ObjectCluster
           token={token.repeat(count)}
           layout="row"

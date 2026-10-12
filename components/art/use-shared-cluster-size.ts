@@ -9,7 +9,11 @@ import {
   type ObjectClusterLayout,
 } from '@/components/art/objects';
 
-const MEASURE_SELECTOR = '.object-choice-card, .object-count-card, .match-object-apples';
+const SIZE_EPSILON = 1;
+
+function nearlyEqual(left: number, right: number): boolean {
+  return Math.abs(left - right) < SIZE_EPSILON;
+}
 
 export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(
   counts: number[],
@@ -35,61 +39,104 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(
   }));
 
   useLayoutEffect(() => {
-    const root = ref.current;
-    if (!root) return;
+    const node = ref.current;
+    if (!node) return;
 
     const applyBox = (innerW: number, innerH: number, offsetWidth: number) => {
       if (!Number.isFinite(innerW) || !Number.isFinite(innerH) || innerW < 8 || innerH < 8) {
-        setBox({ width: fallbackWidth, height: fallbackHeight, offsetWidth: fallbackWidth });
-        setSize(
-          objectClusterLayoutForBox(fullest, fallbackWidth, fallbackHeight, gap, layout).size
-        );
+        setBox((prev) => {
+          if (
+            nearlyEqual(prev.width, fallbackWidth) &&
+            nearlyEqual(prev.height, fallbackHeight) &&
+            nearlyEqual(prev.offsetWidth, fallbackWidth)
+          ) {
+            return prev;
+          }
+          return { width: fallbackWidth, height: fallbackHeight, offsetWidth: fallbackWidth };
+        });
+        const fallbackSize = objectClusterLayoutForBox(
+          fullest,
+          fallbackWidth,
+          fallbackHeight,
+          gap,
+          layout
+        ).size;
+        setSize((prev) => (prev === fallbackSize ? prev : fallbackSize));
         return;
       }
-      const cardWidth = offsetWidth > 8 ? offsetWidth : innerW;
-      setBox({ width: innerW, height: innerH, offsetWidth: cardWidth });
-      setSize(objectClusterLayoutForBox(fullest, innerW, innerH, gap, layout, cardWidth).size);
+      const width = Math.round(innerW);
+      const height = Math.round(innerH);
+      const cardWidth = Math.round(offsetWidth > 8 ? offsetWidth : innerW);
+      const nextSize = objectClusterLayoutForBox(
+        fullest,
+        width,
+        height,
+        gap,
+        layout,
+        cardWidth
+      ).size;
+      setBox((prev) => {
+        if (
+          nearlyEqual(prev.width, width) &&
+          nearlyEqual(prev.height, height) &&
+          nearlyEqual(prev.offsetWidth, cardWidth)
+        ) {
+          return prev;
+        }
+        return { width, height, offsetWidth: cardWidth };
+      });
+      setSize((prev) => (prev === nextSize ? prev : nextSize));
     };
 
-    const innerFromNode = (node: HTMLElement) => {
-      const style = getComputedStyle(node);
+    const innerFromNode = (target: HTMLElement) => {
+      const style = getComputedStyle(target);
       const padX = Number.parseFloat(style.paddingLeft) || 0;
       const padY = Number.parseFloat(style.paddingTop) || 0;
       const padRight = Number.parseFloat(style.paddingRight) || 0;
       const padBottom = Number.parseFloat(style.paddingBottom) || 0;
       if (layout === 'picture') {
-        return { width: node.clientWidth, height: node.clientHeight, offsetWidth: node.offsetWidth };
+        return {
+          width: target.clientWidth,
+          height: target.clientHeight,
+          offsetWidth: target.offsetWidth,
+        };
       }
       return {
-        width: node.clientWidth - padX - padRight,
-        height: node.clientHeight - padY - padBottom,
-        offsetWidth: node.offsetWidth,
+        width: target.clientWidth - padX - padRight,
+        height: target.clientHeight - padY - padBottom,
+        offsetWidth: target.offsetWidth,
       };
     };
 
     const innerFromEntry = (entry: ResizeObserverEntry) => {
-      const node = entry.target as HTMLElement;
-      const box = Array.isArray(entry.contentBoxSize) ? entry.contentBoxSize[0] : entry.contentBoxSize;
-      if (box && box.inlineSize >= 8 && box.blockSize >= 8) {
+      const target = entry.target as HTMLElement;
+      const boxSize = Array.isArray(entry.contentBoxSize)
+        ? entry.contentBoxSize[0]
+        : entry.contentBoxSize;
+      if (boxSize && boxSize.inlineSize >= 8 && boxSize.blockSize >= 8) {
         if (layout === 'picture') {
-          const style = getComputedStyle(node);
-          const padX = (Number.parseFloat(style.paddingLeft) || 0) + (Number.parseFloat(style.paddingRight) || 0);
-          const padY = (Number.parseFloat(style.paddingTop) || 0) + (Number.parseFloat(style.paddingBottom) || 0);
+          const style = getComputedStyle(target);
+          const padX =
+            (Number.parseFloat(style.paddingLeft) || 0) +
+            (Number.parseFloat(style.paddingRight) || 0);
+          const padY =
+            (Number.parseFloat(style.paddingTop) || 0) +
+            (Number.parseFloat(style.paddingBottom) || 0);
           return {
-            width: box.inlineSize + padX,
-            height: box.blockSize + padY,
-            offsetWidth: node.offsetWidth,
+            width: boxSize.inlineSize + padX,
+            height: boxSize.blockSize + padY,
+            offsetWidth: target.offsetWidth,
           };
         }
-        return { width: box.inlineSize, height: box.blockSize, offsetWidth: node.offsetWidth };
+        return {
+          width: boxSize.inlineSize,
+          height: boxSize.blockSize,
+          offsetWidth: target.offsetWidth,
+        };
       }
-      return innerFromNode(node);
+      return innerFromNode(target);
     };
 
-    const card = (root.matches(MEASURE_SELECTOR)
-      ? root
-      : root.querySelector(MEASURE_SELECTOR)) as HTMLElement | null;
-    const node = card ?? root;
     const first = innerFromNode(node);
     applyBox(first.width, first.height, first.offsetWidth);
 

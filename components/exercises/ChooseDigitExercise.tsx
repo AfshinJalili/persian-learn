@@ -3,13 +3,14 @@
 import { Exercise } from '@/lib/types';
 import { exerciseChoices } from '@/lib/shuffle';
 import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
+import { digitDisplayFontSize, isSequenceDisplay, sequenceTokens } from '@/lib/digit-display';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
 import {
   DICE_PIP_COUNTS,
-  OBJECT_CLUSTER_MIN_SIZE,
-  OBJECT_SINGLE_WIDTH_RATIO,
   ObjectCluster,
+  looksLikeObjects,
+  splitObjectTokens,
 } from '@/components/art/objects';
 import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
@@ -31,8 +32,14 @@ export default function ChooseDigitExercise({
   const { display } = exercise.payload as { display: string };
   const choices = exerciseChoices(exercise);
   const diceCount = DICE_PIP_COUNTS[display] ?? 0;
-  const { ref, box } = useSharedClusterSize([Math.max(1, diceCount)]);
+  const objectDisplay = diceCount === 0 && looksLikeObjects(display);
+  const sequence = diceCount === 0 && !objectDisplay && isSequenceDisplay(display);
+  const tokens = sequence ? sequenceTokens(display) : [display];
+  const { ref, box } = useSharedClusterSize([
+    Math.max(1, diceCount || (objectDisplay ? splitObjectTokens(display).length : tokens.length)),
+  ]);
   const pips = Array.from({ length: diceCount }, () => '🔵');
+  const fontSize = digitDisplayFontSize(box.width, box.height, box.offsetWidth, tokens.length);
 
   return (
     <>
@@ -49,23 +56,28 @@ export default function ChooseDigitExercise({
             cardWidth={box.offsetWidth}
           />
         </div>
+      ) : objectDisplay ? (
+        <div ref={ref} className="card object-count-card" data-object-display>
+          <ObjectCluster
+            token={display}
+            boxWidth={box.width}
+            boxHeight={box.height}
+            cardWidth={box.offsetWidth}
+          />
+        </div>
+      ) : sequence ? (
+        <div ref={ref} className="card object-count-card" data-digit-sequence>
+          <span className="digit-sequence" style={{ fontSize }}>
+            {tokens.map((token, index) => (
+              <span key={`${token}-${index}`} className="glyph">
+                {token}
+              </span>
+            ))}
+          </span>
+        </div>
       ) : (
         <div ref={ref} className="card object-count-card" data-digit-display>
-          <span
-            className="glyph"
-            style={{
-              fontSize: Math.max(
-                OBJECT_CLUSTER_MIN_SIZE,
-                Math.floor(
-                  Math.min(
-                    (box.offsetWidth > 8 ? box.offsetWidth : box.width) *
-                      OBJECT_SINGLE_WIDTH_RATIO,
-                    box.width
-                  )
-                )
-              ),
-            }}
-          >
+          <span className="glyph" style={{ fontSize }}>
             {display}
           </span>
         </div>

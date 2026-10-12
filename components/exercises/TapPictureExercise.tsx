@@ -5,7 +5,12 @@ import { exerciseHeading, exerciseHeadingClass, exerciseHeadingStyle } from '@/l
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
-import { ObjectCluster, objectClusterChoiceGridClass, splitObjectTokens } from '@/components/art/objects';
+import {
+  ObjectCluster,
+  objectClusterChoiceGridClass,
+  splitObjectTokens,
+  type ObjectClusterLayout,
+} from '@/components/art/objects';
 import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
 interface Props {
@@ -14,6 +19,49 @@ interface Props {
   onAnswerChange: (answer: string) => void;
   disabled: boolean;
   answerState?: 'idle' | 'correct' | 'wrong';
+}
+
+function SizedPictureChoice({
+  option,
+  layout,
+  selected,
+  disabled,
+  state,
+  dim,
+  peers,
+  onSelect,
+}: {
+  option: string;
+  layout: ObjectClusterLayout;
+  selected: boolean;
+  disabled: boolean;
+  state: 'idle' | 'correct' | 'wrong';
+  dim: boolean;
+  peers: string[];
+  onSelect: (option: string) => void;
+}) {
+  const { ref, box } = useSharedClusterSize([splitObjectTokens(option).length], { layout });
+  return (
+    <ChoiceButton
+      ref={ref}
+      selected={selected}
+      disabled={disabled}
+      state={state}
+      dim={dim}
+      name={option}
+      peers={peers}
+      onClick={() => onSelect(option)}
+      className="object-choice-card"
+    >
+      <ObjectCluster
+        token={option}
+        layout={layout}
+        boxWidth={box.width}
+        boxHeight={box.height}
+        cardWidth={box.offsetWidth}
+      />
+    </ChoiceButton>
+  );
 }
 
 export default function TapPictureExercise({
@@ -26,7 +74,6 @@ export default function TapPictureExercise({
   const options = exerciseChoices(exercise);
   const counts = options.map((option) => splitObjectTokens(option).length);
   const clusterLayout = exercise.id.startsWith('a') ? 'picture' : 'grid';
-  const { ref, box } = useSharedClusterSize(counts, { layout: clusterLayout });
 
   const handleSelect = (option: string) => {
     if (disabled) return;
@@ -42,7 +89,6 @@ export default function TapPictureExercise({
         </h2>
       </div>
       <div
-        ref={ref}
         className={objectClusterChoiceGridClass(Math.max(1, ...counts), options.length, 'picture-grid')}
       >
         {options.map((option) => {
@@ -50,25 +96,17 @@ export default function TapPictureExercise({
           const state =
             disabled && answerState !== 'idle' && selected ? answerState : 'idle';
           return (
-            <ChoiceButton
+            <SizedPictureChoice
               key={option}
+              option={option}
+              layout={clusterLayout}
               selected={selected}
               disabled={disabled}
               state={state}
               dim={disabled && !selected}
-              name={option}
               peers={options}
-              onClick={() => handleSelect(option)}
-              className="object-choice-card"
-            >
-              <ObjectCluster
-                token={option}
-                layout={clusterLayout}
-                boxWidth={box.width}
-                boxHeight={box.height}
-                cardWidth={box.offsetWidth}
-              />
-            </ChoiceButton>
+              onSelect={handleSelect}
+            />
           );
         })}
       </div>

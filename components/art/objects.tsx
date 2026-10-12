@@ -297,9 +297,7 @@ export function objectClusterLayoutForBox(
     const unclamped =
       layout === 'picture'
         ? innerWidth
-        : layout === 'row' || layout === 'match'
-          ? Math.min(widthBasis * OBJECT_SINGLE_WIDTH_RATIO, innerWidth, innerHeight)
-          : Math.min(widthBasis * OBJECT_SINGLE_WIDTH_RATIO, innerWidth);
+        : Math.min(widthBasis * OBJECT_SINGLE_WIDTH_RATIO, innerWidth, innerHeight);
     return {
       cols: 1,
       rows: 1,
