@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { getProgress, completeLesson } from '@/lib/progress';
-import { loadTrack, getLesson } from '@/lib/content';
+import { loadLessonById } from '@/lib/content';
 import { playAudio, stopAudio, vibrate } from '@/lib/audio';
 import { answersEqual } from '@/lib/answers';
 import { feedbackKind } from '@/lib/lesson-feedback';
@@ -29,8 +29,7 @@ export default function LessonPage() {
   useEffect(() => {
     async function load() {
       const progress = await getProgress();
-      const track = await loadTrack(progress.currentTrack);
-      const lessonData = getLesson(track, lessonId);
+      const lessonData = await loadLessonById(lessonId, progress.currentTrack);
 
       if (!lessonData) {
         router.push('/home');

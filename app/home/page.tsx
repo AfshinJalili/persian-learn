@@ -65,7 +65,7 @@ export default function HomePage() {
   );
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] pb-36">
+    <div className="min-h-screen bg-[var(--bg)] pb-56">
       <AudioUnlockOverlay />
       <div className="p-6">
         <div className="flex items-center justify-between mb-8">
@@ -146,6 +146,7 @@ export default function HomePage() {
               </div>
             );
           })}
+          <div className="h-8" aria-hidden="true" />
         </div>
       </div>
 

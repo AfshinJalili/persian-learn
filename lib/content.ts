@@ -31,6 +31,24 @@ export function getLesson(track: Track, lessonId: string): Lesson | null {
   return null;
 }
 
+export async function loadLessonById(
+  lessonId: string,
+  preferredTrack: 'math' | 'alphabet',
+): Promise<Lesson | null> {
+  const order: Array<'math' | 'alphabet'> =
+    preferredTrack === 'alphabet' ? ['alphabet', 'math'] : ['math', 'alphabet'];
+
+  for (const name of order) {
+    const track = await loadTrack(name);
+    const lesson = getLesson(track, lessonId);
+    if (lesson) {
+      return lesson;
+    }
+  }
+
+  return null;
+}
+
 export function getUnit(track: Track, unitId: string): Unit | null {
   return track.units.find(u => u.id === unitId) || null;
 }

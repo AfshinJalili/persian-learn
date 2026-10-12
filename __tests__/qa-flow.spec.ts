@@ -91,6 +91,14 @@ test.describe('Mobile QA 390x844', () => {
     await completeOnboarding(page, 'عددها و حساب');
     await snap(page, '06-home-math.png');
 
+    const tab = page.locator('nav').last();
+    const lastNode = page.locator('button[aria-label]').last();
+    const tabBox = await tab.boundingBox();
+    const nodeBox = await lastNode.boundingBox();
+    expect(tabBox).toBeTruthy();
+    expect(nodeBox).toBeTruthy();
+    expect(nodeBox!.y + nodeBox!.height).toBeLessThan(tabBox!.y);
+
     const dir = await page.evaluate(() => document.documentElement.dir);
     expect(dir).toBe('rtl');
 
