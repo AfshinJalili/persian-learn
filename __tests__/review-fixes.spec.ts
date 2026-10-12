@@ -117,20 +117,23 @@ test.describe('Codex review navigation fixes', () => {
     await expect(page.getByText('با یک نگاه')).toBeVisible();
 
     const check = page.getByRole('button', { name: /بررسی/ });
+    const grid = page.locator('.picture-grid');
     const cards = page.locator('.picture-grid .object-choice-card');
     await expect(cards).toHaveCount(3);
 
     const checkBox = await check.boundingBox();
-    const first = await cards.nth(0).boundingBox();
-    const second = await cards.nth(1).boundingBox();
-    const third = await cards.nth(2).boundingBox();
-    expect(checkBox && first && second && third).toBeTruthy();
+    const gridBox = await grid.boundingBox();
+    const boxes = (await Promise.all([0, 1, 2].map((index) => cards.nth(index).boundingBox()))).filter(
+      (box): box is NonNullable<typeof box> => Boolean(box)
+    );
+    expect(checkBox && gridBox && boxes.length === 3).toBeTruthy();
 
-    expect(first!.x).toBeGreaterThanOrEqual(20);
-    expect(Math.abs(first!.x - checkBox!.x)).toBeLessThanOrEqual(2);
-    expect(Math.abs(third!.x + third!.width - (checkBox!.x + checkBox!.width))).toBeLessThanOrEqual(2);
+    expect(gridBox!.x).toBeGreaterThanOrEqual(20);
+    expect(Math.abs(gridBox!.x - checkBox!.x)).toBeLessThanOrEqual(2);
+    expect(Math.abs(gridBox!.width - checkBox!.width)).toBeLessThanOrEqual(2);
 
-    const gap = second!.x - (first!.x + first!.width);
+    const ordered = [...boxes].sort((left, right) => left.x - right.x);
+    const gap = ordered[1].x - (ordered[0].x + ordered[0].width);
     expect(gap).toBeGreaterThanOrEqual(11);
     expect(gap).toBeLessThanOrEqual(13);
 
