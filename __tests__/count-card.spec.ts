@@ -256,7 +256,7 @@ test.describe('Count cards', () => {
     });
     const continueBtn = page.locator('[data-cc-continue]');
     await expect(continueBtn).toHaveAttribute('aria-disabled', 'true');
-    await expect(continueBtn).toBeEnabled();
+    expect(await continueBtn.evaluate((el) => (el as HTMLButtonElement).disabled)).toBe(false);
     await page.getByRole('button', { name: 'یک سیب' }).click();
     await expect(page.locator('[data-count-card][data-count="1"]')).toHaveAttribute(
       'data-heard',
