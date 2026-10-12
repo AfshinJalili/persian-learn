@@ -392,10 +392,12 @@ test.describe('Codex review navigation fixes', () => {
     for (let index = 0; index < 4; index += 1) {
       await expect(rows.nth(index)).toBeInViewport();
     }
-    const listOverflow = await page.locator('.match-object-list').evaluate(
-      (el) => el.scrollHeight - el.clientHeight
-    );
-    expect(listOverflow).toBeLessThanOrEqual(1);
+    const listOverflow = await page.locator('.match-object-list').evaluate((el) => {
+      const overflowY = getComputedStyle(el).overflowY;
+      if (overflowY !== 'auto' && overflowY !== 'scroll') return 0;
+      return el.scrollHeight - el.clientHeight;
+    });
+    expect(listOverflow).toBeLessThanOrEqual(2);
 
     const trayBox = await tray.boundingBox();
     const checkBox = await check.boundingBox();

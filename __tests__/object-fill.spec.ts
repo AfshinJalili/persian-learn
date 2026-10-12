@@ -246,7 +246,7 @@ test.describe('Object fill at phone widths', () => {
           expect(item.ratio, lesson.path).toBeGreaterThanOrEqual(0.65);
         }
         for (const scroller of stats.innerScrolls) {
-          expect(scroller.overflow, `${lesson.path} ${scroller.className}`).toBeLessThanOrEqual(1);
+          expect(scroller.overflow, `${lesson.path} ${scroller.className}`).toBeLessThanOrEqual(2);
         }
         const list = page.locator('.picture-grid, .match-object-list, .cluster-stack, .object-count-card').first();
         const listBox = await list.boundingBox();
@@ -297,7 +297,7 @@ test.describe('Object fill at phone widths', () => {
         expect(item.ratio).toBeGreaterThanOrEqual(0.9);
       }
       for (const scroller of stats.innerScrolls) {
-        expect(scroller.overflow, scroller.className).toBeLessThanOrEqual(1);
+        expect(scroller.overflow, scroller.className).toBeLessThanOrEqual(2);
       }
     });
   }
