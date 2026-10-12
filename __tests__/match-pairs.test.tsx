@@ -1,11 +1,13 @@
-import { describe, expect, it, jest } from '@jest/globals';
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { playAudio } from '@/lib/audio';
 import MatchPairsExercise from '../components/exercises/MatchPairsExercise';
 import type { Exercise } from '../lib/types';
 
 jest.mock('@/lib/audio', () => ({
   playAudio: jest.fn(() => Promise.resolve()),
+  vibrate: jest.fn(),
 }));
 
 jest.mock('@/components/SpeakerButton', () => ({
@@ -337,5 +339,113 @@ describe('MatchPairsExercise object rows', () => {
       Number.parseInt((cluster as HTMLElement).style.getPropertyValue('--object-size') || '0', 10)
     );
     expect(sizes.every((size) => size >= 32)).toBe(true);
+  });
+});
+
+describe('MatchPairsExercise apple tray', () => {
+  beforeEach(() => {
+    (playAudio as jest.Mock).mockClear();
+  });
+
+  it('starts unsolved: chips in the tray, never in the apple rows', () => {
+    const { container } = render(
+      <MatchPairsExercise
+        exercise={appleExercise()}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+
+    const chips = [...container.querySelectorAll('[data-match-digit]')].map(
+      (node) => node.getAttribute('data-match-digit')
+    );
+    expect(chips).toHaveLength(3);
+    expect(chips.sort()).toEqual(['۱', '۲', '۳']);
+    expect(container.querySelectorAll('.match-digit-chip-used')).toHaveLength(0);
+    expect(container.querySelectorAll('.match-digit-slot .glyph')).toHaveLength(0);
+    expect(container.querySelectorAll('.match-digit-slot-empty')).toHaveLength(3);
+    expect(container.querySelectorAll('[data-match-locked="true"]')).toHaveLength(0);
+  });
+
+  it('shuffles tray chips so they are never in answer order', () => {
+    const { container } = render(
+      <MatchPairsExercise
+        exercise={appleExercise()}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+    const chips = [...container.querySelectorAll('[data-match-digit]')].map(
+      (node) => node.getAttribute('data-match-digit')
+    );
+    expect(chips).not.toEqual(['۱', '۲', '۳']);
+  });
+
+  it('plays the number word when a tray chip is tapped', async () => {
+    const user = userEvent.setup();
+    render(
+      <MatchPairsExercise
+        exercise={appleExercise()}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+    await user.click(screen.getByRole('button', { name: '۲' }));
+    expect(playAudio).toHaveBeenCalledWith('دو', false, undefined);
+  });
+
+  it('pairs when the apple row is tapped first, then the number', async () => {
+    const user = userEvent.setup();
+    const onAnswerChange = jest.fn();
+    render(
+      <MatchPairsExercise
+        exercise={appleExercise()}
+        userAnswer=""
+        onAnswerChange={onAnswerChange}
+        disabled={false}
+      />
+    );
+
+    await user.click(screen.getByRole('button', { name: '🍎' }));
+    await user.click(screen.getByRole('button', { name: '۱' }));
+    await user.click(screen.getByRole('button', { name: '🍎🍎' }));
+    await user.click(screen.getByRole('button', { name: '۲' }));
+    await user.click(screen.getByRole('button', { name: '🍎🍎🍎' }));
+    await user.click(screen.getByRole('button', { name: '۳' }));
+
+    await waitFor(() => {
+      expect(onAnswerChange).toHaveBeenCalled();
+    });
+  });
+
+  it('locks a correct placement and bounces a wrong one back to the tray', async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <MatchPairsExercise
+        exercise={appleExercise()}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+
+    await user.click(screen.getByRole('button', { name: '۱' }));
+    await user.click(screen.getByRole('button', { name: '🍎' }));
+    expect(container.querySelector('[data-match-slot="🍎"] .glyph')?.textContent).toBe('۱');
+    expect(container.querySelector('[data-match-locked="true"]')).toBeTruthy();
+    expect(screen.queryByRole('button', { name: '۱' })).toBeNull();
+
+    await user.click(screen.getByRole('button', { name: '۲' }));
+    await user.click(screen.getByRole('button', { name: '🍎🍎🍎' }));
+    expect(container.querySelector('[data-match-slot="🍎🍎🍎"] .glyph')?.textContent).toBe('۲');
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: '۲' })).toBeInTheDocument();
+    });
+    expect(container.querySelector('[data-match-slot="🍎🍎🍎"] .glyph')).toBeNull();
+    expect(container.querySelectorAll('.match-digit-chip-used')).toHaveLength(0);
   });
 });

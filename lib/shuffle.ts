@@ -20,6 +20,28 @@ export function shuffleSeeded<T>(items: T[], seed: string): T[] {
   return arr;
 }
 
+export function sameOrder<T>(left: T[], right: T[]): boolean {
+  return left.length === right.length && left.every((item, index) => item === right[index]);
+}
+
+/** Shuffle that is never identical to the original order when there are 2+ items. */
+export function shuffleDeranged<T>(items: T[], seed: string): T[] {
+  if (items.length < 2) return [...items];
+  let shuffled = shuffleSeeded(items, seed);
+  for (let attempt = 0; attempt < 8; attempt += 1) {
+    if (!sameOrder(shuffled, items)) return shuffled;
+    shuffled = shuffleSeeded(items, `${seed}:reroll:${attempt}`);
+  }
+  const forced = [...items];
+  const first = forced[0];
+  const second = forced[1];
+  if (first !== undefined && second !== undefined) {
+    forced[0] = second;
+    forced[1] = first;
+  }
+  return forced;
+}
+
 export function exerciseChoices(exercise: {
   id: string;
   answer: string;

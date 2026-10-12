@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react';
+import { vibrate } from '@/lib/audio';
 import { playOptionAudio } from '@/lib/spoken-option';
 import { canonicalizePairs } from '@/lib/answers';
-import { shuffleSeeded } from '@/lib/shuffle';
+import { shuffleDeranged } from '@/lib/shuffle';
 import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
@@ -31,6 +32,7 @@ function MatchObjectRow({
   option,
   placed,
   correct,
+  rejecting,
   picking,
   disabled,
   box,
@@ -40,17 +42,29 @@ function MatchObjectRow({
   option: string;
   placed: [string, string] | undefined;
   correct: boolean;
+  rejecting: boolean;
   picking: boolean;
   disabled: boolean;
   box: { width: number; height: number; offsetWidth: number };
   onSelect: (side: Side, option: string) => void;
   onSlotDrop: (option: string, event: DragEvent<HTMLButtonElement>) => void;
 }) {
+  const slotClass = [
+    'match-digit-slot',
+    placed && !rejecting ? 'card' : '',
+    correct ? 'correct' : '',
+    rejecting ? 'match-digit-slot-reject' : '',
+    !placed ? 'match-digit-slot-empty' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <button
       type="button"
       aria-label={option}
       data-match-slot={option}
+      data-match-locked={correct ? 'true' : undefined}
       disabled={disabled || Boolean(placed)}
       onClick={() => onSelect('right', option)}
       onDragOver={(event) => event.preventDefault()}
@@ -66,13 +80,9 @@ function MatchObjectRow({
           cardWidth={box.offsetWidth}
         />
       </div>
-      {placed ? (
-        <span className={`card match-digit-slot ${correct ? 'correct' : ''}`}>
-          <span className="glyph">{placed[0]}</span>
-        </span>
-      ) : (
-        <span className="match-digit-slot match-digit-slot-empty" />
-      )}
+      <span className={slotClass}>
+        {placed ? <span className="glyph">{placed[0]}</span> : null}
+      </span>
     </button>
   );
 }
@@ -85,16 +95,25 @@ export default function MatchPairsExercise({
 }: Props) {
   const [selected, setSelected] = useState<Selection | null>(null);
   const [pairs, setPairs] = useState<Array<[string, string]>>([]);
+  const [rejecting, setRejecting] = useState<[string, string] | null>(null);
   const selectedRef = useRef<Selection | null>(null);
+  const bounceTimerRef = useRef<number | null>(null);
 
   const answerPairs = useMemo(
     () => exercise.answer.split('|').map((pair) => pair.split('=') as [string, string]),
     [exercise.answer]
   );
 
-  const leftOptions = useMemo(() => answerPairs.map(([left]) => left), [answerPairs]);
+  const leftInAnswerOrder = useMemo(
+    () => answerPairs.map(([left]) => left),
+    [answerPairs]
+  );
+  const leftOptions = useMemo(
+    () => shuffleDeranged(leftInAnswerOrder, `${exercise.id}-left`),
+    [leftInAnswerOrder, exercise.id]
+  );
   const rightOptions = useMemo(
-    () => shuffleSeeded(
+    () => shuffleDeranged(
       answerPairs.map(([, right]) => right),
       `${exercise.id}-right`
     ),
@@ -116,10 +135,19 @@ export default function MatchPairsExercise({
   });
   const applesBox = matchApplesBoxFromList(box, rightOptions.length);
 
+  const clearBounce = () => {
+    if (bounceTimerRef.current != null) {
+      window.clearTimeout(bounceTimerRef.current);
+      bounceTimerRef.current = null;
+    }
+    setRejecting(null);
+  };
+
   useEffect(() => {
     selectedRef.current = null;
     setSelected(null);
     setPairs([]);
+    clearBounce();
   }, [exercise.id]);
 
   useEffect(() => {
@@ -127,11 +155,25 @@ export default function MatchPairsExercise({
     selectedRef.current = null;
     setSelected(null);
     setPairs([]);
+    clearBounce();
   }, [userAnswer]);
 
-  const isLeftUsed = (option: string) => pairs.some(([left]) => left === option);
-  const isRightUsed = (option: string) => pairs.some(([, right]) => right === option);
-  const pairForRight = (option: string) => pairs.find(([, right]) => right === option);
+  useEffect(() => {
+    return () => {
+      if (bounceTimerRef.current != null) window.clearTimeout(bounceTimerRef.current);
+    };
+  }, []);
+
+  const isCorrectPair = (left: string, right: string) =>
+    answerPairs.some(([answerLeft, answerRight]) => answerLeft === left && answerRight === right);
+
+  const isLeftUsed = (option: string) =>
+    pairs.some(([left]) => left === option) || rejecting?.[0] === option;
+  const isRightUsed = (option: string) =>
+    pairs.some(([, right]) => right === option) || rejecting?.[1] === option;
+  const pairForRight = (option: string): [string, string] | undefined =>
+    pairs.find(([, right]) => right === option) ??
+    (rejecting?.[1] === option ? rejecting : undefined);
 
   const rememberSelection = (next: Selection | null) => {
     selectedRef.current = next;
@@ -140,9 +182,22 @@ export default function MatchPairsExercise({
 
   const placePair = (left: string, right: string) => {
     if (disabled || isLeftUsed(left) || isRightUsed(right)) return;
+    rememberSelection(null);
+    if (!isCorrectPair(left, right)) {
+      setRejecting([left, right]);
+      vibrate([25, 40, 25]);
+      if (bounceTimerRef.current != null) window.clearTimeout(bounceTimerRef.current);
+      bounceTimerRef.current = window.setTimeout(() => {
+        setRejecting((current) =>
+          current && current[0] === left && current[1] === right ? null : current
+        );
+        bounceTimerRef.current = null;
+      }, 420);
+      return;
+    }
     const newPairs: Array<[string, string]> = [...pairs, [left, right]];
     setPairs(newPairs);
-    rememberSelection(null);
+    vibrate([40, 30, 40]);
     if (newPairs.length === answerPairs.length) {
       onAnswerChange(canonicalizePairs(newPairs.map((pair) => pair.join('=')).join('|')));
     }
@@ -153,7 +208,9 @@ export default function MatchPairsExercise({
     if (side === 'left' && isLeftUsed(option)) return;
     if (side === 'right' && isRightUsed(option)) return;
 
-    playOptionAudio(option, speakPeers).catch(() => {});
+    if (side === 'left') {
+      playOptionAudio(option, speakPeers).catch(() => {});
+    }
 
     const current = selectedRef.current;
     if (!current || current.side === side) {
@@ -193,9 +250,10 @@ export default function MatchPairsExercise({
           <div ref={ref} className="match-object-list">
             {rightOptions.map((option) => {
               const placed = pairForRight(option);
-              const correct = Boolean(
-                placed && answerPairs.some(([left, right]) => left === placed[0] && right === option)
+              const locked = Boolean(
+                placed && pairs.some(([left, right]) => left === placed[0] && right === option)
               );
+              const correct = Boolean(locked && placed && isCorrectPair(placed[0], option));
               const picking = selected?.side === 'right' && selected.value === option;
               return (
                 <MatchObjectRow
@@ -203,6 +261,7 @@ export default function MatchPairsExercise({
                   option={option}
                   placed={placed}
                   correct={correct}
+                  rejecting={rejecting?.[1] === option}
                   picking={picking}
                   disabled={disabled}
                   box={applesBox}
@@ -213,10 +272,9 @@ export default function MatchPairsExercise({
             })}
           </div>
           <div className="match-digit-tray" data-match-tray>
-            {leftOptions.map((option) =>
-              isLeftUsed(option) ? (
-                <span key={option} className="match-digit-chip match-digit-chip-used" />
-              ) : (
+            {leftOptions
+              .filter((option) => !isLeftUsed(option))
+              .map((option) => (
                 <button
                   type="button"
                   key={option}
@@ -229,8 +287,7 @@ export default function MatchPairsExercise({
                 >
                   <span className="glyph">{option}</span>
                 </button>
-              )
-            )}
+              ))}
           </div>
         </div>
       ) : (
