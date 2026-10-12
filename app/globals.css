@@ -614,7 +614,7 @@ h2,
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
 }
 
@@ -623,7 +623,7 @@ h2,
   flex-direction: column;
   flex: 1;
   min-height: 0;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -633,8 +633,8 @@ h2,
 .row-card.match-object-row {
   width: 100%;
   align-items: center;
-  gap: 8px;
-  padding: 8px;
+  gap: 6px;
+  padding: 6px;
 }
 
 .match-object-row-correct {
