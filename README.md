@@ -12,7 +12,7 @@ Persian Learn is a complete, polished PWA inspired by Duolingo and Brilliant.org
 ## Features
 
 ### Core Learning Experience
-- **1,181 exercises** across 12 units per track (553 math, 628 alphabet)
+- **1,200 exercises** across 12 units per track (553 math, 647 alphabet)
 - **15+ exercise types**: intro cards, tap picture, listen & choose, count objects, trace letters, match pairs, number lines, equations, money, time, and more
 - **Audio-first design**: Web Speech API + pre-generated MP3 fallbacks for devices without Persian TTS
 - **No typing required**: All interactions via tap, drag, or trace
@@ -107,7 +107,7 @@ app/                       # Next.js App Router
   globals.css              # Design tokens & Tailwind
 components/                # Onboarding + exercise renderers
 lib/                       # content, progress, audio, Persian helpers
-public/content/            # math.json (553), alphabet.json (628)
+public/content/            # math.json (553), alphabet.json (647)
 docs/                      # Design materials
 ```
 
@@ -205,6 +205,6 @@ MIT
 ## Credits
 
 - **Design**: Based on comprehensive design system in `docs/`
-- **Content**: 1,181 exercises across math (553) and alphabet (628) tracks
+- **Content**: 1,200 exercises across math (553) and alphabet (647) tracks
 - **Mascot**: Hoda (هُدی) the hoopoe, inspired by Attar's منطق‌الطیر
 - **Font**: Vazirmatn by Saber Rastikerdar

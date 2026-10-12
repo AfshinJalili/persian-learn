@@ -30,12 +30,11 @@ describe('Content v2 Validation', () => {
     expect(totalExercises).toBe(553);
   });
 
-  it('should have 628 total exercises in alphabet', () => {
+  it('should have 647 total exercises in alphabet', () => {
     const totalExercises = alphabet.units.reduce((sum, unit) => {
       return sum + unit.lessons.reduce((lsum, lesson) => lsum + lesson.exercises.length, 0);
     }, 0);
-    // public/content/alphabet.json currently contains 628 exercises (not 647).
-    expect(totalExercises).toBe(628);
+    expect(totalExercises).toBe(647);
   });
 
   const exerciseTypes = [

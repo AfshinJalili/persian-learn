@@ -3262,11 +3262,11 @@
             {
               "id": "a4l3e8",
               "type": "intro",
-              "prompt": "بینی",
-              "audio_script": "بِ، یِ، نون، یِ: «بینی». بینی روی صورت.",
+              "prompt": "نَسرین",
+              "audio_script": "نون با زبر، سین، رِ، یِ، نون: «نَسرین». نسرین، اسم خواهر شما. اولین اسم خانواده که خودتان می‌خوانید!",
               "payload": {
-                "display": "بینی",
-                "visual": "👃",
+                "display": "نَسرین",
+                "visual": "👩",
                 "teaches": []
               },
               "answer": "",
@@ -3278,17 +3278,18 @@
               "id": "a4l3e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «بینی» ساخته شود.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «نَسرین» ساخته شود.",
               "payload": {
-                "picture": "👃",
+                "picture": "👩",
                 "letters": [
-                  "ب",
+                  "نَ",
+                  "س",
+                  "ر",
                   "ی",
-                  "ن",
-                  "ی"
+                  "ن"
                 ]
               },
-              "answer": "بینی",
+              "answer": "نَسرین",
               "distractors": [
                 "ت"
               ],
@@ -3306,7 +3307,7 @@
               "answer": "🍎",
               "distractors": [
                 "🇮🇷",
-                "👃"
+                "🍞"
               ],
               "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
@@ -3327,8 +3328,8 @@
                     "🍎"
                   ],
                   [
-                    "بینی",
-                    "👃"
+                    "نَسرین",
+                    "👩"
                   ],
                   [
                     "نان",
@@ -3336,7 +3337,7 @@
                   ]
                 ]
               },
-              "answer": "ایران=🇮🇷|سیب=🍎|بینی=👃|نان=🍞",
+              "answer": "ایران=🇮🇷|سیب=🍎|نَسرین=👩|نان=🍞",
               "distractors": [],
               "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
@@ -4356,6 +4357,42 @@
               "distractors": [],
               "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            },
+            {
+              "id": "a5l3e11",
+              "type": "intro",
+              "prompt": "زِیْنَب",
+              "audio_script": "زِ با زیر، یِ با ساکن، نون با زبر، بِ: «زِیْنَب». زینب، اسم خواهر شما. اینجا هم «ی» صدای «ی» دارد.",
+              "payload": {
+                "display": "زِیْنَب",
+                "visual": "👩",
+                "teaches": []
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a5l3e12",
+              "type": "build_word",
+              "prompt": "🧩",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «زِیْنَب» ساخته شود.",
+              "payload": {
+                "picture": "👩",
+                "letters": [
+                  "زِ",
+                  "یْ",
+                  "نَ",
+                  "ب"
+                ]
+              },
+              "answer": "زِیْنَب",
+              "distractors": [
+                "ن"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             }
           ]
         },
@@ -4377,7 +4414,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
@@ -4393,7 +4430,7 @@
                 "بَ",
                 "بِ"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
@@ -4409,7 +4446,7 @@
                 "اِ",
                 "اَ"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
@@ -4424,14 +4461,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a5l4e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «اُمید» ساخته شود.",
+              "audio_script": "با این حرف‌ها «اُمید» را بسازید.",
               "payload": {
                 "picture": "✨",
                 "letters": [
@@ -4445,8 +4482,8 @@
               "distractors": [
                 "آ"
               ],
-              "feedback_correct": "آفرین!",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a5l4e6",
@@ -4460,14 +4497,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a5l4e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «اُتوبوس» را بسازید.",
+              "audio_script": "حالا «اُتوبوس» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "🚌",
                 "letters": [
@@ -4483,8 +4520,8 @@
               "distractors": [
                 "آ"
               ],
-              "feedback_correct": "عالی بود!",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a5l4e8",
@@ -4498,14 +4535,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a5l4e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «مُشت» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «مُشت» ساخته شود.",
               "payload": {
                 "picture": "✊",
                 "letters": [
@@ -4518,8 +4555,8 @@
               "distractors": [
                 "ت"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a5l4e10",
@@ -4534,7 +4571,7 @@
                 "✊",
                 "✨"
               ],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "دوباره امتحان کنید."
             },
             {
@@ -4564,7 +4601,7 @@
               },
               "answer": "اُمید=✨|اُتوبوس=🚌|مُشت=✊|دَریا=🌊",
               "distractors": [],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             }
           ]
@@ -4585,7 +4622,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
@@ -4601,7 +4638,7 @@
                 "مادَر نان دارَد.",
                 "بابا آب دارَد."
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
@@ -4617,7 +4654,7 @@
                 "مادَر نان دارَد.",
                 "بابا شیر دارَد."
               ],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
               "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
@@ -4633,7 +4670,7 @@
                 "👨🍞",
                 "👩🥛"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
             },
             {
@@ -4649,7 +4686,7 @@
                 "شانه",
                 "ش|ا|ن|ه"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "اشکالی ندارد؛ حرف‌هایی را پیدا کنید که به بعدی نمی‌چسبند."
             },
             {
@@ -4679,7 +4716,7 @@
               },
               "answer": "شیر=🥛|شَب=🌙|شانه=🪮|آتَش=🔥",
               "distractors": [],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "عالی بود!",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
             },
             {
@@ -4695,14 +4732,14 @@
                 "س",
                 "ز"
               ],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
               "id": "a5l5e8",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «شیر» ساخته شود.",
+              "audio_script": "با این حرف‌ها «شیر» را بسازید.",
               "payload": {
                 "picture": "🥛",
                 "letters": [
@@ -4715,8 +4752,8 @@
               "distractors": [
                 "س"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a5l5e9",
@@ -4731,7 +4768,7 @@
                 "دَر",
                 "شیر"
               ],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             }
           ]
@@ -4762,7 +4799,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
@@ -4781,7 +4818,7 @@
               },
               "answer": "ک",
               "distractors": [],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
             },
             {
@@ -4797,7 +4834,7 @@
                 "ت",
                 "س"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
@@ -4812,14 +4849,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a6l1e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «کِتاب» را بسازید.",
+              "audio_script": "حالا «کِتاب» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "📖",
                 "letters": [
@@ -4833,8 +4870,8 @@
               "distractors": [
                 "ت"
               ],
-              "feedback_correct": "دقیقاً همین است!",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a6l1e6",
@@ -4848,14 +4885,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a6l1e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «کَباب» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «کَباب» ساخته شود.",
               "payload": {
                 "picture": "🍢",
                 "letters": [
@@ -4869,8 +4906,8 @@
               "distractors": [
                 "ت"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a6l1e8",
@@ -4884,14 +4921,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a6l1e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «اِسکِناس» ساخته شود.",
+              "audio_script": "با این حرف‌ها «اِسکِناس» را بسازید.",
               "payload": {
                 "picture": "💵",
                 "letters": [
@@ -4907,8 +4944,8 @@
               "distractors": [
                 "ش"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a6l1e10",
@@ -4922,14 +4959,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a6l1e11",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «کیسه» را بسازید.",
+              "audio_script": "حالا «کیسه» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "🛍️",
                 "letters": [
@@ -4943,8 +4980,8 @@
               "distractors": [
                 "ش"
               ],
-              "feedback_correct": "آفرین!",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a6l1e12",
@@ -4973,7 +5010,7 @@
               },
               "answer": "کِتاب=📖|کَباب=🍢|اِسکِناس=💵|کیسه=🛍️",
               "distractors": [],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             }
           ]
@@ -4996,7 +5033,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
@@ -5011,14 +5048,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a6l2e3",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «وان» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «وان» ساخته شود.",
               "payload": {
                 "picture": "🛁",
                 "letters": [
@@ -5031,8 +5068,8 @@
               "distractors": [
                 "د"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a6l2e4",
@@ -5046,14 +5083,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a6l2e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «داوَر» ساخته شود.",
+              "audio_script": "با این حرف‌ها «داوَر» را بسازید.",
               "payload": {
                 "picture": "🧑‍⚖️",
                 "letters": [
@@ -5067,8 +5104,8 @@
               "distractors": [
                 "د"
               ],
-              "feedback_correct": "بسیار خوب!",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a6l2e6",
@@ -5082,14 +5119,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a6l2e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «دیوار» را بسازید.",
+              "audio_script": "حالا «دیوار» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "🧱",
                 "letters": [
@@ -5104,8 +5141,8 @@
               "distractors": [
                 "ر"
               ],
-              "feedback_correct": "احسنت!",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a6l2e8",
@@ -5119,14 +5156,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a6l2e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «کَبوتَر» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «کَبوتَر» ساخته شود.",
               "payload": {
                 "picture": "🕊️",
                 "letters": [
@@ -5141,8 +5178,8 @@
               "distractors": [
                 "ت"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a6l2e10",
@@ -5157,7 +5194,7 @@
                 "🧱",
                 "🕊️"
               ],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
               "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
             },
             {
@@ -5187,7 +5224,7 @@
               },
               "answer": "وان=🛁|داوَر=🧑‍⚖️|دیوار=🧱|کَبوتَر=🕊️",
               "distractors": [],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
             }
           ]
@@ -5210,7 +5247,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
@@ -5229,7 +5266,7 @@
               },
               "answer": "پ",
               "distractors": [],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
             },
             {
@@ -5245,7 +5282,7 @@
                 "ب",
                 "ت"
               ],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "عالی بود!",
               "feedback_wrong": "نقطه‌ها را بشمارید: «پ» سه نقطه زیرش دارد."
             },
             {
@@ -5260,14 +5297,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a6l3e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «پِدَر» ساخته شود.",
+              "audio_script": "با این حرف‌ها «پِدَر» را بسازید.",
               "payload": {
                 "picture": "👨",
                 "letters": [
@@ -5280,8 +5317,8 @@
               "distractors": [
                 "ب"
               ],
-              "feedback_correct": "عالی بود!",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a6l3e6",
@@ -5295,14 +5332,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a6l3e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «پا» را بسازید.",
+              "audio_script": "حالا «پا» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "🦶",
                 "letters": [
@@ -5314,8 +5351,8 @@
               "distractors": [
                 "ب"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a6l3e8",
@@ -5329,14 +5366,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a6l3e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «پیاز» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «پیاز» ساخته شود.",
               "payload": {
                 "picture": "🧅",
                 "letters": [
@@ -5350,8 +5387,8 @@
               "distractors": [
                 "ب"
               ],
-              "feedback_correct": "بسیار خوب!",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a6l3e10",
@@ -5365,14 +5402,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a6l3e11",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «توپ» ساخته شود.",
+              "audio_script": "با این حرف‌ها «توپ» را بسازید.",
               "payload": {
                 "picture": "⚽",
                 "letters": [
@@ -5385,8 +5422,8 @@
               "distractors": [
                 "ب"
               ],
-              "feedback_correct": "احسنت!",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a6l3e12",
@@ -5415,7 +5452,7 @@
               },
               "answer": "پِدَر=👨|پا=🦶|پیاز=🧅|توپ=⚽",
               "distractors": [],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             }
           ]
@@ -5438,7 +5475,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
@@ -5457,7 +5494,7 @@
               },
               "answer": "گ",
               "distractors": [],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
               "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
             },
             {
@@ -5473,7 +5510,7 @@
                 "ک",
                 "س"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "خط‌های بالا را بشمارید: «گ» دو خط دارد."
             },
             {
@@ -5488,14 +5525,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a6l4e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «گوش» را بسازید.",
+              "audio_script": "حالا «گوش» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "👂",
                 "letters": [
@@ -5508,8 +5545,8 @@
               "distractors": [
                 "ک"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a6l4e6",
@@ -5523,14 +5560,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a6l4e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «اَنگور» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «اَنگور» ساخته شود.",
               "payload": {
                 "picture": "🍇",
                 "letters": [
@@ -5545,8 +5582,8 @@
               "distractors": [
                 "ک"
               ],
-              "feedback_correct": "آفرین!",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a6l4e8",
@@ -5560,14 +5597,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a6l4e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «گوشت» ساخته شود.",
+              "audio_script": "با این حرف‌ها «گوشت» را بسازید.",
               "payload": {
                 "picture": "🥩",
                 "letters": [
@@ -5581,8 +5618,8 @@
               "distractors": [
                 "ک"
               ],
-              "feedback_correct": "عالی بود!",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a6l4e10",
@@ -5596,14 +5633,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a6l4e11",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «سَگ» را بسازید.",
+              "audio_script": "حالا «سَگ» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "🐕",
                 "letters": [
@@ -5615,8 +5652,8 @@
               "distractors": [
                 "ک"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a6l4e12",
@@ -5645,7 +5682,7 @@
               },
               "answer": "گوش=👂|اَنگور=🍇|گوشت=🥩|سَگ=🐕",
               "distractors": [],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
             }
           ]
@@ -5666,7 +5703,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
@@ -5682,7 +5719,7 @@
                 "پِدَر نان دارَد.",
                 "مادَر کِتاب دارَد."
               ],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
@@ -5698,7 +5735,7 @@
                 "مادَر پیاز دارَد.",
                 "بابا اَنگور دارَد."
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
@@ -5714,7 +5751,7 @@
                 "کَبوتَر",
                 "کَ|ب|و|تَ|ر"
               ],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
               "feedback_wrong": "دوباره نگاه کنید: بعد از «ا»، «د»، «ر»، «ز»، «ژ» و «و» کلمه باز می‌شود."
             },
             {
@@ -5730,7 +5767,7 @@
                 "ک",
                 "پ"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
@@ -5746,14 +5783,14 @@
                 "🍇",
                 "🥩"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
             },
             {
               "id": "a6l5e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «سَگ» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «سَگ» ساخته شود.",
               "payload": {
                 "picture": "🐕",
                 "letters": [
@@ -5765,8 +5802,8 @@
               "distractors": [
                 "ک"
               ],
-              "feedback_correct": "آفرین!",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a6l5e8",
@@ -5781,7 +5818,7 @@
                 "دیوار",
                 "دَر"
               ],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
@@ -5811,7 +5848,7 @@
               },
               "answer": "گوش=👂|پا=🦶|دَست=✋|بینی=👃",
               "distractors": [],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             }
           ]
@@ -5842,7 +5879,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
@@ -5861,7 +5898,7 @@
               },
               "answer": "ف",
               "distractors": [],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
             },
             {
@@ -5877,7 +5914,7 @@
                 "و",
                 "ن"
               ],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
@@ -5892,14 +5929,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a7l1e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «کَفش» ساخته شود.",
+              "audio_script": "با این حرف‌ها «کَفش» را بسازید.",
               "payload": {
                 "picture": "👞",
                 "letters": [
@@ -5912,8 +5949,8 @@
               "distractors": [
                 "ک"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a7l1e6",
@@ -5927,14 +5964,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a7l1e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «بَرف» را بسازید.",
+              "audio_script": "حالا «بَرف» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "❄️",
                 "letters": [
@@ -5947,8 +5984,8 @@
               "distractors": [
                 "ر"
               ],
-              "feedback_correct": "دقیقاً همین است!",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a7l1e8",
@@ -5962,14 +5999,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a7l1e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «سِفید» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «سِفید» ساخته شود.",
               "payload": {
                 "picture": "⚪",
                 "letters": [
@@ -5983,27 +6020,11 @@
               "distractors": [
                 "ت"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a7l1e10",
-              "type": "tap_picture",
-              "prompt": "کَفش",
-              "audio_script": "این را بخوانید. کدام تصویر است؟",
-              "payload": {
-                "display": "کَفش"
-              },
-              "answer": "👞",
-              "distractors": [
-                "❄️",
-                "⚪"
-              ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
-              "feedback_wrong": "دوباره امتحان کنید."
-            },
-            {
-              "id": "a7l1e11",
               "type": "match_pairs",
               "prompt": "🔗",
               "audio_script": "هر کلمه را به تصویرش وصل کنید.",
@@ -6031,6 +6052,44 @@
               "distractors": [],
               "feedback_correct": "آفرین!",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            },
+            {
+              "id": "a7l1e11",
+              "type": "intro",
+              "prompt": "فَریبا",
+              "audio_script": "یک خبر خوب! حالا همهٔ حرف‌های اسم شما را بلدید: ف، ر، ی، ب، الف. این اسم شماست: «فریبا». فریبا خانم، تبریک!",
+              "payload": {
+                "display": "فَریبا",
+                "visual": "🌸",
+                "teaches": []
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l1e12",
+              "type": "build_word",
+              "prompt": "🧩",
+              "audio_script": "شما اسم خودتان را می‌نویسید! حرف‌ها را بچینید تا «فریبا» ساخته شود.",
+              "payload": {
+                "picture": "🌸",
+                "letters": [
+                  "فَ",
+                  "ر",
+                  "ی",
+                  "ب",
+                  "ا"
+                ]
+              },
+              "answer": "فَریبا",
+              "distractors": [
+                "پ",
+                "ت"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             }
           ]
         },
@@ -6052,7 +6111,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
@@ -6071,7 +6130,7 @@
               },
               "answer": "خ",
               "distractors": [],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
             },
             {
@@ -6087,7 +6146,7 @@
                 "ف",
                 "ن"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
@@ -6102,14 +6161,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a7l2e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «خانه» ساخته شود.",
+              "audio_script": "با این حرف‌ها «خانه» را بسازید.",
               "payload": {
                 "picture": "🏠",
                 "letters": [
@@ -6123,7 +6182,7 @@
               "distractors": [
                 "ف"
               ],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -6138,14 +6197,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a7l2e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «دِرَخت» را بسازید.",
+              "audio_script": "حالا «دِرَخت» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "🌳",
                 "letters": [
@@ -6159,7 +6218,7 @@
               "distractors": [
                 "ف"
               ],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -6174,14 +6233,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a7l2e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «خیار» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «خیار» ساخته شود.",
               "payload": {
                 "picture": "🥒",
                 "letters": [
@@ -6195,7 +6254,7 @@
               "distractors": [
                 "ف"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -6211,8 +6270,8 @@
                 "🌳",
                 "🥒"
               ],
-              "feedback_correct": "دقیقاً همین است!",
-              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره امتحان کنید."
             },
             {
               "id": "a7l2e11",
@@ -6241,7 +6300,7 @@
               },
               "answer": "خانه=🏠|دِرَخت=🌳|خیار=🥒|کَفش=👞",
               "distractors": [],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             }
           ]
@@ -6264,7 +6323,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
@@ -6283,7 +6342,7 @@
               },
               "answer": "ق",
               "distractors": [],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
             },
             {
@@ -6299,7 +6358,7 @@
                 "ف",
                 "و"
               ],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "عالی بود!",
               "feedback_wrong": "نقطه‌ها را بشمارید: «ق» دو نقطه دارد و «ف» یکی."
             },
             {
@@ -6314,14 +6373,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a7l3e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «قاشُق» ساخته شود.",
+              "audio_script": "با این حرف‌ها «قاشُق» را بسازید.",
               "payload": {
                 "picture": "🥄",
                 "letters": [
@@ -6335,7 +6394,7 @@
               "distractors": [
                 "ف"
               ],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -6350,14 +6409,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a7l3e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «قَند» را بسازید.",
+              "audio_script": "حالا «قَند» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "🧊",
                 "letters": [
@@ -6370,7 +6429,7 @@
               "distractors": [
                 "ف"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -6385,14 +6444,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a7l3e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «بُشقاب» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «بُشقاب» ساخته شود.",
               "payload": {
                 "picture": "🍽️",
                 "letters": [
@@ -6407,7 +6466,7 @@
               "distractors": [
                 "ف"
               ],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -6422,14 +6481,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a7l3e11",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «قایِق» ساخته شود.",
+              "audio_script": "با این حرف‌ها «قایِق» را بسازید.",
               "payload": {
                 "picture": "⛵",
                 "letters": [
@@ -6443,7 +6502,7 @@
               "distractors": [
                 "ف"
               ],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -6473,7 +6532,7 @@
               },
               "answer": "قاشُق=🥄|قَند=🧊|بُشقاب=🍽️|قایِق=⛵",
               "distractors": [],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
             }
           ]
@@ -6496,7 +6555,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
@@ -6515,7 +6574,7 @@
               },
               "answer": "ل",
               "distractors": [],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
               "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
             },
             {
@@ -6531,7 +6590,7 @@
                 "ا",
                 "ک"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
@@ -6546,14 +6605,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a7l4e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «پول» را بسازید.",
+              "audio_script": "حالا «پول» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "💵",
                 "letters": [
@@ -6566,7 +6625,7 @@
               "distractors": [
                 "ب"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -6581,14 +6640,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a7l4e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «گُل» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «گُل» ساخته شود.",
               "payload": {
                 "picture": "🌷",
                 "letters": [
@@ -6600,7 +6659,7 @@
               "distractors": [
                 "ک"
               ],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "عالی بود!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -6615,14 +6674,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a7l4e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «کِلید» ساخته شود.",
+              "audio_script": "با این حرف‌ها «کِلید» را بسازید.",
               "payload": {
                 "picture": "🔑",
                 "letters": [
@@ -6636,7 +6695,7 @@
               "distractors": [
                 "ک"
               ],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -6651,14 +6710,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a7l4e11",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «لیوان» را بسازید.",
+              "audio_script": "حالا «لیوان» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "🥛",
                 "letters": [
@@ -6673,7 +6732,7 @@
               "distractors": [
                 "ا"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -6703,7 +6762,7 @@
               },
               "answer": "پول=💵|گُل=🌷|کِلید=🔑|لیوان=🥛",
               "distractors": [],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             }
           ]
@@ -6724,7 +6783,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
@@ -6740,7 +6799,7 @@
                 "قاشُق",
                 "کَفش"
               ],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
@@ -6756,7 +6815,7 @@
                 "سیب",
                 "شَب"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
@@ -6772,7 +6831,7 @@
                 "پول",
                 "پا"
               ],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
               "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
@@ -6788,8 +6847,8 @@
                 "🧊",
                 "🧅"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
-              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
             },
             {
               "id": "a7l5e6",
@@ -6818,7 +6877,7 @@
               },
               "answer": "نان=🍞|شیر=🥛|قَند=🧊|پیاز=🧅",
               "distractors": [],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
             },
             {
@@ -6834,7 +6893,7 @@
                 "قاشُق",
                 "ق|ا|شُ|ق"
               ],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "عالی بود!",
               "feedback_wrong": "اشکالی ندارد؛ حرف‌هایی را پیدا کنید که به بعدی نمی‌چسبند."
             },
             {
@@ -6850,14 +6909,14 @@
                 "ف",
                 "ق"
               ],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
               "id": "a7l5e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «خیار» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «خیار» ساخته شود.",
               "payload": {
                 "picture": "🥒",
                 "letters": [
@@ -6871,7 +6930,7 @@
               "distractors": [
                 "ف"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -6887,8 +6946,24 @@
                 "پول",
                 "گُل"
               ],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a7l5e11",
+              "type": "listen_choose",
+              "prompt": "🔊",
+              "audio_script": "افشین، اسم پسر شما. حالا اسم او را هم می‌توانید بخوانید! «افشین» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "اَفشین",
+              "distractors": [
+                "اَنگور",
+                "فَریبا"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             }
           ]
         }
@@ -6918,7 +6993,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
@@ -6937,7 +7012,7 @@
               },
               "answer": "ج",
               "distractors": [],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
             },
             {
@@ -6953,7 +7028,7 @@
                 "خ",
                 "ف"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
               "feedback_wrong": "به جای نقطه نگاه کنید: نقطهٔ «ج» داخل کاسه است."
             },
             {
@@ -6968,14 +7043,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a8l1e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «جوجه» ساخته شود.",
+              "audio_script": "با این حرف‌ها «جوجه» را بسازید.",
               "payload": {
                 "picture": "🐥",
                 "letters": [
@@ -6989,7 +7064,7 @@
               "distractors": [
                 "خ"
               ],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -7004,14 +7079,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a8l1e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «تاج» را بسازید.",
+              "audio_script": "حالا «تاج» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "👑",
                 "letters": [
@@ -7024,7 +7099,7 @@
               "distractors": [
                 "خ"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -7039,14 +7114,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a8l1e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «جوراب» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «جوراب» ساخته شود.",
               "payload": {
                 "picture": "🧦",
                 "letters": [
@@ -7061,7 +7136,7 @@
               "distractors": [
                 "خ"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "عالی بود!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -7076,14 +7151,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a8l1e11",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «مَسجِد» ساخته شود.",
+              "audio_script": "با این حرف‌ها «مَسجِد» را بسازید.",
               "payload": {
                 "picture": "🕌",
                 "letters": [
@@ -7097,7 +7172,7 @@
               "distractors": [
                 "خ"
               ],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -7127,7 +7202,7 @@
               },
               "answer": "جوجه=🐥|تاج=👑|جوراب=🧦|مَسجِد=🕌",
               "distractors": [],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             }
           ]
@@ -7150,7 +7225,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
@@ -7165,14 +7240,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a8l2e3",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «خورشید» را بسازید.",
+              "audio_script": "حالا «خورشید» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "☀️",
                 "letters": [
@@ -7188,7 +7263,7 @@
               "distractors": [
                 "ج"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -7203,14 +7278,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a8l2e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «خودکار» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «خودکار» ساخته شود.",
               "payload": {
                 "picture": "🖊️",
                 "letters": [
@@ -7226,7 +7301,7 @@
               "distractors": [
                 "ج"
               ],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -7242,8 +7317,8 @@
                 "خانه",
                 "خیار"
               ],
-              "feedback_correct": "احسنت!",
-              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
               "id": "a8l2e7",
@@ -7258,8 +7333,8 @@
                 "🖊️",
                 "🌳"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
-              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
             },
             {
               "id": "a8l2e8",
@@ -7274,8 +7349,8 @@
                 "خورشید",
                 "خیار"
               ],
-              "feedback_correct": "دقیقاً همین است!",
-              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
               "id": "a8l2e9",
@@ -7300,7 +7375,7 @@
               },
               "answer": "خورشید=☀️|خودکار=🖊️|خانه=🏠",
               "distractors": [],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
             }
           ]
@@ -7323,7 +7398,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
@@ -7342,7 +7417,7 @@
               },
               "answer": "ه",
               "distractors": [],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "عالی بود!",
               "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
             },
             {
@@ -7358,8 +7433,8 @@
                 "ـمـ",
                 "ـنـ"
               ],
-              "feedback_correct": "آفرین!",
-              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
               "id": "a8l3e4",
@@ -7373,14 +7448,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a8l3e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «ماه» ساخته شود.",
+              "audio_script": "با این حرف‌ها «ماه» را بسازید.",
               "payload": {
                 "picture": "🌕",
                 "letters": [
@@ -7393,42 +7468,43 @@
               "distractors": [
                 "م"
               ],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a8l3e6",
               "type": "intro",
-              "prompt": "کوه",
-              "audio_script": "کاف، واو، هِ: «کوه». کوه بلند.",
+              "prompt": "زَهرا",
+              "audio_script": "زِ با زبر، هِ، رِ، الف: «زَهرا». زهرا، اسم دختر شما.",
               "payload": {
-                "display": "کوه",
-                "visual": "⛰️",
+                "display": "زَهرا",
+                "visual": "👩",
                 "teaches": []
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a8l3e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «کوه» را بسازید.",
+              "audio_script": "حالا «زَهرا» را بسازید؛ از راست شروع کنید.",
               "payload": {
-                "picture": "⛰️",
+                "picture": "👩",
                 "letters": [
-                  "ک",
-                  "و",
-                  "ه"
+                  "زَ",
+                  "ه",
+                  "ر",
+                  "ا"
                 ]
               },
-              "answer": "کوه",
+              "answer": "زَهرا",
               "distractors": [
                 "م"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -7443,14 +7519,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a8l3e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «ماهی» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «ماهی» ساخته شود.",
               "payload": {
                 "picture": "🐟",
                 "letters": [
@@ -7464,42 +7540,44 @@
               "distractors": [
                 "م"
               ],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a8l3e10",
               "type": "intro",
-              "prompt": "شَهر",
-              "audio_script": "شین با زبر، هِ، رِ: «شَهر». شهر بزرگ.",
+              "prompt": "مَهشید",
+              "audio_script": "میم با زبر، هِ، شین، یِ، دال: «مَهشید». مهشید، اسم دختر شما.",
               "payload": {
-                "display": "شَهر",
-                "visual": "🏙️",
+                "display": "مَهشید",
+                "visual": "👩",
                 "teaches": []
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a8l3e11",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «شَهر» ساخته شود.",
+              "audio_script": "با این حرف‌ها «مَهشید» را بسازید.",
               "payload": {
-                "picture": "🏙️",
+                "picture": "👩",
                 "letters": [
-                  "شَ",
+                  "مَ",
                   "ه",
-                  "ر"
+                  "ش",
+                  "ی",
+                  "د"
                 ]
               },
-              "answer": "شَهر",
+              "answer": "مَهشید",
               "distractors": [
-                "م"
+                "ن"
               ],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -7515,7 +7593,7 @@
                 "ماهی",
                 "م|ا|ه|ی"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
               "feedback_wrong": "دوباره نگاه کنید: بعد از «ا»، «د»، «ر»، «ز»، «ژ» و «و» کلمه باز می‌شود."
             }
           ]
@@ -7538,7 +7616,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
@@ -7557,7 +7635,7 @@
               },
               "answer": "چ",
               "distractors": [],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
             },
             {
@@ -7573,7 +7651,7 @@
                 "ج",
                 "خ"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "نقطه‌ها را بشمارید: «چ» سه نقطه دارد و «ج» یکی."
             },
             {
@@ -7588,14 +7666,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a8l4e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «چای» را بسازید.",
+              "audio_script": "حالا «چای» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "☕",
                 "letters": [
@@ -7608,7 +7686,7 @@
               "distractors": [
                 "ج"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "عالی بود!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -7623,14 +7701,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a8l4e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «چادُر» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «چادُر» ساخته شود.",
               "payload": {
                 "picture": "🧕",
                 "letters": [
@@ -7644,7 +7722,7 @@
               "distractors": [
                 "ج"
               ],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -7659,14 +7737,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a8l4e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «چَشم» ساخته شود.",
+              "audio_script": "با این حرف‌ها «چَشم» را بسازید.",
               "payload": {
                 "picture": "👁️",
                 "letters": [
@@ -7679,7 +7757,7 @@
               "distractors": [
                 "ج"
               ],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -7694,14 +7772,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a8l4e11",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «قیچی» را بسازید.",
+              "audio_script": "حالا «قیچی» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "✂️",
                 "letters": [
@@ -7715,7 +7793,7 @@
               "distractors": [
                 "ج"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -7745,7 +7823,7 @@
               },
               "answer": "چای=☕|چادُر=🧕|چَشم=👁️|قیچی=✂️",
               "distractors": [],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             }
           ]
@@ -7766,7 +7844,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
@@ -7782,8 +7860,8 @@
                 "نان و ماست",
                 "پَنیر"
               ],
-              "feedback_correct": "احسنت!",
-              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
               "id": "a8l5e3",
@@ -7798,8 +7876,8 @@
                 "مادَر شیر دارَد.",
                 "بابا چای دارَد."
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
-              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
               "id": "a8l5e4",
@@ -7814,8 +7892,8 @@
                 "🥛🍎",
                 "🧀🥚"
               ],
-              "feedback_correct": "دقیقاً همین است!",
-              "feedback_wrong": "دوباره امتحان کنید."
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
             },
             {
               "id": "a8l5e5",
@@ -7830,8 +7908,8 @@
                 "ماه",
                 "ماست"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
-              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
               "id": "a8l5e6",
@@ -7846,7 +7924,7 @@
                 "جوجه",
                 "ج|و|ج|ه"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "عالی بود!",
               "feedback_wrong": "اشکالی ندارد؛ حرف‌هایی را پیدا کنید که به بعدی نمی‌چسبند."
             },
             {
@@ -7876,7 +7954,7 @@
               },
               "answer": "ماه=🌕|کوه=⛰️|جوجه=🐥|چای=☕",
               "distractors": [],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
             },
             {
@@ -7892,14 +7970,14 @@
                 "مـ",
                 "نـ"
               ],
-              "feedback_correct": "عالی بود!",
-              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
               "id": "a8l5e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «چای» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «چای» ساخته شود.",
               "payload": {
                 "picture": "☕",
                 "letters": [
@@ -7912,24 +7990,63 @@
               "distractors": [
                 "ج"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a8l5e10",
-              "type": "listen_choose",
-              "prompt": "🔊",
-              "audio_script": "«خورشید» را پیدا کنید.",
+              "type": "intro",
+              "prompt": "فَریبا چِهرازی",
+              "audio_script": "حالا می‌توانید نام خانوادگی خودتان را هم بخوانید: «چهرازی»! اسم کامل شما: «فریبا چهرازی». فریبا خانم، تبریک!",
               "payload": {
-                "choice_kind": "word"
+                "display": "فَریبا چِهرازی",
+                "visual": "🌸",
+                "teaches": []
               },
-              "answer": "خورشید",
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l5e11",
+              "type": "build_word",
+              "prompt": "🧩",
+              "audio_script": "نام خانوادگی خودتان را بسازید: «چهرازی». به «ـهـ» وسط کلمه دقت کنید.",
+              "payload": {
+                "picture": "🌸",
+                "letters": [
+                  "چِ",
+                  "ه",
+                  "ر",
+                  "ا",
+                  "ز",
+                  "ی"
+                ]
+              },
+              "answer": "چِهرازی",
               "distractors": [
-                "خودکار",
-                "شیر"
+                "ج",
+                "خ"
               ],
-              "feedback_correct": "بسیار خوب!",
-              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a8l5e12",
+              "type": "tap_picture",
+              "prompt": "فَریبا چِهرازی",
+              "audio_script": "این اسم کامل کیست؟ اسم شما!",
+              "payload": {
+                "display": "فَریبا چِهرازی"
+              },
+              "answer": "🌸",
+              "distractors": [
+                "👨",
+                "👤"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "دوباره امتحان کنید."
             }
           ]
         }
@@ -7978,7 +8095,7 @@
               },
               "answer": "ژ",
               "distractors": [],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
               "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
             },
             {
@@ -7994,7 +8111,7 @@
                 "ز",
                 "ر"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
@@ -8016,7 +8133,7 @@
               "id": "a9l1e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «ژاله» ساخته شود.",
+              "audio_script": "با این حرف‌ها «ژاله» را بسازید.",
               "payload": {
                 "picture": "💧",
                 "letters": [
@@ -8030,8 +8147,8 @@
               "distractors": [
                 "ز"
               ],
-              "feedback_correct": "دقیقاً همین است!",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a9l1e6",
@@ -8052,7 +8169,7 @@
               "id": "a9l1e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «ژاکَت» را بسازید.",
+              "audio_script": "حالا «ژاکَت» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "🧥",
                 "letters": [
@@ -8066,8 +8183,8 @@
               "distractors": [
                 "ز"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a9l1e8",
@@ -8088,7 +8205,7 @@
               "id": "a9l1e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «مُژه» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «مُژه» ساخته شود.",
               "payload": {
                 "picture": "👀",
                 "letters": [
@@ -8101,8 +8218,8 @@
               "distractors": [
                 "ز"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a9l1e10",
@@ -8117,7 +8234,7 @@
                 "👀",
                 "💧"
               ],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
             },
             {
@@ -8143,7 +8260,7 @@
               },
               "answer": "ژاله=💧|ژاکَت=🧥|مُژه=👀",
               "distractors": [],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             }
           ]
@@ -8188,7 +8305,7 @@
               "id": "a9l2e3",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «خواهَر» ساخته شود.",
+              "audio_script": "با این حرف‌ها «خواهَر» را بسازید.",
               "payload": {
                 "picture": "👭",
                 "letters": [
@@ -8203,8 +8320,8 @@
               "distractors": [
                 "ه"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a9l2e4",
@@ -8225,7 +8342,7 @@
               "id": "a9l2e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «خواب» را بسازید.",
+              "audio_script": "حالا «خواب» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "😴",
                 "letters": [
@@ -8239,8 +8356,8 @@
               "distractors": [
                 "ه"
               ],
-              "feedback_correct": "بسیار خوب!",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a9l2e6",
@@ -8255,7 +8372,7 @@
                 "خانه",
                 "خوش"
               ],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
               "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
@@ -8271,7 +8388,7 @@
                 "😴",
                 "🧥"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
             },
             {
@@ -8287,11 +8404,43 @@
                 "خواهَر",
                 "خ|و|ا|هَ|ر"
               ],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "دوباره نگاه کنید: بعد از «ا»، «د»، «ر»، «ز»، «ژ» و «و» کلمه باز می‌شود."
             },
             {
               "id": "a9l2e9",
+              "type": "listen_choose",
+              "prompt": "🔊",
+              "audio_script": "گوهر، اسم خواهر شما. «گوهر» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "گُوْهَر",
+              "distractors": [
+                "جُوْهَر",
+                "زَهرا"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+            },
+            {
+              "id": "a9l2e10",
+              "type": "listen_choose",
+              "prompt": "🔊",
+              "audio_script": "جوهر هم خواهر شماست. «جوهر» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "جُوْهَر",
+              "distractors": [
+                "گُوْهَر",
+                "مَهشید"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a9l2e11",
               "type": "match_pairs",
               "prompt": "🔗",
               "audio_script": "هر کلمه را به تصویرش وصل کنید.",
@@ -8317,7 +8466,7 @@
               },
               "answer": "خواهَر=👭|خواب=😴|بَرادَر=🧔|مادَر=👩",
               "distractors": [],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
             }
           ]
@@ -8354,7 +8503,7 @@
                 "🍢",
                 "🔑"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
             },
             {
@@ -8370,7 +8519,7 @@
                 "🌳",
                 "⛰️"
               ],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "دوباره امتحان کنید."
             },
             {
@@ -8386,7 +8535,7 @@
                 "🥛",
                 "🧊"
               ],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
             },
             {
@@ -8402,8 +8551,8 @@
                 "دَست",
                 "دود"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
-              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
               "id": "a9l3e6",
@@ -8418,8 +8567,8 @@
                 "قاشُق",
                 "کَفش"
               ],
-              "feedback_correct": "بسیار خوب!",
-              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
               "id": "a9l3e7",
@@ -8434,8 +8583,8 @@
                 "اُتوبوس",
                 "اُمید"
               ],
-              "feedback_correct": "احسنت!",
-              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
               "id": "a9l3e8",
@@ -8450,11 +8599,51 @@
                 "شَب",
                 "شیر"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
-              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
               "id": "a9l3e9",
+              "type": "intro",
+              "prompt": "مِهرافَروز",
+              "audio_script": "میم با زیر، هِ، رِ، الف، فِ با زبر، رِ، واو، زِ: «مِهرافَروز». مهرافروز، اسم مادر شما. چه اسم زیبایی!",
+              "payload": {
+                "display": "مِهرافَروز",
+                "visual": "👩",
+                "teaches": []
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a9l3e10",
+              "type": "build_word",
+              "prompt": "🧩",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «مِهرافَروز» ساخته شود.",
+              "payload": {
+                "picture": "👩",
+                "letters": [
+                  "مِ",
+                  "ه",
+                  "ر",
+                  "ا",
+                  "فَ",
+                  "ر",
+                  "و",
+                  "ز"
+                ]
+              },
+              "answer": "مِهرافَروز",
+              "distractors": [
+                "ق"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a9l3e11",
               "type": "match_pairs",
               "prompt": "🔗",
               "audio_script": "هر کلمه را به تصویرش وصل کنید.",
@@ -8480,7 +8669,7 @@
               },
               "answer": "گُل=🌷|ماهی=🐟|پیاز=🧅|ژاکَت=🧥",
               "distractors": [],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             }
           ]
@@ -8503,14 +8692,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a9l4e2",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «بَچّه» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "با این حرف‌ها «بَچّه» را بسازید.",
               "payload": {
                 "picture": "👶",
                 "letters": [
@@ -8523,7 +8712,7 @@
               "distractors": [
                 "چ"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -8538,14 +8727,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a9l4e4",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «نَجّار» ساخته شود.",
+              "audio_script": "حالا «نَجّار» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "🪚",
                 "letters": [
@@ -8559,7 +8748,7 @@
               "distractors": [
                 "ج"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -8574,14 +8763,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a9l4e6",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «تَشَکُّر» را بسازید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «تَشَکُّر» ساخته شود.",
               "payload": {
                 "picture": "🙏",
                 "letters": [
@@ -8595,7 +8784,7 @@
               "distractors": [
                 "ک"
               ],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -8611,8 +8800,8 @@
                 "نَجّار",
                 "خواهَر"
               ],
-              "feedback_correct": "عالی بود!",
-              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
               "id": "a9l4e8",
@@ -8627,7 +8816,7 @@
                 "👶",
                 "🙏"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
             },
             {
@@ -8643,8 +8832,8 @@
                 "چ",
                 "ج"
               ],
-              "feedback_correct": "بسیار خوب!",
-              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
               "id": "a9l4e10",
@@ -8669,7 +8858,7 @@
               },
               "answer": "بَچّه=👶|نَجّار=🪚|تَشَکُّر=🙏",
               "distractors": [],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "عالی بود!",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
             }
           ]
@@ -8690,7 +8879,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
@@ -8706,8 +8895,8 @@
                 "گوش",
                 "گُل"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
-              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
               "id": "a9l5e3",
@@ -8722,8 +8911,8 @@
                 "پیاز",
                 "پول"
               ],
-              "feedback_correct": "دقیقاً همین است!",
-              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
               "id": "a9l5e4",
@@ -8738,7 +8927,7 @@
                 "🥩",
                 "🧀"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
             },
             {
@@ -8754,7 +8943,7 @@
                 "🍌",
                 "🍇"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "دوباره امتحان کنید."
             },
             {
@@ -8784,7 +8973,7 @@
               },
               "answer": "گوشت=🥩|پَنیر=🧀|پیاز=🧅|ماست=🥣",
               "distractors": [],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             },
             {
@@ -8800,7 +8989,7 @@
                 "بازار",
                 "ب|ا|ز|ا|ر"
               ],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
               "feedback_wrong": "اشکالی ندارد؛ حرف‌هایی را پیدا کنید که به بعدی نمی‌چسبند."
             },
             {
@@ -8816,8 +9005,8 @@
                 "ز",
                 "ر"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
-              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
               "id": "a9l5e9",
@@ -8832,14 +9021,14 @@
                 "خانه",
                 "خورشید"
               ],
-              "feedback_correct": "بسیار خوب!",
-              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
               "id": "a9l5e10",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «نَجّار» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "با این حرف‌ها «نَجّار» را بسازید.",
               "payload": {
                 "picture": "🪚",
                 "letters": [
@@ -8853,7 +9042,7 @@
               "distractors": [
                 "ج"
               ],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "عالی بود!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             }
           ]
@@ -8884,7 +9073,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
@@ -8903,7 +9092,7 @@
               },
               "answer": "ص",
               "distractors": [],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
             },
             {
@@ -8919,8 +9108,8 @@
                 "س",
                 "ش"
               ],
-              "feedback_correct": "دقیقاً همین است!",
-              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
               "id": "a10l1e4",
@@ -8934,14 +9123,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a10l1e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «صابون» ساخته شود.",
+              "audio_script": "حالا «صابون» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "🧼",
                 "letters": [
@@ -8956,7 +9145,7 @@
               "distractors": [
                 "س"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -8971,14 +9160,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a10l1e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «صِدا» را بسازید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «صِدا» ساخته شود.",
               "payload": {
                 "picture": "🔊",
                 "letters": [
@@ -8991,7 +9180,7 @@
               "distractors": [
                 "س"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -9006,14 +9195,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a10l1e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «صَندَلی» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "با این حرف‌ها «صَندَلی» را بسازید.",
               "payload": {
                 "picture": "🪑",
                 "letters": [
@@ -9028,7 +9217,7 @@
               "distractors": [
                 "س"
               ],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -9044,7 +9233,7 @@
                 "🔊",
                 "🪑"
               ],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
               "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
             },
             {
@@ -9070,7 +9259,7 @@
               },
               "answer": "صابون=🧼|صِدا=🔊|صَندَلی=🪑",
               "distractors": [],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
             }
           ]
@@ -9093,7 +9282,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
@@ -9112,7 +9301,7 @@
               },
               "answer": "ذ",
               "distractors": [],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
             },
             {
@@ -9128,8 +9317,8 @@
                 "د",
                 "ز"
               ],
-              "feedback_correct": "احسنت!",
-              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
               "id": "a10l2e4",
@@ -9143,14 +9332,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a10l2e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «ذُرَت» ساخته شود.",
+              "audio_script": "حالا «ذُرَت» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "🌽",
                 "letters": [
@@ -9163,7 +9352,7 @@
               "distractors": [
                 "ز"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -9178,14 +9367,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a10l2e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «آذَر» را بسازید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «آذَر» ساخته شود.",
               "payload": {
                 "picture": "🍂",
                 "letters": [
@@ -9198,7 +9387,7 @@
               "distractors": [
                 "ز"
               ],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -9213,14 +9402,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a10l2e9",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «لَذیذ» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "با این حرف‌ها «لَذیذ» را بسازید.",
               "payload": {
                 "picture": "😋",
                 "letters": [
@@ -9234,7 +9423,7 @@
               "distractors": [
                 "ز"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -9250,7 +9439,7 @@
                 "🍂",
                 "😋"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
             },
             {
@@ -9276,7 +9465,7 @@
               },
               "answer": "ذُرَت=🌽|آذَر=🍂|لَذیذ=😋",
               "distractors": [],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             }
           ]
@@ -9297,7 +9486,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
@@ -9312,8 +9501,8 @@
               "distractors": [
                 "سابون"
               ],
-              "feedback_correct": "عالی بود!",
-              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
               "id": "a10l3e3",
@@ -9327,8 +9516,8 @@
               "distractors": [
                 "صیب"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
-              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
               "id": "a10l3e4",
@@ -9342,8 +9531,8 @@
               "distractors": [
                 "سِدا"
               ],
-              "feedback_correct": "بسیار خوب!",
-              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
               "id": "a10l3e5",
@@ -9357,8 +9546,8 @@
               "distractors": [
                 "زُرَت"
               ],
-              "feedback_correct": "احسنت!",
-              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
               "id": "a10l3e6",
@@ -9372,8 +9561,8 @@
               "distractors": [
                 "صَبز"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
-              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
               "id": "a10l3e7",
@@ -9388,7 +9577,7 @@
                 "🧼",
                 "🌽"
               ],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
             },
             {
@@ -9403,8 +9592,8 @@
               "distractors": [
                 "موذ"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
-              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
               "id": "a10l3e9",
@@ -9419,7 +9608,7 @@
                 "🔊",
                 "🍂"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "دوباره امتحان کنید."
             }
           ]
@@ -9442,7 +9631,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
@@ -9461,7 +9650,7 @@
               },
               "answer": "ع",
               "distractors": [],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
             },
             {
@@ -9477,8 +9666,8 @@
                 "ـهـ",
                 "ـمـ"
               ],
-              "feedback_correct": "عالی بود!",
-              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
               "id": "a10l4e4",
@@ -9492,14 +9681,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a10l4e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «عید» ساخته شود.",
+              "audio_script": "حالا «عید» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "🎉",
                 "letters": [
@@ -9512,7 +9701,7 @@
               "distractors": [
                 "ه"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -9527,14 +9716,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a10l4e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «ساعَت» را بسازید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «ساعَت» ساخته شود.",
               "payload": {
                 "picture": "⏰",
                 "letters": [
@@ -9548,43 +9737,39 @@
               "distractors": [
                 "ت"
               ],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a10l4e8",
               "type": "intro",
-              "prompt": "عَسَل",
-              "audio_script": "عین با زبر، سین با زبر، لام: «عَسَل». عسل شیرین.",
+              "prompt": "عَلی‌عَسکَر",
+              "audio_script": "«ع» مثل «علی‌عسکر»، اسم پدر شما. این اسم دو تکه دارد: «علی» و «عسکر».",
               "payload": {
-                "display": "عَسَل",
-                "visual": "🍯",
+                "display": "عَلی‌عَسکَر",
+                "visual": "👨",
                 "teaches": []
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a10l4e9",
-              "type": "build_word",
-              "prompt": "🧩",
-              "audio_script": "حالا «عَسَل» را بسازید؛ از راست شروع کنید.",
+              "type": "listen_choose",
+              "prompt": "🔊",
+              "audio_script": "اسم پدرتان، «علی‌عسکر»، را پیدا کنید.",
               "payload": {
-                "picture": "🍯",
-                "letters": [
-                  "عَ",
-                  "سَ",
-                  "ل"
-                ]
+                "choice_kind": "word"
               },
-              "answer": "عَسَل",
+              "answer": "عَلی‌عَسکَر",
               "distractors": [
-                "ه"
+                "عید",
+                "ساعَت"
               ],
-              "feedback_correct": "احسنت!",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
               "id": "a10l4e10",
@@ -9598,14 +9783,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a10l4e11",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «شَمع» ساخته شود.",
+              "audio_script": "با این حرف‌ها «شَمع» را بسازید.",
               "payload": {
                 "picture": "🕯️",
                 "letters": [
@@ -9618,8 +9803,8 @@
               "distractors": [
                 "ه"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a10l4e12",
@@ -9648,7 +9833,7 @@
               },
               "answer": "عید=🎉|ساعَت=⏰|عَسَل=🍯|شَمع=🕯️",
               "distractors": [],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
             }
           ]
@@ -9671,7 +9856,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
@@ -9690,7 +9875,7 @@
               },
               "answer": "ث",
               "distractors": [],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
             },
             {
@@ -9706,7 +9891,7 @@
                 "ت",
                 "پ"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
@@ -9721,14 +9906,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a10l5e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «مُثَلَّث» را بسازید.",
+              "audio_script": "حالا «مُثَلَّث» را بسازید؛ از راست شروع کنید.",
               "payload": {
                 "picture": "🔺",
                 "letters": [
@@ -9742,8 +9927,8 @@
               "distractors": [
                 "ت"
               ],
-              "feedback_correct": "آفرین!",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a10l5e6",
@@ -9758,7 +9943,7 @@
                 "ماست",
                 "مُشت"
               ],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
               "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
@@ -9788,7 +9973,7 @@
               },
               "answer": "عید=🎉|ساعَت=⏰|مُثَلَّث=🔺|صابون=🧼",
               "distractors": [],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             },
             {
@@ -9804,7 +9989,7 @@
                 "سابون",
                 "ثابون"
               ],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
@@ -9820,7 +10005,7 @@
                 "🍯",
                 "🔺"
               ],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "عالی بود!",
               "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
             }
           ]
@@ -9841,7 +10026,7 @@
               "id": "a11l1e1",
               "type": "intro",
               "prompt": "حـ  ح",
-              "audio_script": "این حرف «ح» است. مثل «ج» و «خ» است، اما هیچ نقطه‌ای ندارد؛ صدای «ه» می‌دهد.",
+              "audio_script": "این حرف «ح» است. مثل «ج» و «خ» است، اما هیچ نقطه‌ای ندارد؛ صدای «ه» می‌دهد. «ح» مثل «حبیب»، اسم همسر شما.",
               "payload": {
                 "display": "حـ  ح",
                 "visual": "",
@@ -9851,7 +10036,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
@@ -9870,7 +10055,7 @@
               },
               "answer": "ح",
               "distractors": [],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
             },
             {
@@ -9886,44 +10071,44 @@
                 "خ",
                 "ج"
               ],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
               "id": "a11l1e4",
               "type": "intro",
-              "prompt": "حَمّام",
-              "audio_script": "حِ با زبر، میم با تشدید، الف، میم: «حَمّام». حمام گرم.",
+              "prompt": "حَبیب",
+              "audio_script": "حِ با زبر، بِ، یِ، بِ: «حَبیب». حبیب، اسم همسر شما.",
               "payload": {
-                "display": "حَمّام",
-                "visual": "🛁",
+                "display": "حَبیب",
+                "visual": "👨",
                 "teaches": []
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a11l1e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «حَمّام» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «حَبیب» ساخته شود.",
               "payload": {
-                "picture": "🛁",
+                "picture": "👨",
                 "letters": [
                   "حَ",
-                  "مّ",
-                  "ا",
-                  "م"
+                  "ب",
+                  "ی",
+                  "ب"
                 ]
               },
-              "answer": "حَمّام",
+              "answer": "حَبیب",
               "distractors": [
-                "ه"
+                "خ"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a11l1e6",
@@ -9937,14 +10122,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
               "id": "a11l1e7",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «صُبح» ساخته شود.",
+              "audio_script": "با این حرف‌ها «صُبح» را بسازید.",
               "payload": {
                 "picture": "🌅",
                 "letters": [
@@ -9957,45 +10142,40 @@
               "distractors": [
                 "ه"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a11l1e8",
-              "type": "intro",
-              "prompt": "حَلَزون",
-              "audio_script": "حِ با زبر، لام با زبر، زِ، واو، نون: «حَلَزون». حلزون آرام.",
+              "type": "listen_choose",
+              "prompt": "🔊",
+              "audio_script": "حسین، اسم برادر شما. «حسین» را پیدا کنید.",
               "payload": {
-                "display": "حَلَزون",
-                "visual": "🐌",
-                "teaches": []
+                "choice_kind": "word"
               },
-              "answer": "",
-              "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
-              "feedback_wrong": ""
+              "answer": "حُسِیْن",
+              "distractors": [
+                "حَبیب",
+                "نَسرین"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
               "id": "a11l1e9",
-              "type": "build_word",
-              "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «حَلَزون» را بسازید.",
+              "type": "listen_choose",
+              "prompt": "🔊",
+              "audio_script": "محمد هم برادر شماست. «محمد» را پیدا کنید.",
               "payload": {
-                "picture": "🐌",
-                "letters": [
-                  "حَ",
-                  "لَ",
-                  "ز",
-                  "و",
-                  "ن"
-                ]
+                "choice_kind": "word"
               },
-              "answer": "حَلَزون",
+              "answer": "مُحَمَّد",
               "distractors": [
-                "ه"
+                "حَبیب",
+                "حُسِیْن"
               ],
-              "feedback_correct": "آفرین!",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
               "id": "a11l1e10",
@@ -10010,7 +10190,7 @@
                 "🛁",
                 "🐌"
               ],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
             },
             {
@@ -10036,7 +10216,7 @@
               },
               "answer": "حَمّام=🛁|صُبح=🌅|حَلَزون=🐌",
               "distractors": [],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
             }
           ]
@@ -10049,7 +10229,7 @@
               "id": "a11l2e1",
               "type": "intro",
               "prompt": "ضـ  ض",
-              "audio_script": "این حرف «ض» است؛ اسمش «ضاد». همان «ص» است با یک نقطه؛ صدای «ز» می‌دهد.",
+              "audio_script": "این حرف «ض» است؛ اسمش «ضاد». همان «ص» است با یک نقطه؛ صدای «ز» می‌دهد. «ض» مثل «رضا»، اسم برادر شما.",
               "payload": {
                 "display": "ضـ  ض",
                 "visual": "",
@@ -10078,17 +10258,17 @@
               },
               "answer": "ض",
               "distractors": [],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "عالی بود!",
               "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
             },
             {
               "id": "a11l2e3",
               "type": "intro",
-              "prompt": "مَریض",
-              "audio_script": "میم با زبر، رِ، یِ، ضاد: «مَریض». ان‌شاءالله هیچ‌وقت مریض نشوید!",
+              "prompt": "رِضا",
+              "audio_script": "رِ با زیر، ضاد، الف: «رِضا». رضا، اسم برادر شما.",
               "payload": {
-                "display": "مَریض",
-                "visual": "🤒",
+                "display": "رِضا",
+                "visual": "👨",
                 "teaches": []
               },
               "answer": "",
@@ -10100,28 +10280,27 @@
               "id": "a11l2e4",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «مَریض» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حالا «رِضا» را بسازید؛ از راست شروع کنید.",
               "payload": {
-                "picture": "🤒",
+                "picture": "👨",
                 "letters": [
-                  "مَ",
-                  "ر",
-                  "ی",
-                  "ض"
+                  "رِ",
+                  "ض",
+                  "ا"
                 ]
               },
-              "answer": "مَریض",
+              "answer": "رِضا",
               "distractors": [
                 "ص"
               ],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a11l2e5",
               "type": "intro",
               "prompt": "ط",
-              "audio_script": "این حرف «ط» است؛ اسمش «طا». صدای «ت» می‌دهد.",
+              "audio_script": "این حرف «ط» است؛ اسمش «طا». صدای «ت» می‌دهد. «ط» مثل «فاطمه»، اسم خواهر شما.",
               "payload": {
                 "display": "ط",
                 "visual": "",
@@ -10150,7 +10329,7 @@
               },
               "answer": "ط",
               "distractors": [],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
             },
             {
@@ -10166,8 +10345,8 @@
                 "ض",
                 "ت"
               ],
-              "feedback_correct": "دقیقاً همین است!",
-              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
               "id": "a11l2e8",
@@ -10202,17 +10381,17 @@
               "distractors": [
                 "ت"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
               "id": "a11l2e10",
               "type": "intro",
-              "prompt": "وَطَن",
-              "audio_script": "واو با زبر، طا با زبر، نون: «وَطَن». وطن عزیز.",
+              "prompt": "فاطِمه",
+              "audio_script": "فِ، الف، طا با زیر، میم، هِ: «فاطِمه». فاطمه، اسم خواهر شما.",
               "payload": {
-                "display": "وَطَن",
-                "visual": "🇮🇷",
+                "display": "فاطِمه",
+                "visual": "👩",
                 "teaches": []
               },
               "answer": "",
@@ -10224,20 +10403,22 @@
               "id": "a11l2e11",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «وَطَن» را بسازید.",
+              "audio_script": "با این حرف‌ها «فاطِمه» را بسازید.",
               "payload": {
-                "picture": "🇮🇷",
+                "picture": "👩",
                 "letters": [
-                  "وَ",
-                  "طَ",
-                  "ن"
+                  "ف",
+                  "ا",
+                  "طِ",
+                  "م",
+                  "ه"
                 ]
               },
-              "answer": "وَطَن",
+              "answer": "فاطِمه",
               "distractors": [
                 "ت"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -10248,22 +10429,22 @@
               "payload": {
                 "pairs": [
                   [
-                    "مَریض",
-                    "🤒"
+                    "رِضا",
+                    "👨"
                   ],
                   [
                     "طوطی",
                     "🦜"
                   ],
                   [
-                    "وَطَن",
-                    "🇮🇷"
+                    "فاطِمه",
+                    "👩"
                   ]
                 ]
               },
-              "answer": "مَریض=🤒|طوطی=🦜|وَطَن=🇮🇷",
+              "answer": "رِضا=👨|طوطی=🦜|فاطِمه=👩",
               "distractors": [],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
               "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             }
           ]
@@ -10305,7 +10486,7 @@
               },
               "answer": "غ",
               "distractors": [],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
             },
             {
@@ -10321,8 +10502,8 @@
                 "ع",
                 "ف"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
-              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
               "id": "a11l3e4",
@@ -10356,7 +10537,7 @@
               "distractors": [
                 "ق"
               ],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "عالی بود!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -10392,7 +10573,7 @@
               "distractors": [
                 "ق"
               ],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -10427,7 +10608,7 @@
               "distractors": [
                 "ق"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -10463,7 +10644,7 @@
               "distractors": [
                 "ق"
               ],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -10493,7 +10674,7 @@
               },
               "answer": "باغ=🌳|کَلاغ=🐦‍⬛|مُرغ=🐔|کاغَذ=📄",
               "distractors": [],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
             }
           ]
@@ -10535,7 +10716,7 @@
               },
               "answer": "ظ",
               "distractors": [],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
             },
             {
@@ -10551,8 +10732,8 @@
                 "ط",
                 "ض"
               ],
-              "feedback_correct": "آفرین!",
-              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
               "id": "a11l4e4",
@@ -10586,7 +10767,7 @@
               "distractors": [
                 "ط"
               ],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -10621,7 +10802,7 @@
               "distractors": [
                 "ض"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
@@ -10657,7 +10838,7 @@
               "distractors": [
                 "ض"
               ],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "عالی بود!",
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
@@ -10673,7 +10854,7 @@
                 "🕛",
                 "📜"
               ],
-              "feedback_correct": "احسنت!",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
             },
             {
@@ -10699,7 +10880,7 @@
               },
               "answer": "ظَرف=🥣|ظُهر=🕛|حافِظ=📜",
               "distractors": [],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             }
           ]
@@ -10750,7 +10931,7 @@
               },
               "answer": "س=ص|ت=ط|ه=ح|ق=غ",
               "distractors": [],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "احسنت!",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
             },
             {
@@ -10765,8 +10946,8 @@
               "distractors": [
                 "سُبح"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
-              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
               "id": "a11l5e4",
@@ -10780,8 +10961,8 @@
               "distractors": [
                 "توتی"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
-              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
               "id": "a11l5e5",
@@ -10795,8 +10976,8 @@
               "distractors": [
                 "مُرق"
               ],
-              "feedback_correct": "آفرین!",
-              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
               "id": "a11l5e6",
@@ -10811,8 +10992,8 @@
                 "ز",
                 "ذ"
               ],
-              "feedback_correct": "عالی بود!",
-              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
               "id": "a11l5e7",
@@ -10827,7 +11008,7 @@
                 "🥣",
                 "🌳"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "دوباره امتحان کنید."
             },
             {
@@ -10843,7 +11024,7 @@
                 "حَلَزون",
                 "حَ|لَ|ز|و|ن"
               ],
-              "feedback_correct": "بسیار خوب!",
+              "feedback_correct": "عالی بود!",
               "feedback_wrong": "دوباره نگاه کنید: بعد از «ا»، «د»، «ر»، «ز»، «ژ» و «و» کلمه باز می‌شود."
             },
             {
@@ -10858,8 +11039,8 @@
               "distractors": [
                 "هَمّام"
               ],
-              "feedback_correct": "احسنت!",
-              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             }
           ]
         }
@@ -10873,16 +11054,16 @@
       "lessons": [
         {
           "id": "a12l1",
-          "title": "اسم‌های خانواده",
+          "title": "اسم شما، همسر و فرزندان",
           "exercises": [
             {
               "id": "a12l1e1",
               "type": "intro",
-              "prompt": "اَفشین",
-              "audio_script": "اسم‌های خانواده را بخوانیم. این اسم پسرتان است: «افشین». بعد از این، اسم خودتان و بقیهٔ عزیزان را هم اضافه می‌کنیم.",
+              "prompt": "فَریبا",
+              "audio_script": "اسم‌های خانواده را بخوانیم. اول از همه: این اسم شماست، فریبا خانم! «فریبا». چه اسم قشنگی.",
               "payload": {
-                "display": "اَفشین",
-                "visual": "👨",
+                "display": "فَریبا",
+                "visual": "🌸",
                 "teaches": []
               },
               "answer": "",
@@ -10892,28 +11073,67 @@
             },
             {
               "id": "a12l1e2",
-              "type": "listen_choose",
-              "prompt": "🔊",
-              "audio_script": "«اَفشین» را پیدا کنید.",
+              "type": "build_word",
+              "prompt": "🧩",
+              "audio_script": "اسم خودتان را بسازید: «فریبا».",
               "payload": {
-                "choice_kind": "word"
+                "picture": "🌸",
+                "letters": [
+                  "فَ",
+                  "ر",
+                  "ی",
+                  "ب",
+                  "ا"
+                ]
               },
-              "answer": "اَفشین",
+              "answer": "فَریبا",
               "distractors": [
-                "اَنگور",
-                "اُمید"
+                "ق",
+                "پ"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
-              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
               "id": "a12l1e3",
-              "type": "intro",
-              "prompt": "مادربزرگ",
-              "audio_script": "میم، الف، دال، رِ، بِ، زِ، رِ، گاف: «مادربزرگ». مادربزرگ مهربان.",
+              "type": "tap_picture",
+              "prompt": "🪪",
+              "audio_script": "این کارت ملی است. روی کارت، اسم را بدون زبر و زیر می‌نویسند. این کارت مال کیست؟ اسم شماست!",
               "payload": {
-                "display": "مادربزرگ",
-                "visual": "👵",
+                "display": "فریبا چهرازی"
+              },
+              "answer": "🌸",
+              "distractors": [
+                "👨",
+                "👤"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "a12l1e4",
+              "type": "listen_choose",
+              "prompt": "✉️",
+              "audio_script": "چند نامه رسیده. روی کدام پاکت، اسم کامل شما نوشته شده؟ «فریبا چهرازی».",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "فریبا چهرازی",
+              "distractors": [
+                "فریبا",
+                "افشین جلیلی"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+            },
+            {
+              "id": "a12l1e5",
+              "type": "intro",
+              "prompt": "حبیب",
+              "audio_script": "«حبیب»، همسر شما. در زندگی روزمره، اسم‌ها را بدون زبر و زیر می‌نویسند؛ شما آن‌ها را می‌شناسید.",
+              "payload": {
+                "display": "حبیب",
+                "visual": "👨",
                 "teaches": []
               },
               "answer": "",
@@ -10922,38 +11142,29 @@
               "feedback_wrong": ""
             },
             {
-              "id": "a12l1e4",
-              "type": "build_word",
-              "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «مادربزرگ» ساخته شود.",
+              "id": "a12l1e6",
+              "type": "listen_choose",
+              "prompt": "🔊",
+              "audio_script": "اسم همسرتان، «حبیب»، را پیدا کنید.",
               "payload": {
-                "picture": "👵",
-                "letters": [
-                  "م",
-                  "ا",
-                  "د",
-                  "ر",
-                  "ب",
-                  "ز",
-                  "ر",
-                  "گ"
-                ]
+                "choice_kind": "word"
               },
-              "answer": "مادربزرگ",
+              "answer": "حبیب",
               "distractors": [
-                "گ"
+                "حسین",
+                "حافظ"
               ],
               "feedback_correct": "دقیقاً همین است!",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
-              "id": "a12l1e5",
+              "id": "a12l1e7",
               "type": "intro",
-              "prompt": "پدربزرگ",
-              "audio_script": "پِ، دال، رِ، بِ، زِ، رِ، گاف: «پدربزرگ». پدربزرگ.",
+              "prompt": "مهشید   افشین   زهرا",
+              "audio_script": "این‌ها اسم فرزندان شماست: «مهشید»، دخترتان؛ «افشین»، پسرتان؛ و «زهرا»، دخترتان.",
               "payload": {
-                "display": "پدربزرگ",
-                "visual": "👴",
+                "display": "مهشید   افشین   زهرا",
+                "visual": "👩👨👩",
                 "teaches": []
               },
               "answer": "",
@@ -10962,115 +11173,348 @@
               "feedback_wrong": ""
             },
             {
-              "id": "a12l1e6",
-              "type": "build_word",
-              "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «پدربزرگ» را بسازید.",
-              "payload": {
-                "picture": "👴",
-                "letters": [
-                  "پ",
-                  "د",
-                  "ر",
-                  "ب",
-                  "ز",
-                  "ر",
-                  "گ"
-                ]
-              },
-              "answer": "پدربزرگ",
-              "distractors": [
-                "گ"
-              ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
-            },
-            {
-              "id": "a12l1e7",
-              "type": "listen_choose",
-              "prompt": "🔊",
-              "audio_script": "«خواهَر» را پیدا کنید.",
-              "payload": {
-                "choice_kind": "word"
-              },
-              "answer": "خواهَر",
-              "distractors": [
-                "خانه",
-                "خواب"
-              ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
-              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
-            },
-            {
               "id": "a12l1e8",
               "type": "listen_choose",
               "prompt": "🔊",
-              "audio_script": "«بَرادَر» را پیدا کنید.",
+              "audio_script": "اسم دخترتان، «مهشید»، را پیدا کنید.",
               "payload": {
                 "choice_kind": "word"
               },
-              "answer": "بَرادَر",
+              "answer": "مهشید",
               "distractors": [
-                "پِدَر",
-                "مادَر"
+                "مهرافروز",
+                "زهرا"
               ],
-              "feedback_correct": "آفرین!",
-              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
               "id": "a12l1e9",
-              "type": "match_pairs",
-              "prompt": "🔗",
-              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "type": "listen_choose",
+              "prompt": "🔊",
+              "audio_script": "اسم پسرتان، «افشین»، را پیدا کنید.",
               "payload": {
-                "pairs": [
-                  [
-                    "مادَر",
-                    "👩"
-                  ],
-                  [
-                    "پِدَر",
-                    "👨"
-                  ],
-                  [
-                    "خواهَر",
-                    "👭"
-                  ],
-                  [
-                    "بَرادَر",
-                    "🧔"
-                  ]
-                ]
+                "choice_kind": "word"
               },
-              "answer": "مادَر=👩|پِدَر=👨|خواهَر=👭|بَرادَر=🧔",
-              "distractors": [],
-              "feedback_correct": "عالی بود!",
-              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+              "answer": "افشین",
+              "distractors": [
+                "حبیب",
+                "انگور"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
               "id": "a12l1e10",
-              "type": "tap_picture",
-              "prompt": "اَفشین",
-              "audio_script": "این را بخوانید. کدام تصویر است؟",
+              "type": "listen_choose",
+              "prompt": "🔊",
+              "audio_script": "اسم دخترتان، «زهرا»، را پیدا کنید.",
               "payload": {
-                "display": "اَفشین"
+                "choice_kind": "word"
               },
-              "answer": "👨",
+              "answer": "زهرا",
               "distractors": [
-                "👵",
-                "👴"
+                "زینب",
+                "مهشید"
               ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a12l1e11",
+              "type": "build_word",
+              "prompt": "🧩",
+              "audio_script": "اسم دخترتان، «مهشید»، را بسازید.",
+              "payload": {
+                "picture": "👩",
+                "letters": [
+                  "م",
+                  "ه",
+                  "ش",
+                  "ی",
+                  "د"
+                ]
+              },
+              "answer": "مهشید",
+              "distractors": [
+                "س",
+                "ح"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a12l1e12",
+              "type": "match_pairs",
+              "prompt": "🔗",
+              "audio_script": "هر اسم را به نسبتش با شما وصل کنید: دختر، پسر، همسر.",
+              "payload": {
+                "pairs": [
+                  [
+                    "مهشید",
+                    "دختر"
+                  ],
+                  [
+                    "افشین",
+                    "پسر"
+                  ],
+                  [
+                    "حبیب",
+                    "همسر"
+                  ]
+                ]
+              },
+              "answer": "مهشید=دختر|افشین=پسر|حبیب=همسر",
+              "distractors": [],
               "feedback_correct": "درست است، آفرین بر شما!",
-              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             }
           ]
         },
         {
           "id": "a12l2",
-          "title": "تابلوهای شهر",
+          "title": "خواهرها، برادرها، پدر و مادر",
           "exercises": [
             {
               "id": "a12l2e1",
+              "type": "intro",
+              "prompt": "زینب   نسرین   فاطمه   گوهر   جوهر",
+              "audio_script": "اسم خواهرهای شما: «زینب»، «نسرین»، «فاطمه»، «گوهر» و «جوهر».",
+              "payload": {
+                "display": "زینب   نسرین   فاطمه   گوهر   جوهر",
+                "visual": "👩",
+                "teaches": []
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a12l2e2",
+              "type": "listen_choose",
+              "prompt": "🔊",
+              "audio_script": "زینب، خواهر شما. «زینب» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "زینب",
+              "distractors": [
+                "زهرا",
+                "نسرین"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a12l2e3",
+              "type": "listen_choose",
+              "prompt": "🔊",
+              "audio_script": "فاطمه، خواهر شما. «فاطمه» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "فاطمه",
+              "distractors": [
+                "فریبا",
+                "زهرا"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+            },
+            {
+              "id": "a12l2e4",
+              "type": "listen_choose",
+              "prompt": "🔊",
+              "audio_script": "گوهر، خواهر شما. «گوهر» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "گوهر",
+              "distractors": [
+                "جوهر",
+                "مهرافروز"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a12l2e5",
+              "type": "intro",
+              "prompt": "رضا   حسین   محمد",
+              "audio_script": "اسم برادرهای شما: «رضا»، «حسین» و «محمد».",
+              "payload": {
+                "display": "رضا   حسین   محمد",
+                "visual": "👨",
+                "teaches": []
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a12l2e6",
+              "type": "listen_choose",
+              "prompt": "🔊",
+              "audio_script": "حسین، برادر شما. «حسین» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "حسین",
+              "distractors": [
+                "حبیب",
+                "محمد"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a12l2e7",
+              "type": "listen_choose",
+              "prompt": "🔊",
+              "audio_script": "رضا، برادر شما. «رضا» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "رضا",
+              "distractors": [
+                "زهرا",
+                "حسین"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+            },
+            {
+              "id": "a12l2e8",
+              "type": "intro",
+              "prompt": "مهرافروز   علی‌عسکر",
+              "audio_script": "مادر شما، «مهرافروز»، و پدر شما، «علی‌عسکر».",
+              "payload": {
+                "display": "مهرافروز   علی‌عسکر",
+                "visual": "👩👨",
+                "teaches": []
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a12l2e9",
+              "type": "listen_choose",
+              "prompt": "🔊",
+              "audio_script": "اسم پدرتان، «علی‌عسکر»، را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "علی‌عسکر",
+              "distractors": [
+                "افشین",
+                "حبیب"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a12l2e10",
+              "type": "listen_choose",
+              "prompt": "🔊",
+              "audio_script": "اسم مادرتان، «مهرافروز»، را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "مهرافروز",
+              "distractors": [
+                "مهشید",
+                "فریبا"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a12l2e11",
+              "type": "match_pairs",
+              "prompt": "🔗",
+              "audio_script": "هر اسم را به نسبتش با شما وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "زینب",
+                    "خواهر"
+                  ],
+                  [
+                    "محمد",
+                    "برادر"
+                  ],
+                  [
+                    "مهرافروز",
+                    "مادر"
+                  ],
+                  [
+                    "علی‌عسکر",
+                    "پدر"
+                  ]
+                ]
+              },
+              "answer": "زینب=خواهر|محمد=برادر|مهرافروز=مادر|علی‌عسکر=پدر",
+              "distractors": [],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            },
+            {
+              "id": "a12l2e12",
+              "type": "match_pairs",
+              "prompt": "🔗",
+              "audio_script": "هر اسم را به نسبتش با شما وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "جوهر",
+                    "خواهر"
+                  ],
+                  [
+                    "رضا",
+                    "برادر"
+                  ],
+                  [
+                    "حبیب",
+                    "همسر"
+                  ],
+                  [
+                    "زهرا",
+                    "دختر"
+                  ]
+                ]
+              },
+              "answer": "جوهر=خواهر|رضا=برادر|حبیب=همسر|زهرا=دختر",
+              "distractors": [],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            }
+          ]
+        },
+        {
+          "id": "a12l3",
+          "title": "تابلوها و کلمه‌های بدون زبر و زیر",
+          "exercises": [
+            {
+              "id": "a12l3e1",
+              "type": "intro",
+              "prompt": "دَست  دست",
+              "audio_script": "در کتاب‌ها و تابلوها معمولاً زبر و زیر و پیش را نمی‌نویسند. شما کلمه را می‌شناسید و خودتان درست می‌خوانید.",
+              "payload": {
+                "display": "دَست  دست",
+                "visual": "",
+                "teaches": []
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a12l3e2",
               "type": "intro",
               "prompt": "داروخانه",
               "audio_script": "دال، الف، رِ، واو، خِ، الف، نون، هِ: «داروخانه». داروخانهٔ محله. حالا تابلوی آن را خودتان می‌خوانید!",
@@ -11081,14 +11525,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
-              "id": "a12l2e2",
+              "id": "a12l3e3",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حالا «داروخانه» را بسازید؛ از راست شروع کنید.",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «داروخانه» ساخته شود.",
               "payload": {
                 "picture": "💊",
                 "letters": [
@@ -11110,7 +11554,7 @@
               "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
             },
             {
-              "id": "a12l2e3",
+              "id": "a12l3e4",
               "type": "intro",
               "prompt": "نانوایی",
               "audio_script": "نون، الف، نون، واو، الف، یِ، یِ: «نانوایی». نانوایی سر کوچه.",
@@ -11121,14 +11565,14 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
-              "id": "a12l2e4",
+              "id": "a12l3e5",
               "type": "build_word",
               "prompt": "🧩",
-              "audio_script": "حرف‌ها را به ترتیب بچینید تا «نانوایی» ساخته شود.",
+              "audio_script": "با این حرف‌ها «نانوایی» را بسازید.",
               "payload": {
                 "picture": "🥖",
                 "letters": [
@@ -11149,84 +11593,7 @@
               "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
             },
             {
-              "id": "a12l2e5",
-              "type": "intro",
-              "prompt": "بیمارستان",
-              "audio_script": "بِ، یِ، میم، الف، رِ، سین، تِ، الف، نون: «بیمارستان». بیمارستان.",
-              "payload": {
-                "display": "بیمارستان",
-                "visual": "🏥",
-                "teaches": []
-              },
-              "answer": "",
-              "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
-              "feedback_wrong": ""
-            },
-            {
-              "id": "a12l2e6",
-              "type": "build_word",
-              "prompt": "🧩",
-              "audio_script": "با این حرف‌ها «بیمارستان» را بسازید.",
-              "payload": {
-                "picture": "🏥",
-                "letters": [
-                  "ب",
-                  "ی",
-                  "م",
-                  "ا",
-                  "ر",
-                  "س",
-                  "ت",
-                  "ا",
-                  "ن"
-                ]
-              },
-              "answer": "بیمارستان",
-              "distractors": [
-                "ر"
-              ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
-              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
-            },
-            {
-              "id": "a12l2e7",
-              "type": "intro",
-              "prompt": "بانک",
-              "audio_script": "بِ، الف، نون، کاف: «بانک». بانک.",
-              "payload": {
-                "display": "بانک",
-                "visual": "🏦",
-                "teaches": []
-              },
-              "answer": "",
-              "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
-              "feedback_wrong": ""
-            },
-            {
-              "id": "a12l2e8",
-              "type": "build_word",
-              "prompt": "🧩",
-              "audio_script": "حالا «بانک» را بسازید؛ از راست شروع کنید.",
-              "payload": {
-                "picture": "🏦",
-                "letters": [
-                  "ب",
-                  "ا",
-                  "ن",
-                  "ک"
-                ]
-              },
-              "answer": "بانک",
-              "distractors": [
-                "ن"
-              ],
-              "feedback_correct": "دقیقاً همین است!",
-              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
-            },
-            {
-              "id": "a12l2e9",
+              "id": "a12l3e6",
               "type": "match_pairs",
               "prompt": "🔗",
               "audio_script": "هر کلمه را به تصویرش وصل کنید.",
@@ -11252,48 +11619,11 @@
               },
               "answer": "داروخانه=💊|نانوایی=🥖|بیمارستان=🏥|بانک=🏦",
               "distractors": [],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
             },
             {
-              "id": "a12l2e10",
-              "type": "tap_picture",
-              "prompt": "نانوایی",
-              "audio_script": "این را بخوانید. کدام تصویر است؟",
-              "payload": {
-                "display": "نانوایی"
-              },
-              "answer": "🥖",
-              "distractors": [
-                "💊",
-                "🏦"
-              ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
-              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
-            }
-          ]
-        },
-        {
-          "id": "a12l3",
-          "title": "کلمه‌های بدون زبر و زیر",
-          "exercises": [
-            {
-              "id": "a12l3e1",
-              "type": "intro",
-              "prompt": "دَست  دست",
-              "audio_script": "در کتاب‌ها و تابلوها معمولاً زبر و زیر و پیش را نمی‌نویسند. شما کلمه را می‌شناسید و خودتان درست می‌خوانید.",
-              "payload": {
-                "display": "دَست  دست",
-                "visual": "",
-                "teaches": []
-              },
-              "answer": "",
-              "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
-              "feedback_wrong": ""
-            },
-            {
-              "id": "a12l3e2",
+              "id": "a12l3e7",
               "type": "match_pairs",
               "prompt": "🔗",
               "audio_script": "هر کلمه را به همان کلمه بدون زبر و زیر وصل کنید.",
@@ -11319,11 +11649,11 @@
               },
               "answer": "دَست=دست|مادَر=مادر|کِتاب=کتاب|پِدَر=پدر",
               "distractors": [],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
             },
             {
-              "id": "a12l3e3",
+              "id": "a12l3e8",
               "type": "listen_choose",
               "prompt": "🔊",
               "audio_script": "«کتاب» را پیدا کنید.",
@@ -11335,43 +11665,11 @@
                 "کباب",
                 "کلید"
               ],
-              "feedback_correct": "عالی بود!",
-              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
-              "id": "a12l3e4",
-              "type": "tap_picture",
-              "prompt": "مادر",
-              "audio_script": "این را بخوانید. کدام تصویر است؟",
-              "payload": {
-                "display": "مادر"
-              },
-              "answer": "👩",
-              "distractors": [
-                "👨",
-                "🧔"
-              ],
-              "feedback_correct": "درست است، آفرین بر شما!",
-              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
-            },
-            {
-              "id": "a12l3e5",
-              "type": "listen_choose",
-              "prompt": "🔊",
-              "audio_script": "«خورشید» را پیدا کنید.",
-              "payload": {
-                "choice_kind": "word"
-              },
-              "answer": "خورشید",
-              "distractors": [
-                "خودکار",
-                "خیار"
-              ],
-              "feedback_correct": "بسیار خوب!",
-              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
-            },
-            {
-              "id": "a12l3e6",
+              "id": "a12l3e9",
               "type": "tap_picture",
               "prompt": "گوشت",
               "audio_script": "این را بخوانید. کدام تصویر است؟",
@@ -11383,11 +11681,11 @@
                 "👂",
                 "🌷"
               ],
-              "feedback_correct": "احسنت!",
-              "feedback_wrong": "دوباره امتحان کنید."
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
             },
             {
-              "id": "a12l3e7",
+              "id": "a12l3e10",
               "type": "listen_choose",
               "prompt": "🔊",
               "audio_script": "«صبح» را پیدا کنید.",
@@ -11399,11 +11697,11 @@
                 "سبز",
                 "شب"
               ],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
-              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
-              "id": "a12l3e8",
+              "id": "a12l3e11",
               "type": "tap_picture",
               "prompt": "درخت",
               "audio_script": "این را بخوانید. کدام تصویر است؟",
@@ -11415,24 +11713,24 @@
                 "🏠",
                 "🚪"
               ],
-              "feedback_correct": "دقیقاً همین است!",
-              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
             },
             {
-              "id": "a12l3e9",
-              "type": "listen_choose",
-              "prompt": "🔊",
-              "audio_script": "«پنیر» را پیدا کنید.",
+              "id": "a12l3e12",
+              "type": "tap_picture",
+              "prompt": "بیمارستان",
+              "audio_script": "این را بخوانید. کدام تصویر است؟",
               "payload": {
-                "choice_kind": "word"
+                "display": "بیمارستان"
               },
-              "answer": "پنیر",
+              "answer": "🏥",
               "distractors": [
-                "پیاز",
-                "پول"
+                "💊",
+                "🏦"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
-              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "دوباره امتحان کنید."
             }
           ]
         },
@@ -11443,20 +11741,68 @@
             {
               "id": "a12l4e1",
               "type": "intro",
-              "prompt": "💬",
-              "audio_script": "خانواده برایتان پیام کوتاه می‌فرستند. بیایید چند پیام را بخوانیم.",
+              "prompt": "📱",
+              "audio_script": "خانواده برایتان پیام کوتاه می‌فرستند. بالای هر پیام، اسم فرستنده نوشته شده. بیایید چند پیام را بخوانیم.",
               "payload": {
-                "display": "💬",
+                "display": "📱",
                 "visual": "",
                 "teaches": []
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
               "feedback_wrong": ""
             },
             {
               "id": "a12l4e2",
+              "type": "listen_choose",
+              "prompt": "📱",
+              "audio_script": "یک پیام رسیده. بالایش نوشته از طرف چه کسی است. پیامِ دخترتان، مهشید، کدام است؟",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "پیام از مهشید",
+              "distractors": [
+                "پیام از زهرا",
+                "پیام از افشین"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a12l4e3",
+              "type": "listen_choose",
+              "prompt": "📱",
+              "audio_script": "پیامِ همسرتان، حبیب، کدام است؟",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "پیام از حبیب",
+              "distractors": [
+                "پیام از حسین",
+                "پیام از محمد"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
+            },
+            {
+              "id": "a12l4e4",
+              "type": "listen_choose",
+              "prompt": "📱",
+              "audio_script": "پیامِ پسرتان، افشین، کدام است؟",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "پیام از افشین",
+              "distractors": [
+                "پیام از حبیب",
+                "پیام از رضا"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a12l4e5",
               "type": "listen_choose",
               "prompt": "🔊",
               "audio_script": "«سلام مادر» را پیدا کنید.",
@@ -11468,11 +11814,11 @@
                 "سلام پدر",
                 "سلام"
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
-              "id": "a12l4e3",
+              "id": "a12l4e6",
               "type": "listen_choose",
               "prompt": "🔊",
               "audio_script": "«دوستت دارم» را پیدا کنید.",
@@ -11484,11 +11830,11 @@
                 "دوست",
                 "دارم"
               ],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
               "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
-              "id": "a12l4e4",
+              "id": "a12l4e7",
               "type": "listen_choose",
               "prompt": "🔊",
               "audio_script": "«شب بخیر» را پیدا کنید.",
@@ -11500,11 +11846,11 @@
                 "صبح بخیر",
                 "شب"
               ],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
-              "id": "a12l4e5",
+              "id": "a12l4e8",
               "type": "listen_choose",
               "prompt": "🔊",
               "audio_script": "«کجا هستی؟» را پیدا کنید.",
@@ -11516,27 +11862,11 @@
                 "خانه هستم",
                 "کجا"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "آفرین!",
               "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
-              "id": "a12l4e6",
-              "type": "tap_picture",
-              "prompt": "صبح بخیر",
-              "audio_script": "این را بخوانید. کدام تصویر است؟",
-              "payload": {
-                "display": "صبح بخیر"
-              },
-              "answer": "🌅",
-              "distractors": [
-                "🌙",
-                "🏠"
-              ],
-              "feedback_correct": "بسیار خوب!",
-              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
-            },
-            {
-              "id": "a12l4e7",
+              "id": "a12l4e9",
               "type": "tap_picture",
               "prompt": "دوستت دارم",
               "audio_script": "این را بخوانید. کدام تصویر است؟",
@@ -11548,11 +11878,11 @@
                 "🌅",
                 "📞"
               ],
-              "feedback_correct": "احسنت!",
-              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
             },
             {
-              "id": "a12l4e8",
+              "id": "a12l4e10",
               "type": "match_pairs",
               "prompt": "🔗",
               "audio_script": "هر کلمه را به تصویرش وصل کنید.",
@@ -11574,7 +11904,7 @@
               },
               "answer": "شب بخیر=🌙|صبح بخیر=🌅|دوستت دارم=❤️",
               "distractors": [],
-              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_correct": "درست است، آفرین بر شما!",
               "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
             }
           ]
@@ -11595,7 +11925,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_correct": "خب، حالا تمرین کنیم.",
               "feedback_wrong": ""
             },
             {
@@ -11611,7 +11941,7 @@
                 "شیر ۵۰ هزار تومان",
                 "پنیر ۳۰ هزار تومان"
               ],
-              "feedback_correct": "دقیقاً همین است!",
+              "feedback_correct": "بسیار خوب!",
               "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
@@ -11627,8 +11957,8 @@
                 "🥛",
                 "🧀"
               ],
-              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
-              "feedback_wrong": "دوباره امتحان کنید."
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
             },
             {
               "id": "a12l5e4",
@@ -11642,7 +11972,7 @@
               },
               "answer": "",
               "distractors": [],
-              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
               "feedback_wrong": ""
             },
             {
@@ -11658,7 +11988,7 @@
                 "پدر به بازار رفت.",
                 "مادر به خانه رفت."
               ],
-              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
               "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             },
             {
@@ -11674,7 +12004,7 @@
                 "او نان و شیر خرید.",
                 "او سیب خرید."
               ],
-              "feedback_correct": "آفرین!",
+              "feedback_correct": "دقیقاً همین است!",
               "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
             },
             {
@@ -11690,7 +12020,7 @@
                 "بعد به بازار آمد.",
                 "بعد به باغ رفت."
               ],
-              "feedback_correct": "عالی بود!",
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
               "feedback_wrong": "دوباره گوش کنیم؛ بعد انتخاب کنید."
             },
             {
@@ -11706,7 +12036,7 @@
                 "آسمان",
                 "انگور"
               ],
-              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
               "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
             }
           ]
