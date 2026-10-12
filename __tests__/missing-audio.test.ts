@@ -17,9 +17,6 @@ describe('missing-audio.json', () => {
 
     writeFileSync('scripts/missing-audio.json', `${JSON.stringify(missing, null, 2)}\n`, 'utf8');
 
-    for (const item of missing) {
-      await expect(generateAudioId(item.text)).resolves.toBe(item.id);
-      expect(existsSync(`public/audio/${item.id}.mp3`)).toBe(false);
-    }
+    expect(missing).toEqual([]);
   });
 });

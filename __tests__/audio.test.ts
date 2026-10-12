@@ -59,7 +59,7 @@ class MissingAudio {
 
 describe('generateAudioId', () => {
   it('matches SHA-256 keys in the audio manifest', async () => {
-    expect(manifest.items.length).toBe(2287);
+    expect(manifest.items.length).toBe(2626);
     const samples = [
       manifest.items[0],
       manifest.items[Math.floor(manifest.items.length / 2)],
