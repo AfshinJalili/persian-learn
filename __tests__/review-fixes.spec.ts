@@ -141,5 +141,17 @@ test.describe('Codex review navigation fixes', () => {
     const dotBox = await dots.first().boundingBox();
     expect(dotBox?.width ?? 0).toBeGreaterThanOrEqual(23);
     expect(dotBox?.width ?? 0).toBeLessThanOrEqual(25);
+
+    const threeDotCluster = page.locator('.picture-grid .object-cluster').filter({
+      has: page.locator('> .illus:nth-child(3)'),
+    });
+    const threeDots = threeDotCluster.locator('> .illus');
+    const leftDot = await threeDots.nth(0).boundingBox();
+    const middleDot = await threeDots.nth(1).boundingBox();
+    expect(leftDot && middleDot).toBeTruthy();
+    const orderedDots = [leftDot!, middleDot!].sort((a, b) => a.x - b.x);
+    const dotGap = orderedDots[1].x - (orderedDots[0].x + orderedDots[0].width);
+    expect(dotGap).toBeGreaterThanOrEqual(7);
+    expect(dotGap).toBeLessThanOrEqual(9);
   });
 });

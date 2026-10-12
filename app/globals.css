@@ -577,6 +577,14 @@ h2,
   margin-inline: 0;
 }
 
+.picture-grid .object-cluster {
+  gap: var(--cluster-gap);
+  width: max-content;
+  height: max-content;
+  justify-self: center;
+  align-self: center;
+}
+
 .bottom {
   display: flex;
   flex-direction: column;
