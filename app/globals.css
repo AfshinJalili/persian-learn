@@ -488,6 +488,7 @@ h2,
 
 .picture-grid .object-choice-card {
   padding: 20px;
+  place-items: center;
 }
 
 .object-count-card {
@@ -582,10 +583,11 @@ h2,
 }
 
 .object-cluster-fit {
-  width: fit-content;
-  height: fit-content;
-  justify-self: center;
-  align-self: center;
+  width: max-content;
+  height: max-content;
+  position: relative;
+  left: 50%;
+  translate: -50% 0;
 }
 
 .bottom {

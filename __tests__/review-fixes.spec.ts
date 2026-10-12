@@ -142,16 +142,27 @@ test.describe('Codex review navigation fixes', () => {
     expect(dotBox?.width ?? 0).toBeGreaterThanOrEqual(23);
     expect(dotBox?.width ?? 0).toBeLessThanOrEqual(25);
 
-    const threeDotCluster = page.locator('.picture-grid .object-cluster').filter({
-      has: page.locator('> .illus:nth-child(3)'),
+    const layout = await page.evaluate(() => {
+      const card = [...document.querySelectorAll('.picture-grid .object-choice-card')].find(
+        (element) => element.querySelectorAll('.object-cluster > .illus').length === 3
+      );
+      if (!card) return null;
+      const cardBox = card.getBoundingClientRect();
+      const dots = [...card.querySelectorAll('.object-cluster > .illus')]
+        .map((dot) => dot.getBoundingClientRect())
+        .sort((left, right) => left.x - right.x);
+      return {
+        cardX: cardBox.x,
+        cardRight: cardBox.right,
+        firstDotX: dots[0]?.x ?? 0,
+        lastDotRight: dots[dots.length - 1]?.right ?? 0,
+        gap: dots.length > 1 ? dots[1].x - (dots[0].x + dots[0].width) : 0,
+      };
     });
-    const threeDots = threeDotCluster.locator('> .illus');
-    const leftDot = await threeDots.nth(0).boundingBox();
-    const middleDot = await threeDots.nth(1).boundingBox();
-    expect(leftDot && middleDot).toBeTruthy();
-    const orderedDots = [leftDot!, middleDot!].sort((a, b) => a.x - b.x);
-    const dotGap = orderedDots[1].x - (orderedDots[0].x + orderedDots[0].width);
-    expect(dotGap).toBeGreaterThanOrEqual(7);
-    expect(dotGap).toBeLessThanOrEqual(9);
+    expect(layout).toBeTruthy();
+    expect(layout!.gap).toBeGreaterThanOrEqual(7);
+    expect(layout!.gap).toBeLessThanOrEqual(9);
+    expect(layout!.firstDotX).toBeGreaterThanOrEqual(layout!.cardX);
+    expect(layout!.lastDotRight).toBeLessThanOrEqual(layout!.cardRight);
   });
 });
