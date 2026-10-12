@@ -14,6 +14,7 @@ import AudioUnlockOverlay from '@/components/AudioUnlockOverlay';
 import ExerciseRenderer from '@/components/exercises/ExerciseRenderer';
 import SpeakerButton from '@/components/SpeakerButton';
 import HodaMascot from '@/components/HodaMascot';
+import { isCountingIntro } from '@/components/exercises/CountCard';
 import { formatPersianNumber } from '@/lib/persian';
 
 function lessonContentFits(type: ExerciseType): boolean {
@@ -120,7 +121,7 @@ export default function LessonPage() {
   useEffect(() => {
     if (!currentExercise) return;
     const signal = startLessonAudio();
-    if (autoplay) {
+    if (autoplay && !isCountingIntro(currentExercise)) {
       promptTimerRef.current = window.setTimeout(() => {
         if (signal.aborted) return;
         playAudio(currentExercise.audio_script, false, signal).catch(() => {});
@@ -247,6 +248,7 @@ export default function LessonPage() {
           userAnswer={userAnswer}
           onAnswerChange={setUserAnswer}
           onContinue={handleContinue}
+          autoplay={autoplay}
           onTraced={handleTraced}
           disabled={showFeedback}
           answerState={showFeedback ? (isCorrect ? 'correct' : 'wrong') : 'idle'}

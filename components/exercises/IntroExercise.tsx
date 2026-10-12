@@ -1,38 +1,216 @@
-import type { Exercise } from '@/lib/types';
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { personalizeIntroScript } from '@/lib/learner';
+import { getAudioSpeed, playAudio, stopAudio, vibrate } from '@/lib/audio';
 import SpeakerButton from '@/components/SpeakerButton';
-import { looksLikeObjects, ObjectArt } from '@/components/art/objects';
+import HodaMascot from '@/components/HodaMascot';
+import { ObjectArt, splitObjectTokens } from '@/components/art/objects';
+import CountCard, {
+  countWord,
+  isCountingIntro,
+} from '@/components/exercises/CountCard';
+import type { Exercise } from '@/lib/types';
+
+const INTRO_HEADING = 'سلام فریبا جان! با هم بشماریم.';
+const INTRO_HELPER = 'هر کارت را بزنید تا عددش را بشنوید.';
 
 interface Props {
   exercise: Exercise;
   onContinue: () => void;
+  autoplay?: boolean;
 }
 
-export default function IntroExercise({ exercise, onContinue }: Props) {
-  const payload = exercise.payload as { display: string; visual?: string };
+type CountGroup = {
+  count: number;
+  token: string;
+  label: string;
+};
+
+function sleep(ms: number, signal: AbortSignal): Promise<void> {
+  if (ms <= 0 || signal.aborted) return Promise.resolve();
+  return new Promise((resolve) => {
+    const timer = window.setTimeout(() => {
+      signal.removeEventListener('abort', onAbort);
+      resolve();
+    }, ms);
+    const onAbort = () => {
+      window.clearTimeout(timer);
+      resolve();
+    };
+    signal.addEventListener('abort', onAbort, { once: true });
+  });
+}
+
+async function playClipOrFallback(text: string, signal: AbortSignal, fallbackMs: number) {
+  const started = Date.now();
+  await playAudio(text, false, signal);
+  if (signal.aborted) return;
+  const remaining = fallbackMs - (Date.now() - started);
+  if (remaining > 0) await sleep(remaining, signal);
+}
+
+function countGroupsFrom(exercise: Exercise): CountGroup[] {
+  const payload = exercise.payload as { display?: string; labels?: unknown };
   const groups = String(payload.display || '')
     .split(/\s{2,}/)
     .filter(Boolean);
+  const labels = Array.isArray(payload.labels)
+    ? payload.labels.filter((item): item is string => typeof item === 'string')
+    : [];
+
+  return groups.map((group, index) => {
+    const parts = splitObjectTokens(group.trim());
+    const count = parts.length;
+    const token = parts[0] ?? group.trim();
+    return {
+      count,
+      token,
+      label: labels[index] ?? `${countWord(count)}`.trim(),
+    };
+  });
+}
+
+export default function IntroExercise({ exercise, onContinue, autoplay = true }: Props) {
+  const counting = isCountingIntro(exercise);
+  const groups = counting ? countGroupsFrom(exercise) : [];
+  const sequenceRef = useRef<AbortController | null>(null);
+  const [playingIndex, setPlayingIndex] = useState<number | null>(null);
+  const [highlightIndex, setHighlightIndex] = useState<number | null>(null);
+  const [pulseIndex, setPulseIndex] = useState<number | null>(null);
+
+  const stopSequence = () => {
+    sequenceRef.current?.abort();
+    sequenceRef.current = null;
+    setPlayingIndex(null);
+    setHighlightIndex(null);
+    setPulseIndex(null);
+  };
+
+  const runCountAlong = async (cardIndex: number, signal: AbortSignal) => {
+    const card = groups[cardIndex];
+    if (!card) return;
+    setPlayingIndex(cardIndex);
+    setPulseIndex(null);
+    const speed = getAudioSpeed() || 1;
+    const perItem = 600 / speed;
+    for (let item = 0; item < card.count; item += 1) {
+      if (signal.aborted) return;
+      setHighlightIndex(item);
+      await playClipOrFallback(countWord(item + 1), signal, perItem);
+    }
+    if (signal.aborted) return;
+    setHighlightIndex(null);
+    await sleep(250 / speed, signal);
+    if (signal.aborted) return;
+    setPulseIndex(cardIndex);
+    await playClipOrFallback(card.label, signal, 300 / speed);
+    if (signal.aborted) return;
+    setPulseIndex(null);
+    setPlayingIndex(null);
+  };
+
+  const playCard = (cardIndex: number) => {
+    sequenceRef.current?.abort();
+    const controller = new AbortController();
+    sequenceRef.current = controller;
+    vibrate(10);
+    void runCountAlong(cardIndex, controller.signal).finally(() => {
+      if (sequenceRef.current === controller) {
+        sequenceRef.current = null;
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (!counting) return undefined;
+    const controller = new AbortController();
+    sequenceRef.current = controller;
+
+    const start = async () => {
+      if (autoplay) {
+        await sleep(300, controller.signal);
+        if (controller.signal.aborted) return;
+        await playAudio(exercise.audio_script, false, controller.signal);
+        if (controller.signal.aborted) return;
+        for (let index = 0; index < groups.length; index += 1) {
+          if (controller.signal.aborted) return;
+          await runCountAlong(index, controller.signal);
+          if (controller.signal.aborted) return;
+        }
+      }
+    };
+
+    void start();
+    return () => {
+      sequenceRef.current?.abort();
+      sequenceRef.current = null;
+      stopAudio();
+    };
+    // Mount-only: this intro owns the autoplay sequence for the counting cards.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exercise.id, autoplay, counting]);
+
+  if (!counting) {
+    const payload = exercise.payload as { display: string; visual?: string };
+    const pieces = String(payload.display || '')
+      .split(/\s{2,}/)
+      .filter(Boolean);
+
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center min-h-0">
+        <SpeakerButton text={exercise.audio_script} size="md" />
+        <div className="flex flex-wrap items-end justify-center gap-4">
+          {pieces.map((group, index) => (
+            <ObjectArt key={`${group}-${index}`} token={group.trim()} size={48} />
+          ))}
+        </div>
+        {payload.visual ? <ObjectArt token={payload.visual} size={72} /> : null}
+        <p className="body-lg">{personalizeIntroScript(exercise.audio_script)}</p>
+        <button type="button" onClick={onContinue} className="btn btn-primary">
+          ادامه
+          <ArrowLeft strokeWidth={2.6} />
+        </button>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center min-h-0">
-      <SpeakerButton text={exercise.audio_script} size="md" />
-      <div className="flex flex-wrap items-end justify-center gap-4">
-        {groups.map((group, index) => (
-          <ObjectArt
-            key={`${group}-${index}`}
-            token={group.trim()}
-            size={groups.length === 1 && looksLikeObjects(group) ? 160 : 48}
+    <div className="cc-intro-screen">
+      <div className="cc-intro-body">
+        <div className="prompt">
+          <SpeakerButton
+            text={exercise.audio_script}
+            size="md"
+            onPlay={stopSequence}
           />
-        ))}
+          <h2>{INTRO_HEADING}</h2>
+          <HodaMascot className="cc-hoda" pose="idle" />
+        </div>
+        <div className="cc-list">
+          {groups.map((group, index) => (
+            <CountCard
+              key={`${group.token}-${group.count}-${index}`}
+              count={group.count}
+              token={group.token}
+              label={group.label}
+              staggerIndex={index}
+              playing={playingIndex === index}
+              highlightIndex={playingIndex === index ? highlightIndex : null}
+              pulse={pulseIndex === index}
+              onPlay={() => playCard(index)}
+            />
+          ))}
+        </div>
+        <p className="muted cc-helper">{INTRO_HELPER}</p>
       </div>
-      {payload.visual ? <ObjectArt token={payload.visual} size={72} /> : null}
-      <p className="body-lg">{personalizeIntroScript(exercise.audio_script)}</p>
-      <button type="button" onClick={onContinue} className="btn btn-primary">
-        ادامه
-        <ArrowLeft strokeWidth={2.6} />
-      </button>
+      <div className="cc-intro-bottom">
+        <button type="button" onClick={onContinue} className="btn btn-primary">
+          ادامه
+          <ArrowLeft strokeWidth={2.6} />
+        </button>
+      </div>
     </div>
   );
 }

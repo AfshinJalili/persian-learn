@@ -112,6 +112,12 @@ export function collectSpokenTexts(): string[] {
           add(texts, exercise.audio_script);
           add(texts, exercise.feedback_correct);
           add(texts, exercise.feedback_wrong);
+          const labels = exercise.payload.labels;
+          if (Array.isArray(labels)) {
+            for (const label of labels) {
+              if (typeof label === 'string') add(texts, label);
+            }
+          }
           const pool = optionPool(exercise);
           if (exercise.type !== 'match_pairs' && exercise.type !== 'compare_more_less') {
             const spokenAnswer = spokenOption(exercise.answer, pool);
