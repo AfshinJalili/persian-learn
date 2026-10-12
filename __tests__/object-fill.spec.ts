@@ -10,6 +10,7 @@ const GALLERY_VIEWPORTS = [
 const LESSON_VIEWPORTS = [
   { width: 375, height: 667 },
   { width: 1024, height: 594 },
+  { width: 1920, height: 1113 },
 ] as const;
 
 const MATH_M1_M3 = math.units
@@ -207,14 +208,16 @@ function measurePage() {
     answersBottom: lastBottom,
     countCardHeight: countCard?.getBoundingClientRect().height ?? 0,
     rawGlyphs,
-    choiceCardHeights: [...document.querySelectorAll('.picture-grid .object-choice-card')].map(
-      (node) => (node as HTMLElement).getBoundingClientRect().height
-    ),
+    choiceCardHeights: [
+      ...document.querySelectorAll(
+        '.picture-grid .object-choice-card, .grid3 .object-choice-card, .grid2 .object-choice-card'
+      ),
+    ].map((node) => (node as HTMLElement).getBoundingClientRect().height),
     badgeOverlap: [...document.querySelectorAll('[data-match-placed]')].map((chip) => {
-      const digit = chip.querySelector('.glyph') as HTMLElement | null;
+      const digit = (chip.querySelector('.glyph') as HTMLElement | null) ?? (chip as HTMLElement);
       const wrap = chip.closest('.match-digit-placed-wrap');
       const badge = wrap?.querySelector('[data-match-undo]') as HTMLElement | null;
-      if (!digit || !badge) return { overlap: 0, badge: 0 };
+      if (!badge) return { overlap: 0, badge: 0 };
       const a = digit.getBoundingClientRect();
       const b = badge.getBoundingClientRect();
       const x = Math.max(0, Math.min(a.right, b.right) - Math.max(a.left, b.left));
@@ -457,4 +460,26 @@ test.describe('Object fill at phone widths', () => {
       }
     });
   }
+
+  test('letter and picture match-pairs show a 48px undo badge outside the chip', async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await seedProgress(page, {
+      currentTrack: 'alphabet',
+      completedLessons: ['a1l1', 'a1l2', 'a1l3', 'a1l4', 'a1l5', 'a2l1', 'a2l2'],
+    });
+    for (const path of ['/lesson/a1l1?ex=5', '/lesson/a2l2?ex=2'] as const) {
+      await page.goto(path);
+      await expect(page.locator('[data-match-column="left"] button').first()).toBeVisible();
+      await page.locator('[data-match-column="left"] button').first().click();
+      await page.locator('[data-match-column="right"] button').first().click();
+      const placed = await page.evaluate(measurePage);
+      expect(placed.badgeOverlap.length, path).toBeGreaterThan(0);
+      for (const badge of placed.badgeOverlap) {
+        expect(badge.overlap, path).toBe(0);
+        expect(badge.badge, path).toBeGreaterThanOrEqual(48);
+      }
+    }
+  });
 });

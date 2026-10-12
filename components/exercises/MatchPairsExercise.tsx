@@ -8,6 +8,7 @@ import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
 import { maybePlayMatchUndoHint } from '@/lib/match-undo-hint';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
+import { PlacedItem, PlacedUndoBadge } from '@/components/PlacedUndoBadge';
 import {
   ObjectArt,
   ObjectCluster,
@@ -69,7 +70,7 @@ function MatchObjectRow({
           cardWidth={box.offsetWidth}
         />
       </button>
-      <span className="match-digit-placed-wrap">
+      <PlacedItem>
         {placed ? (
           <>
             <button
@@ -82,21 +83,16 @@ function MatchObjectRow({
             >
               <span className="glyph">{placed[0]}</span>
             </button>
-            <button
-              type="button"
-              aria-label="پس گرفتن"
-              data-match-undo={placed[0]}
-              disabled={locked}
-              onClick={() => onUndo(option)}
-              className="match-chip-undo"
-            >
-              ✕
-            </button>
+            <PlacedUndoBadge
+              value={placed[0]}
+              locked={locked}
+              onUndo={() => onUndo(option)}
+            />
           </>
         ) : (
           <span className="match-digit-slot match-digit-slot-empty" />
         )}
-      </span>
+      </PlacedItem>
     </div>
   );
 }
@@ -311,44 +307,71 @@ export default function MatchPairsExercise({
       ) : (
         <div className="grid grid-cols-2 gap-4">
           <div data-match-column="left" className="space-y-3">
-            {leftOptions.map((option) => (
-              <button
-                type="button"
-                key={`left-${option}`}
-                aria-label={option}
-                onClick={() => handleSelect('left', option)}
-                draggable={!disabled && !isLeftUsed(option)}
-                onDragStart={(event) => handleDigitDragStart(option, event)}
-                disabled={disabled}
-                className={`card h-20 w-full ${isLeftUsed(option) ? 'dim' : ''} ${selected?.side === 'left' && selected.value === option ? 'selected' : ''}`}
-              >
-                {looksLikeObjects(option) ? (
-                  <ObjectArt token={option} size={48} />
-                ) : (
-                  <span className="text-4xl font-extrabold">{option}</span>
-                )}
-              </button>
-            ))}
+            {leftOptions.map((option) => {
+              const used = isLeftUsed(option);
+              const card = (
+                <button
+                  type="button"
+                  aria-label={option}
+                  data-match-placed={used ? option : undefined}
+                  onClick={() => handleSelect('left', option)}
+                  draggable={!disabled && !used}
+                  onDragStart={(event) => handleDigitDragStart(option, event)}
+                  disabled={disabled}
+                  className={`card h-20 w-full ${used ? 'dim' : ''} ${selected?.side === 'left' && selected.value === option ? 'selected' : ''}`}
+                >
+                  {looksLikeObjects(option) ? (
+                    <ObjectArt token={option} size={48} />
+                  ) : (
+                    <span className="glyph text-4xl font-extrabold">{option}</span>
+                  )}
+                </button>
+              );
+              if (!used) return <span key={`left-${option}`}>{card}</span>;
+              return (
+                <PlacedItem key={`left-${option}`} className="match-pair-placed">
+                  {card}
+                  <PlacedUndoBadge
+                    value={option}
+                    locked={disabled}
+                    onUndo={() => undoByLeft(option)}
+                  />
+                </PlacedItem>
+              );
+            })}
           </div>
           <div data-match-column="right" className="space-y-3">
-            {rightOptions.map((option) => (
-              <button
-                type="button"
-                key={`right-${option}`}
-                aria-label={option}
-                onClick={() => handleSelect('right', option)}
-                onDragOver={(event) => event.preventDefault()}
-                onDrop={(event) => handleSlotDrop(option, event)}
-                disabled={disabled}
-                className={`card h-20 w-full ${isRightUsed(option) ? 'dim' : ''} ${selected?.side === 'right' && selected.value === option ? 'selected' : ''}`}
-              >
-                {looksLikeObjects(option) ? (
-                  <ObjectArt token={option} size={48} />
-                ) : (
-                  <span className="text-4xl font-extrabold">{option}</span>
-                )}
-              </button>
-            ))}
+            {rightOptions.map((option) => {
+              const used = isRightUsed(option);
+              const card = (
+                <button
+                  type="button"
+                  aria-label={option}
+                  onClick={() => handleSelect('right', option)}
+                  onDragOver={(event) => event.preventDefault()}
+                  onDrop={(event) => handleSlotDrop(option, event)}
+                  disabled={disabled}
+                  className={`card h-20 w-full ${used ? 'dim' : ''} ${selected?.side === 'right' && selected.value === option ? 'selected' : ''}`}
+                >
+                  {looksLikeObjects(option) ? (
+                    <ObjectArt token={option} size={48} />
+                  ) : (
+                    <span className="glyph text-4xl font-extrabold">{option}</span>
+                  )}
+                </button>
+              );
+              if (!used) return <span key={`right-${option}`}>{card}</span>;
+              return (
+                <PlacedItem key={`right-${option}`} className="match-pair-placed">
+                  {card}
+                  <PlacedUndoBadge
+                    value={option}
+                    locked={disabled}
+                    onUndo={() => undoByRight(option)}
+                  />
+                </PlacedItem>
+              );
+            })}
           </div>
         </div>
       )}

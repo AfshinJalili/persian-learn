@@ -74,6 +74,32 @@ describe('MatchPairsExercise selection order', () => {
     expect(screen.getByRole('button', { name: 'ب' })).not.toBeDisabled();
     expect(screen.getByRole('button', { name: 'بـ' })).not.toBeDisabled();
   });
+
+  it('puts a 48px undo badge outside a placed letter chip', async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <MatchPairsExercise
+        exercise={exercise()}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+
+    await user.click(screen.getByRole('button', { name: 'ب' }));
+    await user.click(screen.getByRole('button', { name: 'بـ' }));
+    const placed = container.querySelector('[data-match-placed="ب"]') as HTMLElement;
+    const undo = container.querySelector('[data-match-undo="ب"]') as HTMLButtonElement;
+    expect(placed).toBeTruthy();
+    expect(undo).toBeTruthy();
+    expect(undo.className).toContain('match-chip-undo');
+    expect(undo.closest('.match-digit-placed-wrap')).toBe(placed.closest('.match-digit-placed-wrap'));
+    expect(placed.contains(undo)).toBe(false);
+
+    await user.click(undo);
+    expect(container.querySelector('[data-match-placed="ب"]')).toBeNull();
+    expect(container.querySelector('[data-match-undo="ب"]')).toBeNull();
+  });
 });
 
 describe('MatchPairsExercise retry', () => {

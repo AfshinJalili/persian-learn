@@ -6,6 +6,7 @@ import { shuffleSeeded } from '@/lib/shuffle';
 import { playOptionAudio } from '@/lib/spoken-option';
 import { maybePlayMatchUndoHint } from '@/lib/match-undo-hint';
 import SpeakerButton from '@/components/SpeakerButton';
+import { PlacedItem, PlacedUndoBadge } from '@/components/PlacedUndoBadge';
 
 interface BuildWordExerciseProps {
   exercise: Exercise;
@@ -67,7 +68,7 @@ export default function BuildWordExercise({
           <div className="text-2xl text-brown-400">حروف را انتخاب کنید</div>
         ) : (
           selectedLetters.map((letter, index) => (
-            <span key={`${letter}-${index}`} className="build-placed-wrap match-digit-placed-wrap">
+            <PlacedItem key={`${letter}-${index}`} className="build-placed-wrap">
               <button
                 type="button"
                 aria-label={letter}
@@ -76,19 +77,15 @@ export default function BuildWordExercise({
                 onClick={() => handlePlacedClick(index)}
                 className="bg-[var(--blue-100)] border-4 border-[var(--blue-700)] rounded-2xl w-16 h-20 min-h-[48px] flex items-center justify-center match-digit-slot-placed"
               >
-                <span className="text-5xl font-bold text-brown-900 leading-none">{letter}</span>
+                <span className="glyph text-5xl font-bold text-brown-900 leading-none">{letter}</span>
               </button>
-              <button
-                type="button"
-                aria-label="پس گرفتن"
-                data-build-undo={letter}
-                disabled={disabled}
-                onClick={() => handlePlacedClick(index)}
-                className="match-chip-undo"
-              >
-                ✕
-              </button>
-            </span>
+              <PlacedUndoBadge
+                value={letter}
+                locked={disabled}
+                onUndo={() => handlePlacedClick(index)}
+                marker="build"
+              />
+            </PlacedItem>
           ))
         )}
       </div>

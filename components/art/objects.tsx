@@ -396,7 +396,7 @@ export const OBJECT_CARD_INNER_FALLBACK = { width: 81, height: 140 };
 export const OBJECT_MATCH_INNER_FALLBACK = { width: 220, height: 72 };
 export const OBJECT_MATCH_LIST_FALLBACK = { width: 342, height: 280 };
 export const MATCH_LIST_GAP = 4;
-export const MATCH_ROW_PADDING = 16;
+export const MATCH_ROW_PADDING = 12;
 export const MATCH_ROW_GAP = 8;
 export const MATCH_DIGIT_SLOT = 48;
 export const MATCH_UNDO_BADGE = 48;
@@ -605,12 +605,7 @@ export function matchApplesBoxFromList(
 ): { width: number; height: number; offsetWidth: number } {
   const rows = Math.max(1, rowCount);
   const rowHeight = (list.height - MATCH_LIST_GAP * Math.max(0, rows - 1)) / rows;
-  const chromeX =
-    MATCH_ROW_PADDING * 2 +
-    MATCH_ROW_GAP +
-    MATCH_DIGIT_SLOT +
-    MATCH_UNDO_GAP +
-    MATCH_UNDO_BADGE;
+  const chromeX = MATCH_ROW_PADDING * 2 + MATCH_ROW_GAP + MATCH_DIGIT_SLOT;
   const chromeY = MATCH_ROW_PADDING * 2;
   return {
     width: Math.max(8, list.width - chromeX),
@@ -734,6 +729,8 @@ export function ObjectCluster({
     <span
       className="object-cluster"
       data-count={count}
+      data-cols={cols}
+      data-rows={rows}
       data-layout={layout}
       style={
         {
