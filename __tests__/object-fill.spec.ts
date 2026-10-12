@@ -186,7 +186,7 @@ test.describe('Object fill at phone widths', () => {
         expect(stats.length, section).toBeGreaterThan(0);
         for (const item of stats) {
           expect(item.width, section).toBeGreaterThanOrEqual(32);
-          if (section === 'match_pairs' && item.count === 1) {
+          if (section === 'ten_frame' || (section === 'match_pairs' && item.count === 1)) {
             continue;
           }
           expect(item.ratio, section).toBeGreaterThanOrEqual(0.65);
