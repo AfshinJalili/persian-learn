@@ -499,11 +499,24 @@ export function objectClusterLayoutForBox(
         Number.isFinite(sizeH) && sizeH > 8 ? sizeH : sizeW
       );
     };
-    let best = { cols: Math.min(5, count), rows: count > 5 ? 2 : 1, unclamped: score(Math.min(5, count), count > 5 ? 2 : 1) };
-    const oneRow = score(count, 1);
-    if (oneRow > best.unclamped + 0.25) {
-      best = { cols: count, rows: 1, unclamped: oneRow };
-    }
+    const fill = (cols: number, size: number) =>
+      (cols * size + gap * Math.max(0, cols - 1)) / Math.max(1, innerWidth);
+    const wrapped = {
+      cols: Math.min(5, count),
+      rows: count > 5 ? 2 : 1,
+      unclamped: score(Math.min(5, count), count > 5 ? 2 : 1),
+    };
+    const oneRow = { cols: count, rows: 1, unclamped: score(count, 1) };
+    const wrappedOk = fill(wrapped.cols, wrapped.unclamped) >= 0.6;
+    const oneRowOk = fill(oneRow.cols, oneRow.unclamped) >= 0.6;
+    const best =
+      wrappedOk === oneRowOk
+        ? oneRow.unclamped > wrapped.unclamped + 0.25
+          ? oneRow
+          : wrapped
+        : oneRowOk
+          ? oneRow
+          : wrapped;
     return {
       ...best,
       size: Math.max(8, Math.floor(best.unclamped)),
