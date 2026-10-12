@@ -59,7 +59,7 @@ export default function MatchPairsExercise({
     rightOptions.every(looksLikeObjects) &&
     leftOptions.every((item) => /^[0-9۰-۹]+$/.test(item));
   const appleCounts = rightOptions.map((option) => splitObjectTokens(option).length);
-  const { ref, size: appleSize, box } = useSharedClusterSize(appleCounts, {
+  const { ref, box } = useSharedClusterSize(appleCounts, {
     fallback: OBJECT_MATCH_INNER_FALLBACK,
   });
 
@@ -163,7 +163,6 @@ export default function MatchPairsExercise({
                 <div className="match-object-apples">
                   <ObjectCluster
                     token={option}
-                    itemSize={appleSize}
                     boxWidth={box.width}
                     boxHeight={box.height}
                   />

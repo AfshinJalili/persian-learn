@@ -151,10 +151,8 @@ test.describe('Codex review navigation fixes', () => {
       const dots = [...three.querySelectorAll('.object-cluster > .illus')]
         .map((dot) => dot.getBoundingClientRect())
         .sort((left, right) => left.y - right.y || left.x - right.x);
-      const unique = new Set(sizes.map((size) => Math.round(size)));
       return {
         sizes,
-        unique: unique.size,
         cardX: cardBox.x,
         cardRight: cardBox.right,
         firstDotX: dots[0]?.x ?? 0,
@@ -169,8 +167,7 @@ test.describe('Codex review navigation fixes', () => {
     });
     expect(layout).toBeTruthy();
     expect(layout!.sizes).toHaveLength(3);
-    expect(layout!.unique).toBe(1);
-    expect(layout!.sizes[0] ?? 0).toBeGreaterThanOrEqual(32);
+    expect(Math.min(...layout!.sizes)).toBeGreaterThanOrEqual(32);
     expect(layout!.firstDotX).toBeGreaterThanOrEqual(layout!.cardX);
     expect(layout!.lastDotRight).toBeLessThanOrEqual(layout!.cardRight);
   });

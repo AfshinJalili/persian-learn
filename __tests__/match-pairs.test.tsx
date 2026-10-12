@@ -142,7 +142,7 @@ function appleExercise(): Exercise {
 }
 
 describe('MatchPairsExercise object rows', () => {
-  it('keeps every apple the same size in a 1-2-3 question', () => {
+  it('sizes each apple row from its own count instead of a shared size', () => {
     const { container } = render(
       <MatchPairsExercise
         exercise={appleExercise()}
@@ -151,13 +151,16 @@ describe('MatchPairsExercise object rows', () => {
         disabled={false}
       />
     );
-    const clusters = [...container.querySelectorAll('.match-object-apples .object-cluster')];
-    const sizes = clusters.map((cluster) => (cluster as HTMLElement).style.getPropertyValue('--object-size'));
-    expect(sizes.length).toBe(3);
-    expect(new Set(sizes).size).toBe(1);
-    expect(sizes[0]).not.toBe('24px');
-    const items = [...container.querySelectorAll('.match-object-apples .illus')] as HTMLElement[];
-    expect(new Set(items.map((item) => item.style.width)).size).toBe(1);
+    const clusters = [...container.querySelectorAll('.match-object-apples .object-cluster')] as HTMLElement[];
+    expect(clusters).toHaveLength(3);
+    const sizeByCount = Object.fromEntries(
+      clusters.map((cluster) => [
+        cluster.getAttribute('data-count'),
+        Number.parseInt(cluster.style.getPropertyValue('--object-size') || '0', 10),
+      ])
+    );
+    expect(sizeByCount['1']).toBeGreaterThan(sizeByCount['3']);
+    expect(sizeByCount['3']).toBeGreaterThanOrEqual(32);
   });
 
   it('pairs a number onto a slot when the number is tapped first', async () => {
@@ -240,7 +243,6 @@ describe('MatchPairsExercise object rows', () => {
     );
     const clusters = [...container.querySelectorAll('.match-object-apples .object-cluster')] as HTMLElement[];
     expect(clusters).toHaveLength(3);
-    expect(new Set(clusters.map((cluster) => cluster.style.getPropertyValue('--object-size'))).size).toBe(1);
     const ten = clusters.find((cluster) => cluster.getAttribute('data-count') === '10');
     expect(ten).toHaveAttribute('data-layout', 'grid');
     expect(ten?.style.getPropertyValue('--object-cols')).toBe('5');
@@ -269,7 +271,6 @@ describe('MatchPairsExercise object rows', () => {
       />
     );
     const clusters = [...container.querySelectorAll('.match-object-apples .object-cluster')] as HTMLElement[];
-    expect(new Set(clusters.map((cluster) => cluster.style.getPropertyValue('--object-size'))).size).toBe(1);
     const six = clusters.find((cluster) => cluster.getAttribute('data-count') === '6');
     expect(six).toHaveAttribute('data-layout', 'grid');
     expect(six?.style.getPropertyValue('--object-cols')).toBe('3');

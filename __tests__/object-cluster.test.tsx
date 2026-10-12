@@ -2,23 +2,27 @@ import { describe, expect, it } from '@jest/globals';
 import { render } from '@testing-library/react';
 import {
   OBJECT_CLUSTER_MIN_SIZE,
+  OBJECT_SINGLE_WIDTH_RATIO,
   ObjectCluster,
   objectClusterColumns,
   objectClusterItemSize,
   objectClusterItemSizeForBox,
   objectClusterLayoutForBox,
   objectClusterRows,
-  sharedObjectClusterItemSize,
 } from '../components/art/objects';
 
 describe('ObjectCluster', () => {
   it('picks the tall-card column count that maximizes item size', () => {
-    expect(objectClusterLayoutForBox(1, 81, 140)).toMatchObject({ cols: 1, rows: 1, size: 81 });
+    expect(objectClusterLayoutForBox(1, 81, 140)).toMatchObject({
+      cols: 1,
+      rows: 1,
+      size: Math.floor(81 * OBJECT_SINGLE_WIDTH_RATIO),
+    });
     expect(objectClusterLayoutForBox(2, 81, 140)).toMatchObject({ cols: 1, rows: 2, size: 66 });
     expect(objectClusterLayoutForBox(3, 81, 140)).toMatchObject({ cols: 1, rows: 3, size: 41 });
     expect(objectClusterLayoutForBox(4, 81, 140)).toMatchObject({ cols: 2, rows: 2, size: 36 });
     expect(objectClusterLayoutForBox(5, 81, 140)).toMatchObject({ cols: 2, rows: 3, size: 36 });
-    expect(objectClusterItemSize(1)).toBe(81);
+    expect(objectClusterItemSize(1)).toBe(Math.floor(81 * OBJECT_SINGLE_WIDTH_RATIO));
     expect(objectClusterItemSize(5)).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
     expect(objectClusterItemSize(10)).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
   });
@@ -37,13 +41,12 @@ describe('ObjectCluster', () => {
     expect(six.size).toBeGreaterThan(OBJECT_CLUSTER_MIN_SIZE);
     expect(ten).toMatchObject({ cols: 5, rows: 2 });
     expect(ten.size).toBeGreaterThan(OBJECT_CLUSTER_MIN_SIZE);
-    expect(objectClusterLayoutForBox(8, 220, 84).size).toBe(six.size);
   });
 
-  it('uses the fullest card size so a smaller count cannot hint the answer', () => {
-    expect(sharedObjectClusterItemSize([1, 2, 3])).toBe(objectClusterItemSize(3));
-    expect(sharedObjectClusterItemSize([1, 2, 3])).toBe(sharedObjectClusterItemSize([3]));
-    expect(sharedObjectClusterItemSize([1, 2, 3])).toBe(41);
+  it('sizes a single item to about 70% of the card width', () => {
+    expect(objectClusterLayoutForBox(1, 100, 140).size).toBe(70);
+    expect(objectClusterLayoutForBox(1, 81, 40).size).toBe(40);
+    expect(objectClusterLayoutForBox(1, 40, 140).size).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
   });
 
   it('stacks three items in one column in a tall 81x140 card', () => {

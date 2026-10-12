@@ -22,7 +22,7 @@ export default function CompareMoreLessExercise({
   disabled,
 }: CompareMoreLessExerciseProps) {
   const { left, right, ask } = exercise.payload as { left: string; right: string; ask: string };
-  const { ref, size, box } = useSharedClusterSize([
+  const { ref, box } = useSharedClusterSize([
     splitObjectTokens(left).length,
     splitObjectTokens(right).length,
   ]);
@@ -58,7 +58,6 @@ export default function CompareMoreLessExercise({
         >
           <ObjectCluster
             token={left}
-            itemSize={size}
             boxWidth={box.width}
             boxHeight={box.height}
           />
@@ -71,7 +70,6 @@ export default function CompareMoreLessExercise({
         >
           <ObjectCluster
             token={right}
-            itemSize={size}
             boxWidth={box.width}
             boxHeight={box.height}
           />

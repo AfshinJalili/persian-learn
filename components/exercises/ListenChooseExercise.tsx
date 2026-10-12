@@ -6,7 +6,14 @@ import { exerciseHeading } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
-import { ObjectArt, ObjectCluster, looksLikeObjects, objectClusterChoiceGridClass, splitObjectTokens } from '@/components/art/objects';
+import {
+  OBJECT_CLUSTER_MIN_SIZE,
+  ObjectArt,
+  ObjectCluster,
+  looksLikeObjects,
+  objectClusterChoiceGridClass,
+  splitObjectTokens,
+} from '@/components/art/objects';
 import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 import TurtleIcon from '@/components/ui/TurtleIcon';
 
@@ -31,7 +38,7 @@ export default function ListenChooseExercise({
   const objectCounts = options.map((option) =>
     looksLikeObjects(option) ? splitObjectTokens(option).length : 1
   );
-  const { ref, size, box } = useSharedClusterSize(objectCounts);
+  const { ref, box } = useSharedClusterSize(objectCounts);
 
   const handleSelect = (option: string) => {
     if (disabled) return;
@@ -79,7 +86,6 @@ export default function ListenChooseExercise({
               {looksLikeObjects(option) ? (
                 <ObjectCluster
                   token={option}
-                  itemSize={size}
                   boxWidth={box.width}
                   boxHeight={box.height}
                 />
@@ -88,7 +94,10 @@ export default function ListenChooseExercise({
                   {option}
                 </span>
               ) : (
-                <ObjectArt token={option} size={size} />
+                <ObjectArt
+                  token={option}
+                  size={Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.min(box.width, box.height))}
+                />
               )}
             </ChoiceButton>
           );

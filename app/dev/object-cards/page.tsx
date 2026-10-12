@@ -4,7 +4,6 @@ import {
   ObjectArt,
   ObjectCluster,
   OBJECT_MATCH_INNER_FALLBACK,
-  objectClusterLayoutForBox,
   objectClusterNeedsWideCard,
 } from '@/components/art/objects';
 import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
@@ -18,12 +17,11 @@ function FillingCard({
   token: string;
   className: string;
 }) {
-  const { ref, size, box } = useSharedClusterSize([count]);
+  const { ref, box } = useSharedClusterSize([count]);
   return (
     <div ref={ref} className={className} data-count={count}>
       <ObjectCluster
         token={token.repeat(count)}
-        itemSize={size}
         boxWidth={box.width}
         boxHeight={box.height}
       />
@@ -32,14 +30,13 @@ function FillingCard({
 }
 
 function CompareRow({ left, right, token }: { left: number; right: number; token: string }) {
-  const { ref, size, box } = useSharedClusterSize([left, right]);
+  const { ref, box } = useSharedClusterSize([left, right]);
   const stacked = objectClusterNeedsWideCard(Math.max(left, right));
   return (
     <div ref={ref} className={stacked ? 'cluster-stack' : 'grid2'} data-compare={`${left}-${right}`}>
       <div className="card object-choice-card">
         <ObjectCluster
           token={token.repeat(left)}
-          itemSize={size}
           boxWidth={box.width}
           boxHeight={box.height}
         />
@@ -47,7 +44,6 @@ function CompareRow({ left, right, token }: { left: number; right: number; token
       <div className="card object-choice-card">
         <ObjectCluster
           token={token.repeat(right)}
-          itemSize={size}
           boxWidth={box.width}
           boxHeight={box.height}
         />
@@ -83,7 +79,7 @@ function ThreeCardTypeGallery({
 }
 
 function MatchPairGalleryRow({ count, token }: { count: number; token: string }) {
-  const { ref, size, box } = useSharedClusterSize([count], {
+  const { ref, box } = useSharedClusterSize([count], {
     fallback: OBJECT_MATCH_INNER_FALLBACK,
   });
   return (
@@ -91,7 +87,6 @@ function MatchPairGalleryRow({ count, token }: { count: number; token: string })
       <div className="match-object-apples">
         <ObjectCluster
           token={token.repeat(count)}
-          itemSize={size}
           boxWidth={box.width}
           boxHeight={box.height}
         />
@@ -116,12 +111,6 @@ function TenFrame({ count, token }: { count: number; token: string }) {
 }
 
 export default function ObjectCardsGalleryPage() {
-  const appleSize = objectClusterLayoutForBox(
-    3,
-    OBJECT_MATCH_INNER_FALLBACK.width,
-    OBJECT_MATCH_INNER_FALLBACK.height
-  ).size;
-
   return (
     <div
       className="app-phone object-gallery-page"
@@ -185,7 +174,6 @@ export default function ObjectCardsGalleryPage() {
           {Array.from({ length: 10 }, (_, index) => (
             <MatchPairGalleryRow key={index + 1} count={index + 1} token="🍎" />
           ))}
-          <p className="muted">اندازهٔ مشترک برای سؤال ۱ تا ۳: {appleSize}px</p>
         </section>
 
         <section data-gallery-section="ten_frame">

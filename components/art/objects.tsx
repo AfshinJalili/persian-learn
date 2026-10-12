@@ -251,6 +251,7 @@ export function splitObjectTokens(token: string): string[] {
 
 export const OBJECT_CLUSTER_GAP = 8;
 export const OBJECT_CLUSTER_MIN_SIZE = 32;
+export const OBJECT_SINGLE_WIDTH_RATIO = 0.7;
 export const OBJECT_CARD_INNER_FALLBACK = { width: 81, height: 140 };
 export const OBJECT_MATCH_INNER_FALLBACK = { width: 220, height: 84 };
 
@@ -265,6 +266,16 @@ export function objectClusterLayoutForBox(
 ): { cols: number; rows: number; size: number; unclamped: number } {
   if (count <= 0) {
     return { cols: 1, rows: 1, size: 0, unclamped: 0 };
+  }
+
+  if (count === 1) {
+    const unclamped = Math.min(innerWidth * OBJECT_SINGLE_WIDTH_RATIO, innerHeight);
+    return {
+      cols: 1,
+      rows: 1,
+      unclamped,
+      size: Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.floor(unclamped)),
+    };
   }
 
   const sizeFor = (cols: number, rows: number) => {
@@ -358,11 +369,6 @@ export function objectClusterItemSize(count: number): number {
     OBJECT_CARD_INNER_FALLBACK.width,
     OBJECT_CARD_INNER_FALLBACK.height
   );
-}
-
-export function sharedObjectClusterItemSize(counts: number[]): number {
-  const fullest = Math.max(1, ...counts);
-  return objectClusterItemSize(fullest);
 }
 
 export function resolveAvatarId(value: string): AvatarId {

@@ -38,12 +38,17 @@ describe('TapPictureExercise', () => {
     );
     expect(container.querySelector('.grid3.picture-grid')).toBeTruthy();
     expect(container.querySelector('.grid2')).toBeNull();
-    const sizes = [...container.querySelectorAll('.object-cluster')].map(
-      (cluster) => (cluster as HTMLElement).style.getPropertyValue('--object-size')
+    const clusters = [...container.querySelectorAll('.object-cluster')] as HTMLElement[];
+    expect(clusters).toHaveLength(3);
+    const sizeByCount = Object.fromEntries(
+      clusters.map((cluster) => [
+        cluster.getAttribute('data-count'),
+        Number.parseInt(cluster.style.getPropertyValue('--object-size') || '0', 10),
+      ])
     );
-    expect(sizes).toHaveLength(3);
-    expect(new Set(sizes).size).toBe(1);
-    expect(sizes[0]).not.toBe('24px');
+    expect(sizeByCount['1']).toBeGreaterThan(sizeByCount['3']);
+    expect(sizeByCount['3']).toBeGreaterThanOrEqual(32);
+    expect(sizeByCount['1']).not.toBe(24);
   });
 
   it('stacks high-count cards so items can stay at 32px', () => {
