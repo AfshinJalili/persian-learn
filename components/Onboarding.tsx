@@ -58,6 +58,10 @@ export default function Onboarding() {
     setStep(4);
   };
 
+  const handleBack = () => {
+    setStep((currentStep) => Math.max(currentStep - 1, 0));
+  };
+
   const handleTrackSelect = async (track: 'math' | 'alphabet') => {
     const progress = await getProgress();
     progress.currentTrack = track;
@@ -98,7 +102,8 @@ export default function Onboarding() {
 
   if (step === 1) {
     return (
-      <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-6">
+      <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-6 relative">
+        <button type="button" onClick={handleBack} aria-label="بازگشت" className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white border-2 border-[var(--line-strong)] text-2xl text-[var(--ink)]">←</button>
         <HodaMascot className="w-40 h-40 mb-8" />
         <h1 className="text-4xl font-black text-[var(--ink)] mb-12 text-center">
           صدا را می‌شنوید؟
@@ -129,7 +134,8 @@ export default function Onboarding() {
 
   if (step === 2) {
     return (
-      <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-6">
+      <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-6 relative">
+        <button type="button" onClick={handleBack} aria-label="بازگشت" className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white border-2 border-[var(--line-strong)] text-2xl text-[var(--ink)]">←</button>
         <h1 className="text-3xl font-black text-[var(--ink)] mb-8 text-center">
           یک تصویر برای خودتان انتخاب کنید
         </h1>
@@ -151,7 +157,8 @@ export default function Onboarding() {
 
   if (step === 3) {
     return (
-      <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-6">
+      <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-6 relative">
+        <button type="button" onClick={handleBack} aria-label="بازگشت" className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white border-2 border-[var(--line-strong)] text-2xl text-[var(--ink)]">←</button>
         <div className="text-8xl mb-8">{selectedAvatar}</div>
         <h1 className="text-3xl font-black text-[var(--ink)] mb-8 text-center">
           چه صدایتان کنیم؟
@@ -181,7 +188,8 @@ export default function Onboarding() {
 
   if (step === 4) {
     return (
-      <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-6">
+      <div className="min-h-screen bg-[var(--bg)] flex flex-col items-center justify-center p-6 relative">
+        <button type="button" onClick={handleBack} aria-label="بازگشت" className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white border-2 border-[var(--line-strong)] text-2xl text-[var(--ink)]">←</button>
         <h1 className="text-3xl font-black text-[var(--ink)] mb-12 text-center">
           امروز چه یاد بگیریم؟
         </h1>
