@@ -21,7 +21,7 @@ export const COUNT_WORDS = [
 ] as const;
 
 export const COUNT_CARD_BASE_ZONE = 208;
-export const COUNT_CARD_BASE_HEIGHT = 118;
+export const COUNT_CARD_BASE_HEIGHT = 120;
 export const COUNT_CARD_MIN_SIZE = 32;
 export const COUNT_CARD_GAP_PREFERRED = 12;
 export const COUNT_CARD_GAP_MIN = 8;
@@ -220,10 +220,7 @@ export default function CountCard({
       data-count-card
       data-heard={heard ? 'true' : 'false'}
       className={className}
-      style={{
-        animationDelay: `${staggerIndex * 120}ms`,
-        minHeight: Math.max(layout.height + 24, COUNT_CARD_BASE_HEIGHT),
-      }}
+      style={{ animationDelay: `${staggerIndex * 120}ms` }}
       onClick={onPlay}
       onKeyDown={handleKeyDown}
     >
@@ -232,19 +229,21 @@ export default function CountCard({
           {liveWord}
         </span>
       ) : null}
-      <div className={`cc-tile${pulse ? ' pulse' : ''}`} aria-hidden="true">
-        <span className="cc-num">{formatPersianNumber(count)}</span>
-        <span className="cc-word">{countWord(count)}</span>
+      <div className="cc-lead" aria-hidden="true">
+        <div className={`cc-tile${pulse ? ' pulse' : ''}`}>
+          <span className="cc-num">{formatPersianNumber(count)}</span>
+          <span className="cc-word">{countWord(count)}</span>
+        </div>
+        <span className="cc-spk">
+          <SpeakerIcon />
+          {heard ? (
+            <span className="cc-check" data-cc-check>
+              <Check strokeWidth={2.8} />
+            </span>
+          ) : null}
+        </span>
       </div>
-      <span className="cc-spk" aria-hidden="true">
-        <SpeakerIcon />
-        {heard ? (
-          <span className="cc-check" data-cc-check aria-hidden="true">
-            <Check strokeWidth={2.8} />
-          </span>
-        ) : null}
-      </span>
-      <div ref={zoneRef} className="cc-zone" aria-hidden="true">
+      <div ref={zoneRef} className="cc-zone" aria-hidden="true" style={{ minHeight: layout.height }}>
         <div className="cc-cluster" style={{ width: layout.width, height: layout.height }}>
           {layout.positions.map((position, index) => {
             const highlighted = highlightIndex === index;

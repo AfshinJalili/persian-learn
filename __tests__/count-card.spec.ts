@@ -53,6 +53,14 @@ async function seedProgress(page: import('@playwright/test').Page) {
 }
 
 function measureCountCards() {
+  const overflowOutside = (inner: DOMRect, outer: DOMRect) =>
+    Math.max(
+      outer.top - inner.top,
+      inner.right - outer.right,
+      inner.bottom - outer.bottom,
+      outer.left - inner.left,
+      0
+    );
   const cards = [...document.querySelectorAll('[data-count-card]')] as HTMLElement[];
   return cards.map((card) => {
     const cardBox = card.getBoundingClientRect();
@@ -65,15 +73,8 @@ function measureCountCards() {
     const itemNodes = [...card.querySelectorAll('.cc-item')] as HTMLElement[];
     const items = itemNodes.map((node) => {
       const box = node.getBoundingClientRect();
-      const overflow = zoneBox
-        ? Math.max(
-            zoneBox.top - box.top,
-            box.right - zoneBox.right,
-            box.bottom - zoneBox.bottom,
-            zoneBox.left - box.left,
-            0
-          )
-        : 0;
+      const overflow = zoneBox ? overflowOutside(box, zoneBox) : 0;
+      const cardOverflow = overflowOutside(box, cardBox);
       return {
         width: Math.round(node.offsetWidth),
         height: Math.round(node.offsetHeight),
@@ -82,6 +83,7 @@ function measureCountCards() {
         top: box.top,
         bottom: box.bottom,
         overflow,
+        cardOverflow,
       };
     });
     let minGap = Infinity;
@@ -124,6 +126,28 @@ function measureCountCards() {
             checkBox.top >= tileBox.bottom - 0.5
           )
         : false;
+    const clusterLeft = items.length ? Math.min(...items.map((item) => item.left)) : cardBox.left;
+    const clusterRight = items.length ? Math.max(...items.map((item) => item.right)) : cardBox.right;
+    const clusterTop = items.length ? Math.min(...items.map((item) => item.top)) : cardBox.top;
+    const clusterBottom = items.length ? Math.max(...items.map((item) => item.bottom)) : cardBox.bottom;
+    const padTop = clusterTop - cardBox.top;
+    const padBottom = cardBox.bottom - clusterBottom;
+    const padStart = cardBox.right - clusterRight;
+    const padEnd = clusterLeft - cardBox.left;
+    let speakerItemGap = Infinity;
+    if (speakerBox && items.length) {
+      for (const item of items) {
+        const overlapX = Math.min(item.right, speakerBox.right) - Math.max(item.left, speakerBox.left);
+        const overlapY = Math.min(item.bottom, speakerBox.bottom) - Math.max(item.top, speakerBox.top);
+        if (overlapX > 0.5 && overlapY > 0.5) {
+          speakerItemGap = Math.min(speakerItemGap, -Math.min(overlapX, overlapY));
+          continue;
+        }
+        const dx = overlapX > 0 ? 0 : Math.max(item.left, speakerBox.left) - Math.min(item.right, speakerBox.right);
+        const dy = overlapY > 0 ? 0 : Math.max(item.top, speakerBox.top) - Math.min(item.bottom, speakerBox.bottom);
+        speakerItemGap = Math.min(speakerItemGap, Math.hypot(dx, dy) > 0 ? (dx || dy) : 0);
+      }
+    }
     return {
       count: Number(card.getAttribute('data-count') || '0'),
       cardWidth: Math.round(cardBox.width),
@@ -135,10 +159,20 @@ function measureCountCards() {
       minItem: items.length ? Math.min(...items.map((item) => item.width)) : 0,
       maxItem: items.length ? Math.max(...items.map((item) => item.width)) : 0,
       itemOverflow: items.length ? Math.max(...items.map((item) => item.overflow)) : 0,
+      cardOverflow: Math.max(
+        items.length ? Math.max(...items.map((item) => item.cardOverflow)) : 0,
+        tileBox ? overflowOutside(tileBox, cardBox) : 0,
+        speakerBox ? overflowOutside(speakerBox, cardBox) : 0
+      ),
       minGap: items.length > 1 ? minGap : 12,
+      minPad: Math.min(padTop, padBottom, padStart, padEnd),
+      padTop,
+      padBottom,
+      speakerItemGap,
       speakerSize: speakerBox ? Math.round(Math.min(speakerBox.width, speakerBox.height)) : 0,
       speakerOnTile,
       checkOnTile,
+      checkSize: checkBox ? Math.round(Math.min(checkBox.width, checkBox.height)) : 0,
       wordSize: tile
         ? Number.parseFloat(getComputedStyle(tile.querySelector('.cc-word') as Element).fontSize)
         : 0,
@@ -172,9 +206,13 @@ test.describe('Count cards', () => {
       for (const card of second) {
         expect(card.cardWidth, `n=${card.count}`).toBeLessThanOrEqual(viewport.width);
         expect(card.itemOverflow, `n=${card.count}`).toBeLessThanOrEqual(2);
+        expect(card.cardOverflow, `n=${card.count}`).toBeLessThanOrEqual(1);
         expect(card.minItem, `n=${card.count}`).toBeGreaterThanOrEqual(32);
         expect(card.maxItem, `n=${card.count}`).toBe(card.minItem);
         expect(card.minGap, `n=${card.count}`).toBeGreaterThanOrEqual(8);
+        expect(card.minPad, `n=${card.count}`).toBeGreaterThanOrEqual(12);
+        expect(Math.abs(card.padTop - card.padBottom), `n=${card.count}`).toBeLessThanOrEqual(6);
+        expect(card.speakerItemGap, `n=${card.count}`).toBeGreaterThanOrEqual(12);
         expect(card.overflowX, `n=${card.count}`).toBeLessThanOrEqual(2);
         expect(card.speakerSize, `n=${card.count}`).toBeGreaterThanOrEqual(48);
         expect(card.speakerOnTile, `n=${card.count}`).toBe(false);
@@ -277,6 +315,12 @@ test.describe('Count cards', () => {
       );
     });
     expect(checkOverlap).toBe(false);
+    const checkSize = await page.evaluate(() => {
+      const check = document.querySelector('[data-cc-check]') as HTMLElement;
+      const box = check.getBoundingClientRect();
+      return Math.round(Math.min(box.width, box.height));
+    });
+    expect(checkSize).toBeGreaterThanOrEqual(28);
     await expect(continueBtn).toHaveAttribute('aria-disabled', 'true');
     await page.getByRole('button', { name: 'دو گنجشک' }).click();
     await expect(page.locator('[data-count-card][data-count="2"]')).toHaveAttribute(

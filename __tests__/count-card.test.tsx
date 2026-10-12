@@ -21,7 +21,7 @@ jest.mock('@/lib/audio', () => ({
 }));
 
 function itemBoxes(n: number, zoneWidth: number) {
-  const layout = countCardLayout(n, zoneWidth, 118);
+  const layout = countCardLayout(n, zoneWidth, 120);
   return layout.positions.map((position) => ({
     left: position.right,
     right: position.right + layout.size,
