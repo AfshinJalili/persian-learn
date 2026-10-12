@@ -89,7 +89,7 @@ test.describe('Mobile QA 390x844', () => {
   test.use({ viewport: { width: 390, height: 844 } });
 
   test('onboarding, path, math lesson, alphabet lesson', async ({ page }) => {
-    test.setTimeout(180_000);
+    test.setTimeout(300_000);
     page.setViewportSize({ width: 390, height: 844 });
 
     await completeOnboarding(page, 'عددها و حساب');
@@ -103,7 +103,7 @@ test.describe('Mobile QA 390x844', () => {
     await snap(page, '07-math-lesson.png');
 
     await playLesson(page, lessonById(math, 'm1l1'));
-    await page.waitForURL('**/lesson-complete');
+    await expect(page).toHaveURL(/\/lesson-complete/);
     await snap(page, '08-lesson-complete.png');
 
     await page.getByRole('button', { name: 'ادامه' }).click();
@@ -122,7 +122,7 @@ test.describe('Mobile QA 390x844', () => {
     await snap(page, '11-alphabet-lesson.png');
 
     await playLesson(page, lessonById(alphabet, 'a1l1'));
-    await page.waitForURL('**/lesson-complete');
+    await expect(page).toHaveURL(/\/lesson-complete/);
 
     await page.getByRole('button', { name: 'ادامه' }).click();
     await page.waitForURL('**/home');

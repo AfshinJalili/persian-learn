@@ -125,3 +125,29 @@ App: «من» header + back; huge emoji; three emoji stat cards; 🍎 عددها
 4. Exercise frame (X, 20px RTL progress, speaker, «بررسی»).
 5. Feedback sheets.
 6. Each exercise + remaining screens, using mockup hoopoe SVG and object art.
+
+---
+
+## After (this branch)
+
+Playwright 390×844, `deviceScaleFactor: 2`. Shots in `docs/screenshots/design-match/after/`. Tokens, 3D edges, Lucide nav, hoopoe SVG, and object art now match the mockup system. Remaining gaps are almost all **live lesson copy** (the mockups used sample prompts) plus the mockup-only iOS status bar.
+
+| Screen | After vs mockup |
+|---|---|
+| 01 welcome | Matches: dots, bubble, hoopoe, type, speaker + «دوباره گوش کنید», 3D «شروع کنیم ←». No fake status bar. |
+| 02 avatar+name | Matches: 3×2 illustrated cards, chips, speakers, «ادامه ←» + «بعداً». Extra RTL back control (kept from review). |
+| 03 tracks | Matches: teal/plum 3D row-cards, preview tiles, «این را می‌خواهم», footer. Extra back control. |
+| 04 path | Matches: chips (حساب / ۵ / ۱۲۰), unit banner, 84/100 nodes, checks/star/locks, hoopoe, Lucide tab bar. Unit title is live («یک، دو، سه») not the mockup sample «شمردن از ۱ تا ۵». |
+| 05 tap | Same frame (X, RTL 20px bar, speaker, 3D cards, «بررسی»). Live content is a 3-option «س» word, not the 2×2 «سیب» sample. |
+| 06 listen | Hero speaker + «آهسته‌تر» + glyph cards + «بررسی». Live «ب / آ» (2 options) vs mockup 3. |
+| 07 trace | Matches: prompt, 380px stroke card, green start «۱», dashed path, arrow, hand, replay + eraser, disabled «بررسی». |
+| 08 count | Same tray + 120px digits + «بررسی». Live 4 keys, not 4 pomegranates. |
+| 09 match | Object rows, dashed 84px slots, number tray, «بررسی». Live apple rows vs mockup sample. |
+| 10 number line | Pin, RTL ticks, کمتر/بیشتر, pomegranate legend. Live 0–10 two-step prompt vs mockup 0–۵ «عدد ۳». |
+| 11 correct | Green sheet, check tile, speaker, «آفرین!», +۱۰ امتیاز, «ادامه ←», dimmed unselected cards. |
+| 12 retry | Clay sheet, hoopoe, speaker, hint + bulb, «دوباره امتحان کنیم». |
+| 13 complete | Cheer hoopoe, confetti, «آفرین، مادر جان!», lesson title, three stat tiles, «ادامه ←» + ghost replay. |
+| 14 streak | Flame+۵, week ش…ج with checks, ۱ از ۲ ring, rest-day card, پیشرفت tab. |
+| 15 profile | Tulip + name + مهر ۱۴۰۵, streak/XP/letters, teal/plum bars, letter tiles, speed + autoplay, من tab. |
+
+Intentional: no fake 9:41 status bar in the PWA. A11y floors kept (56px targets, 22px body, audio on every prompt).

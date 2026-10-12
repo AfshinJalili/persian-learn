@@ -47,20 +47,29 @@ export function getNextLesson(track: Track, completedLessons: string[]): Lesson 
 }
 
 export function isLessonUnlocked(track: Track, lessonId: string, completedLessons: string[]): boolean {
-  let found = false;
   for (const unit of track.units) {
     for (const lesson of unit.lessons) {
       if (lesson.id === lessonId) {
-        found = true;
-        break;
+        return true;
       }
       if (!completedLessons.includes(lesson.id)) {
         return false;
       }
     }
-    if (found) break;
   }
-  return true;
+  return false;
+}
+
+export function resolveLessonAccess(
+  track: Track,
+  lessonId: string,
+  completedLessons: string[]
+): Lesson | null {
+  const lesson = getLesson(track, lessonId);
+  if (!lesson || !isLessonUnlocked(track, lessonId, completedLessons)) {
+    return null;
+  }
+  return lesson;
 }
 
 export function getUnitProgress(unit: Unit, completedLessons: string[]): number {

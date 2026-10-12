@@ -166,11 +166,16 @@ export default function MatchPairsExercise({
               <button
                 type="button"
                 key={`left-${option}`}
+                aria-label={option}
                 onClick={() => handleLeftClick(option)}
                 disabled={disabled || isLeftUsed(option)}
                 className={`card h-20 w-full ${isLeftUsed(option) ? 'dim' : ''} ${selected === option ? 'selected' : ''}`}
               >
-                <span className="text-4xl font-extrabold">{option}</span>
+                {looksLikeObjects(option) ? (
+                  <ObjectArt token={option} size={48} />
+                ) : (
+                  <span className="text-4xl font-extrabold">{option}</span>
+                )}
               </button>
             ))}
           </div>
@@ -179,6 +184,7 @@ export default function MatchPairsExercise({
               <button
                 type="button"
                 key={`right-${option}`}
+                aria-label={option}
                 onClick={() => handleRightClick(option)}
                 disabled={disabled || !selected || isRightUsed(option)}
                 className={`card h-20 w-full ${isRightUsed(option) ? 'dim' : ''}`}

@@ -1,13 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { unlockAudio, playAudio } from '@/lib/audio';
+import { unlockAudio, playAudio, stopAudio } from '@/lib/audio';
+import { OnboardingGate } from '@/lib/onboarding-gate';
 import { getProgress, saveProgress } from '@/lib/progress';
+import BackChevron from '@/components/BackChevron';
 import HodaMascot from '@/components/HodaMascot';
 import SpeakerButton from '@/components/SpeakerButton';
-import SpeakerIcon from '@/components/ui/SpeakerIcon';
 import { AVATARS, AvatarArt, PomegranateSvg } from '@/components/art/objects';
 
 const NAMES = ['مادر جان', 'خانم جان', 'مامان', 'بانو'];
@@ -30,6 +31,7 @@ export default function Onboarding() {
   const [step, setStep] = useState(0);
   const [selectedAvatar, setSelectedAvatar] = useState('tulip');
   const [selectedName, setSelectedName] = useState('مادر جان');
+  const gateRef = useRef(new OnboardingGate());
   const router = useRouter();
 
   useEffect(() => {
@@ -42,41 +44,53 @@ export default function Onboarding() {
   }, [step]);
 
   const handleStart = async () => {
+    const token = gateRef.current.begin();
     unlockAudio();
     try {
       await playAudio(WELCOME);
     } catch {
       /* browsers without Persian TTS still continue */
     }
+    if (!gateRef.current.isCurrent(token)) return;
     setStep(1);
   };
 
   const handleContinueFromIdentity = () => {
+    gateRef.current.begin();
     setStep(2);
   };
 
   const handleSkipName = () => {
+    gateRef.current.begin();
     setSelectedName('');
     setStep(2);
   };
 
   const handleBack = () => {
+    gateRef.current.cancel();
+    stopAudio();
     setStep((current) => Math.max(current - 1, 0));
   };
 
   const handleTrackSelect = async (track: 'math' | 'alphabet') => {
-    const stored = await getProgress();
-    stored.currentTrack = track;
-    stored.avatar = selectedAvatar || 'tulip';
-    stored.name = selectedName;
-    stored.onboarded = true;
-    await saveProgress(stored);
+    const token = gateRef.current.begin();
 
     if (track === 'math') {
       await playAudio('عددها را شروع می‌کنیم!');
     } else {
       await playAudio('حروف الفبا را شروع می‌کنیم!');
     }
+
+    if (!gateRef.current.isCurrent(token)) return;
+
+    const stored = await getProgress();
+    if (!gateRef.current.isCurrent(token)) return;
+    stored.currentTrack = track;
+    stored.avatar = selectedAvatar || 'tulip';
+    stored.name = selectedName;
+    stored.onboarded = true;
+    await saveProgress(stored);
+    if (!gateRef.current.isCurrent(token)) return;
 
     router.push('/home');
   };
@@ -114,7 +128,7 @@ export default function Onboarding() {
           <div className="flex items-center justify-between">
             <Dots step={1} />
             <button type="button" className="icon-btn" onClick={handleBack} aria-label="بازگشت">
-              <ArrowLeft strokeWidth={2.6} />
+              <BackChevron />
             </button>
           </div>
           <div className="prompt">
@@ -176,7 +190,7 @@ export default function Onboarding() {
         <div className="flex items-center justify-between">
           <Dots step={2} />
           <button type="button" className="icon-btn" onClick={handleBack} aria-label="بازگشت">
-            <ArrowLeft strokeWidth={2.6} />
+            <BackChevron />
           </button>
         </div>
         <div className="prompt">

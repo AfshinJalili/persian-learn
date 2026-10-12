@@ -1,6 +1,7 @@
 'use client';
 
 import { playAudio } from '@/lib/audio';
+import { comparePrompt } from '@/lib/compare';
 import { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import { ObjectArt } from '@/components/art/objects';
@@ -18,7 +19,7 @@ export default function CompareMoreLessExercise({
   onAnswerChange,
   disabled,
 }: CompareMoreLessExerciseProps) {
-  const { left, right } = exercise.payload as { left: string; right: string; ask: string };
+  const { left, right, ask } = exercise.payload as { left: string; right: string; ask: string };
 
   const select = async (value: string, spoken: string) => {
     if (disabled) return;
@@ -30,7 +31,7 @@ export default function CompareMoreLessExercise({
     <>
       <div className="prompt">
         <SpeakerButton text={exercise.audio_script} />
-        <h2>کدام بیشتر است؟</h2>
+        <h2>{comparePrompt(ask)}</h2>
       </div>
       <div className="grid2">
         <button
