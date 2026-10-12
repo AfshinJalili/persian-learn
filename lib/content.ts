@@ -67,3 +67,17 @@ export function getUnitProgress(unit: Unit, completedLessons: string[]): number 
   const completed = unit.lessons.filter(l => completedLessons.includes(l.id)).length;
   return unit.lessons.length > 0 ? (completed / unit.lessons.length) * 100 : 0;
 }
+
+export function countTrackLessons(track: Track): number {
+  return track.units.reduce((sum, unit) => sum + unit.lessons.length, 0);
+}
+
+export function trackCompletionPercent(completedLessons: string[], track: Track): number {
+  const total = countTrackLessons(track);
+  if (total === 0) {
+    return 0;
+  }
+  const lessonIds = new Set(track.units.flatMap((unit) => unit.lessons.map((lesson) => lesson.id)));
+  const done = completedLessons.filter((id) => lessonIds.has(id)).length;
+  return Math.min(100, (done / total) * 100);
+}

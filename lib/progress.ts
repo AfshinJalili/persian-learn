@@ -1,5 +1,6 @@
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 import type { UserProgress, LessonProgress } from './types';
+import { addDays, isSamePersianWeek, todayDateString, diffDays } from './calendar';
 
 interface ProgressDB extends DBSchema {
   progress: {
@@ -27,6 +28,7 @@ function defaultProgress(): UserProgress {
     dailyGoal: 1,
     dailyLessonsCompleted: 0,
     restDaysUsed: 0,
+    activityDates: [],
     weakItems: [],
     avatar: '',
     name: '',
@@ -40,7 +42,73 @@ function normalizeProgress(progress: UserProgress): UserProgress {
     ...progress,
     onboarded: progress.onboarded ?? progress.completedLessons.length > 0,
     avatar: progress.avatar ?? '',
+    activityDates: progress.activityDates ?? [],
   };
+}
+
+export function rollDailyProgress(progress: UserProgress, today: string): UserProgress {
+  if (progress.lastActivityDate === today) {
+    return progress;
+  }
+  if (progress.dailyLessonsCompleted === 0) {
+    return progress;
+  }
+  return { ...progress, dailyLessonsCompleted: 0 };
+}
+
+export function applyLessonCompletion(
+  progress: UserProgress,
+  lessonId: string,
+  xpEarned: number,
+  today: string
+): UserProgress {
+  const next: UserProgress = {
+    ...progress,
+    completedLessons: [...progress.completedLessons],
+    activityDates: [...(progress.activityDates ?? [])],
+    weakItems: progress.weakItems.map((item) => ({ ...item })),
+  };
+
+  if (!next.completedLessons.includes(lessonId)) {
+    next.completedLessons.push(lessonId);
+  }
+
+  next.xp += xpEarned;
+
+  if (!next.activityDates.includes(today)) {
+    next.activityDates.push(today);
+  }
+
+  if (next.lastActivityDate !== today) {
+    if (next.lastActivityDate && !isSamePersianWeek(next.lastActivityDate, today)) {
+      next.restDaysUsed = 0;
+    }
+
+    const yesterday = addDays(today, -1);
+    if (next.lastActivityDate === yesterday || next.lastActivityDate === '') {
+      next.streak += 1;
+      if (next.streak > next.streakBest) {
+        next.streakBest = next.streak;
+      }
+    } else {
+      const daysSince = diffDays(next.lastActivityDate, today);
+      if (daysSince <= 3 && next.restDaysUsed < 2) {
+        next.restDaysUsed += 1;
+      } else {
+        next.streak = 1;
+        if (next.streakBest === 0) {
+          next.streakBest = 1;
+        }
+      }
+    }
+
+    next.lastActivityDate = today;
+    next.dailyLessonsCompleted = 1;
+  } else {
+    next.dailyLessonsCompleted += 1;
+  }
+
+  return next;
 }
 
 async function getDB() {
@@ -70,7 +138,12 @@ export async function getProgress(): Promise<UserProgress> {
     return created;
   }
 
-  return normalizeProgress(progress);
+  const normalized = normalizeProgress(progress);
+  const rolled = rollDailyProgress(normalized, todayDateString());
+  if (rolled.dailyLessonsCompleted !== normalized.dailyLessonsCompleted) {
+    await saveProgress(rolled);
+  }
+  return rolled;
 }
 
 export async function saveProgress(progress: UserProgress): Promise<void> {
@@ -83,43 +156,8 @@ export async function completeLesson(
   xpEarned: number,
   weakItems: string[]
 ): Promise<UserProgress> {
-  const progress = await getProgress();
-
-  if (!progress.completedLessons.includes(lessonId)) {
-    progress.completedLessons.push(lessonId);
-  }
-
-  progress.xp += xpEarned;
-
-  const today = new Date().toISOString().split('T')[0];
-  if (progress.lastActivityDate !== today) {
-    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-
-    if (progress.lastActivityDate === yesterday || progress.lastActivityDate === '') {
-      progress.streak += 1;
-      if (progress.streak > progress.streakBest) {
-        progress.streakBest = progress.streak;
-      }
-    } else {
-      const daysSince = Math.floor(
-        (Date.now() - new Date(progress.lastActivityDate).getTime()) / 86400000
-      );
-      if (daysSince <= 3 && progress.restDaysUsed < 2) {
-        progress.restDaysUsed += 1;
-      } else {
-        progress.streak = 1;
-        if (progress.streakBest === 0) {
-          progress.streakBest = 1;
-        }
-      }
-    }
-
-    progress.lastActivityDate = today ?? '';
-    progress.dailyLessonsCompleted = 1;
-    progress.restDaysUsed = 0;
-  } else {
-    progress.dailyLessonsCompleted += 1;
-  }
+  const today = todayDateString();
+  const progress = applyLessonCompletion(await getProgress(), lessonId, xpEarned, today);
 
   for (const exerciseId of weakItems) {
     const existing = progress.weakItems.find((w) => w.exerciseId === exerciseId);

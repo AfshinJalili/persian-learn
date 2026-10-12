@@ -7,6 +7,7 @@ import { loadTrack, isLessonUnlocked } from '@/lib/content';
 import type { Track, Lesson, UserProgress } from '@/lib/types';
 import { playAudio } from '@/lib/audio';
 import { formatPersianNumber } from '@/lib/persian';
+import { daysThisWeek } from '@/lib/calendar';
 import AudioUnlockOverlay from '@/components/AudioUnlockOverlay';
 
 export default function HomePage() {
@@ -73,7 +74,7 @@ export default function HomePage() {
             <div>
               <div className="text-xl font-bold">{progress.name || 'سلام'}</div>
               <div className="text-lg text-[var(--ink-2)]">
-                {formatPersianNumber(progress.streak)} روز این هفته
+                {formatPersianNumber(daysThisWeek(progress))} روز این هفته
               </div>
             </div>
           </div>

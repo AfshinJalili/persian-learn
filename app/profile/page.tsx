@@ -3,17 +3,26 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getProgress, saveProgress } from '@/lib/progress';
-import type { UserProgress } from '@/lib/types';
+import { loadTrack, trackCompletionPercent } from '@/lib/content';
+import type { Track, UserProgress } from '@/lib/types';
 import { playAudio } from '@/lib/audio';
 
 export default function ProfilePage() {
   const [progress, setProgress] = useState<UserProgress | null>(null);
+  const [mathTrack, setMathTrack] = useState<Track | null>(null);
+  const [alphabetTrack, setAlphabetTrack] = useState<Track | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     async function load() {
-      const prog = await getProgress();
+      const [prog, math, alphabet] = await Promise.all([
+        getProgress(),
+        loadTrack('math'),
+        loadTrack('alphabet'),
+      ]);
       setProgress(prog);
+      setMathTrack(math);
+      setAlphabetTrack(alphabet);
     }
 
     load();
@@ -145,7 +154,7 @@ export default function ProfilePage() {
                 <div
                   className="h-full bg-[var(--teal-700)] transition-all duration-500"
                   style={{
-                    width: `${Math.min(100, progress.completedLessons.filter((id) => id.startsWith('m')).length * 2)}%`,
+                    width: `${mathTrack ? trackCompletionPercent(progress.completedLessons, mathTrack) : 0}%`,
                   }}
                 />
               </button>
@@ -175,7 +184,7 @@ export default function ProfilePage() {
                 <div
                   className="h-full bg-[var(--plum-700)] transition-all duration-500"
                   style={{
-                    width: `${Math.min(100, progress.completedLessons.filter((id) => id.startsWith('a')).length * 2)}%`,
+                    width: `${alphabetTrack ? trackCompletionPercent(progress.completedLessons, alphabetTrack) : 0}%`,
                   }}
                 />
               </button>

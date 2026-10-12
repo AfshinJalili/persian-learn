@@ -4,27 +4,19 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getProgress } from '@/lib/progress';
 import { formatPersianNumber } from '@/lib/persian';
+import { daysThisWeek, isActiveOnWeekday } from '@/lib/calendar';
+import type { UserProgress } from '@/lib/types';
 
 const DAYS = ['شنبه', 'یک‌شنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه'];
 
 export default function StreakPage() {
-  const [progress, setProgress] = useState<any>(null);
-  const [daysThisWeek, setDaysThisWeek] = useState(0);
+  const [progress, setProgress] = useState<UserProgress | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     async function load() {
       const prog = await getProgress();
       setProgress(prog);
-      
-      const today = new Date();
-      const dayOfWeek = today.getDay();
-      const weekStart = new Date(today);
-      weekStart.setDate(today.getDate() - dayOfWeek);
-      
-      const lastActivity = prog.lastActivityDate ? new Date(prog.lastActivityDate) : null;
-      const days = lastActivity && lastActivity >= weekStart ? prog.streak : 0;
-      setDaysThisWeek(Math.min(days, 7));
     }
 
     load();
@@ -53,7 +45,7 @@ export default function StreakPage() {
         <div className="bg-white rounded-3xl p-8 mb-8 shadow-xl text-center">
           <div className="text-8xl mb-4">🔥</div>
           <div className="text-6xl font-black text-[var(--ink)] mb-2">
-            {formatPersianNumber(daysThisWeek)}
+            {formatPersianNumber(daysThisWeek(progress))}
           </div>
           <div className="text-2xl text-[var(--ink-2)] mb-6">
             روز این هفته
@@ -71,6 +63,7 @@ export default function StreakPage() {
             {DAYS.map((day, index) => {
               const iranWeekIndex = (new Date().getDay() + 1) % 7;
               const isToday = index === iranWeekIndex;
+              const wasActive = isActiveOnWeekday(progress, index);
               return (
                 <div
                   key={day}
@@ -82,10 +75,12 @@ export default function StreakPage() {
                     className={`w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold ${
                       isToday
                         ? 'bg-[var(--saffron-400)] text-[var(--ink)] ring-4 ring-[var(--saffron-400)]/30'
-                        : 'bg-[var(--surface-2)] text-[var(--ink-2)]'
+                        : wasActive
+                          ? 'bg-[var(--green-600)] text-white'
+                          : 'bg-[var(--surface-2)] text-[var(--ink-2)]'
                     }`}
                   >
-                    {isToday && '☀️'}
+                    {isToday ? '☀️' : wasActive ? '✓' : ''}
                   </div>
                 </div>
               );

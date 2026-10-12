@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { getProgress, completeLesson } from '@/lib/progress';
 import { loadTrack, getLesson } from '@/lib/content';
 import { playAudio, stopAudio, vibrate } from '@/lib/audio';
+import { answersEqual } from '@/lib/answers';
 import { feedbackKind } from '@/lib/lesson-feedback';
 import type { Lesson as LessonType } from '@/lib/types';
 import AudioUnlockOverlay from '@/components/AudioUnlockOverlay';
@@ -56,7 +57,7 @@ export default function LessonPage() {
   const handleCheck = async () => {
     if (!currentExercise || !userAnswer) return;
 
-    const correct = userAnswer === currentExercise.answer;
+    const correct = answersEqual(currentExercise.type, currentExercise.answer, userAnswer);
     const kind = feedbackKind(correct, attempts);
     setIsCorrect(correct);
     setAttempts(attempts + 1);
@@ -117,7 +118,7 @@ export default function LessonPage() {
 
     await completeLesson(lessonId, xpEarned, weakItems);
     await playAudio('آفرین! درس تمام شد.');
-    router.push('/lesson-complete');
+    router.push(`/lesson-complete?xp=${xpEarned}`);
   };
 
   const handleTraced = (answer: string) => {

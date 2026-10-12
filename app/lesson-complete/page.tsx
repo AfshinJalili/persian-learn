@@ -10,10 +10,14 @@ import HodaMascot from '@/components/HodaMascot';
 
 export default function LessonCompletePage() {
   const [progress, setProgress] = useState<UserProgress | null>(null);
+  const [xpEarned, setXpEarned] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
     async function load() {
+      const params = new URLSearchParams(window.location.search);
+      const xp = Number(params.get('xp') ?? '0');
+      setXpEarned(Number.isFinite(xp) ? xp : 0);
       const prog = await getProgress();
       setProgress(prog);
       try {
@@ -49,7 +53,7 @@ export default function LessonCompletePage() {
         <div className="bg-white rounded-2xl p-4 text-center shadow-lg">
           <div className="text-4xl mb-2">⭐</div>
           <div className="text-3xl font-black text-[var(--saffron-400)] mb-1">
-            +{formatPersianNumber(10)}
+            +{formatPersianNumber(xpEarned)}
           </div>
           <div className="text-sm text-[var(--ink-2)]">امتیاز</div>
         </div>
