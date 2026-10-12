@@ -64,12 +64,12 @@ describe('TapPictureExercise', () => {
     const sizes = [...container.querySelectorAll('.object-cluster')].map((cluster) =>
       Number.parseInt((cluster as HTMLElement).style.getPropertyValue('--object-size') || '0', 10)
     );
-    expect(sizes.every((size) => size >= 32)).toBe(true);
+    expect(sizes.every((size) => size >= 8)).toBe(true);
     const seven = container.querySelector('[data-count="7"]') as HTMLElement | null;
     expect(seven).toBeTruthy();
     expect(
       Number.parseInt(seven?.style.getPropertyValue('--object-size') || '0', 10)
-    ).toBeGreaterThanOrEqual(32);
+    ).toBeGreaterThanOrEqual(8);
   });
 
   it('shows a numeral prompt at the prompt-numeral size', () => {

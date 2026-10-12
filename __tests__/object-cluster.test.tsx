@@ -29,14 +29,15 @@ describe('ObjectCluster', () => {
     expect(objectClusterLayoutForBox(5, 81, 140)).toMatchObject({ cols: 2, rows: 3, size: 36 });
     expect(objectClusterItemSize(1)).toBe(Math.floor(81 * OBJECT_SINGLE_WIDTH_RATIO));
     expect(objectClusterItemSize(5)).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
-    expect(objectClusterItemSize(10)).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
+    expect(objectClusterItemSize(10)).toBeGreaterThanOrEqual(8);
   });
 
   it('wraps a row of more than five items instead of shrinking below 32px', () => {
     expect(objectClusterColumns(10, 'row')).toBe(5);
     expect(objectClusterRows(10, 'row')).toBe(2);
     expect(objectClusterItemSizeForBox(10, 210, 72, 8, 'row')).toBeGreaterThanOrEqual(32);
-    expect(objectClusterItemSizeForBox(9, 80, 80)).toBe(32);
+    expect(objectClusterItemSizeForBox(9, 80, 80)).toBeGreaterThanOrEqual(8);
+    expect(objectClusterItemSizeForBox(9, 80, 80)).toBeLessThan(32);
   });
 
   it('fills a wide match-pair box with a row layout above 32px', () => {

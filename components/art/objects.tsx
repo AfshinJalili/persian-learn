@@ -550,7 +550,7 @@ export function objectClusterLayoutForBox(
   if (layout === 'grid' || layout === 'match' || layout === 'picture') {
     return {
       ...best,
-      size: Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.floor(best.unclamped)),
+      size: Math.max(8, Math.floor(best.unclamped)),
     };
   }
 

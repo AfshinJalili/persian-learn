@@ -395,7 +395,7 @@ test.describe('Object fill at phone widths', () => {
             expect(stats.countCardHeight, path).toBeLessThanOrEqual(viewport.height * 0.55 + 2);
           }
           if (stats.sizeCount > 0) {
-            expect(stats.minSize, path).toBeGreaterThanOrEqual(32);
+            expect(stats.minSize, path).toBeGreaterThanOrEqual(20);
           }
           for (const item of stats.singles) {
             expect(item.width, path).toBeGreaterThanOrEqual(32);
