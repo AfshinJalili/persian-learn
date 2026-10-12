@@ -1,0 +1,85 @@
+/* persian-learn — design tokens (v1, 2026-10-12)
+   Font: Vazirmatn (rastikerdar/vazirmatn v33.003), self-hosted from ./fonts.
+   In production you may instead use Google Fonts:
+   https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800;900&display=swap */
+@font-face{font-family:"Vazirmatn";font-weight:400;font-display:swap;src:local("Vazirmatn"),url("fonts/Vazirmatn-Regular.woff2") format("woff2")}
+@font-face{font-family:"Vazirmatn";font-weight:500;font-display:swap;src:url("fonts/Vazirmatn-Medium.woff2") format("woff2")}
+@font-face{font-family:"Vazirmatn";font-weight:700;font-display:swap;src:url("fonts/Vazirmatn-Bold.woff2") format("woff2")}
+@font-face{font-family:"Vazirmatn";font-weight:800;font-display:swap;src:url("fonts/Vazirmatn-ExtraBold.woff2") format("woff2")}
+@font-face{font-family:"Vazirmatn";font-weight:900;font-display:swap;src:url("fonts/Vazirmatn-Black.woff2") format("woff2")}
+
+:root{
+  /* ---- Color: neutrals ---- */
+  --bg:#FFFBF2;            /* warm cream page */
+  --surface:#FFFFFF;
+  --surface-2:#F3F1EA;     /* sunken / track of progress */
+  --ink:#1B2A22;           /* primary text  14.5:1 on bg  AAA */
+  --ink-2:#4A5A51;         /* secondary text 7.1:1 on bg AAA */
+  --line:#D5DCD7;          /* decorative dividers only (not meaningful) */
+  --line-strong:#767F7A;   /* meaningful borders 4.0:1 (≥3:1 non-text) */
+
+  /* ---- Color: brand green ---- */
+  --green-050:#F1FBE7;
+  --green-100:#E8F7D6;     /* correct sheet bg */
+  --green-500:#58CC02;     /* decorative only: confetti, correct-card border, highlights */
+  --green-600:#3E9A00;     /* progress fill (3.2:1 vs track) & done nodes (white check 3.4:1) */
+  --green-700:#1F6408;     /* primary button bg; white text 7.3:1 AAA */
+  --green-800:#164A05;     /* button 3D edge */
+  --green-900:#1A4F06;     /* text on green-100  8.6:1 AAA */
+
+  /* ---- Color: audio blue ---- */
+  --blue-100:#E3EEFB;
+  --blue-700:#0D4F9E;      /* speaker button; white 8.0:1 AAA */
+  --blue-800:#083A76;
+
+  /* ---- Color: gentle "try again" (warm clay, not alarm red) ---- */
+  --clay-100:#FFF1E6;
+  --clay-400:#F0A36B;      /* border of wrong card (decorative + icon) */
+  --clay-800:#7A3410;      /* text on clay-100 8.2:1 AAA */
+
+  /* ---- Color: accents ---- */
+  --saffron-400:#FFC83D;   /* streak, XP; ink on saffron 9.7:1 */
+  --saffron-600:#D98E04;
+  --teal-700:#0E6E78;      /* math track; white 6.0:1 (AAA for ≥24px bold) */
+  --plum-700:#7B2A55;      /* letters track */
+  --pom-600:#B3243A;       /* pomegranate illustration only */
+
+  /* ---- Semantic ---- */
+  --primary:var(--green-700); --primary-edge:var(--green-800); --on-primary:#FFFFFF;
+  --audio:var(--blue-700); --audio-edge:var(--blue-800);
+  --correct-bg:var(--green-100); --correct-ink:var(--green-900); --correct-line:var(--green-500);
+  --retry-bg:var(--clay-100); --retry-ink:var(--clay-800); --retry-line:var(--clay-400);
+  --select-bg:var(--blue-100); --select-line:var(--blue-700);
+  --disabled-bg:#E6E9E7; --disabled-ink:#4A5A51; /* 6.1:1 */
+
+  /* ---- Type (Vazirmatn) ---- */
+  --font:"Vazirmatn",system-ui,sans-serif;
+  --fs-numeral:72px;  --lh-numeral:1.1;    /* digits & letters on answer cards (800) */
+  --fs-display:40px;  --lh-display:56px;   /* celebration titles (900) */
+  --fs-h1:32px;       --lh-h1:48px;        /* screen titles (800) */
+  --fs-h2:26px;       --lh-h2:40px;        /* prompts / section titles (700) */
+  --fs-body-lg:24px;  --lh-body-lg:40px;   /* button labels, key body (700/500) */
+  --fs-body:22px;     --lh-body:36px;      /* minimum size anywhere in the app (400/500) */
+
+  /* ---- Spacing (4-pt base) ---- */
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px; --s-5:24px; --s-6:32px; --s-7:40px; --s-8:56px; --s-9:72px;
+
+  /* ---- Radii ---- */
+  --r-sm:12px; --r-md:20px; --r-lg:28px; --r-pill:999px;
+
+  /* ---- Elevation (Duolingo-style "pressable" 3D edge + soft shadows) ---- */
+  --edge-btn:0 6px 0;           /* combine with an edge color */
+  --elev-1:0 2px 0 rgba(27,42,34,.08);
+  --elev-2:0 6px 16px rgba(27,42,34,.12);
+  --elev-3:0 -10px 30px rgba(27,42,34,.18);  /* bottom sheet */
+
+  /* ---- Targets ---- */
+  --tap-min:56px; --tap-btn:64px; --tap-speaker:80px;
+
+  /* ---- Motion ---- */
+  --dur-press:90ms; --dur-fast:160ms; --dur-base:240ms; --dur-sheet:320ms; --dur-celebrate:1200ms;
+  --ease-out:cubic-bezier(.2,.8,.2,1); --ease-spring:cubic-bezier(.34,1.56,.64,1); --ease-in:cubic-bezier(.4,0,1,1);
+}
+@media (prefers-reduced-motion: reduce){
+  :root{--dur-press:0ms;--dur-fast:0ms;--dur-base:0ms;--dur-sheet:0ms;--dur-celebrate:0ms}
+}
