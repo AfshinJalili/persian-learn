@@ -182,7 +182,7 @@ export default function LessonPage() {
         </div>
       </div>
 
-      <div className="content" style={{ paddingTop: 20, overflowY: 'auto' }}>
+      <div className="content" style={{ paddingTop: 20 }}>
         <ExerciseRenderer
           exercise={currentExercise}
           userAnswer={userAnswer}
