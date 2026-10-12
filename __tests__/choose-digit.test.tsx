@@ -59,6 +59,7 @@ describe('ChooseDigitExercise', () => {
       />
     );
     expect(container.querySelector('[data-object-display] .object-cluster')).toBeTruthy();
+    expect(container.querySelector('[data-object-display] .illus[data-glyph="hand"]')).toBeTruthy();
     expect(container.querySelector('[data-digit-display]')).toBeNull();
   });
 
@@ -78,6 +79,7 @@ describe('ChooseDigitExercise', () => {
     );
     const cluster = container.querySelector('[data-object-display] .object-cluster') as HTMLElement | null;
     expect(cluster).toHaveAttribute('data-count', '2');
+    expect(container.querySelectorAll('[data-object-display] .illus[data-glyph="hand"]')).toHaveLength(2);
     expect(container.querySelector('[data-digit-display]')).toBeNull();
   });
 });

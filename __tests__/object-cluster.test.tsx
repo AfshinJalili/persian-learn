@@ -121,6 +121,12 @@ describe('ObjectCluster', () => {
     expect(cluster.style.getPropertyValue('--object-cols')).toBe('2');
   });
 
+  it('marks hand emoji items so CSS can keep the glyph inside the square', () => {
+    const { container } = render(<ObjectCluster token="✋" boxWidth={120} boxHeight={120} />);
+    const item = container.querySelector('.illus') as HTMLElement | null;
+    expect(item).toHaveAttribute('data-glyph', 'hand');
+  });
+
   it('applies the computed size on each item', () => {
     const { container } = render(<ObjectCluster token={'🔵'.repeat(10)} itemSize={32} />);
     const cluster = container.querySelector('.object-cluster');

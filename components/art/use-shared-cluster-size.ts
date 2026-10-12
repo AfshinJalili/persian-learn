@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState, type RefCallback } from 'react';
 import {
   OBJECT_CARD_INNER_FALLBACK,
   OBJECT_CLUSTER_GAP,
@@ -21,10 +21,15 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLElement>(
     fallback?: { width: number; height: number };
     layout?: ObjectClusterLayout;
   }
-) {
+): {
+  ref: RefCallback<T>;
+  size: number;
+  box: { width: number; height: number; offsetWidth: number };
+  fullest: number;
+} {
   const nodeRef = useRef<T | null>(null);
   const [attached, setAttached] = useState(0);
-  const ref = useCallback((element: T | null) => {
+  const ref = useCallback<RefCallback<T>>((element) => {
     if (nodeRef.current === element) return;
     nodeRef.current = element;
     setAttached((value) => value + 1);
@@ -122,18 +127,37 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLElement>(
       return innerFromNode(target);
     };
 
+    let frame = 0;
+    const scheduleApply = (innerW: number, innerH: number, offsetWidth: number) => {
+      if (typeof requestAnimationFrame !== 'function') {
+        applyBox(innerW, innerH, offsetWidth);
+        return;
+      }
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        applyBox(innerW, innerH, offsetWidth);
+      });
+    };
+
     const first = innerFromNode(node);
     applyBox(first.width, first.height, first.offsetWidth);
 
-    if (typeof ResizeObserver === 'undefined') return;
+    if (typeof ResizeObserver === 'undefined') {
+      return () => {
+        if (typeof cancelAnimationFrame === 'function') cancelAnimationFrame(frame);
+      };
+    }
     const observer = new ResizeObserver((entries) => {
       const entry = entries.find((item) => item.target === node) ?? entries[0];
       if (!entry) return;
       const next = innerFromEntry(entry);
-      applyBox(next.width, next.height, next.offsetWidth);
+      scheduleApply(next.width, next.height, next.offsetWidth);
     });
     observer.observe(node);
-    return () => observer.disconnect();
+    return () => {
+      if (typeof cancelAnimationFrame === 'function') cancelAnimationFrame(frame);
+      observer.disconnect();
+    };
   }, [attached, fallbackHeight, fallbackWidth, fullest, gap, layout]);
 
   return { ref, size, box, fullest };

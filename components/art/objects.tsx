@@ -271,13 +271,16 @@ export const DICE_PIP_COUNTS: Record<string, number> = {
   '⚅': 6,
 };
 
+const HAND_TOKENS = new Set(['☝️', '✌️', '✋', '👆']);
+
 const EXTRA_OBJECT_TOKENS = new Set([
-  '☝️',
-  '✌️',
-  '✋',
-  '👆',
+  ...HAND_TOKENS,
   ...Object.keys(DICE_PIP_COUNTS),
 ]);
+
+function isHandToken(token: string): boolean {
+  return HAND_TOKENS.has(token);
+}
 
 export type ObjectClusterLayout = 'grid' | 'row' | 'match' | 'picture';
 
@@ -496,13 +499,22 @@ function SingleObjectArt({
   fluid?: boolean;
 }) {
   const art = EMOJI_ART[token];
+  const hand = isHandToken(token);
   return (
     <span
       className="illus"
+      data-glyph={hand ? 'hand' : undefined}
       style={fluid ? undefined : { width: size, height: size }}
     >
       {art ?? (
-        <span className="glyph" style={fluid ? undefined : { fontSize: Math.min(size, 72) }}>
+        <span
+          className="glyph"
+          style={
+            fluid || hand
+              ? undefined
+              : { fontSize: Math.min(size, 72) }
+          }
+        >
           {token}
         </span>
       )}

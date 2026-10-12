@@ -1,6 +1,7 @@
 import { describe, it, expect } from '@jest/globals';
 import math from '../public/content/math.json';
 import alphabet from '../public/content/alphabet.json';
+import { MATH_UNIT_COUNT } from '../lib/math-unit-count';
 
 interface Exercise {
   id: string;
@@ -17,6 +18,7 @@ interface Exercise {
 describe('Content v2 Validation', () => {
   it('should have 12 units in math track', () => {
     expect(math.units).toHaveLength(12);
+    expect(MATH_UNIT_COUNT).toBe(math.units.length);
   });
 
   it('should have 12 units in alphabet track', () => {

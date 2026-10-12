@@ -138,7 +138,7 @@ describe('Profile voice speed', () => {
     expect(screen.queryByLabelText('پخش خودکار')).not.toBeInTheDocument();
   });
 
-  it('keeps empty progress tracks empty and fills 1/6 proportionally', async () => {
+  it('keeps empty progress tracks empty and fills 1/12 proportionally', async () => {
     getProgress.mockResolvedValue({
       currentTrack: 'math',
       onboarded: true,
@@ -161,9 +161,10 @@ describe('Profile voice speed', () => {
     });
     const { container } = render(<ProfilePage />);
     await screen.findByText('سرعت صدا');
+    expect(screen.getByText(/از ۱۲/)).toBeInTheDocument();
     const fills = container.querySelectorAll('.track-block .progress > i');
     expect(fills[0]).toHaveAttribute('data-filled', 'true');
-    expect((fills[0] as HTMLElement).style.width).toBe(`${(1 / 6) * 100}%`);
+    expect((fills[0] as HTMLElement).style.width).toBe(`${(1 / 12) * 100}%`);
     expect(fills[1]).toHaveAttribute('data-filled', 'false');
     expect((fills[1] as HTMLElement).style.width).toBe('0%');
   });

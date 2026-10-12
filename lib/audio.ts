@@ -8,14 +8,22 @@ let audioUnlocked = false;
 let audioSpeed = 1.0;
 
 function persistUnlock() {
-  if (typeof sessionStorage !== 'undefined') {
-    sessionStorage.setItem('pl-audio-unlocked', '1');
+  try {
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem('pl-audio-unlocked', '1');
+    }
+  } catch {
+    /* private mode / blocked storage */
   }
 }
 
 function readPersistedUnlock(): boolean {
-  if (typeof sessionStorage === 'undefined') return false;
-  return sessionStorage.getItem('pl-audio-unlocked') === '1';
+  try {
+    if (typeof sessionStorage === 'undefined') return false;
+    return sessionStorage.getItem('pl-audio-unlocked') === '1';
+  } catch {
+    return false;
+  }
 }
 
 if (typeof window !== 'undefined' && readPersistedUnlock()) {

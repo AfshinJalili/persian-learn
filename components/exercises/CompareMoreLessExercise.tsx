@@ -28,7 +28,9 @@ function CompareSide({
   disabled: boolean;
   onSelect: (value: 'left' | 'right', token: string) => void;
 }) {
-  const { ref, box } = useSharedClusterSize([splitObjectTokens(token).length]);
+  const { ref, box } = useSharedClusterSize<HTMLButtonElement>([
+    splitObjectTokens(token).length,
+  ]);
   return (
     <button
       ref={ref}

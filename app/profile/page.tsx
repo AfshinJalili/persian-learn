@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Pencil } from 'lucide-react';
 import { getProgress, saveProgress } from '@/lib/progress';
 import { loadTrack } from '@/lib/content';
+import { MATH_UNIT_COUNT } from '@/lib/math-unit-count';
 import type { UserProgress } from '@/lib/types';
 import { playAudio, setAudioSpeed } from '@/lib/audio';
 import { LEARNER_NAME } from '@/lib/learner';
@@ -45,9 +46,12 @@ export default function ProfilePage() {
   });
   const mathDone = progress.completedLessons.filter((id) => id.startsWith('m')).length;
   const alphaDone = progress.completedLessons.filter((id) => id.startsWith('a')).length;
-  const mathUnits = Math.min(6, mathDone === 0 ? 0 : Math.max(1, Math.ceil(mathDone / 5)));
+  const mathUnits = Math.min(
+    MATH_UNIT_COUNT,
+    mathDone === 0 ? 0 : Math.max(1, Math.ceil(mathDone / 5))
+  );
   const learnedLetters = Math.min(32, alphaDone);
-  const mathPercent = (mathUnits / 6) * 100;
+  const mathPercent = MATH_UNIT_COUNT > 0 ? (mathUnits / MATH_UNIT_COUNT) * 100 : 0;
   const alphabetPercent = (learnedLetters / 32) * 100;
   const avatarId = resolveAvatarId(progress.avatar);
 
@@ -119,7 +123,9 @@ export default function ProfilePage() {
               className="flex justify-between font-extrabold w-full"
             >
               <span>عددها و حساب</span>
-              <span className="muted">بخش {formatPersianNumber(mathUnits)} از ۶</span>
+              <span className="muted">
+                بخش {formatPersianNumber(mathUnits)} از {formatPersianNumber(MATH_UNIT_COUNT)}
+              </span>
             </button>
             <div className="progress" style={{ flex: 'none' }}>
               <i data-filled={mathPercent > 0 ? 'true' : 'false'} style={{ width: `${mathPercent}%` }} />

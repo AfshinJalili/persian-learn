@@ -46,7 +46,7 @@ function SizedListenChoice({
   onSelect: (option: string) => void;
 }) {
   const object = looksLikeObjects(option);
-  const { ref, box } = useSharedClusterSize(
+  const { ref, box } = useSharedClusterSize<HTMLButtonElement>(
     [object ? splitObjectTokens(option).length : 1],
     { layout }
   );

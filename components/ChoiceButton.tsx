@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode, Ref } from 'react';
+import { forwardRef, type ReactNode } from 'react';
 import { playOptionAudio } from '@/lib/spoken-option';
 
 interface ChoiceButtonProps {
@@ -13,46 +13,51 @@ interface ChoiceButtonProps {
   dim?: boolean;
   name?: string;
   peers?: string[];
-  ref?: Ref<HTMLButtonElement>;
 }
 
-export default function ChoiceButton({
-  selected,
-  disabled,
-  onClick,
-  children,
-  className = '',
-  state = 'idle',
-  dim = false,
-  name,
-  peers,
-  ref,
-}: ChoiceButtonProps) {
-  const extras = [
-    selected ? 'selected' : '',
-    state === 'correct' ? 'correct' : '',
-    state === 'wrong' ? 'wrong' : '',
-    dim ? 'dim' : '',
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
+const ChoiceButton = forwardRef<HTMLButtonElement, ChoiceButtonProps>(
+  function ChoiceButton(
+    {
+      selected,
+      disabled,
+      onClick,
+      children,
+      className = '',
+      state = 'idle',
+      dim = false,
+      name,
+      peers,
+    },
+    ref
+  ) {
+    const extras = [
+      selected ? 'selected' : '',
+      state === 'correct' ? 'correct' : '',
+      state === 'wrong' ? 'wrong' : '',
+      dim ? 'dim' : '',
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ');
 
-  return (
-    <button
-      ref={ref}
-      type="button"
-      onClick={() => {
-        if (name) {
-          playOptionAudio(name, peers).catch(() => {});
-        }
-        onClick();
-      }}
-      disabled={disabled && state === 'idle'}
-      aria-label={name}
-      className={`card ${extras}`.trim()}
-    >
-      {children}
-    </button>
-  );
-}
+    return (
+      <button
+        ref={ref}
+        type="button"
+        onClick={() => {
+          if (name) {
+            playOptionAudio(name, peers).catch(() => {});
+          }
+          onClick();
+        }}
+        disabled={disabled && state === 'idle'}
+        aria-label={name}
+        className={`card ${extras}`.trim()}
+      >
+        {children}
+      </button>
+    );
+  }
+);
+
+export default ChoiceButton;

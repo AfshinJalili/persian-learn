@@ -40,7 +40,10 @@ function SizedPictureChoice({
   peers: string[];
   onSelect: (option: string) => void;
 }) {
-  const { ref, box } = useSharedClusterSize([splitObjectTokens(option).length], { layout });
+  const { ref, box } = useSharedClusterSize<HTMLButtonElement>(
+    [splitObjectTokens(option).length],
+    { layout }
+  );
   return (
     <ChoiceButton
       ref={ref}

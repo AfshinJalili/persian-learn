@@ -87,6 +87,11 @@ describe('playAudio uses only Sulafat MP3s', () => {
     expect(audioSource).not.toMatch(/SpeechSynthesis/);
   });
 
+  it('guards sessionStorage reads and writes with try/catch', () => {
+    expect(audioSource).toMatch(/function persistUnlock\(\) \{\s*try \{[\s\S]*sessionStorage\.setItem/);
+    expect(audioSource).toMatch(/function readPersistedUnlock\(\): boolean \{\s*try \{[\s\S]*sessionStorage\.getItem/);
+  });
+
   it('stays silent when the MP3 is missing', async () => {
     Object.defineProperty(window, 'Audio', {
       configurable: true,
