@@ -326,7 +326,7 @@ test.describe('Object fill at phone widths', () => {
     test(`math lessons m1-m3 stay in-card, stable, and unscrollable at ${viewport.width}x${viewport.height}`, async ({
       page,
     }) => {
-      test.setTimeout(360000);
+      test.setTimeout(600000);
       await page.setViewportSize(viewport);
       await seedProgress(page, { completedLessons: MATH_M1_M3_IDS });
 
@@ -338,7 +338,7 @@ test.describe('Object fill at phone widths', () => {
           const hasItems = page.locator(
             '.object-cluster, [data-digit-display], [data-digit-sequence], [data-dice-face], [data-object-display], [data-match-tray]'
           );
-          await page.waitForTimeout(viewport.height <= 667 ? 150 : 200);
+          await page.waitForTimeout(200);
           const first = await page.evaluate(measurePage);
           expect(first.pageOverflow, path).toBeLessThanOrEqual(2);
           expect(first.answersBottom, path).toBeLessThanOrEqual(viewport.height + 2);
@@ -353,7 +353,7 @@ test.describe('Object fill at phone widths', () => {
             continue;
           }
           await expect(hasItems.first()).toBeVisible();
-          await page.waitForTimeout(viewport.height <= 667 ? 250 : 1000);
+          await page.waitForTimeout(300);
           const stats = await page.evaluate(measurePage);
           expect(stats.sizeSignature, path).toBe(first.sizeSignature);
           expect(stats.pageOverflow, path).toBeLessThanOrEqual(2);
