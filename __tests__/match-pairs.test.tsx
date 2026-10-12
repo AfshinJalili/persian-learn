@@ -142,7 +142,7 @@ function appleExercise(): Exercise {
 }
 
 describe('MatchPairsExercise object rows', () => {
-  it('sizes each apple row from its own count instead of a shared size', () => {
+  it('sizes match-pair items from the list container and caps a single item', () => {
     const { container } = render(
       <MatchPairsExercise
         exercise={appleExercise()}
@@ -151,6 +151,7 @@ describe('MatchPairsExercise object rows', () => {
         disabled={false}
       />
     );
+    expect(container.querySelector('.match-object-list')).toBeTruthy();
     const clusters = [...container.querySelectorAll('.match-object-apples .object-cluster')] as HTMLElement[];
     expect(clusters).toHaveLength(3);
     const sizeByCount = Object.fromEntries(
@@ -159,8 +160,9 @@ describe('MatchPairsExercise object rows', () => {
         Number.parseInt(cluster.style.getPropertyValue('--object-size') || '0', 10),
       ])
     );
-    expect(sizeByCount['1']).toBeGreaterThan(sizeByCount['3']);
+    expect(sizeByCount['1']).toBeLessThanOrEqual(96);
     expect(sizeByCount['3']).toBeGreaterThanOrEqual(32);
+    expect(clusters.every((cluster) => cluster.getAttribute('data-layout') === 'row')).toBe(true);
   });
 
   it('pairs a number onto a slot when the number is tapped first', async () => {

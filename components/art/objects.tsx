@@ -253,8 +253,14 @@ export const OBJECT_CLUSTER_GAP = 8;
 export const OBJECT_MATCH_GAP = 4;
 export const OBJECT_CLUSTER_MIN_SIZE = 32;
 export const OBJECT_SINGLE_WIDTH_RATIO = 0.7;
+export const OBJECT_MATCH_SINGLE_MAX = 96;
 export const OBJECT_CARD_INNER_FALLBACK = { width: 81, height: 140 };
 export const OBJECT_MATCH_INNER_FALLBACK = { width: 220, height: 72 };
+export const OBJECT_MATCH_LIST_FALLBACK = { width: 342, height: 280 };
+export const MATCH_LIST_GAP = 4;
+export const MATCH_ROW_PADDING = 12;
+export const MATCH_ROW_GAP = 8;
+export const MATCH_DIGIT_SLOT = 40;
 
 export const DICE_PIP_COUNTS: Record<string, number> = {
   '⚀': 1,
@@ -296,8 +302,15 @@ export function objectClusterLayoutForBox(
       cardOffsetWidth && cardOffsetWidth > 8 ? cardOffsetWidth : innerWidth;
     const unclamped =
       layout === 'picture'
-        ? innerWidth
-        : Math.min(widthBasis * OBJECT_SINGLE_WIDTH_RATIO, innerWidth, innerHeight);
+        ? Math.min(innerWidth, innerHeight)
+        : layout === 'row' || layout === 'match'
+          ? Math.min(
+              widthBasis * OBJECT_SINGLE_WIDTH_RATIO,
+              innerWidth,
+              innerHeight,
+              OBJECT_MATCH_SINGLE_MAX
+            )
+          : Math.min(widthBasis * OBJECT_SINGLE_WIDTH_RATIO, innerWidth, innerHeight);
     return {
       cols: 1,
       rows: 1,
@@ -406,6 +419,21 @@ export function objectClusterChoiceGridClass(
       ? 'grid3'
       : 'grid2';
   return extra ? `${className} ${extra}` : className;
+}
+
+export function matchApplesBoxFromList(
+  list: { width: number; height: number; offsetWidth: number },
+  rowCount: number
+): { width: number; height: number; offsetWidth: number } {
+  const rows = Math.max(1, rowCount);
+  const rowHeight = (list.height - MATCH_LIST_GAP * Math.max(0, rows - 1)) / rows;
+  const chromeX = MATCH_ROW_PADDING * 2 + MATCH_ROW_GAP + MATCH_DIGIT_SLOT;
+  const chromeY = MATCH_ROW_PADDING * 2;
+  return {
+    width: Math.max(8, list.width - chromeX),
+    height: Math.max(8, rowHeight - chromeY),
+    offsetWidth: Math.max(8, list.offsetWidth - chromeX),
+  };
 }
 
 export function objectClusterItemSizeForBox(

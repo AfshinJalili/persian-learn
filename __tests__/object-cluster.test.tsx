@@ -2,8 +2,10 @@ import { describe, expect, it } from '@jest/globals';
 import { render } from '@testing-library/react';
 import {
   OBJECT_CLUSTER_MIN_SIZE,
+  OBJECT_MATCH_SINGLE_MAX,
   OBJECT_SINGLE_WIDTH_RATIO,
   ObjectCluster,
+  matchApplesBoxFromList,
   objectClusterColumns,
   objectClusterItemSize,
   objectClusterItemSizeForBox,
@@ -68,6 +70,17 @@ describe('ObjectCluster', () => {
     );
   });
 
+  it('caps a single match-pair item so a hand cannot grow with the list height', () => {
+    expect(objectClusterLayoutForBox(1, 250, 208, 4, 'row', 300).size).toBeLessThanOrEqual(
+      OBJECT_MATCH_SINGLE_MAX
+    );
+    const apples = matchApplesBoxFromList({ width: 342, height: 280, offsetWidth: 342 }, 3);
+    expect(apples.height).toBeLessThan(208);
+    expect(objectClusterLayoutForBox(1, apples.width, apples.height, 4, 'row', apples.offsetWidth).size).toBeLessThanOrEqual(
+      OBJECT_MATCH_SINGLE_MAX
+    );
+  });
+
   it('sizes a single math item to 70% of the card offset width, capped by the inner box', () => {
     expect(objectClusterLayoutForBox(1, 81, 140, 8, 'grid', 103).size).toBe(72);
     expect(objectClusterLayoutForBox(1, 100, 140).size).toBe(70);
@@ -75,8 +88,9 @@ describe('ObjectCluster', () => {
     expect(objectClusterLayoutForBox(1, 40, 140).size).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
   });
 
-  it('lets alphabet picture items fill the measured content box', () => {
+  it('lets alphabet picture items fill the inner box without using the 70% math cap', () => {
     expect(objectClusterLayoutForBox(1, 97, 140, 8, 'picture').size).toBe(97);
+    expect(objectClusterLayoutForBox(1, 97, 80, 8, 'picture').size).toBe(80);
     expect(objectClusterLayoutForBox(1, 97, 140, 8, 'picture').size).toBeGreaterThan(
       objectClusterLayoutForBox(1, 97, 140).size
     );

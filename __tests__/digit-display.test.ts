@@ -19,10 +19,9 @@ describe('digit display fitting', () => {
     expect(digitDisplayFontSize(250, 220, 282, 1)).toBe(Math.floor(282 * 0.7));
   });
 
-  it('fits a four-token sequence inside the card instead of using 70% of card width', () => {
-    const size = digitDisplayFontSize(300, 200, 332, 4);
-    expect(size).toBeLessThanOrEqual(300 / 4);
-    expect(size).toBeGreaterThanOrEqual(28);
-    expect(size).toBeLessThan(332 * 0.5);
+  it('fits a four-token sequence with min(72, inner/chars) instead of 70% of card width', () => {
+    expect(digitDisplayFontSize(300, 200, 332, 4)).toBe(72);
+    expect(digitDisplayFontSize(200, 200, 232, 4)).toBe(50);
+    expect(digitDisplayFontSize(400, 200, 432, 4)).toBe(72);
   });
 });

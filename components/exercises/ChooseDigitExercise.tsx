@@ -59,7 +59,7 @@ export default function ChooseDigitExercise({
       ) : objectDisplay ? (
         <div ref={ref} className="card object-count-card" data-object-display>
           <ObjectCluster
-            token={display}
+            tokens={splitObjectTokens(display)}
             boxWidth={box.width}
             boxHeight={box.height}
             cardWidth={box.offsetWidth}

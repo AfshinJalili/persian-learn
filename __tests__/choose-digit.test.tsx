@@ -39,7 +39,9 @@ describe('ChooseDigitExercise', () => {
       />
     );
     expect(container.querySelector('[data-digit-sequence]')).toBeTruthy();
-    expect(container.querySelector('.digit-sequence')).toBeTruthy();
+    const sequence = container.querySelector('.digit-sequence') as HTMLElement | null;
+    expect(sequence).toBeTruthy();
+    expect(sequence?.className).toContain('digit-sequence');
     expect(container.querySelector('[data-digit-display]')).toBeNull();
   });
 
@@ -57,6 +59,25 @@ describe('ChooseDigitExercise', () => {
       />
     );
     expect(container.querySelector('[data-object-display] .object-cluster')).toBeTruthy();
+    expect(container.querySelector('[data-digit-display]')).toBeNull();
+  });
+
+  it('splits two hands into an object cluster instead of one oversized glyph', () => {
+    const { container } = render(
+      <ChooseDigitExercise
+        exercise={exercise({
+          id: 'm3l3e4',
+          payload: { display: '✋✋' },
+          answer: '۱۰',
+          distractors: ['۹', '۸'],
+        })}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+    const cluster = container.querySelector('[data-object-display] .object-cluster') as HTMLElement | null;
+    expect(cluster).toHaveAttribute('data-count', '2');
     expect(container.querySelector('[data-digit-display]')).toBeNull();
   });
 });

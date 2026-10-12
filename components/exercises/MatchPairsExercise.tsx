@@ -10,8 +10,9 @@ import SpeakerButton from '@/components/SpeakerButton';
 import {
   ObjectArt,
   ObjectCluster,
-  OBJECT_MATCH_INNER_FALLBACK,
+  OBJECT_MATCH_LIST_FALLBACK,
   looksLikeObjects,
+  matchApplesBoxFromList,
   splitObjectTokens,
 } from '@/components/art/objects';
 import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
@@ -32,6 +33,7 @@ function MatchObjectRow({
   correct,
   picking,
   disabled,
+  box,
   onSelect,
   onSlotDrop,
 }: {
@@ -40,13 +42,10 @@ function MatchObjectRow({
   correct: boolean;
   picking: boolean;
   disabled: boolean;
+  box: { width: number; height: number; offsetWidth: number };
   onSelect: (side: Side, option: string) => void;
   onSlotDrop: (option: string, event: DragEvent<HTMLButtonElement>) => void;
 }) {
-  const { ref, box } = useSharedClusterSize([splitObjectTokens(option).length], {
-    fallback: OBJECT_MATCH_INNER_FALLBACK,
-    layout: 'row',
-  });
   return (
     <button
       type="button"
@@ -58,7 +57,7 @@ function MatchObjectRow({
       onDrop={(event) => onSlotDrop(option, event)}
       className={`row-card match-object-row ${picking ? 'selected' : ''} ${correct ? 'match-object-row-correct' : ''}`}
     >
-      <div ref={ref} className="match-object-apples">
+      <div className="match-object-apples">
         <ObjectCluster
           token={option}
           layout="row"
@@ -110,6 +109,12 @@ export default function MatchPairsExercise({
   const objectLayout =
     rightOptions.every(looksLikeObjects) &&
     leftOptions.every((item) => /^[0-9۰-۹]+$/.test(item));
+  const appleCounts = rightOptions.map((option) => splitObjectTokens(option).length);
+  const { ref, box } = useSharedClusterSize(appleCounts, {
+    fallback: OBJECT_MATCH_LIST_FALLBACK,
+    layout: 'row',
+  });
+  const applesBox = matchApplesBoxFromList(box, rightOptions.length);
 
   useEffect(() => {
     selectedRef.current = null;
@@ -185,7 +190,7 @@ export default function MatchPairsExercise({
       </div>
       {objectLayout ? (
         <div className="match-pairs-board">
-          <div className="match-object-list">
+          <div ref={ref} className="match-object-list">
             {rightOptions.map((option) => {
               const placed = pairForRight(option);
               const correct = Boolean(
@@ -200,6 +205,7 @@ export default function MatchPairsExercise({
                   correct={correct}
                   picking={picking}
                   disabled={disabled}
+                  box={applesBox}
                   onSelect={handleSelect}
                   onSlotDrop={handleSlotDrop}
                 />

@@ -1,3 +1,5 @@
+export const SEQUENCE_FONT_MAX = 72;
+
 export function isSequenceDisplay(display: string): boolean {
   return /[\s؟?]/.test(display.trim());
 }
@@ -19,7 +21,8 @@ export function digitDisplayFontSize(
       Math.floor(Math.min(widthBasis * 0.7, innerWidth, innerHeight))
     );
   }
-  const gap = 8;
-  const sizeW = (innerWidth - gap * Math.max(0, tokenCount - 1)) / tokenCount;
-  return Math.max(28, Math.floor(Math.min(sizeW, innerHeight * 0.85)));
+  return Math.max(
+    1,
+    Math.floor(Math.min(SEQUENCE_FONT_MAX, innerWidth / Math.max(1, tokenCount)))
+  );
 }

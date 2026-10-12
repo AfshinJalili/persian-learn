@@ -195,6 +195,7 @@ export default function LessonPage() {
         }
       >
         <ExerciseRenderer
+          key={currentExercise.id}
           exercise={currentExercise}
           userAnswer={userAnswer}
           onAnswerChange={setUserAnswer}

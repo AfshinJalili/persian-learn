@@ -1,6 +1,6 @@
 'use client';
 
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import {
   OBJECT_CARD_INNER_FALLBACK,
   OBJECT_CLUSTER_GAP,
@@ -15,14 +15,20 @@ function nearlyEqual(left: number, right: number): boolean {
   return Math.abs(left - right) < SIZE_EPSILON;
 }
 
-export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(
+export function useSharedClusterSize<T extends HTMLElement = HTMLElement>(
   counts: number[],
   options?: {
     fallback?: { width: number; height: number };
     layout?: ObjectClusterLayout;
   }
 ) {
-  const ref = useRef<T | null>(null);
+  const nodeRef = useRef<T | null>(null);
+  const [attached, setAttached] = useState(0);
+  const ref = useCallback((element: T | null) => {
+    if (nodeRef.current === element) return;
+    nodeRef.current = element;
+    setAttached((value) => value + 1);
+  }, []);
   const fullest = Math.max(1, ...counts);
   const fallback = options?.fallback ?? OBJECT_CARD_INNER_FALLBACK;
   const layout = options?.layout ?? 'grid';
@@ -39,7 +45,7 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(
   }));
 
   useLayoutEffect(() => {
-    const node = ref.current;
+    const node = nodeRef.current;
     if (!node) return;
 
     const applyBox = (innerW: number, innerH: number, offsetWidth: number) => {
@@ -94,13 +100,6 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(
       const padY = Number.parseFloat(style.paddingTop) || 0;
       const padRight = Number.parseFloat(style.paddingRight) || 0;
       const padBottom = Number.parseFloat(style.paddingBottom) || 0;
-      if (layout === 'picture') {
-        return {
-          width: target.clientWidth,
-          height: target.clientHeight,
-          offsetWidth: target.offsetWidth,
-        };
-      }
       return {
         width: target.clientWidth - padX - padRight,
         height: target.clientHeight - padY - padBottom,
@@ -114,20 +113,6 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(
         ? entry.contentBoxSize[0]
         : entry.contentBoxSize;
       if (boxSize && boxSize.inlineSize >= 8 && boxSize.blockSize >= 8) {
-        if (layout === 'picture') {
-          const style = getComputedStyle(target);
-          const padX =
-            (Number.parseFloat(style.paddingLeft) || 0) +
-            (Number.parseFloat(style.paddingRight) || 0);
-          const padY =
-            (Number.parseFloat(style.paddingTop) || 0) +
-            (Number.parseFloat(style.paddingBottom) || 0);
-          return {
-            width: boxSize.inlineSize + padX,
-            height: boxSize.blockSize + padY,
-            offsetWidth: target.offsetWidth,
-          };
-        }
         return {
           width: boxSize.inlineSize,
           height: boxSize.blockSize,
@@ -149,7 +134,7 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(
     });
     observer.observe(node);
     return () => observer.disconnect();
-  }, [fallbackHeight, fallbackWidth, fullest, gap, layout]);
+  }, [attached, fallbackHeight, fallbackWidth, fullest, gap, layout]);
 
   return { ref, size, box, fullest };
 }

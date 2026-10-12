@@ -340,7 +340,10 @@ test.describe('Object fill at phone widths', () => {
       expect(stats.singles.length).toBeGreaterThan(0);
       for (const item of stats.singles) {
         expect(item.width).toBeGreaterThanOrEqual(90);
-        expect(item.ratio).toBeGreaterThanOrEqual(0.9);
+        expect(item.ratio).toBeGreaterThan(0.7);
+      }
+      for (const item of stats.contained) {
+        expect(item.overflow).toBeLessThanOrEqual(2);
       }
       for (const scroller of stats.innerScrolls) {
         expect(scroller.overflow, scroller.className).toBeLessThanOrEqual(2);
