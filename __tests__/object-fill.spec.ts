@@ -288,7 +288,7 @@ test.describe('Object fill at phone widths', () => {
       await page.setViewportSize(viewport);
       await seedProgress(page, { currentTrack: 'alphabet', completedLessons: [] });
       await page.goto('/lesson/a1l1?ex=1');
-      await page.waitForTimeout(400);
+      await expect(page.locator('.object-cluster')).toBeVisible();
       const stats = await page.evaluate(measurePage);
       const info = await page.evaluate(() => {
         const cluster = document.querySelector('.object-cluster') as HTMLElement | null;

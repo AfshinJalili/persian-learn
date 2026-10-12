@@ -16,14 +16,14 @@ export default function IntroExercise({ exercise, onContinue }: Props) {
     .filter(Boolean);
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
-      <SpeakerButton text={exercise.audio_script} size="xl" />
-      <div className="flex flex-col items-center justify-center gap-4">
+    <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center min-h-0">
+      <SpeakerButton text={exercise.audio_script} size="md" />
+      <div className="flex flex-wrap items-end justify-center gap-4">
         {groups.map((group, index) => (
-          <ObjectArt key={`${group}-${index}`} token={group.trim()} size={72} />
+          <ObjectArt key={`${group}-${index}`} token={group.trim()} size={48} />
         ))}
       </div>
-      {payload.visual ? <ObjectArt token={payload.visual} size={96} /> : null}
+      {payload.visual ? <ObjectArt token={payload.visual} size={72} /> : null}
       <p className="body-lg">{personalizeIntroScript(exercise.audio_script)}</p>
       <button type="button" onClick={onContinue} className="btn btn-primary">
         ادامه

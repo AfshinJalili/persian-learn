@@ -539,15 +539,15 @@ h2.prompt-numeral {
   max-height: none;
 }
 
-.app-phone:not(.object-gallery-page) .content > .picture-grid,
-.app-phone:not(.object-gallery-page) .content > .cluster-stack {
+.app-phone:not(.object-gallery-page) .content .picture-grid,
+.app-phone:not(.object-gallery-page) .content .cluster-stack {
   flex: 1 1 0;
   min-height: 0;
   overflow: hidden;
 }
 
-.app-phone:not(.object-gallery-page) .content > .grid2:has(.object-choice-card),
-.app-phone:not(.object-gallery-page) .content > .grid3:has(.object-choice-card) {
+.app-phone:not(.object-gallery-page) .content .grid2:has(.object-choice-card),
+.app-phone:not(.object-gallery-page) .content .grid3:has(.object-choice-card) {
   flex: 1 1 0;
   min-height: 0;
   overflow: hidden;

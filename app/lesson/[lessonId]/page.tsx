@@ -9,12 +9,40 @@ import { playAudio, stopAudio, vibrate } from '@/lib/audio';
 import { spokenOption } from '@/lib/spoken-option';
 import { answersEqual } from '@/lib/answers';
 import { feedbackKind } from '@/lib/lesson-feedback';
-import type { Lesson as LessonType } from '@/lib/types';
+import type { ExerciseType, Lesson as LessonType } from '@/lib/types';
 import AudioUnlockOverlay from '@/components/AudioUnlockOverlay';
 import ExerciseRenderer from '@/components/exercises/ExerciseRenderer';
 import SpeakerButton from '@/components/SpeakerButton';
 import HodaMascot from '@/components/HodaMascot';
 import { formatPersianNumber } from '@/lib/persian';
+
+function lessonContentFits(type: ExerciseType): boolean {
+  switch (type) {
+    case 'tap_picture':
+    case 'listen_choose':
+    case 'count_objects':
+    case 'choose_digit':
+    case 'match_pairs':
+    case 'compare_more_less':
+    case 'ten_frame':
+      return true;
+    case 'intro':
+    case 'trace_letter':
+    case 'number_line':
+    case 'build_word':
+    case 'equation':
+    case 'count_money':
+    case 'pay_amount':
+    case 'make_change':
+    case 'read_clock':
+    case 'break_points':
+      return false;
+    default: {
+      const unexpected: never = type;
+      return unexpected;
+    }
+  }
+}
 
 export default function LessonPage() {
   const params = useParams();
@@ -212,7 +240,7 @@ export default function LessonPage() {
         </div>
       </div>
 
-      <div className="content content-fit" style={{ overflow: 'hidden' }}>
+      <div className={lessonContentFits(currentExercise.type) ? 'content content-fit' : 'content'}>
         <ExerciseRenderer
           key={currentExercise.id}
           exercise={currentExercise}

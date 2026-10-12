@@ -109,7 +109,7 @@ export default function ListenChooseExercise({
   };
 
   return (
-    <div className="content-center flex flex-col items-center gap-5">
+    <div className="content-center flex flex-1 min-h-0 w-full flex-col items-center gap-4 overflow-hidden">
       <h2 className={exerciseHeadingClass(exercise)}>{exerciseHeading(exercise)}</h2>
       <SpeakerButton text={exercise.audio_script} size="xl" />
       <button type="button" className="slow-btn" onClick={handleSlow}>
