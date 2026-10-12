@@ -88,12 +88,20 @@ function measurePage() {
     .map((item) => {
       const card = cardOf(item);
       if (!card || card.classList.contains('match-object-row')) return null;
-      const offset = Math.min(card.offsetWidth, card.offsetHeight);
+      const style = getComputedStyle(card);
+      const padX =
+        (Number.parseFloat(style.paddingLeft) || 0) + (Number.parseFloat(style.paddingRight) || 0);
+      const padY =
+        (Number.parseFloat(style.paddingTop) || 0) + (Number.parseFloat(style.paddingBottom) || 0);
+      const inner = Math.min(
+        Math.max(0, card.clientWidth - padX),
+        Math.max(0, card.clientHeight - padY)
+      );
       const width = item.getBoundingClientRect().width;
       return {
         width,
-        inner: offset,
-        ratio: offset > 0 ? width / offset : 0,
+        inner,
+        ratio: inner > 0 ? width / inner : 0,
       };
     })
     .filter((item): item is { width: number; inner: number; ratio: number } => Boolean(item));
