@@ -337,6 +337,8 @@ test.describe('Object fill at phone widths', () => {
       await page.goto('/lesson/a1l1?ex=1');
       await page.waitForTimeout(400);
       const stats = await page.evaluate(measurePage);
+      const layout = await page.locator('.object-cluster').first().getAttribute('data-layout');
+      expect(layout).toBe('picture');
       expect(stats.singles.length).toBeGreaterThan(0);
       for (const item of stats.singles) {
         expect(item.width).toBeGreaterThanOrEqual(90);

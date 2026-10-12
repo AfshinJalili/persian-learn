@@ -302,7 +302,7 @@ export function objectClusterLayoutForBox(
       cardOffsetWidth && cardOffsetWidth > 8 ? cardOffsetWidth : innerWidth;
     const unclamped =
       layout === 'picture'
-        ? Math.min(innerWidth, innerHeight)
+        ? innerWidth
         : layout === 'row' || layout === 'match'
           ? Math.min(
               widthBasis * OBJECT_SINGLE_WIDTH_RATIO,

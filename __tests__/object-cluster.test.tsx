@@ -90,7 +90,7 @@ describe('ObjectCluster', () => {
 
   it('lets alphabet picture items fill the inner box without using the 70% math cap', () => {
     expect(objectClusterLayoutForBox(1, 97, 140, 8, 'picture').size).toBe(97);
-    expect(objectClusterLayoutForBox(1, 97, 80, 8, 'picture').size).toBe(80);
+    expect(objectClusterLayoutForBox(1, 97, 80, 8, 'picture').size).toBe(97);
     expect(objectClusterLayoutForBox(1, 97, 140, 8, 'picture').size).toBeGreaterThan(
       objectClusterLayoutForBox(1, 97, 140).size
     );
