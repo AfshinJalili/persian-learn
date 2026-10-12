@@ -120,20 +120,17 @@ function measurePage() {
     ...document.querySelectorAll('.object-cluster > .illus, .ten-frame-cell .illus'),
   ].map((item) => item.getBoundingClientRect().width);
 
-  const innerScrolls = [...document.querySelectorAll('.content, .match-object-list, .cluster-stack')].map(
-    (node) => {
-      const el = node as HTMLElement;
-      const overflowY = getComputedStyle(el).overflowY;
-      const canScroll =
-        (overflowY === 'auto' || overflowY === 'scroll') &&
-        !el.classList.contains('content-fit') &&
-        !el.classList.contains('match-object-list');
-      return {
-        className: el.className,
-        overflow: canScroll ? el.scrollHeight - el.clientHeight : 0,
-      };
-    }
-  );
+  const innerScrolls = [
+    ...document.querySelectorAll(
+      '.content.content-fit, .match-object-list, .cluster-stack, .picture-grid'
+    ),
+  ].map((node) => {
+    const el = node as HTMLElement;
+    return {
+      className: el.className,
+      overflow: Math.max(0, el.scrollHeight - el.clientHeight),
+    };
+  });
 
   return {
     singles: singles.filter((item) => item.inner >= 8),

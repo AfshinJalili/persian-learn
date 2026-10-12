@@ -91,9 +91,10 @@ describe('TapPictureExercise', () => {
         disabled={false}
       />
     );
-    const heading = container.querySelector('.prompt h2');
+    const heading = container.querySelector('.prompt h2') as HTMLElement | null;
     expect(heading).toHaveClass('prompt-numeral');
     expect(heading).toHaveTextContent('۸');
+    expect(heading?.style.fontSize).toBe('48px');
   });
 
   it('lets alphabet tap-picture items fill the content box instead of the math 70% ratio', () => {
