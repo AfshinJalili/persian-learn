@@ -1,4 +1,4 @@
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect, type Page } from './e2e-audio-stub';
 import math from '../public/content/math.json';
 import alphabet from '../public/content/alphabet.json';
 

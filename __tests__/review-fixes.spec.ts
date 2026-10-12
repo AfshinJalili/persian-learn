@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './e2e-audio-stub';
 
 test.describe('Codex review navigation fixes', () => {
   test.use({ viewport: { width: 390, height: 844 } });

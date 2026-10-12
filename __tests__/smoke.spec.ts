@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './e2e-audio-stub';
 
 test.describe('Onboarding', () => {
   test('should complete onboarding flow', async ({ page }) => {
