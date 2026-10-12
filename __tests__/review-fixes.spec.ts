@@ -269,13 +269,37 @@ test.describe('Codex review navigation fixes', () => {
 
     const fourApples = page.locator('[data-gallery-section="match_pairs"] [data-count="4"] .object-cluster');
     await expect(fourApples).toHaveAttribute('data-layout', 'match');
-    await expect(fourApples).toHaveAttribute('style', /--object-cols:\s*2/);
-    await expect(fourApples).toHaveAttribute('style', /--object-rows:\s*2/);
+    const fourFill = await fourApples.evaluate((element) => {
+      const cluster = element as HTMLElement;
+      const apples = cluster.closest('.match-object-apples') as HTMLElement | null;
+      const size = Number.parseInt(cluster.style.getPropertyValue('--object-size') || '0', 10);
+      const cols = Number.parseInt(cluster.style.getPropertyValue('--object-cols') || '0', 10);
+      const gap = Number.parseFloat(getComputedStyle(cluster).gap) || 4;
+      const clusterWidth = cols * size + Math.max(0, cols - 1) * gap;
+      return {
+        size,
+        fill: apples && apples.clientWidth > 0 ? clusterWidth / apples.clientWidth : 0,
+      };
+    });
+    expect(fourFill.size).toBeGreaterThanOrEqual(32);
+    expect(fourFill.fill).toBeGreaterThanOrEqual(0.65);
 
     const fiveApples = page.locator('[data-gallery-section="match_pairs"] [data-count="5"] .object-cluster');
     await expect(fiveApples).toHaveAttribute('data-layout', 'match');
-    await expect(fiveApples).toHaveAttribute('style', /--object-cols:\s*3/);
-    await expect(fiveApples).toHaveAttribute('style', /--object-rows:\s*2/);
+    const fiveFill = await fiveApples.evaluate((element) => {
+      const cluster = element as HTMLElement;
+      const apples = cluster.closest('.match-object-apples') as HTMLElement | null;
+      const size = Number.parseInt(cluster.style.getPropertyValue('--object-size') || '0', 10);
+      const cols = Number.parseInt(cluster.style.getPropertyValue('--object-cols') || '0', 10);
+      const gap = Number.parseFloat(getComputedStyle(cluster).gap) || 4;
+      const clusterWidth = cols * size + Math.max(0, cols - 1) * gap;
+      return {
+        size,
+        fill: apples && apples.clientWidth > 0 ? clusterWidth / apples.clientWidth : 0,
+      };
+    });
+    expect(fiveFill.size).toBeGreaterThanOrEqual(32);
+    expect(fiveFill.fill).toBeGreaterThanOrEqual(0.65);
   });
 
   test('match-pairs number tray stays fully above بررسی on a four-row question', async ({ page }) => {

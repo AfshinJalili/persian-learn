@@ -34,42 +34,63 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(
     const root = ref.current;
     if (!root) return;
 
-    const measure = () => {
-      const card = (root.matches(MEASURE_SELECTOR)
-        ? root
-        : root.querySelector(MEASURE_SELECTOR)) as HTMLElement | null;
-      const node = card ?? root;
+    const applyBox = (innerW: number, innerH: number) => {
+      if (!Number.isFinite(innerW) || !Number.isFinite(innerH) || innerW < 8 || innerH < 8) {
+        setBox({ width: fallbackWidth, height: fallbackHeight });
+        setSize(
+          objectClusterLayoutForBox(fullest, fallbackWidth, fallbackHeight, gap, layout).size
+        );
+        return;
+      }
+      setBox({ width: innerW, height: innerH });
+      setSize(objectClusterLayoutForBox(fullest, innerW, innerH, gap, layout).size);
+    };
+
+    const innerFromNode = (node: HTMLElement) => {
       const style = getComputedStyle(node);
       const padX = Number.parseFloat(style.paddingLeft) || 0;
       const padY = Number.parseFloat(style.paddingTop) || 0;
       const padRight = Number.parseFloat(style.paddingRight) || 0;
       const padBottom = Number.parseFloat(style.paddingBottom) || 0;
-      const innerW = node.clientWidth - padX - padRight;
-      const innerH = node.clientHeight - padY - padBottom;
-      if (!Number.isFinite(innerW) || !Number.isFinite(innerH) || innerW < 8 || innerH < 8) {
-        setBox({ width: fallbackWidth, height: fallbackHeight });
-        setSize(
-          objectClusterLayoutForBox(
-            fullest,
-            fallbackWidth,
-            fallbackHeight,
-            gap,
-            layout
-          ).size
-        );
-        return;
+      if (layout === 'picture') {
+        return { width: node.clientWidth, height: node.clientHeight };
       }
-      const nextBox = { width: innerW, height: innerH };
-      setBox(nextBox);
-      setSize(objectClusterLayoutForBox(fullest, innerW, innerH, gap, layout).size);
+      return {
+        width: node.clientWidth - padX - padRight,
+        height: node.clientHeight - padY - padBottom,
+      };
     };
 
-    measure();
+    const innerFromEntry = (entry: ResizeObserverEntry) => {
+      const node = entry.target as HTMLElement;
+      const box = Array.isArray(entry.contentBoxSize) ? entry.contentBoxSize[0] : entry.contentBoxSize;
+      if (box && box.inlineSize >= 8 && box.blockSize >= 8) {
+        if (layout === 'picture') {
+          const style = getComputedStyle(node);
+          const padX = (Number.parseFloat(style.paddingLeft) || 0) + (Number.parseFloat(style.paddingRight) || 0);
+          const padY = (Number.parseFloat(style.paddingTop) || 0) + (Number.parseFloat(style.paddingBottom) || 0);
+          return { width: box.inlineSize + padX, height: box.blockSize + padY };
+        }
+        return { width: box.inlineSize, height: box.blockSize };
+      }
+      return innerFromNode(node);
+    };
+
+    const card = (root.matches(MEASURE_SELECTOR)
+      ? root
+      : root.querySelector(MEASURE_SELECTOR)) as HTMLElement | null;
+    const node = card ?? root;
+    const first = innerFromNode(node);
+    applyBox(first.width, first.height);
+
     if (typeof ResizeObserver === 'undefined') return;
-    const observer = new ResizeObserver(measure);
-    observer.observe(root);
-    const card = root.querySelector(MEASURE_SELECTOR);
-    if (card && card !== root) observer.observe(card);
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries.find((item) => item.target === node) ?? entries[0];
+      if (!entry) return;
+      const next = innerFromEntry(entry);
+      applyBox(next.width, next.height);
+    });
+    observer.observe(node);
     return () => observer.disconnect();
   }, [fallbackHeight, fallbackWidth, fullest, gap, layout]);
 

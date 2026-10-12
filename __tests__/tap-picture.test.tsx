@@ -72,6 +72,31 @@ describe('TapPictureExercise', () => {
     ).toBeGreaterThanOrEqual(32);
   });
 
+  it('lets alphabet tap-picture items fill the content box instead of the math 70% ratio', () => {
+    const { container } = render(
+      <TapPictureExercise
+        exercise={{
+          id: 'a1l1e2',
+          type: 'tap_picture',
+          prompt: '🔊',
+          audio_script: 'کدام تصویر «نان» است؟ روی آن بزنید.',
+          payload: { display: '🔊' },
+          answer: '🍞',
+          distractors: ['💧', '🔑'],
+          feedback_correct: 'ok',
+          feedback_wrong: 'no',
+        }}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+    const cluster = container.querySelector('.object-cluster') as HTMLElement | null;
+    expect(cluster).toHaveAttribute('data-layout', 'picture');
+    const size = Number.parseInt(cluster?.style.getPropertyValue('--object-size') || '0', 10);
+    expect(size).toBe(81);
+  });
+
   it('keeps two picture choices in a two-column grid', () => {
     const { container } = render(
       <TapPictureExercise

@@ -37,20 +37,21 @@ describe('ObjectCluster', () => {
   it('fills a wide match-pair box with a best-fit grid above 32px', () => {
     const six = objectClusterLayoutForBox(6, 220, 72, 4, 'match');
     const ten = objectClusterLayoutForBox(10, 220, 72, 4, 'match');
-    expect(six).toMatchObject({ cols: 3, rows: 2 });
+    expect(six).toMatchObject({ cols: 5, rows: 2 });
     expect(six.size).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
     expect(ten).toMatchObject({ cols: 5, rows: 2 });
     expect(ten.size).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
+    expect((5 * six.size + 16) / 220).toBeGreaterThanOrEqual(0.65);
   });
 
-  it('wraps four and five match-pair items instead of a shrinking row', () => {
+  it('fills four and five match-pair items across the row when they stay at 32px', () => {
     expect(objectClusterLayoutForBox(4, 220, 72, 4, 'match')).toMatchObject({
-      cols: 2,
-      rows: 2,
+      cols: 4,
+      rows: 1,
     });
     expect(objectClusterLayoutForBox(5, 220, 72, 4, 'match')).toMatchObject({
-      cols: 3,
-      rows: 2,
+      cols: 5,
+      rows: 1,
     });
     expect(objectClusterLayoutForBox(4, 220, 72, 4, 'match').size).toBeGreaterThanOrEqual(
       OBJECT_CLUSTER_MIN_SIZE
@@ -58,12 +59,23 @@ describe('ObjectCluster', () => {
     expect(objectClusterLayoutForBox(5, 220, 72, 4, 'match').size).toBeGreaterThanOrEqual(
       OBJECT_CLUSTER_MIN_SIZE
     );
+    expect(objectClusterLayoutForBox(5, 120, 72, 4, 'match')).toMatchObject({
+      cols: 3,
+      rows: 2,
+    });
   });
 
-  it('sizes a single item to about 70% of the card width', () => {
+  it('sizes a single math item to about 70% of the measured content width', () => {
     expect(objectClusterLayoutForBox(1, 100, 140).size).toBe(70);
-    expect(objectClusterLayoutForBox(1, 81, 40).size).toBe(40);
+    expect(objectClusterLayoutForBox(1, 81, 40).size).toBe(Math.floor(81 * OBJECT_SINGLE_WIDTH_RATIO));
     expect(objectClusterLayoutForBox(1, 40, 140).size).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
+  });
+
+  it('lets alphabet picture items fill the measured content box', () => {
+    expect(objectClusterLayoutForBox(1, 97, 140, 8, 'picture').size).toBe(97);
+    expect(objectClusterLayoutForBox(1, 97, 140, 8, 'picture').size).toBeGreaterThan(
+      objectClusterLayoutForBox(1, 97, 140).size
+    );
   });
 
   it('stacks three items in one column in a tall 81x140 card', () => {

@@ -38,7 +38,8 @@ export default function ListenChooseExercise({
   const objectCounts = options.map((option) =>
     looksLikeObjects(option) ? splitObjectTokens(option).length : 1
   );
-  const { ref, box } = useSharedClusterSize(objectCounts);
+  const clusterLayout = exercise.id.startsWith('a') ? 'picture' : 'grid';
+  const { ref, box } = useSharedClusterSize(objectCounts, { layout: clusterLayout });
 
   const handleSelect = (option: string) => {
     if (disabled) return;
@@ -86,6 +87,7 @@ export default function ListenChooseExercise({
               {looksLikeObjects(option) ? (
                 <ObjectCluster
                   token={option}
+                  layout={clusterLayout}
                   boxWidth={box.width}
                   boxHeight={box.height}
                 />

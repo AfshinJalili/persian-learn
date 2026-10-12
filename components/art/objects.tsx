@@ -256,7 +256,28 @@ export const OBJECT_SINGLE_WIDTH_RATIO = 0.7;
 export const OBJECT_CARD_INNER_FALLBACK = { width: 81, height: 140 };
 export const OBJECT_MATCH_INNER_FALLBACK = { width: 220, height: 72 };
 
-export type ObjectClusterLayout = 'grid' | 'row' | 'match';
+export const DICE_PIP_COUNTS: Record<string, number> = {
+  '⚀': 1,
+  '⚁': 2,
+  '⚂': 3,
+  '⚃': 4,
+  '⚄': 5,
+  '⚅': 6,
+};
+
+const EXTRA_OBJECT_TOKENS = new Set([
+  '☝️',
+  '✌️',
+  '✋',
+  '👆',
+  ...Object.keys(DICE_PIP_COUNTS),
+]);
+
+export type ObjectClusterLayout = 'grid' | 'row' | 'match' | 'picture';
+
+function clusterWidth(cols: number, size: number, gap: number): number {
+  return cols * size + gap * Math.max(0, cols - 1);
+}
 
 export function objectClusterLayoutForBox(
   count: number,
@@ -270,7 +291,8 @@ export function objectClusterLayoutForBox(
   }
 
   if (count === 1) {
-    const unclamped = Math.min(innerWidth * OBJECT_SINGLE_WIDTH_RATIO, innerHeight);
+    const ratio = layout === 'picture' ? 1 : OBJECT_SINGLE_WIDTH_RATIO;
+    const unclamped = innerWidth * ratio;
     return {
       cols: 1,
       rows: 1,
@@ -297,23 +319,24 @@ export function objectClusterLayoutForBox(
     };
   }
 
-  const maxCols =
-    layout === 'match'
-      ? count <= 3
-        ? count
-        : Math.min(5, Math.ceil(count / 2))
-      : Math.min(5, count);
-
+  const maxCols = Math.min(5, count);
   let best = { cols: 1, rows: count, unclamped: sizeFor(1, count) };
   for (let cols = 2; cols <= maxCols; cols += 1) {
     const rows = Math.ceil(count / cols);
+    if (layout === 'match' && rows > 2) {
+      continue;
+    }
     const unclamped = sizeFor(cols, rows);
-    if (unclamped > best.unclamped) {
+    const bigger = unclamped > best.unclamped + 0.25;
+    const same = Math.abs(unclamped - best.unclamped) <= 0.25;
+    const wider =
+      clusterWidth(cols, unclamped, gap) > clusterWidth(best.cols, best.unclamped, gap);
+    if (bigger || (same && wider)) {
       best = { cols, rows, unclamped };
     }
   }
 
-  if (layout === 'grid' || layout === 'match') {
+  if (layout === 'grid' || layout === 'match' || layout === 'picture') {
     return {
       ...best,
       size: Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.floor(best.unclamped)),
@@ -498,5 +521,7 @@ export function ObjectArt({
 }
 
 export function looksLikeObjects(token: string): boolean {
-  return splitGraphemes(token).some((part) => Boolean(EMOJI_ART[part]));
+  return splitGraphemes(token).some(
+    (part) => Boolean(EMOJI_ART[part]) || EXTRA_OBJECT_TOKENS.has(part)
+  );
 }

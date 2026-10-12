@@ -25,7 +25,8 @@ export default function TapPictureExercise({
 }: Props) {
   const options = exerciseChoices(exercise);
   const counts = options.map((option) => splitObjectTokens(option).length);
-  const { ref, box } = useSharedClusterSize(counts);
+  const clusterLayout = exercise.id.startsWith('a') ? 'picture' : 'grid';
+  const { ref, box } = useSharedClusterSize(counts, { layout: clusterLayout });
 
   const handleSelect = (option: string) => {
     if (disabled) return;
@@ -60,6 +61,7 @@ export default function TapPictureExercise({
             >
               <ObjectCluster
                 token={option}
+                layout={clusterLayout}
                 boxWidth={box.width}
                 boxHeight={box.height}
               />

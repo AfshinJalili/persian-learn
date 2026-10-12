@@ -273,13 +273,13 @@ describe('MatchPairsExercise object rows', () => {
     const clusters = [...container.querySelectorAll('.match-object-apples .object-cluster')] as HTMLElement[];
     const six = clusters.find((cluster) => cluster.getAttribute('data-count') === '6');
     expect(six).toHaveAttribute('data-layout', 'match');
-    expect(six?.style.getPropertyValue('--object-cols')).toBe('3');
+    expect(six?.style.getPropertyValue('--object-cols')).toBe('5');
     expect(six?.style.getPropertyValue('--object-rows')).toBe('2');
     const size = Number.parseInt(six?.style.getPropertyValue('--object-size') ?? '0', 10);
     expect(size).toBeGreaterThanOrEqual(32);
   });
 
-  it('wraps five apples as 3+2 at 32px or larger', () => {
+  it('fills five apples across the row at 32px or larger', () => {
     const { container } = render(
       <MatchPairsExercise
         exercise={{
@@ -304,9 +304,36 @@ describe('MatchPairsExercise object rows', () => {
     expect(list?.nextElementSibling).toBe(tray);
     const five = container.querySelector('[data-count="5"]') as HTMLElement | null;
     expect(five).toHaveAttribute('data-layout', 'match');
-    expect(five?.style.getPropertyValue('--object-cols')).toBe('3');
-    expect(five?.style.getPropertyValue('--object-rows')).toBe('2');
+    expect(five?.style.getPropertyValue('--object-cols')).toBe('5');
+    expect(five?.style.getPropertyValue('--object-rows')).toBe('1');
     const size = Number.parseInt(five?.style.getPropertyValue('--object-size') ?? '0', 10);
     expect(size).toBeGreaterThanOrEqual(32);
+  });
+
+  it('uses the object tray layout for finger pairs', () => {
+    const { container } = render(
+      <MatchPairsExercise
+        exercise={{
+          id: 'm2l4e9',
+          type: 'match_pairs',
+          prompt: '🔗',
+          audio_script: 'هر عدد را به انگشت‌هایش وصل کنید.',
+          payload: {},
+          answer: '۱=☝️|۲=✌️|۵=✋',
+          distractors: [],
+          feedback_correct: 'ok',
+          feedback_wrong: 'no',
+        }}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+    expect(container.querySelector('[data-match-tray]')).toBeTruthy();
+    expect(container.querySelectorAll('.match-object-row')).toHaveLength(3);
+    const sizes = [...container.querySelectorAll('.match-object-apples .object-cluster')].map((cluster) =>
+      Number.parseInt((cluster as HTMLElement).style.getPropertyValue('--object-size') || '0', 10)
+    );
+    expect(sizes.every((size) => size >= 32)).toBe(true);
   });
 });
