@@ -25,10 +25,10 @@ export function PomegranateSvg() {
 export function TeaSvg() {
   return (
     <svg viewBox="0 0 100 100" aria-hidden="true">
-      <ellipse cx="50" cy="84" rx="34" ry="8" fill="#C9D2CC" />
-      <path d="M32 22h36l-4 20c-1 6 4 10 4 22 0 10-8 16-18 16s-18-6-18-16c0-12 5-16 4-22z" fill="#E9F3F6" stroke="#8AA3AB" strokeWidth="3" />
+      <ellipse cx="50" cy="84" rx="34" ry="8" fill="#5A7A84" />
+      <path d="M32 22h36l-4 20c-1 6 4 10 4 22 0 10-8 16-18 16s-18-6-18-16c0-12 5-16 4-22z" fill="#5A7A84" stroke="#3A5560" strokeWidth="3" />
       <path d="M34.5 40h31c-1 5 3.5 10 3.5 24 0 8.5-7 13.5-19 13.5S31 72.5 31 64c0-14 4.5-19 3.5-24z" fill="#B8541A" />
-      <path d="M38 46c-1 6-2 12-1 18" stroke="#E08A4E" strokeWidth="3" fill="none" strokeLinecap="round" />
+      <path d="M38 46c-1 6-2 12-1 18" stroke="#8A5A2B" strokeWidth="3" fill="none" strokeLinecap="round" />
     </svg>
   );
 }
@@ -36,9 +36,9 @@ export function TeaSvg() {
 export function BreadSvg() {
   return (
     <svg viewBox="0 0 100 100" aria-hidden="true">
-      <rect x="8" y="30" width="84" height="44" rx="22" fill="#D9A35B" />
-      <rect x="8" y="30" width="84" height="44" rx="22" fill="none" stroke="#A86F2C" strokeWidth="3" />
-      <path d="M26 40v24M42 40v24M58 40v24M74 40v24" stroke="#A86F2C" strokeWidth="4" strokeLinecap="round" />
+      <rect x="8" y="30" width="84" height="44" rx="22" fill="#C07F32" />
+      <rect x="8" y="30" width="84" height="44" rx="22" fill="none" stroke="#8A5A2B" strokeWidth="3" />
+      <path d="M26 40v24M42 40v24M58 40v24M74 40v24" stroke="#8A5A2B" strokeWidth="4" strokeLinecap="round" />
       <circle cx="34" cy="52" r="1.8" fill="#5A3A18" />
       <circle cx="50" cy="48" r="1.8" fill="#5A3A18" />
       <circle cx="66" cy="55" r="1.8" fill="#5A3A18" />
@@ -70,10 +70,10 @@ export function CypressSvg() {
 export function SunSvg() {
   return (
     <svg viewBox="0 0 100 100" aria-hidden="true">
-      <g stroke="#E08A00" strokeWidth="6" strokeLinecap="round">
+      <g stroke="#C47A00" strokeWidth="6" strokeLinecap="round">
         <path d="M50 8v12M50 80v12M8 50h12M80 50h12M20 20l8 8M72 72l8 8M80 20l-8 8M28 72l-8 8" />
       </g>
-      <circle cx="50" cy="50" r="22" fill="#FFC83D" />
+      <circle cx="50" cy="50" r="22" fill="#C47A00" />
     </svg>
   );
 }
@@ -81,9 +81,9 @@ export function SunSvg() {
 export function MoonSvg() {
   return (
     <svg viewBox="0 0 100 100" aria-hidden="true">
-      <path d="M68 70A30 30 0 0 1 40 18a32 32 0 1 0 40 44 30 30 0 0 1-12 8z" fill="#F3D27A" />
-      <circle cx="74" cy="24" r="3" fill="#F3D27A" />
-      <circle cx="84" cy="40" r="2" fill="#F3D27A" />
+      <path d="M68 70A30 30 0 0 1 40 18a32 32 0 1 0 40 44 30 30 0 0 1-12 8z" fill="#B07E20" />
+      <circle cx="74" cy="24" r="3" fill="#B07E20" />
+      <circle cx="84" cy="40" r="2" fill="#B07E20" />
     </svg>
   );
 }
@@ -91,8 +91,8 @@ export function MoonSvg() {
 export function KeySvg() {
   return (
     <svg viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="34" cy="36" r="18" fill="none" stroke="#C9A227" strokeWidth="8" />
-      <path d="M48 42l36 22-8 12-10-6-6 8-10-8z" fill="#C9A227" />
+      <circle cx="34" cy="36" r="18" fill="none" stroke="#B07A10" strokeWidth="8" />
+      <path d="M48 42l36 22-8 12-10-6-6 8-10-8z" fill="#B07A10" />
     </svg>
   );
 }
@@ -110,7 +110,8 @@ export function PhoneSvg() {
 export function EggSvg() {
   return (
     <svg viewBox="0 0 100 100" aria-hidden="true">
-      <ellipse cx="50" cy="58" rx="26" ry="32" fill="#F7E7C6" stroke="#D4C09A" strokeWidth="3" />
+      <ellipse cx="50" cy="58" rx="26" ry="32" fill="#C07A3A" stroke="#8A5A2B" strokeWidth="4" />
+      <path d="M38 44c5-10 14-14 22-12" stroke="#8A5A2B" strokeWidth="3" fill="none" strokeLinecap="round" />
     </svg>
   );
 }
@@ -118,7 +119,7 @@ export function EggSvg() {
 export function OrangeSvg() {
   return (
     <svg viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="56" r="30" fill="#E67A16" />
+      <circle cx="50" cy="56" r="30" fill="#D66A0C" />
       <path d="M50 28c6-10 16-12 22-8-4 8-12 10-22 8z" fill="#3E9A00" />
     </svg>
   );
@@ -128,7 +129,7 @@ export function HouseSvg() {
   return (
     <svg viewBox="0 0 100 100" aria-hidden="true">
       <path d="M12 48L50 16l38 32" fill="none" stroke="#1F6408" strokeWidth="8" strokeLinejoin="round" />
-      <rect x="26" y="46" width="48" height="38" fill="#E8F7D6" stroke="#1F6408" strokeWidth="4" />
+      <rect x="26" y="46" width="48" height="38" fill="#A85A32" stroke="#1F6408" strokeWidth="4" />
       <rect x="42" y="58" width="16" height="26" fill="#7B2A55" />
     </svg>
   );
@@ -155,8 +156,46 @@ export function DotSvg() {
 export function ClockSvg() {
   return (
     <svg viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="50" cy="54" r="30" fill="#FFFBF2" stroke="#1B2A22" strokeWidth="5" />
+      <circle cx="50" cy="54" r="30" fill="#B07E20" stroke="#1B2A22" strokeWidth="5" />
       <path d="M50 32v24l14 8" stroke="#1B2A22" strokeWidth="5" fill="none" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+export function TomatoSvg() {
+  return (
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="58" r="30" fill="#C8102E" />
+      <path d="M50 30c-8 6-18 6-24 2 6-8 16-12 24-10 8-2 18 2 24 10-6 4-16 4-24-2z" fill="#2E7D0F" />
+    </svg>
+  );
+}
+
+export function OnionSvg() {
+  return (
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <ellipse cx="50" cy="62" rx="28" ry="26" fill="#7B2A55" />
+      <path d="M50 18c4 8 6 14 6 22H44c0-8 2-14 6-22z" fill="#2E7D0F" />
+      <path d="M36 58c4-10 10-14 14-14 4 0 10 4 14 14" stroke="#4A1834" strokeWidth="3" fill="none" />
+    </svg>
+  );
+}
+
+export function PencilSvg() {
+  return (
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <path d="M22 78L70 18l12 10-48 60z" fill="#C47A00" />
+      <path d="M70 18l12 10-8 8-12-10z" fill="#C07A3A" />
+      <path d="M22 78l-8 8 16-2z" fill="#1B2A22" />
+    </svg>
+  );
+}
+
+export function RedDotSvg() {
+  return (
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="38" fill="#C8102E" />
+      <circle cx="38" cy="38" r="12" fill="#7B2A55" opacity="0.45" />
     </svg>
   );
 }
@@ -191,6 +230,10 @@ const EMOJI_ART: Record<string, ReactNode> = {
   '💧': <WaterSvg />,
   '⏰': <ClockSvg />,
   '🔵': <DotSvg />,
+  '🔴': <RedDotSvg />,
+  '🍅': <TomatoSvg />,
+  '🧅': <OnionSvg />,
+  '✏️': <PencilSvg />,
 };
 
 function splitGraphemes(value: string): string[] {
