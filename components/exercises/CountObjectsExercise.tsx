@@ -42,7 +42,7 @@ export default function CountObjectsExercise({
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: `repeat(${Math.min(count, 3) || 2}, 96px)`,
+            gridTemplateColumns: `repeat(${count === 4 ? 2 : Math.min(count, 3) || 2}, 96px)`,
             gap: '18px 40px',
           }}
         >

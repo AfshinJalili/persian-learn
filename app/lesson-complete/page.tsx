@@ -22,6 +22,7 @@ function FlameIcon() {
 export default function LessonCompletePage() {
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [xpEarned, setXpEarned] = useState(10);
+  const [lessonTitle, setLessonTitle] = useState('');
   const router = useRouter();
 
   useEffect(() => {
@@ -29,6 +30,7 @@ export default function LessonCompletePage() {
       const params = new URLSearchParams(window.location.search);
       const xp = Number(params.get('xp') ?? '10');
       setXpEarned(Number.isFinite(xp) && xp > 0 ? xp : 10);
+      setLessonTitle(params.get('lesson') ?? '');
       const prog = await getProgress();
       setProgress(prog);
       try {
@@ -53,9 +55,10 @@ export default function LessonCompletePage() {
   }
 
   const title = progress.name ? `آفرین، ${progress.name}!` : 'آفرین!';
+  const lessonLine = lessonTitle ? `درس «${lessonTitle}» تمام شد.` : 'درس تمام شد.';
   const spoken = progress.name
-    ? `آفرین، ${progress.name}! درس تمام شد.`
-    : 'آفرین! درس تمام شد.';
+    ? `آفرین، ${progress.name}! ${lessonLine}`
+    : `آفرین! ${lessonLine}`;
 
   return (
     <div className="app-phone">
@@ -75,7 +78,7 @@ export default function LessonCompletePage() {
         <div className="display">{title}</div>
         <div className="flex items-center gap-3">
           <SpeakerButton text={spoken} size="sm" />
-          <p className="body-lg">درس تمام شد.</p>
+          <p className="body-lg">{lessonLine}</p>
         </div>
         <div className="flex gap-3 w-full">
           <div className="stat" style={{ borderColor: '#FFC83D' }}>

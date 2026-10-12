@@ -136,7 +136,7 @@ export default function LessonPage() {
 
     await completeLesson(lessonId, xpEarned, weakItems);
     await playAudio('آفرین! درس تمام شد.');
-    router.push(`/lesson-complete?xp=${xpEarned}`);
+    router.push(`/lesson-complete?xp=${xpEarned}&lesson=${encodeURIComponent(lesson.title)}`);
   };
 
   const handleTraced = (answer: string) => {
@@ -261,9 +261,10 @@ export default function LessonPage() {
             type="button"
             onClick={handleCheck}
             className={`btn ${userAnswer ? 'btn-primary' : 'btn-disabled'}`}
+            disabled={!userAnswer}
             aria-disabled={!userAnswer}
           >
-            {userAnswer ? 'بررسی' : 'اول یک جواب انتخاب کنید'}
+            بررسی
           </button>
         </div>
       )}

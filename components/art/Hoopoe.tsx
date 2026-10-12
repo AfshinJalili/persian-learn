@@ -103,7 +103,7 @@ const CHEER = (
 
 export default function Hoopoe({ className = 'w-48 h-48', pose = 'idle' }: HoopoeProps) {
   return (
-    <svg viewBox="0 0 200 200" aria-label="هُدی" className={className} role="img">
+    <svg viewBox="0 0 200 200" width="200" height="200" aria-label="هُدی" className={className} role="img">
       {pose === 'cheer' ? CHEER : IDLE}
     </svg>
   );

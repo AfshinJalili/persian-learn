@@ -65,6 +65,19 @@ export default function TraceLetterExercise({ exercise, onComplete }: Props) {
           </text>
           <path d="M200 112 h-70 m14 -12 l-14 12 l14 12" stroke="#0D4F9E" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
+        {!traced && (
+          <span className="illus" style={{ position: 'absolute', width: 64, height: 64, left: 126, top: 196 }}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M9 11V4.8a1.5 1.5 0 0 1 3 0V10m0-.5V3.8a1.5 1.5 0 0 1 3 0V10m0-.3V5.3a1.5 1.5 0 0 1 3 0v8.2c0 4.3-2.6 7.5-6.7 7.5-2.7 0-4.2-1.4-5.6-3.6l-2.1-3.3a1.5 1.5 0 0 1 2.4-1.8L9 14"
+                fill="#FBE3CF"
+                stroke="#7A4A2A"
+                strokeWidth="1.6"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </span>
+        )}
         <span className="glyph" style={{ position: 'absolute', opacity: 0 }}>
           {letter}
         </span>
