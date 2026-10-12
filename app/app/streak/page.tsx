@@ -3,17 +3,28 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getProgress } from '@/lib/progress';
+import { formatPersianNumber } from '@/lib/persian';
 
 const DAYS = ['شنبه', 'یک‌شنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه'];
 
 export default function StreakPage() {
   const [progress, setProgress] = useState<any>(null);
+  const [daysThisWeek, setDaysThisWeek] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
     async function load() {
       const prog = await getProgress();
       setProgress(prog);
+      
+      const today = new Date();
+      const dayOfWeek = today.getDay();
+      const weekStart = new Date(today);
+      weekStart.setDate(today.getDate() - dayOfWeek);
+      
+      const lastActivity = prog.lastActivityDate ? new Date(prog.lastActivityDate) : null;
+      const days = lastActivity && lastActivity >= weekStart ? prog.streak : 0;
+      setDaysThisWeek(Math.min(days, 7));
     }
 
     load();
@@ -42,13 +53,13 @@ export default function StreakPage() {
         <div className="bg-white rounded-3xl p-8 mb-8 shadow-xl text-center">
           <div className="text-8xl mb-4">🔥</div>
           <div className="text-6xl font-black text-[var(--ink)] mb-2">
-            {progress.streak.toLocaleString('fa-IR')}
+            {formatPersianNumber(daysThisWeek)}
           </div>
           <div className="text-2xl text-[var(--ink-2)] mb-6">
-            روز پشت سر هم
+            روز این هفته
           </div>
           <div className="text-xl text-[var(--ink-2)]">
-            بهترین رکورد: {progress.streakBest.toLocaleString('fa-IR')} روز
+            بهترین رکورد: {formatPersianNumber(progress.streakBest)} روز
           </div>
         </div>
 
@@ -109,10 +120,10 @@ export default function StreakPage() {
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center">
               <div className="text-5xl font-black text-[var(--ink)]">
-                {progress.dailyLessonsCompleted.toLocaleString('fa-IR')}
+                {formatPersianNumber(progress.dailyLessonsCompleted)}
               </div>
               <div className="text-xl text-[var(--ink-2)]">
-                از {progress.dailyGoal.toLocaleString('fa-IR')}
+                از {formatPersianNumber(progress.dailyGoal)}
               </div>
             </div>
           </div>

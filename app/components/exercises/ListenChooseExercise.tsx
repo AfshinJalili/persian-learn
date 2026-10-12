@@ -43,6 +43,7 @@ export default function ListenChooseExercise({ exercise, userAnswer, onAnswerCha
               ${userAnswer === option ? 'bg-[var(--blue-100)] border-4 border-[var(--blue-700)] scale-105' : 'bg-white border-4 border-[var(--line-strong)]'}
               ${disabled ? 'opacity-50' : 'hover:scale-105'}
             `}
+            style={{ fontSize: '120px', lineHeight: '1.3' }}
           >
             {option}
           </button>

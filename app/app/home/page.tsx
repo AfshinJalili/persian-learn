@@ -6,6 +6,7 @@ import { getProgress } from '@/lib/progress';
 import { loadTrack, isLessonUnlocked } from '@/lib/content';
 import type { Track, Unit, Lesson } from '@/lib/types';
 import { playAudio } from '@/lib/audio';
+import { formatPersianNumber } from '@/lib/persian';
 
 export default function HomePage() {
   const [progress, setProgress] = useState<any>(null);
@@ -70,13 +71,13 @@ export default function HomePage() {
             <div>
               <div className="text-xl font-bold">{progress.name || 'سلام'}</div>
               <div className="text-lg text-[var(--ink-2)]">
-                امتیاز: {progress.xp.toLocaleString('fa-IR')}
+                {formatPersianNumber(progress.streak)} روز این هفته
               </div>
             </div>
           </div>
           <div className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--saffron-400)]">
             <span className="text-3xl">🔥</span>
-            <span className="text-2xl font-black">{progress.streak.toLocaleString('fa-IR')}</span>
+            <span className="text-2xl font-black">{formatPersianNumber(progress.streak)}</span>
           </div>
         </div>
 
@@ -134,7 +135,7 @@ export default function HomePage() {
                       {isCompleted && '✓'}
                       {isCurrent && '⭐'}
                       {!unlocked && !isCompleted && !isCurrent && '🔒'}
-                      {unlocked && !isCompleted && !isCurrent && (lessonIndex + 1).toLocaleString('fa-IR')}
+                      {unlocked && !isCompleted && !isCurrent && formatPersianNumber(lessonIndex + 1)}
                     </button>
                     {isCurrent && (
                       <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap bg-[var(--green-700)] text-white px-4 py-2 rounded-full text-lg font-bold">

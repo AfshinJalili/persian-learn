@@ -27,7 +27,9 @@ export async function playAudio(text: string, slow: boolean = false): Promise<vo
   stopAudio();
 
   const speed = slow ? 0.75 : audioSpeed;
-  const audioId = generateAudioId(text);
+  
+  const normalizedText = normalizePersianText(text);
+  const audioId = generateAudioId(normalizedText);
   const audioPath = `/audio/${audioId}.mp3`;
 
   try {
@@ -38,7 +40,13 @@ export async function playAudio(text: string, slow: boolean = false): Promise<vo
   } catch {
   }
 
-  return playWithSpeechSynthesis(text, speed);
+  return playWithSpeechSynthesis(normalizedText, speed);
+}
+
+function normalizePersianText(text: string): string {
+  return text
+    .replace(/\u064A/g, '\u06CC')
+    .replace(/\u0643/g, '\u06A9');
 }
 
 function playAudioFile(path: string, rate: number): Promise<void> {

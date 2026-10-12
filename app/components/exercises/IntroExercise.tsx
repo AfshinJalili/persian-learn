@@ -20,7 +20,7 @@ export default function IntroExercise({ exercise, onContinue }: Props) {
         </svg>
       </button>
 
-      <div className="text-9xl font-black mb-8 text-[var(--ink)]" style={{ fontSize: '160px' }}>
+      <div className="text-9xl font-black mb-8 text-[var(--ink)]" style={{ fontSize: '160px', lineHeight: '1.3' }}>
         {payload.display}
       </div>
 

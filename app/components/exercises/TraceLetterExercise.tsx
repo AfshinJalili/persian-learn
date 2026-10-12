@@ -44,7 +44,7 @@ export default function TraceLetterExercise({ exercise, onComplete }: Props) {
             className={`text-9xl font-black transition-all duration-300 ${
               traced ? 'text-[var(--green-700)]' : 'text-[var(--ink-2)]'
             }`}
-            style={{ fontSize: '200px' }}
+            style={{ fontSize: '200px', lineHeight: '1.3' }}
           >
             {payload.letter}
           </div>
