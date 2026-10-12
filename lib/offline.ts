@@ -6,6 +6,7 @@ export function offlineStrategy(pathname: string): OfflineStrategy {
     pathname.startsWith('/fonts/') ||
     pathname.startsWith('/content/') ||
     pathname.startsWith('/icons/') ||
+    pathname.startsWith('/audio/') ||
     pathname.endsWith('.woff2')
   ) {
     return 'cache-first';

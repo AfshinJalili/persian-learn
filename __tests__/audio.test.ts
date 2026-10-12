@@ -64,7 +64,7 @@ function mockMissingAudioAndTts() {
 
 describe('generateAudioId', () => {
   it('matches SHA-256 keys in the audio manifest', async () => {
-    expect(manifest.items.length).toBeGreaterThan(0);
+    expect(manifest.items.length).toBe(2151);
     const samples = [
       manifest.items[0],
       manifest.items[Math.floor(manifest.items.length / 2)],
