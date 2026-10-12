@@ -497,7 +497,8 @@ h2,
 }
 
 .object-count-card {
-  min-height: 180px;
+  container-type: inline-size;
+  min-height: max(180px, 100cqi);
   padding: 16px;
   background: #fff8ec;
 }

@@ -67,6 +67,7 @@ async function seedProgress(
       req.onerror = () => reject(req.error ?? new Error('indexedDB open failed'));
     });
   }, overrides);
+  await page.reload();
 }
 
 function measurePage() {
@@ -217,7 +218,10 @@ test.describe('Object fill at phone widths', () => {
 
       for (const lesson of lessons) {
         await page.goto(lesson.path);
-        await page.waitForTimeout(400);
+        await expect(
+          page.locator('.object-cluster, [data-digit-display], [data-dice-face], [data-match-tray]').first()
+        ).toBeVisible();
+        await page.waitForTimeout(300);
         const stats = await page.evaluate(measurePage);
         expect(stats.minSize, lesson.path).toBeGreaterThanOrEqual(32);
         expect(stats.sizeCount, lesson.path).toBeGreaterThan(0);
