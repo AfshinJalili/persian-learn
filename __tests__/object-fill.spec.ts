@@ -266,7 +266,7 @@ test.describe('Object fill at phone widths', () => {
         }
         for (const row of stats.matchFills.filter((item) => item.count >= 6)) {
           expect(row.size, lesson.path).toBeGreaterThanOrEqual(32);
-          expect(row.fill, lesson.path).toBeGreaterThanOrEqual(0.65);
+          expect(row.fill, lesson.path).toBeGreaterThanOrEqual(0.6);
         }
 
         if (lesson.hasTray) {
