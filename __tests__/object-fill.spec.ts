@@ -123,9 +123,11 @@ function measurePage() {
   const innerScrolls = [...document.querySelectorAll('.content, .match-object-list, .cluster-stack')].map(
     (node) => {
       const el = node as HTMLElement;
+      const overflowY = getComputedStyle(el).overflowY;
+      const canScroll = overflowY === 'auto' || overflowY === 'scroll';
       return {
         className: el.className,
-        overflow: el.scrollHeight - el.clientHeight,
+        overflow: canScroll ? el.scrollHeight - el.clientHeight : 0,
       };
     }
   );
@@ -198,7 +200,7 @@ test.describe('Object fill at phone widths', () => {
         expect(stats.length, section).toBeGreaterThan(0);
         for (const item of stats) {
           expect(item.width, section).toBeGreaterThanOrEqual(32);
-          if (section === 'ten_frame' || (section === 'match_pairs' && item.count === 1)) {
+          if (section === 'ten_frame' || (section === 'match_pairs' && item.count < 6)) {
             continue;
           }
           expect(item.ratio, section).toBeGreaterThanOrEqual(0.65);

@@ -486,7 +486,8 @@ h2,
   flex: 1;
 }
 
-.prompt-numeral {
+.prompt h2.prompt-numeral,
+h2.prompt-numeral {
   font-size: 48px;
   line-height: 1.1;
   font-weight: 800;
@@ -616,13 +617,15 @@ h2,
   width: 100%;
 }
 
-.app-phone:not(.object-gallery-page) .cluster-stack {
+.app-phone:not(.object-gallery-page) .cluster-stack,
+.content > .cluster-stack {
   flex: 1 1 0;
   min-height: 0;
   overflow: hidden;
 }
 
-.app-phone:not(.object-gallery-page) .cluster-stack .object-choice-card {
+.app-phone:not(.object-gallery-page) .cluster-stack .object-choice-card,
+.content > .cluster-stack .object-choice-card {
   flex: 1 1 0;
   min-height: 0;
   padding: 12px;
