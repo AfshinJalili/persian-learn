@@ -23,11 +23,10 @@ export default function ProfilePage() {
     return null;
   }
 
-  const startDate = new Date(progress.startDate);
-  const monthNames = [
-    'فروردین', 'اردیبهشت', 'خرداد', 'تیر', 'مرداد', 'شهریور',
-    'مهر', 'آبان', 'آذر', 'دی', 'بهمن', 'اسفند'
-  ];
+  const joinedLabel = new Date(progress.startDate).toLocaleDateString('fa-IR', {
+    year: 'numeric',
+    month: 'long',
+  });
 
   return (
     <div className="min-h-screen bg-[var(--bg)] pb-24">
@@ -49,7 +48,7 @@ export default function ProfilePage() {
             {progress.name || 'سلام'}
           </h2>
           <p className="text-xl text-[var(--ink-2)]">
-            از {monthNames[startDate.getMonth()]} {startDate.getFullYear().toLocaleString('fa-IR')} با ما
+            از {joinedLabel} با ما
           </p>
         </div>
 

@@ -1,6 +1,5 @@
 'use client';
 
-import confetti from 'canvas-confetti';
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { getProgress, completeLesson } from '@/lib/progress';
@@ -83,7 +82,10 @@ export default function LessonPage() {
   const handleContinue = async () => {
     if (!lesson || !currentExercise) return;
 
-    const kind = feedbackKind(isCorrect, attempts - 1);
+    const kind =
+      currentExercise.type === 'intro'
+        ? 'correct'
+        : feedbackKind(isCorrect, Math.max(0, attempts - 1));
 
     if (kind === 'hint') {
       setShowFeedback(false);
@@ -114,16 +116,6 @@ export default function LessonPage() {
     }
 
     await completeLesson(lessonId, xpEarned, weakItems);
-    try {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
-    } catch {
-      /* confetti is decorative */
-    }
-
     await playAudio('آفرین! درس تمام شد.');
     router.push('/lesson-complete');
   };

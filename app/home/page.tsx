@@ -64,7 +64,7 @@ export default function HomePage() {
   );
 
   return (
-    <div className="min-h-screen bg-[var(--bg)] pb-24">
+    <div className="min-h-screen bg-[var(--bg)] pb-36">
       <AudioUnlockOverlay />
       <div className="p-6">
         <div className="flex items-center justify-between mb-8">
@@ -94,61 +94,57 @@ export default function HomePage() {
               </svg>
             </button>
             <div>
-              <div className="text-lg opacity-90">بخش {currentUnit.id.replace(/\D/g, '')}</div>
+              <div className="text-lg opacity-90">
+                بخش {formatPersianNumber(Number(currentUnit.id.replace(/\D/g, '')) || 1)}
+              </div>
               <h2 className="text-2xl font-black">{currentUnit.title}</h2>
             </div>
           </div>
         </div>
 
-        <div className="space-y-12 relative">
-          <svg className="absolute top-0 right-1/2 h-full w-2 -translate-x-1/2 pointer-events-none" style={{ zIndex: 0 }}>
-            <line x1="50%" y1="0" x2="50%" y2="100%" stroke="var(--line)" strokeWidth="4" strokeDasharray="8,4" />
-          </svg>
+        <div className="relative flex flex-col gap-6 py-2">
+          <div className="absolute top-8 bottom-8 left-1/2 w-1 -translate-x-1/2 bg-[var(--line)] rounded-full" />
 
-          {track.units.map((unit, unitIndex) => (
-            <div key={unit.id} className="relative">
-              {unit.lessons.map((lesson, lessonIndex) => {
-                const isCompleted = progress.completedLessons.includes(lesson.id);
-                const isCurrent = lesson.id === currentLesson?.id;
-                const unlocked = isLessonUnlocked(track, lesson.id, progress.completedLessons);
-                const position = lessonIndex % 3 === 0 ? 'center' : lessonIndex % 3 === 1 ? 'right' : 'left';
+          {currentUnit.lessons.map((lesson, lessonIndex) => {
+            const isCompleted = progress.completedLessons.includes(lesson.id);
+            const isCurrent = lesson.id === currentLesson?.id;
+            const unlocked = isLessonUnlocked(track, lesson.id, progress.completedLessons);
+            const zigzag =
+              lessonIndex % 3 === 0 ? 'self-center' : lessonIndex % 3 === 1 ? 'self-start' : 'self-end';
 
-                let nodeClass = 'mx-auto';
-                if (position === 'right') {
-                  nodeClass = 'mr-auto ml-0';
-                } else if (position === 'left') {
-                  nodeClass = 'ml-auto mr-0';
-                }
-
-                return (
-                  <div key={lesson.id} className={`relative ${nodeClass}`} style={{ maxWidth: '120px', zIndex: 1 }}>
-                    <button
-                      onClick={() => handleLessonClick(lesson)}
-                      disabled={!unlocked}
-                      className={`
-                        w-24 h-24 rounded-full flex items-center justify-center text-3xl font-black
-                        transition-all duration-300 shadow-lg
-                        ${isCompleted ? 'bg-[var(--green-600)] text-white' : ''}
-                        ${isCurrent ? 'bg-[var(--green-700)] text-white scale-110 animate-pulse' : ''}
-                        ${!unlocked && !isCompleted && !isCurrent ? 'bg-gray-300 text-gray-500' : ''}
-                        ${unlocked && !isCompleted && !isCurrent ? 'bg-white border-4 border-[var(--line-strong)]' : ''}
-                      `}
-                    >
-                      {isCompleted && '✓'}
-                      {isCurrent && '⭐'}
-                      {!unlocked && !isCompleted && !isCurrent && '🔒'}
-                      {unlocked && !isCompleted && !isCurrent && formatPersianNumber(lessonIndex + 1)}
-                    </button>
-                    {isCurrent && (
-                      <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap bg-[var(--green-700)] text-white px-4 py-2 rounded-full text-lg font-bold">
-                        شروع
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
+            return (
+              <div key={lesson.id} className={`relative z-10 ${zigzag} flex flex-col items-center`}>
+                <button
+                  type="button"
+                  onClick={() => handleLessonClick(lesson)}
+                  disabled={!unlocked}
+                  aria-label={lesson.title}
+                  className={`
+                    w-[72px] h-[72px] rounded-full flex items-center justify-center text-2xl font-black
+                    shadow-lg
+                    ${isCompleted ? 'bg-[var(--green-600)] text-white' : ''}
+                    ${isCurrent ? 'bg-[var(--green-700)] text-white scale-110' : ''}
+                    ${!unlocked && !isCompleted && !isCurrent ? 'bg-gray-300 text-gray-500' : ''}
+                    ${unlocked && !isCompleted && !isCurrent ? 'bg-white border-4 border-[var(--line-strong)]' : ''}
+                  `}
+                >
+                  {isCompleted && '✓'}
+                  {isCurrent && '⭐'}
+                  {!unlocked && !isCompleted && !isCurrent && '🔒'}
+                  {unlocked && !isCompleted && !isCurrent && formatPersianNumber(lessonIndex + 1)}
+                </button>
+                {isCurrent && (
+                  <button
+                    type="button"
+                    onClick={() => handleLessonClick(lesson)}
+                    className="mt-3 bg-[var(--green-700)] text-white px-5 py-2 rounded-full text-lg font-bold"
+                  >
+                    شروع
+                  </button>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
 

@@ -69,7 +69,8 @@ export default function StreakPage() {
           </h2>
           <div className="flex justify-between gap-2">
             {DAYS.map((day, index) => {
-              const isToday = index === new Date().getDay();
+              const iranWeekIndex = (new Date().getDay() + 1) % 7;
+              const isToday = index === iranWeekIndex;
               return (
                 <div
                   key={day}
