@@ -4,6 +4,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import {
   OBJECT_CARD_INNER_FALLBACK,
   OBJECT_CLUSTER_GAP,
+  OBJECT_MATCH_GAP,
   objectClusterLayoutForBox,
   type ObjectClusterLayout,
 } from '@/components/art/objects';
@@ -21,10 +22,11 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(
   const fullest = Math.max(1, ...counts);
   const fallback = options?.fallback ?? OBJECT_CARD_INNER_FALLBACK;
   const layout = options?.layout ?? 'grid';
+  const gap = layout === 'match' ? OBJECT_MATCH_GAP : OBJECT_CLUSTER_GAP;
   const fallbackWidth = fallback.width;
   const fallbackHeight = fallback.height;
   const [size, setSize] = useState(() =>
-    objectClusterLayoutForBox(fullest, fallbackWidth, fallbackHeight, OBJECT_CLUSTER_GAP, layout).size
+    objectClusterLayoutForBox(fullest, fallbackWidth, fallbackHeight, gap, layout).size
   );
   const [box, setBox] = useState(() => ({ width: fallbackWidth, height: fallbackHeight }));
 
@@ -51,7 +53,7 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(
             fullest,
             fallbackWidth,
             fallbackHeight,
-            OBJECT_CLUSTER_GAP,
+            gap,
             layout
           ).size
         );
@@ -59,7 +61,7 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(
       }
       const nextBox = { width: innerW, height: innerH };
       setBox(nextBox);
-      setSize(objectClusterLayoutForBox(fullest, innerW, innerH, OBJECT_CLUSTER_GAP, layout).size);
+      setSize(objectClusterLayoutForBox(fullest, innerW, innerH, gap, layout).size);
     };
 
     measure();
@@ -69,7 +71,7 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(
     const card = root.querySelector(MEASURE_SELECTOR);
     if (card && card !== root) observer.observe(card);
     return () => observer.disconnect();
-  }, [fallbackHeight, fallbackWidth, fullest, layout]);
+  }, [fallbackHeight, fallbackWidth, fullest, gap, layout]);
 
   return { ref, size, box, fullest };
 }

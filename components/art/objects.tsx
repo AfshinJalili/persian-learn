@@ -91,8 +91,8 @@ export function MoonSvg() {
 export function KeySvg() {
   return (
     <svg viewBox="0 0 100 100" aria-hidden="true">
-      <circle cx="34" cy="36" r="18" fill="none" stroke="#B07A10" strokeWidth="8" />
-      <path d="M48 42l36 22-8 12-10-6-6 8-10-8z" fill="#B07A10" />
+      <circle cx="36" cy="34" r="24" fill="none" stroke="#B07A10" strokeWidth="12" />
+      <path d="M54 42l38 28-12 16-12-8-8 12-16-12z" fill="#B07A10" />
     </svg>
   );
 }
@@ -250,12 +250,13 @@ export function splitObjectTokens(token: string): string[] {
 }
 
 export const OBJECT_CLUSTER_GAP = 8;
+export const OBJECT_MATCH_GAP = 4;
 export const OBJECT_CLUSTER_MIN_SIZE = 32;
 export const OBJECT_SINGLE_WIDTH_RATIO = 0.7;
 export const OBJECT_CARD_INNER_FALLBACK = { width: 81, height: 140 };
-export const OBJECT_MATCH_INNER_FALLBACK = { width: 220, height: 84 };
+export const OBJECT_MATCH_INNER_FALLBACK = { width: 220, height: 72 };
 
-export type ObjectClusterLayout = 'grid' | 'row';
+export type ObjectClusterLayout = 'grid' | 'row' | 'match';
 
 export function objectClusterLayoutForBox(
   count: number,
@@ -296,7 +297,13 @@ export function objectClusterLayoutForBox(
     };
   }
 
-  const maxCols = Math.min(5, count);
+  const maxCols =
+    layout === 'match'
+      ? count <= 3
+        ? count
+        : Math.min(5, Math.ceil(count / 2))
+      : Math.min(5, count);
+
   let best = { cols: 1, rows: count, unclamped: sizeFor(1, count) };
   for (let cols = 2; cols <= maxCols; cols += 1) {
     const rows = Math.ceil(count / cols);
@@ -306,10 +313,15 @@ export function objectClusterLayoutForBox(
     }
   }
 
-  return {
-    ...best,
-    size: Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.floor(best.unclamped)),
-  };
+  if (layout === 'grid' || layout === 'match') {
+    return {
+      ...best,
+      size: Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.floor(best.unclamped)),
+    };
+  }
+
+  const _exhaustive: never = layout;
+  return _exhaustive;
 }
 
 export function objectClusterColumns(
@@ -436,11 +448,12 @@ export function ObjectCluster({
 }) {
   const parts = tokens ?? (token ? splitObjectTokens(token) : []);
   const count = parts.length;
+  const gap = layout === 'match' ? OBJECT_MATCH_GAP : OBJECT_CLUSTER_GAP;
   const fitted = objectClusterLayoutForBox(
     count,
     boxWidth && boxWidth > 8 ? boxWidth : OBJECT_CARD_INNER_FALLBACK.width,
     boxHeight && boxHeight > 8 ? boxHeight : OBJECT_CARD_INNER_FALLBACK.height,
-    OBJECT_CLUSTER_GAP,
+    gap,
     layout
   );
   const cols = fitted.cols;
@@ -456,6 +469,7 @@ export function ObjectCluster({
         {
           '--object-cols': cols,
           '--object-rows': rows,
+          '--cluster-gap': `${gap}px`,
           '--dot': `${size}px`,
           '--object-size': `${size}px`,
         } as CSSProperties

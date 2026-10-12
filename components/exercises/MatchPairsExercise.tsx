@@ -61,6 +61,7 @@ export default function MatchPairsExercise({
   const appleCounts = rightOptions.map((option) => splitObjectTokens(option).length);
   const { ref, box } = useSharedClusterSize(appleCounts, {
     fallback: OBJECT_MATCH_INNER_FALLBACK,
+    layout: 'match',
   });
 
   useEffect(() => {
@@ -136,74 +137,48 @@ export default function MatchPairsExercise({
         <h2>{exerciseHeading(exercise)}</h2>
       </div>
       {objectLayout ? (
-        <>
+        <div className="match-pairs-board">
           <div ref={ref} className="match-object-list">
             {rightOptions.map((option) => {
-            const placed = pairForRight(option);
-            const correct =
-              placed && answerPairs.some(([left, right]) => left === placed[0] && right === option);
-            const picking = selected?.side === 'right' && selected.value === option;
-            return (
-              <button
-                type="button"
-                key={option}
-                aria-label={option}
-                data-match-slot={option}
-                disabled={disabled || Boolean(placed)}
-                onClick={() => handleSelect('right', option)}
-                onDragOver={(event) => event.preventDefault()}
-                onDrop={(event) => handleSlotDrop(option, event)}
-                className={`row-card match-object-row ${picking ? 'selected' : ''}`}
-                style={{
-                  padding: '12px 16px',
-                  borderColor: correct ? 'var(--green-500)' : undefined,
-                  background: correct ? 'var(--green-050)' : undefined,
-                }}
-              >
-                <div className="match-object-apples">
-                  <ObjectCluster
-                    token={option}
-                    boxWidth={box.width}
-                    boxHeight={box.height}
-                  />
-                </div>
-                {placed ? (
-                  <span className={`card match-digit-slot ${correct ? 'correct' : ''}`}>
-                    <span className="glyph" style={{ fontSize: 52 }}>
-                      {placed[0]}
+              const placed = pairForRight(option);
+              const correct =
+                placed && answerPairs.some(([left, right]) => left === placed[0] && right === option);
+              const picking = selected?.side === 'right' && selected.value === option;
+              return (
+                <button
+                  type="button"
+                  key={option}
+                  aria-label={option}
+                  data-match-slot={option}
+                  disabled={disabled || Boolean(placed)}
+                  onClick={() => handleSelect('right', option)}
+                  onDragOver={(event) => event.preventDefault()}
+                  onDrop={(event) => handleSlotDrop(option, event)}
+                  className={`row-card match-object-row ${picking ? 'selected' : ''} ${correct ? 'match-object-row-correct' : ''}`}
+                >
+                  <div className="match-object-apples">
+                    <ObjectCluster
+                      token={option}
+                      layout="match"
+                      boxWidth={box.width}
+                      boxHeight={box.height}
+                    />
+                  </div>
+                  {placed ? (
+                    <span className={`card match-digit-slot ${correct ? 'correct' : ''}`}>
+                      <span className="glyph">{placed[0]}</span>
                     </span>
-                  </span>
-                ) : (
-                  <span
-                    className="match-digit-slot"
-                    style={{
-                      border: '3px dashed #767F7A',
-                      background: '#F3F1EA',
-                    }}
-                  />
-                )}
-              </button>
-            );
-          })}
+                  ) : (
+                    <span className="match-digit-slot match-digit-slot-empty" />
+                  )}
+                </button>
+              );
+            })}
           </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              gap: 24,
-              padding: 12,
-              borderRadius: 24,
-              background: 'var(--surface-2)',
-              minHeight: 116,
-              alignItems: 'center',
-            }}
-          >
+          <div className="match-digit-tray" data-match-tray>
             {leftOptions.map((option) =>
               isLeftUsed(option) ? (
-                <span
-                  key={option}
-                  style={{ width: 88, height: 88, borderRadius: 20, border: '3px dashed var(--line)' }}
-                />
+                <span key={option} className="match-digit-chip match-digit-chip-used" />
               ) : (
                 <button
                   type="button"
@@ -213,17 +188,14 @@ export default function MatchPairsExercise({
                   draggable={!disabled}
                   onClick={() => handleSelect('left', option)}
                   onDragStart={(event) => handleDigitDragStart(option, event)}
-                  className={`card ${selected?.side === 'left' && selected.value === option ? 'selected' : ''}`}
-                  style={{ width: 88, height: 88, borderRadius: 20 }}
+                  className={`card match-digit-chip ${selected?.side === 'left' && selected.value === option ? 'selected' : ''}`}
                 >
-                  <span className="glyph" style={{ fontSize: 52 }}>
-                    {option}
-                  </span>
+                  <span className="glyph">{option}</span>
                 </button>
               )
             )}
           </div>
-        </>
+        </div>
       ) : (
         <div className="grid grid-cols-2 gap-4">
           <div data-match-column="left" className="space-y-3">

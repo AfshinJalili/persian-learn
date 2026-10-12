@@ -81,12 +81,14 @@ function ThreeCardTypeGallery({
 function MatchPairGalleryRow({ count, token }: { count: number; token: string }) {
   const { ref, box } = useSharedClusterSize([count], {
     fallback: OBJECT_MATCH_INNER_FALLBACK,
+    layout: 'match',
   });
   return (
     <div ref={ref} className="row-card match-object-row" data-count={count}>
       <div className="match-object-apples">
         <ObjectCluster
           token={token.repeat(count)}
+          layout="match"
           boxWidth={box.width}
           boxHeight={box.height}
         />

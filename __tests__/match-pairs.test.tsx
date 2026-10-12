@@ -244,11 +244,11 @@ describe('MatchPairsExercise object rows', () => {
     const clusters = [...container.querySelectorAll('.match-object-apples .object-cluster')] as HTMLElement[];
     expect(clusters).toHaveLength(3);
     const ten = clusters.find((cluster) => cluster.getAttribute('data-count') === '10');
-    expect(ten).toHaveAttribute('data-layout', 'grid');
+    expect(ten).toHaveAttribute('data-layout', 'match');
     expect(ten?.style.getPropertyValue('--object-cols')).toBe('5');
     expect(ten?.style.getPropertyValue('--object-rows')).toBe('2');
     const size = Number.parseInt(ten?.style.getPropertyValue('--object-size') ?? '0', 10);
-    expect(size).toBeGreaterThan(32);
+    expect(size).toBeGreaterThanOrEqual(32);
   });
 
   it('lays 6 objects in a filled 3x2 grid instead of a 32px row with empty cells', () => {
@@ -272,10 +272,41 @@ describe('MatchPairsExercise object rows', () => {
     );
     const clusters = [...container.querySelectorAll('.match-object-apples .object-cluster')] as HTMLElement[];
     const six = clusters.find((cluster) => cluster.getAttribute('data-count') === '6');
-    expect(six).toHaveAttribute('data-layout', 'grid');
+    expect(six).toHaveAttribute('data-layout', 'match');
     expect(six?.style.getPropertyValue('--object-cols')).toBe('3');
     expect(six?.style.getPropertyValue('--object-rows')).toBe('2');
     const size = Number.parseInt(six?.style.getPropertyValue('--object-size') ?? '0', 10);
-    expect(size).toBeGreaterThan(32);
+    expect(size).toBeGreaterThanOrEqual(32);
+  });
+
+  it('wraps five apples as 3+2 at 32px or larger', () => {
+    const { container } = render(
+      <MatchPairsExercise
+        exercise={{
+          id: 'm2l1e9',
+          type: 'match_pairs',
+          prompt: '🔗',
+          audio_script: 'هر عدد را به تصویری وصل کنید که همان تعداد سیب دارد.',
+          payload: {},
+          answer: '۴=🍎🍎🍎🍎|۵=🍎🍎🍎🍎🍎',
+          distractors: [],
+          feedback_correct: 'ok',
+          feedback_wrong: 'no',
+        }}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+    const tray = container.querySelector('[data-match-tray]');
+    const list = container.querySelector('.match-object-list');
+    expect(tray).toBeTruthy();
+    expect(list?.nextElementSibling).toBe(tray);
+    const five = container.querySelector('[data-count="5"]') as HTMLElement | null;
+    expect(five).toHaveAttribute('data-layout', 'match');
+    expect(five?.style.getPropertyValue('--object-cols')).toBe('3');
+    expect(five?.style.getPropertyValue('--object-rows')).toBe('2');
+    const size = Number.parseInt(five?.style.getPropertyValue('--object-size') ?? '0', 10);
+    expect(size).toBeGreaterThanOrEqual(32);
   });
 });

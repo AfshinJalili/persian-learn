@@ -248,14 +248,15 @@ test.describe('Codex review navigation fixes', () => {
     expect(Math.min(...sizes)).toBeGreaterThanOrEqual(32);
 
     const tenApples = page.locator('[data-gallery-section="match_pairs"] [data-count="10"] .object-cluster');
-    await expect(tenApples).toHaveAttribute('data-layout', 'grid');
+    await expect(tenApples).toHaveAttribute('data-layout', 'match');
     await expect(tenApples).toHaveAttribute('data-count', '10');
     const tenLayout = await tenApples.evaluate((element) => {
       const cluster = element as HTMLElement;
       const apples = cluster.closest('.match-object-apples') as HTMLElement | null;
       const size = Number.parseInt(cluster.style.getPropertyValue('--object-size') || '0', 10);
       const cols = Number.parseInt(cluster.style.getPropertyValue('--object-cols') || '0', 10);
-      const clusterWidth = cols * size + Math.max(0, cols - 1) * 8;
+      const gap = Number.parseFloat(getComputedStyle(cluster).gap) || 4;
+      const clusterWidth = cols * size + Math.max(0, cols - 1) * gap;
       return {
         cols: cluster.style.getPropertyValue('--object-cols'),
         rows: cluster.style.getPropertyValue('--object-rows'),
@@ -265,5 +266,97 @@ test.describe('Codex review navigation fixes', () => {
     });
     expect(tenLayout.size).toBeGreaterThanOrEqual(32);
     expect(tenLayout.fill).toBeGreaterThan(0.7);
+
+    const fourApples = page.locator('[data-gallery-section="match_pairs"] [data-count="4"] .object-cluster');
+    await expect(fourApples).toHaveAttribute('data-layout', 'match');
+    await expect(fourApples).toHaveAttribute('style', /--object-cols:\s*2/);
+    await expect(fourApples).toHaveAttribute('style', /--object-rows:\s*2/);
+
+    const fiveApples = page.locator('[data-gallery-section="match_pairs"] [data-count="5"] .object-cluster');
+    await expect(fiveApples).toHaveAttribute('data-layout', 'match');
+    await expect(fiveApples).toHaveAttribute('style', /--object-cols:\s*3/);
+    await expect(fiveApples).toHaveAttribute('style', /--object-rows:\s*2/);
+  });
+
+  test('match-pairs number tray stays fully above بررسی on a four-row question', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto('/');
+    await page.evaluate(async () => {
+      const today = new Date().toISOString().split('T')[0];
+      const value = {
+        currentTrack: 'math',
+        onboarded: true,
+        completedLessons: [
+          'm1l1',
+          'm1l2',
+          'm1l3',
+          'm1l4',
+          'm1l5',
+          'm2l1',
+          'm2l2',
+          'm2l3',
+          'm2l4',
+          'm2l5',
+          'm3l1',
+        ],
+        completedUnits: [],
+        xp: 400,
+        streak: 3,
+        streakBest: 3,
+        lastActivityDate: today,
+        dailyGoal: 2,
+        dailyLessonsCompleted: 1,
+        restDaysUsed: 0,
+        weakItems: [],
+        avatar: 'tulip',
+        name: 'فریبا جون',
+        startDate: '2026-01-01T00:00:00.000Z',
+        speechRate: 1,
+        autoplay: true,
+        activityDates: [today],
+      };
+      sessionStorage.setItem('pl-audio-unlocked', '1');
+      await new Promise<void>((resolve, reject) => {
+        const req = indexedDB.open('persian-learn', 1);
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if (!db.objectStoreNames.contains('progress')) db.createObjectStore('progress');
+          if (!db.objectStoreNames.contains('lessons')) db.createObjectStore('lessons');
+        };
+        req.onsuccess = () => {
+          const db = req.result;
+          const tx = db.transaction('progress', 'readwrite');
+          tx.objectStore('progress').put(value, 'current');
+          tx.oncomplete = () => {
+            db.close();
+            resolve();
+          };
+          tx.onerror = () => reject(tx.error ?? new Error('progress write failed'));
+        };
+        req.onerror = () => reject(req.error ?? new Error('indexedDB open failed'));
+      });
+    });
+
+    await page.goto('/lesson/m3l2?ex=8');
+    const tray = page.locator('[data-match-tray]');
+    const check = page.getByRole('button', { name: /بررسی/ });
+    await expect(tray).toBeVisible();
+    await expect(check).toBeVisible();
+    await expect(page.locator('.match-object-row')).toHaveCount(4);
+
+    const trayBox = await tray.boundingBox();
+    const checkBox = await check.boundingBox();
+    expect(trayBox).toBeTruthy();
+    expect(checkBox).toBeTruthy();
+    expect(trayBox!.y).toBeGreaterThanOrEqual(0);
+    expect(trayBox!.y + trayBox!.height).toBeLessThanOrEqual(checkBox!.y + 1);
+
+    const sizes = await page.evaluate(() =>
+      [...document.querySelectorAll('.match-object-apples .object-cluster > .illus')].map((item) =>
+        Math.round(item.getBoundingClientRect().width)
+      )
+    );
+    expect(sizes.length).toBeGreaterThan(0);
+    expect(Math.min(...sizes)).toBeGreaterThanOrEqual(32);
   });
 });

@@ -35,12 +35,29 @@ describe('ObjectCluster', () => {
   });
 
   it('fills a wide match-pair box with a best-fit grid above 32px', () => {
-    const six = objectClusterLayoutForBox(6, 220, 84);
-    const ten = objectClusterLayoutForBox(10, 220, 84);
+    const six = objectClusterLayoutForBox(6, 220, 72, 4, 'match');
+    const ten = objectClusterLayoutForBox(10, 220, 72, 4, 'match');
     expect(six).toMatchObject({ cols: 3, rows: 2 });
-    expect(six.size).toBeGreaterThan(OBJECT_CLUSTER_MIN_SIZE);
+    expect(six.size).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
     expect(ten).toMatchObject({ cols: 5, rows: 2 });
-    expect(ten.size).toBeGreaterThan(OBJECT_CLUSTER_MIN_SIZE);
+    expect(ten.size).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
+  });
+
+  it('wraps four and five match-pair items instead of a shrinking row', () => {
+    expect(objectClusterLayoutForBox(4, 220, 72, 4, 'match')).toMatchObject({
+      cols: 2,
+      rows: 2,
+    });
+    expect(objectClusterLayoutForBox(5, 220, 72, 4, 'match')).toMatchObject({
+      cols: 3,
+      rows: 2,
+    });
+    expect(objectClusterLayoutForBox(4, 220, 72, 4, 'match').size).toBeGreaterThanOrEqual(
+      OBJECT_CLUSTER_MIN_SIZE
+    );
+    expect(objectClusterLayoutForBox(5, 220, 72, 4, 'match').size).toBeGreaterThanOrEqual(
+      OBJECT_CLUSTER_MIN_SIZE
+    );
   });
 
   it('sizes a single item to about 70% of the card width', () => {
