@@ -60,8 +60,7 @@ export default function ChooseDigitExercise({
                   Math.min(
                     (box.offsetWidth > 8 ? box.offsetWidth : box.width) *
                       OBJECT_SINGLE_WIDTH_RATIO,
-                    box.width,
-                    box.height
+                    box.width
                   )
                 )
               ),
