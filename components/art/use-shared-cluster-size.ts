@@ -112,21 +112,6 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLElement>(
       };
     };
 
-    const innerFromEntry = (entry: ResizeObserverEntry) => {
-      const target = entry.target as HTMLElement;
-      const boxSize = Array.isArray(entry.contentBoxSize)
-        ? entry.contentBoxSize[0]
-        : entry.contentBoxSize;
-      if (boxSize && boxSize.inlineSize >= 8 && boxSize.blockSize >= 8) {
-        return {
-          width: boxSize.inlineSize,
-          height: boxSize.blockSize,
-          offsetWidth: target.offsetWidth,
-        };
-      }
-      return innerFromNode(target);
-    };
-
     let frame = 0;
     const scheduleApply = (innerW: number, innerH: number, offsetWidth: number) => {
       if (typeof requestAnimationFrame !== 'function') {
@@ -150,7 +135,7 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLElement>(
     const observer = new ResizeObserver((entries) => {
       const entry = entries.find((item) => item.target === node) ?? entries[0];
       if (!entry) return;
-      const next = innerFromEntry(entry);
+      const next = innerFromNode(entry.target as HTMLElement);
       scheduleApply(next.width, next.height, next.offsetWidth);
     });
     observer.observe(node);
