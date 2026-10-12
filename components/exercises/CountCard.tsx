@@ -1,6 +1,7 @@
 'use client';
 
 import { useLayoutEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { Check } from 'lucide-react';
 import { ObjectArt, looksLikeObjects, splitObjectTokens } from '@/components/art/objects';
 import SpeakerIcon from '@/components/ui/SpeakerIcon';
 import { formatPersianNumber } from '@/lib/persian';
@@ -19,14 +20,10 @@ export const COUNT_WORDS = [
   'ده',
 ] as const;
 
-export const COUNT_CARD_BASE_ZONE = 184;
-export const COUNT_CARD_ZONE_HEIGHT = 96;
-export const COUNT_CARD_MIN_SIZE = 36;
-
-const BASE_SIZES = [0, 96, 84, 70, 54, 44, 44, 44, 44, 44, 44] as const;
-const BASE_ROW_STEP = 38;
-const OVERLAP = 0.78;
-const JITTER = 4;
+export const COUNT_CARD_BASE_ZONE = 208;
+export const COUNT_CARD_MIN_SIZE = 32;
+export const COUNT_CARD_GAP_PREFERRED = 12;
+export const COUNT_CARD_GAP_MIN = 8;
 
 export type CountCardPosition = {
   right: number;
@@ -37,51 +34,74 @@ export type CountCardPosition = {
 export type CountCardLayout = {
   size: number;
   step: number;
+  gap: number;
   rowStep: number;
+  cols: number;
+  rows: number;
   width: number;
   height: number;
   positions: CountCardPosition[];
 };
 
-export function countCardLayout(
-  n: number,
-  zoneWidth = COUNT_CARD_BASE_ZONE,
-  zoneHeight = COUNT_CARD_ZONE_HEIGHT
-): CountCardLayout {
+export function countCardLayout(n: number, zoneWidth = COUNT_CARD_BASE_ZONE): CountCardLayout {
   const count = Math.max(0, Math.min(10, Math.floor(n)));
   if (count <= 0) {
-    return { size: 0, step: 0, rowStep: 0, width: 0, height: 0, positions: [] };
+    return {
+      size: 0,
+      step: 0,
+      gap: 0,
+      rowStep: 0,
+      cols: 0,
+      rows: 0,
+      width: 0,
+      height: 0,
+      positions: [],
+    };
   }
-
-  const widthScale = zoneWidth < COUNT_CARD_BASE_ZONE ? zoneWidth / COUNT_CARD_BASE_ZONE : 1;
-  const heightScale = zoneHeight < COUNT_CARD_ZONE_HEIGHT ? zoneHeight / COUNT_CARD_ZONE_HEIGHT : 1;
-  const scale = Math.min(widthScale, heightScale);
-  const size = Math.max(COUNT_CARD_MIN_SIZE, Math.round(BASE_SIZES[count] * scale));
 
   const cols = Math.min(5, count);
   const rows = count > 5 ? 2 : 1;
-  const step = count === 1 ? 0 : Math.round(size * OVERLAP);
-  const rowStep = rows === 2 ? Math.round(BASE_ROW_STEP * (size / 44)) : 0;
+
+  const sizeFor = (gap: number) => {
+    if (count === 1) return Math.max(COUNT_CARD_MIN_SIZE, Math.min(96, Math.floor(zoneWidth)));
+    return Math.floor((zoneWidth - gap * (cols - 1)) / cols);
+  };
+
+  let gap = COUNT_CARD_GAP_PREFERRED;
+  let size = sizeFor(gap);
+  if (size < COUNT_CARD_MIN_SIZE) {
+    gap = COUNT_CARD_GAP_MIN;
+    size = sizeFor(gap);
+  }
+  if (size < COUNT_CARD_MIN_SIZE) {
+    gap = COUNT_CARD_GAP_MIN;
+    size = COUNT_CARD_MIN_SIZE;
+  }
+  if (count === 1) gap = 0;
+
+  const step = count === 1 ? 0 : size + gap;
+  const rowStep = rows === 2 ? size + gap : 0;
   const positions: CountCardPosition[] = [];
 
   for (let index = 0; index < count; index += 1) {
     const row = index < 5 ? 0 : 1;
     const col = index < 5 ? index : index - 5;
-    const jitter = col % 2 === 1 ? JITTER : 0;
-    const rowBase = rows === 2 ? (row === 1 ? 20 : 10) : 10;
     positions.push({
       right: col * step,
-      top: row * rowStep + jitter,
-      z: rowBase + (9 - col),
+      top: row * rowStep,
+      z: 1,
     });
   }
 
   return {
     size,
     step,
+    gap,
     rowStep,
-    width: count === 1 ? size : size + step * (cols - 1),
-    height: count === 1 ? size : size + rowStep + JITTER,
+    cols,
+    rows,
+    width: cols * size + Math.max(0, cols - 1) * gap,
+    height: rows * size + Math.max(0, rows - 1) * gap,
     positions,
   };
 }
@@ -100,6 +120,8 @@ export function countWord(count: number): string {
   return COUNT_WORDS[count - 1] ?? formatPersianNumber(count);
 }
 
+export const INTRO_HELPER = 'هر کارت را بزنید تا عددش را بشنوید.';
+
 type CountCardProps = {
   count: number;
   token: string;
@@ -108,6 +130,8 @@ type CountCardProps = {
   playing?: boolean;
   highlightIndex?: number | null;
   pulse?: boolean;
+  invite?: boolean;
+  heard?: boolean;
   staggerIndex?: number;
 };
 
@@ -119,15 +143,14 @@ export default function CountCard({
   playing = false,
   highlightIndex = null,
   pulse = false,
+  invite = false,
+  heard = false,
   staggerIndex = 0,
 }: CountCardProps) {
   const zoneRef = useRef<HTMLDivElement>(null);
-  const [zone, setZone] = useState({
-    width: COUNT_CARD_BASE_ZONE,
-    height: COUNT_CARD_ZONE_HEIGHT,
-  });
+  const [zoneWidth, setZoneWidth] = useState(COUNT_CARD_BASE_ZONE);
   const glyph = splitObjectTokens(token)[0] ?? token;
-  const layout = countCardLayout(count, zone.width, zone.height);
+  const layout = countCardLayout(count, zoneWidth);
   const liveWord =
     playing && highlightIndex != null ? countWord(highlightIndex + 1) : playing ? label : '';
 
@@ -136,14 +159,9 @@ export default function CountCard({
     if (!node) return;
 
     const update = () => {
-      const box = node.getBoundingClientRect();
-      const width = Math.round(box.width);
-      const height = Math.round(box.height);
+      const width = Math.round(node.getBoundingClientRect().width);
       if (width > 0) {
-        setZone({
-          width,
-          height: height > 0 ? height : COUNT_CARD_ZONE_HEIGHT,
-        });
+        setZoneWidth((current) => (current === width ? current : width));
       }
     };
 
@@ -161,6 +179,15 @@ export default function CountCard({
     }
   };
 
+  const className = [
+    'cc-card',
+    playing ? 'playing' : '',
+    heard ? 'heard' : '',
+    invite ? 'invite' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <div
       role="button"
@@ -168,8 +195,9 @@ export default function CountCard({
       aria-label={label}
       data-count={count}
       data-count-card
-      className={`cc-card${playing ? ' playing' : ''}`}
-      style={{ animationDelay: `${staggerIndex * 120}ms` }}
+      data-heard={heard ? 'true' : 'false'}
+      className={className}
+      style={{ animationDelay: `${staggerIndex * 120}ms`, minHeight: layout.height + 24 }}
       onClick={onPlay}
       onKeyDown={handleKeyDown}
     >
@@ -178,21 +206,22 @@ export default function CountCard({
           {liveWord}
         </span>
       ) : null}
+      {heard ? (
+        <span className="cc-check" aria-hidden="true">
+          <Check strokeWidth={2.8} />
+        </span>
+      ) : null}
       <div className={`cc-tile${pulse ? ' pulse' : ''}`} aria-hidden="true">
         <span className="cc-num">{formatPersianNumber(count)}</span>
         <span className="cc-word">{countWord(count)}</span>
-        <span className="cc-spk">
-          <SpeakerIcon />
-        </span>
       </div>
+      <span className="cc-spk" aria-hidden="true">
+        <SpeakerIcon />
+      </span>
       <div ref={zoneRef} className="cc-zone" aria-hidden="true">
-        <div
-          className="cc-cluster"
-          style={{ width: layout.width, height: layout.height }}
-        >
+        <div className="cc-cluster" style={{ width: layout.width, height: layout.height }}>
           {layout.positions.map((position, index) => {
             const highlighted = highlightIndex === index;
-            const itemDelay = staggerIndex * 120 + 150 + index * 90;
             return (
               <span
                 key={`${glyph}-${index}`}
@@ -204,7 +233,6 @@ export default function CountCard({
                   right: position.right,
                   top: position.top,
                   zIndex: highlighted ? 50 : position.z,
-                  animationDelay: `${itemDelay}ms`,
                 }}
               >
                 {highlighted ? (

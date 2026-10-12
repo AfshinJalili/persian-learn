@@ -1,74 +1,93 @@
 import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
-import { cleanup, render, screen } from '@testing-library/react';
+import { cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import type { Exercise } from '../lib/types';
 import IntroExercise from '../components/exercises/IntroExercise';
 import {
+  COUNT_CARD_GAP_MIN,
   COUNT_CARD_MIN_SIZE,
   countCardLayout,
 } from '../components/exercises/CountCard';
 
 const playAudio = jest.fn<(text: string, slow?: boolean, signal?: AbortSignal) => Promise<void>>();
 const stopAudio = jest.fn();
+const getAudioSpeed = jest.fn(() => 1);
 
 jest.mock('@/lib/audio', () => ({
   playAudio: (text: string, slow?: boolean, signal?: AbortSignal) => playAudio(text, slow, signal),
   stopAudio: () => stopAudio(),
-  getAudioSpeed: () => 1,
+  getAudioSpeed: () => getAudioSpeed(),
   vibrate: jest.fn(),
 }));
 
-function expectedSize(n: number, zoneWidth: number): number {
-  const bases = [0, 96, 84, 70, 54, 44, 44, 44, 44, 44, 44];
-  const scale = zoneWidth < 184 ? zoneWidth / 184 : 1;
-  return Math.max(COUNT_CARD_MIN_SIZE, Math.round(bases[n] * scale));
+function itemBoxes(n: number, zoneWidth: number) {
+  const layout = countCardLayout(n, zoneWidth);
+  return layout.positions.map((position) => ({
+    left: position.right,
+    right: position.right + layout.size,
+    top: position.top,
+    bottom: position.top + layout.size,
+    size: layout.size,
+  }));
 }
 
 describe('countCardLayout', () => {
   it.each([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])(
-    'matches the ten-frame table at 184px for n=%s',
+    'keeps equal item sizes and at least 8px gaps for n=%s',
     (n) => {
-      const layout = countCardLayout(n, 184);
-      const table: Record<number, { size: number; step: number; rowStep: number; width: number; height: number }> = {
-        1: { size: 96, step: 0, rowStep: 0, width: 96, height: 96 },
-        2: { size: 84, step: 66, rowStep: 0, width: 150, height: 88 },
-        3: { size: 70, step: 55, rowStep: 0, width: 180, height: 74 },
-        4: { size: 54, step: 42, rowStep: 0, width: 180, height: 58 },
-        5: { size: 44, step: 34, rowStep: 0, width: 180, height: 48 },
-        6: { size: 44, step: 34, rowStep: 38, width: 180, height: 86 },
-        7: { size: 44, step: 34, rowStep: 38, width: 180, height: 86 },
-        8: { size: 44, step: 34, rowStep: 38, width: 180, height: 86 },
-        9: { size: 44, step: 34, rowStep: 38, width: 180, height: 86 },
-        10: { size: 44, step: 34, rowStep: 38, width: 180, height: 86 },
-      };
-      expect(layout).toMatchObject(table[n]);
-      expect(layout.positions).toHaveLength(n);
-      expect(layout.width).toBeLessThanOrEqual(184);
-      expect(layout.height).toBeLessThanOrEqual(96);
-      expect(layout.positions[0]).toMatchObject({ right: 0, top: 0 });
-      if (n >= 6) {
-        expect(layout.positions[5]?.top).toBe(layout.rowStep);
-        expect(layout.positions[5]?.right).toBe(0);
+      for (const zoneWidth of [208, 192, 184, 154]) {
+        const layout = countCardLayout(n, zoneWidth);
+        expect(layout.size).toBeGreaterThanOrEqual(COUNT_CARD_MIN_SIZE);
+        expect(layout.positions).toHaveLength(n);
+        expect(new Set(layout.positions.map(() => layout.size)).size).toBe(1);
+        if (n >= 6) {
+          expect(layout.rows).toBe(2);
+          expect(layout.cols).toBe(5);
+          expect(layout.positions[5]?.top).toBe(layout.size + layout.gap);
+          expect(layout.positions[5]?.right).toBe(0);
+        } else {
+          expect(layout.rows).toBe(1);
+          expect(layout.cols).toBe(n);
+        }
+        if (n > 1) {
+          expect(layout.gap).toBeGreaterThanOrEqual(COUNT_CARD_GAP_MIN);
+          expect(layout.step).toBe(layout.size + layout.gap);
+        }
+        const boxes = itemBoxes(n, zoneWidth);
+        for (let i = 0; i < boxes.length; i += 1) {
+          for (let j = i + 1; j < boxes.length; j += 1) {
+            const a = boxes[i];
+            const b = boxes[j];
+            const overlapX = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+            const overlapY = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
+            if (overlapX > 0 && overlapY > 0) {
+              throw new Error(`items ${i} and ${j} overlap at zone ${zoneWidth}`);
+            }
+            const sameRow = a.top === b.top;
+            const sameCol = a.left === b.left;
+            if (sameRow) {
+              const gap = Math.max(a.left, b.left) - Math.min(a.right, b.right);
+              expect(gap).toBeGreaterThanOrEqual(COUNT_CARD_GAP_MIN);
+            }
+            if (sameCol && n > 5) {
+              const gap = Math.max(a.top, b.top) - Math.min(a.bottom, b.bottom);
+              expect(gap).toBeGreaterThanOrEqual(COUNT_CARD_GAP_MIN);
+            }
+          }
+        }
       }
     }
   );
 
-  it.each([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])(
-    'scales to the 154px zone without overflowing for n=%s',
-    (n) => {
-      const layout = countCardLayout(n, 154);
-      const size = expectedSize(n, 154);
-      const step = n === 1 ? 0 : Math.round(size * 0.78);
-      const cols = Math.min(5, n);
-      expect(layout.size).toBe(size);
-      expect(layout.size).toBeGreaterThanOrEqual(COUNT_CARD_MIN_SIZE);
-      expect(layout.step).toBe(step);
-      expect(layout.positions).toHaveLength(n);
-      expect(layout.width).toBeLessThanOrEqual(154);
-      expect(layout.height).toBeLessThanOrEqual(96);
-      expect(layout.width).toBe(n === 1 ? size : size + step * (cols - 1));
-    }
-  );
+  it('uses a 5+5 ten-frame for counts 6-10', () => {
+    const layout = countCardLayout(10, 208);
+    expect(layout.cols).toBe(5);
+    expect(layout.rows).toBe(2);
+    expect(layout.gap).toBe(12);
+    expect(layout.size).toBeGreaterThanOrEqual(32);
+    expect(layout.width).toBe(5 * layout.size + 4 * layout.gap);
+    expect(layout.height).toBe(2 * layout.size + layout.gap);
+  });
 });
 
 function countingExercise(): Exercise {
@@ -106,6 +125,7 @@ describe('count-along cancellation', () => {
   beforeEach(() => {
     playAudio.mockReset();
     stopAudio.mockReset();
+    getAudioSpeed.mockReturnValue(1);
     playAudio.mockImplementation(hangUntilAbort);
   });
 
@@ -140,5 +160,58 @@ describe('count-along cancellation', () => {
     unmount();
     expect(signal?.aborted).toBe(true);
     expect(stopAudio).toHaveBeenCalled();
+  });
+});
+
+describe('Continue gating', () => {
+  beforeEach(() => {
+    playAudio.mockReset();
+    stopAudio.mockReset();
+    getAudioSpeed.mockReturnValue(20);
+    playAudio.mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    cleanup();
+  });
+
+  it('autoplay says the tap-the-card hint', async () => {
+    render(<IntroExercise exercise={countingExercise()} onContinue={() => {}} autoplay />);
+    await waitFor(() => {
+      expect(playAudio).toHaveBeenCalledWith(
+        'هر کارت را بزنید تا عددش را بشنوید.',
+        false,
+        expect.any(AbortSignal)
+      );
+    });
+  });
+
+  it('keeps ادامه disabled until every card has been heard', async () => {
+    const user = userEvent.setup();
+    const onContinue = jest.fn();
+    render(
+      <IntroExercise exercise={countingExercise()} onContinue={onContinue} autoplay={false} />
+    );
+
+    const continueBtn = screen.getByRole('button', { name: 'ادامه' });
+    expect(continueBtn).toBeDisabled();
+
+    await user.click(screen.getByRole('button', { name: 'یک سیب' }));
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'یک سیب' })).toHaveAttribute('data-heard', 'true');
+    });
+    expect(continueBtn).toBeDisabled();
+
+    await user.click(screen.getByRole('button', { name: 'دو گنجشک' }));
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'دو گنجشک' })).toHaveAttribute('data-heard', 'true');
+    });
+    expect(continueBtn).toBeDisabled();
+
+    await user.click(screen.getByRole('button', { name: 'سه انار' }));
+    await waitFor(() => {
+      expect(continueBtn).toBeEnabled();
+    });
+    expect(screen.getByRole('button', { name: 'سه انار' })).toHaveAttribute('data-heard', 'true');
   });
 });

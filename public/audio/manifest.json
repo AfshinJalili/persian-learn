@@ -1,6 +1,6 @@
 {
   "voice": "avalai:gemini-2.5-flash-tts:Sulafat",
-  "count": 2632,
+  "count": 2633,
   "items": [
     {
       "hash": "c16919cdbe7d610669612c69cacdd4bf",
@@ -10533,6 +10533,11 @@
     {
       "hash": "949a1ff1665abf9142a598a099e8741a",
       "text": "پنج گنجشک",
+      "placeholder": true
+    },
+    {
+      "hash": "1924560c74284fccc126401b3f3168db",
+      "text": "هر کارت را بزنید تا عددش را بشنوید.",
       "placeholder": true
     }
   ]

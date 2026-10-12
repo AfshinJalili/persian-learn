@@ -12,5 +12,6 @@ before shipping.
 | دو گنجشک | `27e75871a70b2c0f897967521f5784b3` |
 | سه انار | `8e9cec01fd85d57bd3eb67944ddd29e4` |
 | پنج گنجشک | `949a1ff1665abf9142a598a099e8741a` |
+| هر کارت را بزنید تا عددش را بشنوید. | `1924560c74284fccc126401b3f3168db` |
 
 Manifest entries for these clips set `"placeholder": true`.

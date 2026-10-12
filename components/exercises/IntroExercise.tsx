@@ -8,13 +8,13 @@ import SpeakerButton from '@/components/SpeakerButton';
 import HodaMascot from '@/components/HodaMascot';
 import { ObjectArt, splitObjectTokens } from '@/components/art/objects';
 import CountCard, {
+  INTRO_HELPER,
   countWord,
   isCountingIntro,
 } from '@/components/exercises/CountCard';
 import type { Exercise } from '@/lib/types';
 
 const INTRO_HEADING = 'سلام فریبا جان! با هم بشماریم.';
-const INTRO_HELPER = 'هر کارت را بزنید تا عددش را بشنوید.';
 
 interface Props {
   exercise: Exercise;
@@ -76,9 +76,15 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
   const counting = isCountingIntro(exercise);
   const groups = counting ? countGroupsFrom(exercise) : [];
   const sequenceRef = useRef<AbortController | null>(null);
+  const invitedRef = useRef(false);
   const [playingIndex, setPlayingIndex] = useState<number | null>(null);
   const [highlightIndex, setHighlightIndex] = useState<number | null>(null);
   const [pulseIndex, setPulseIndex] = useState<number | null>(null);
+  const [inviteFirst, setInviteFirst] = useState(false);
+  const [heard, setHeard] = useState<Set<number>>(() => new Set());
+  const [continuePulse, setContinuePulse] = useState(false);
+
+  const allHeard = groups.length > 0 && heard.size >= groups.length;
 
   const stopSequence = () => {
     sequenceRef.current?.abort();
@@ -88,11 +94,21 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
     setPulseIndex(null);
   };
 
+  const markHeard = (cardIndex: number) => {
+    setHeard((current) => {
+      if (current.has(cardIndex)) return current;
+      const next = new Set(current);
+      next.add(cardIndex);
+      return next;
+    });
+  };
+
   const runCountAlong = async (cardIndex: number, signal: AbortSignal) => {
     const card = groups[cardIndex];
     if (!card) return;
     setPlayingIndex(cardIndex);
     setPulseIndex(null);
+    setInviteFirst(false);
     const speed = getAudioSpeed() || 1;
     const perItem = 600 / speed;
     for (let item = 0; item < card.count; item += 1) {
@@ -109,6 +125,7 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
     if (signal.aborted) return;
     setPulseIndex(null);
     setPlayingIndex(null);
+    markHeard(cardIndex);
   };
 
   const playCard = (cardIndex: number) => {
@@ -123,6 +140,27 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
     });
   };
 
+  const pulseInviteOnce = async (signal: AbortSignal) => {
+    if (invitedRef.current || signal.aborted) return;
+    invitedRef.current = true;
+    setInviteFirst(true);
+    await sleep(900 / (getAudioSpeed() || 1), signal);
+    if (!signal.aborted) setInviteFirst(false);
+  };
+
+  const playHeader = () => {
+    stopSequence();
+    const controller = new AbortController();
+    sequenceRef.current = controller;
+    void (async () => {
+      await playAudio(exercise.audio_script, false, controller.signal);
+      if (controller.signal.aborted) return;
+      await playAudio(INTRO_HELPER, false, controller.signal);
+      if (controller.signal.aborted) return;
+      await pulseInviteOnce(controller.signal);
+    })();
+  };
+
   useEffect(() => {
     if (!counting) return undefined;
     const controller = new AbortController();
@@ -134,12 +172,10 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
         if (controller.signal.aborted) return;
         await playAudio(exercise.audio_script, false, controller.signal);
         if (controller.signal.aborted) return;
-        for (let index = 0; index < groups.length; index += 1) {
-          if (controller.signal.aborted) return;
-          await runCountAlong(index, controller.signal);
-          if (controller.signal.aborted) return;
-        }
+        await playAudio(INTRO_HELPER, false, controller.signal);
+        if (controller.signal.aborted) return;
       }
+      await pulseInviteOnce(controller.signal);
     };
 
     void start();
@@ -151,6 +187,13 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
     // Mount-only: this intro owns the autoplay sequence for the counting cards.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [exercise.id, autoplay, counting]);
+
+  useEffect(() => {
+    if (!allHeard) return undefined;
+    setContinuePulse(true);
+    const timer = window.setTimeout(() => setContinuePulse(false), 900);
+    return () => window.clearTimeout(timer);
+  }, [allHeard]);
 
   if (!counting) {
     const payload = exercise.payload as { display: string; visual?: string };
@@ -180,13 +223,15 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
     <div className="cc-intro-screen">
       <div className="cc-intro-body">
         <div className="prompt">
-          <SpeakerButton
-            text={exercise.audio_script}
-            size="md"
-            onPlay={stopSequence}
-          />
+          <button
+            type="button"
+            className="cc-hoda-speaker"
+            aria-label="پخش صدا"
+            onClick={playHeader}
+          >
+            <HodaMascot className="cc-hoda" pose="idle" />
+          </button>
           <h2>{INTRO_HEADING}</h2>
-          <HodaMascot className="cc-hoda" pose="idle" />
         </div>
         <div className="cc-list">
           {groups.map((group, index) => (
@@ -199,6 +244,8 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
               playing={playingIndex === index}
               highlightIndex={playingIndex === index ? highlightIndex : null}
               pulse={pulseIndex === index}
+              invite={inviteFirst && index === 0}
+              heard={heard.has(index)}
               onPlay={() => playCard(index)}
             />
           ))}
@@ -206,7 +253,14 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
         <p className="muted cc-helper">{INTRO_HELPER}</p>
       </div>
       <div className="cc-intro-bottom">
-        <button type="button" onClick={onContinue} className="btn btn-primary">
+        <button
+          type="button"
+          onClick={allHeard ? onContinue : undefined}
+          className={`btn ${allHeard ? 'btn-primary' : 'btn-disabled'}${continuePulse ? ' cc-continue-pulse' : ''}`}
+          disabled={!allHeard}
+          aria-disabled={!allHeard}
+          data-cc-continue
+        >
           ادامه
           <ArrowLeft strokeWidth={2.6} />
         </button>
