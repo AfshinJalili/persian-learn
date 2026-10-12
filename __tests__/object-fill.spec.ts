@@ -337,11 +337,27 @@ test.describe('Object fill at phone widths', () => {
       await page.goto('/lesson/a1l1?ex=1');
       await page.waitForTimeout(400);
       const stats = await page.evaluate(measurePage);
-      const layout = await page.locator('.object-cluster').first().getAttribute('data-layout');
-      expect(layout).toBe('picture');
+      const info = await page.evaluate(() => {
+        const cluster = document.querySelector('.object-cluster') as HTMLElement | null;
+        const card = cluster?.closest('.object-choice-card') as HTMLElement | null;
+        const item = cluster?.querySelector('.illus');
+        const style = card ? getComputedStyle(card) : null;
+        const padX =
+          (Number.parseFloat(style?.paddingLeft || '0') || 0) +
+          (Number.parseFloat(style?.paddingRight || '0') || 0);
+        const innerWidth = (card?.clientWidth ?? 0) - padX;
+        return {
+          layout: cluster?.getAttribute('data-layout'),
+          size: Number.parseInt(cluster?.style.getPropertyValue('--object-size') || '0', 10),
+          itemW: item?.getBoundingClientRect().width ?? 0,
+          innerWidth,
+        };
+      });
+      expect(info.layout).toBe('picture');
+      expect(info.size).toBeGreaterThan(info.innerWidth * 0.7);
+      expect(info.size).toBeLessThanOrEqual(info.innerWidth);
       expect(stats.singles.length).toBeGreaterThan(0);
       for (const item of stats.singles) {
-        expect(item.width).toBeGreaterThanOrEqual(90);
         expect(item.ratio).toBeGreaterThan(0.7);
       }
       for (const item of stats.contained) {
