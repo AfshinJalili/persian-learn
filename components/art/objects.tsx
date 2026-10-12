@@ -496,15 +496,15 @@ export function objectClusterLayoutForBox(
     const rows = cols === count ? 1 : count > 5 ? 2 : 1;
     const sizeW = (innerWidth - gap * Math.max(0, cols - 1)) / cols;
     const sizeH = (innerHeight - gap * Math.max(0, rows - 1)) / rows;
-    const unclamped =
-      Number.isFinite(sizeH) && sizeH >= OBJECT_CLUSTER_MIN_SIZE
-        ? Math.min(sizeW, sizeH)
-        : sizeW;
+    const unclamped = Math.min(
+      sizeW,
+      Number.isFinite(sizeH) && sizeH > 8 ? sizeH : sizeW
+    );
     return {
       cols,
       rows,
       unclamped,
-      size: Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.floor(unclamped)),
+      size: Math.max(8, Math.floor(unclamped)),
     };
   }
 

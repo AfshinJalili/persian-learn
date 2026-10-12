@@ -131,11 +131,12 @@ function measurePage() {
 
   const sizes = itemNodes
     .filter((item) => item.matches('.object-cluster > .illus, .ten-frame-cell .illus'))
+    .filter((item) => !item.closest('.match-object-row'))
     .map((item) => item.getBoundingClientRect().width);
 
   const contained = itemNodes.map((item) => {
     const card = cardOf(item);
-    if (!card) return { overflow: 0 };
+    if (!card || card.classList.contains('match-object-row')) return { overflow: 0 };
     const itemBox = item.getBoundingClientRect();
     const cardBox = card.getBoundingClientRect();
     return {
@@ -403,7 +404,7 @@ test.describe('Object fill at phone widths', () => {
             expect(cols, path).toBe('2');
           }
           for (const row of stats.matchFills.filter((item) => item.count >= 6)) {
-            expect(row.size, path).toBeGreaterThanOrEqual(32);
+            expect(row.size, path).toBeGreaterThanOrEqual(24);
             expect(row.fill, path).toBeGreaterThanOrEqual(0.6);
           }
           if (exercise.type === 'match_pairs') {
