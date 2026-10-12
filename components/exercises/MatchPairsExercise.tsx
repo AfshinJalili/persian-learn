@@ -7,7 +7,13 @@ import { shuffleSeeded } from '@/lib/shuffle';
 import { exerciseHeading } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
-import { ObjectArt, looksLikeObjects } from '@/components/art/objects';
+import {
+  ObjectArt,
+  ObjectCluster,
+  looksLikeObjects,
+  objectClusterItemSizeForBox,
+  splitObjectTokens,
+} from '@/components/art/objects';
 
 interface Props {
   exercise: Exercise;
@@ -50,6 +56,8 @@ export default function MatchPairsExercise({
   const objectLayout =
     rightOptions.every(looksLikeObjects) &&
     leftOptions.every((item) => /^[0-9۰-۹]+$/.test(item));
+  const appleCounts = rightOptions.map((option) => splitObjectTokens(option).length);
+  const appleSize = objectClusterItemSizeForBox(Math.max(1, ...appleCounts), 210, 72, 8, 'row');
 
   useEffect(() => {
     setSelected(null);
@@ -109,31 +117,28 @@ export default function MatchPairsExercise({
                 aria-label={option}
                 disabled={disabled || Boolean(placed)}
                 onClick={() => handleSelect('right', option)}
-                className={`row-card ${picking ? 'selected' : ''}`}
+                className={`row-card match-object-row ${picking ? 'selected' : ''}`}
                 style={{
                   padding: '12px 16px',
                   borderColor: correct ? 'var(--green-500)' : undefined,
                   background: correct ? 'var(--green-050)' : undefined,
                 }}
               >
-                <div style={{ display: 'flex', gap: 4, flex: 1 }}>
-                  <ObjectArt token={option} size={52} />
+                <div className="match-object-apples">
+                  <ObjectCluster token={option} itemSize={appleSize} layout="row" />
                 </div>
                 {placed ? (
-                  <span className={`card ${correct ? 'correct' : ''}`} style={{ width: 84, height: 84, flex: 'none', borderRadius: 20 }}>
+                  <span className={`card match-digit-slot ${correct ? 'correct' : ''}`}>
                     <span className="glyph" style={{ fontSize: 52 }}>
                       {placed[0]}
                     </span>
                   </span>
                 ) : (
                   <span
+                    className="match-digit-slot"
                     style={{
-                      width: 84,
-                      height: 84,
-                      borderRadius: 20,
                       border: '3px dashed #767F7A',
                       background: '#F3F1EA',
-                      flex: 'none',
                     }}
                   />
                 )}

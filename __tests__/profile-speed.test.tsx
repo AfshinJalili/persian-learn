@@ -8,9 +8,10 @@ const setAudioSpeed = jest.fn();
 const playAudio = jest.fn<() => Promise<void>>();
 const saveProgress = jest.fn<(progress: unknown) => Promise<void>>();
 const getProgress = jest.fn();
+const routerPush = jest.fn();
 
 jest.mock('next/navigation', () => ({
-  useRouter: () => ({ push: jest.fn() }),
+  useRouter: () => ({ push: routerPush }),
 }));
 
 jest.mock('@/lib/audio', () => ({
@@ -40,6 +41,7 @@ describe('Profile voice speed', () => {
     playAudio.mockReset();
     saveProgress.mockReset();
     getProgress.mockReset();
+    routerPush.mockReset();
     playAudio.mockResolvedValue(undefined);
     saveProgress.mockResolvedValue(undefined);
     getProgress.mockResolvedValue({
@@ -164,5 +166,14 @@ describe('Profile voice speed', () => {
     expect((fills[0] as HTMLElement).style.width).toBe(`${(1 / 6) * 100}%`);
     expect(fills[1]).toHaveAttribute('data-filled', 'false');
     expect((fills[1] as HTMLElement).style.width).toBe('0%');
+  });
+
+  it('opens the alphabet home without waiting for the track clip to finish', async () => {
+    const user = userEvent.setup();
+    playAudio.mockImplementation(() => new Promise(() => {}));
+    render(<ProfilePage />);
+    await screen.findByText('سرعت صدا');
+    await user.click(screen.getByRole('button', { name: 'ب الفبا' }));
+    expect(routerPush).toHaveBeenCalledWith('/home');
   });
 });

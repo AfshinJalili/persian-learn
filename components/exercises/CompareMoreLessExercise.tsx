@@ -5,7 +5,8 @@ import { playOptionAudio } from '@/lib/spoken-option';
 import { comparePrompt } from '@/lib/compare';
 import { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
-import { ObjectCluster } from '@/components/art/objects';
+import { ObjectCluster, splitObjectTokens } from '@/components/art/objects';
+import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
 interface CompareMoreLessExerciseProps {
   exercise: Exercise;
@@ -21,6 +22,10 @@ export default function CompareMoreLessExercise({
   disabled,
 }: CompareMoreLessExerciseProps) {
   const { left, right, ask } = exercise.payload as { left: string; right: string; ask: string };
+  const { ref, size } = useSharedClusterSize([
+    splitObjectTokens(left).length,
+    splitObjectTokens(right).length,
+  ]);
 
   const select = (value: string, token: string) => {
     if (disabled) return;
@@ -38,14 +43,14 @@ export default function CompareMoreLessExercise({
         <SpeakerButton text={exercise.audio_script} />
         <h2>{comparePrompt(ask)}</h2>
       </div>
-      <div className="grid2">
+      <div ref={ref} className="grid2">
         <button
           type="button"
           onClick={() => select('left', left)}
           disabled={disabled}
           className={`card object-choice-card ${userAnswer === 'left' ? 'selected' : ''}`}
         >
-          <ObjectCluster token={left} />
+          <ObjectCluster token={left} itemSize={size} />
         </button>
         <button
           type="button"
@@ -53,7 +58,7 @@ export default function CompareMoreLessExercise({
           disabled={disabled}
           className={`card object-choice-card ${userAnswer === 'right' ? 'selected' : ''}`}
         >
-          <ObjectCluster token={right} />
+          <ObjectCluster token={right} itemSize={size} />
         </button>
       </div>
       <button

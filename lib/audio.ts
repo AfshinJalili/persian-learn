@@ -97,24 +97,34 @@ function playAudioFile(path: string, rate: number): Promise<void> {
       reject(err);
       return;
     }
-    applyPlaybackRate(currentAudio, rate);
+    const audio = currentAudio;
+    const keepRate = () => applyPlaybackRate(audio, rate);
+    keepRate();
+    audio.addEventListener('loadedmetadata', keepRate);
+    audio.addEventListener('playing', keepRate);
+    audio.addEventListener('durationchange', keepRate);
 
-    currentAudio.addEventListener('ended', () => {
+    audio.addEventListener('ended', () => {
       currentAudio = null;
       finishPlayback();
     });
 
-    currentAudio.addEventListener('error', (err) => {
+    audio.addEventListener('error', (err) => {
       currentAudio = null;
       settlePlayback = null;
       reject(err);
     });
 
-    currentAudio.play().catch((err) => {
-      currentAudio = null;
-      settlePlayback = null;
-      reject(err);
-    });
+    audio
+      .play()
+      .then(() => {
+        keepRate();
+      })
+      .catch((err) => {
+        currentAudio = null;
+        settlePlayback = null;
+        reject(err);
+      });
   });
 }
 

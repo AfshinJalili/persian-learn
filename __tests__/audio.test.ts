@@ -20,6 +20,8 @@ class RecordingAudio {
   currentTime = 0;
   src: string;
   private ended: (() => void) | null = null;
+  private playing: (() => void) | null = null;
+  private loaded: (() => void) | null = null;
 
   constructor(src: string) {
     this.src = src;
@@ -27,10 +29,15 @@ class RecordingAudio {
 
   addEventListener(type: string, cb: () => void) {
     if (type === 'ended') this.ended = cb;
+    if (type === 'playing') this.playing = cb;
+    if (type === 'loadedmetadata') this.loaded = cb;
   }
 
   play() {
+    this.playbackRate = 1;
     this.paused = false;
+    this.loaded?.();
+    this.playing?.();
     queueMicrotask(() => {
       this.paused = true;
       this.ended?.();
@@ -138,5 +145,23 @@ describe('playbackRate and preservesPitch', () => {
     expect(created[0]?.preservesPitch).toBe(true);
     expect(created[0]?.mozPreservesPitch).toBe(true);
     expect(created[0]?.webkitPreservesPitch).toBe(true);
+  });
+
+  it('reapplies playbackRate after play() resets it', async () => {
+    const created: RecordingAudio[] = [];
+    class CaptureAudio extends RecordingAudio {
+      constructor(src: string) {
+        super(src);
+        created.push(this);
+      }
+    }
+    Object.defineProperty(window, 'Audio', {
+      configurable: true,
+      writable: true,
+      value: CaptureAudio,
+    });
+    setAudioSpeed(0.9);
+    await playAudio('سلام');
+    expect(created[0]?.playbackRate).toBe(0.9);
   });
 });

@@ -206,17 +206,64 @@ export function splitObjectTokens(token: string): string[] {
   return splitGraphemes(token).filter((part) => part.trim().length > 0);
 }
 
-export function objectClusterColumns(count: number): number {
+export const OBJECT_CLUSTER_GAP = 8;
+export const OBJECT_CARD_INNER_FALLBACK = { width: 87, height: 140 };
+
+export type ObjectClusterLayout = 'grid' | 'row';
+
+export function objectClusterColumns(
+  count: number,
+  layout: ObjectClusterLayout = 'grid'
+): number {
+  if (layout === 'row') return Math.max(1, count);
   if (count <= 1) return 1;
   if (count === 2) return 2;
-  if (count === 3) return 3;
+  if (count === 3) return 2;
   if (count === 4) return 2;
   if (count <= 9) return 3;
   return 5;
 }
 
-export function objectClusterItemSize(_count: number): number {
-  return 24;
+export function objectClusterRows(
+  count: number,
+  layout: ObjectClusterLayout = 'grid'
+): number {
+  if (layout === 'row') return 1;
+  if (count <= 1) return 1;
+  if (count === 2) return 1;
+  if (count === 3) return 2;
+  if (count === 4) return 2;
+  if (count <= 6) return 2;
+  if (count <= 9) return 3;
+  return 2;
+}
+
+export function objectClusterItemSizeForBox(
+  count: number,
+  innerWidth: number,
+  innerHeight: number,
+  gap: number = OBJECT_CLUSTER_GAP,
+  layout: ObjectClusterLayout = 'grid'
+): number {
+  if (count <= 0) return 0;
+  const cols = objectClusterColumns(count, layout);
+  const rows = objectClusterRows(count, layout);
+  const sizeW = (innerWidth - gap * Math.max(0, cols - 1)) / cols;
+  const sizeH = (innerHeight - gap * Math.max(0, rows - 1)) / rows;
+  return Math.max(8, Math.floor(Math.min(sizeW, sizeH)));
+}
+
+export function objectClusterItemSize(count: number): number {
+  return objectClusterItemSizeForBox(
+    count,
+    OBJECT_CARD_INNER_FALLBACK.width,
+    OBJECT_CARD_INNER_FALLBACK.height
+  );
+}
+
+export function sharedObjectClusterItemSize(counts: number[]): number {
+  const fullest = Math.max(1, ...counts);
+  return objectClusterItemSize(fullest);
 }
 
 export function resolveAvatarId(value: string): AvatarId {
@@ -270,28 +317,42 @@ function SingleObjectArt({
 export function ObjectCluster({
   token,
   tokens,
+  itemSize,
+  layout = 'grid',
 }: {
   token?: string;
   tokens?: string[];
+  itemSize?: number;
+  layout?: ObjectClusterLayout;
 }) {
   const parts = tokens ?? (token ? splitObjectTokens(token) : []);
   const count = parts.length;
-  const cols = objectClusterColumns(count);
-  const size = objectClusterItemSize(count);
+  const cols = objectClusterColumns(count, layout);
+  const rows = objectClusterRows(count, layout);
+  const size = itemSize ?? objectClusterItemSizeForBox(
+    count,
+    OBJECT_CARD_INNER_FALLBACK.width,
+    OBJECT_CARD_INNER_FALLBACK.height,
+    OBJECT_CLUSTER_GAP,
+    layout
+  );
 
   return (
     <span
       className="object-cluster"
       data-count={count}
+      data-layout={layout}
       style={
         {
           '--object-cols': cols,
+          '--object-rows': rows,
+          '--dot': `${size}px`,
           '--object-size': `${size}px`,
         } as CSSProperties
       }
     >
       {parts.map((part, index) => (
-        <SingleObjectArt key={`${part}-${index}`} token={part} size={size} fluid />
+        <SingleObjectArt key={`${part}-${index}`} token={part} size={size} />
       ))}
     </span>
   );
@@ -306,7 +367,7 @@ export function ObjectArt({
 }) {
   const parts = splitObjectTokens(token);
   if (parts.length > 1) {
-    return <ObjectCluster token={token} />;
+    return <ObjectCluster token={token} itemSize={size} />;
   }
 
   return <SingleObjectArt token={parts[0] ?? token} size={size} />;

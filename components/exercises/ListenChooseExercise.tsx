@@ -1,10 +1,13 @@
+'use client';
+
 import { playAudio } from '@/lib/audio';
 import { exerciseChoices } from '@/lib/shuffle';
 import { exerciseHeading } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
-import { ObjectArt, ObjectCluster, splitObjectTokens } from '@/components/art/objects';
+import { ObjectArt, ObjectCluster, looksLikeObjects, splitObjectTokens } from '@/components/art/objects';
+import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
 interface Props {
   exercise: Exercise;
@@ -24,6 +27,10 @@ export default function ListenChooseExercise({
   const options = exerciseChoices(exercise);
   const payload = exercise.payload as { choice_kind?: string };
   const isLetter = payload.choice_kind === 'letter' || options.every((option) => option.length <= 2);
+  const objectCounts = options.map((option) =>
+    looksLikeObjects(option) ? splitObjectTokens(option).length : 1
+  );
+  const { ref, size } = useSharedClusterSize(objectCounts);
 
   const handleSelect = (option: string) => {
     if (disabled) return;
@@ -51,7 +58,10 @@ export default function ListenChooseExercise({
         </svg>
         آهسته‌تر
       </button>
-      <div className={isLetter || options.length === 3 ? 'grid3 w-full' : 'grid2 w-full'}>
+      <div
+        ref={ref}
+        className={isLetter || options.length === 3 ? 'grid3 w-full' : 'grid2 w-full'}
+      >
         {options.map((option) => {
           const selected = userAnswer === option;
           const state =
@@ -68,14 +78,14 @@ export default function ListenChooseExercise({
               onClick={() => handleSelect(option)}
               className="object-choice-card"
             >
-              {option.length <= 2 ? (
+              {looksLikeObjects(option) ? (
+                <ObjectCluster token={option} itemSize={size} />
+              ) : option.length <= 2 ? (
                 <span className="glyph" style={{ fontSize: 84 }}>
                   {option}
                 </span>
-              ) : splitObjectTokens(option).length > 1 ? (
-                <ObjectCluster token={option} />
               ) : (
-                <ObjectArt token={option} size={72} />
+                <ObjectArt token={option} size={size} />
               )}
             </ChoiceButton>
           );

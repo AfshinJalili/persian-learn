@@ -38,6 +38,12 @@ describe('TapPictureExercise', () => {
     );
     expect(container.querySelector('.grid3.picture-grid')).toBeTruthy();
     expect(container.querySelector('.grid2')).toBeNull();
+    const sizes = [...container.querySelectorAll('.object-cluster')].map(
+      (cluster) => (cluster as HTMLElement).style.getPropertyValue('--object-size')
+    );
+    expect(sizes).toHaveLength(3);
+    expect(new Set(sizes).size).toBe(1);
+    expect(sizes[0]).not.toBe('24px');
   });
 
   it('keeps two picture choices in a two-column grid', () => {

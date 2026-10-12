@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Pencil } from 'lucide-react';
 import { getProgress, saveProgress } from '@/lib/progress';
+import { loadTrack } from '@/lib/content';
 import type { UserProgress } from '@/lib/types';
 import { playAudio, setAudioSpeed } from '@/lib/audio';
 import { LEARNER_NAME } from '@/lib/learner';
@@ -27,6 +28,8 @@ export default function ProfilePage() {
       const prog = await getProgress();
       setProgress(prog);
       setAudioSpeed(prog.speechRate || 1);
+      loadTrack('math').catch(() => {});
+      loadTrack('alphabet').catch(() => {});
     }
     load();
     return () => setHelperOpen(false);
@@ -56,7 +59,7 @@ export default function ProfilePage() {
   const switchTrack = async (track: 'math' | 'alphabet') => {
     const next = { ...progress, currentTrack: track };
     await persist(next);
-    await playAudio(track === 'math' ? 'عددها و حساب' : 'الفبا و خواندن');
+    playAudio(track === 'math' ? 'عددها و حساب' : 'الفبا و خواندن').catch(() => {});
     router.push('/home');
   };
 

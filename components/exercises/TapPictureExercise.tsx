@@ -1,9 +1,12 @@
+'use client';
+
 import { exerciseChoices } from '@/lib/shuffle';
 import { exerciseHeading } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
-import { ObjectCluster } from '@/components/art/objects';
+import { ObjectCluster, splitObjectTokens } from '@/components/art/objects';
+import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
 interface Props {
   exercise: Exercise;
@@ -21,6 +24,8 @@ export default function TapPictureExercise({
   answerState = 'idle',
 }: Props) {
   const options = exerciseChoices(exercise);
+  const counts = options.map((option) => splitObjectTokens(option).length);
+  const { ref, size } = useSharedClusterSize(counts);
 
   const handleSelect = (option: string) => {
     if (disabled) return;
@@ -33,7 +38,10 @@ export default function TapPictureExercise({
         <SpeakerButton text={exercise.audio_script} />
         <h2>{exerciseHeading(exercise)}</h2>
       </div>
-      <div className={options.length === 3 ? 'grid3 picture-grid' : 'grid2'}>
+      <div
+        ref={ref}
+        className={options.length === 3 ? 'grid3 picture-grid' : 'grid2'}
+      >
         {options.map((option) => {
           const selected = userAnswer === option;
           const state =
@@ -50,7 +58,7 @@ export default function TapPictureExercise({
               onClick={() => handleSelect(option)}
               className="object-choice-card"
             >
-              <ObjectCluster token={option} />
+              <ObjectCluster token={option} itemSize={size} />
             </ChoiceButton>
           );
         })}

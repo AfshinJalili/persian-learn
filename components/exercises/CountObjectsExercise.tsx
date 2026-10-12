@@ -1,9 +1,12 @@
+'use client';
+
 import { exerciseChoices } from '@/lib/shuffle';
 import { exerciseHeading } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
 import { ObjectCluster } from '@/components/art/objects';
+import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
 interface Props {
   exercise: Exercise;
@@ -24,6 +27,7 @@ export default function CountObjectsExercise({
   const options = exerciseChoices(exercise);
   const count = Number.isFinite(payload.count) ? payload.count : 0;
   const objects = Array.from({ length: Math.max(0, count) }, () => payload.objects || '•');
+  const { ref, size } = useSharedClusterSize([objects.length]);
 
   const handleSelect = (option: string) => {
     if (disabled) return;
@@ -36,8 +40,8 @@ export default function CountObjectsExercise({
         <SpeakerButton text={exercise.audio_script} />
         <h2>{exerciseHeading(exercise)}</h2>
       </div>
-      <div className="card object-count-card">
-        <ObjectCluster tokens={objects} />
+      <div ref={ref} className="card object-count-card">
+        <ObjectCluster tokens={objects} itemSize={size} />
       </div>
       <div className="grid3">
         {options.map((option) => {

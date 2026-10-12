@@ -126,3 +126,33 @@ describe('MatchPairsExercise retry', () => {
     expect(screen.getByRole('button', { name: 'نـ' })).not.toBeDisabled();
   });
 });
+
+describe('MatchPairsExercise object rows', () => {
+  it('keeps every apple the same size in a 1-2-3 question', () => {
+    const { container } = render(
+      <MatchPairsExercise
+        exercise={{
+          id: 'm1l4e2',
+          type: 'match_pairs',
+          prompt: '🔗',
+          audio_script: 'هر عدد را به تصویری وصل کنید که همان تعداد سیب دارد.',
+          payload: {},
+          answer: '۱=🍎|۲=🍎🍎|۳=🍎🍎🍎',
+          distractors: [],
+          feedback_correct: 'ok',
+          feedback_wrong: 'no',
+        }}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+    const clusters = [...container.querySelectorAll('.match-object-apples .object-cluster')];
+    const sizes = clusters.map((cluster) => (cluster as HTMLElement).style.getPropertyValue('--object-size'));
+    expect(sizes.length).toBe(3);
+    expect(new Set(sizes).size).toBe(1);
+    expect(sizes[0]).not.toBe('24px');
+    const items = [...container.querySelectorAll('.match-object-apples .illus')] as HTMLElement[];
+    expect(new Set(items.map((item) => item.style.width)).size).toBe(1);
+  });
+});

@@ -137,32 +137,97 @@ test.describe('Codex review navigation fixes', () => {
     expect(gap).toBeGreaterThanOrEqual(11);
     expect(gap).toBeLessThanOrEqual(13);
 
-    const dots = page.locator('.picture-grid .object-cluster > .illus');
-    const dotBox = await dots.first().boundingBox();
-    expect(dotBox?.width ?? 0).toBeGreaterThanOrEqual(23);
-    expect(dotBox?.width ?? 0).toBeLessThanOrEqual(25);
-
     const layout = await page.evaluate(() => {
-      const card = [...document.querySelectorAll('.picture-grid .object-choice-card')].find(
+      const cards = [...document.querySelectorAll('.picture-grid .object-choice-card')];
+      const sizes = cards.map((card) => {
+        const item = card.querySelector('.object-cluster > .illus') as HTMLElement | null;
+        return item?.getBoundingClientRect().width ?? 0;
+      });
+      const three = cards.find(
         (element) => element.querySelectorAll('.object-cluster > .illus').length === 3
       );
-      if (!card) return null;
-      const cardBox = card.getBoundingClientRect();
-      const dots = [...card.querySelectorAll('.object-cluster > .illus')]
+      if (!three) return null;
+      const cardBox = three.getBoundingClientRect();
+      const dots = [...three.querySelectorAll('.object-cluster > .illus')]
         .map((dot) => dot.getBoundingClientRect())
-        .sort((left, right) => left.x - right.x);
+        .sort((left, right) => left.y - right.y || left.x - right.x);
+      const top = dots.filter((dot) => Math.abs(dot.y - dots[0]!.y) < 4);
       return {
+        sizes,
         cardX: cardBox.x,
         cardRight: cardBox.right,
         firstDotX: dots[0]?.x ?? 0,
-        lastDotRight: dots[dots.length - 1]?.right ?? 0,
-        gap: dots.length > 1 ? dots[1].x - (dots[0].x + dots[0].width) : 0,
+        lastDotRight: Math.max(...dots.map((dot) => dot.right)),
+        topCount: top.length,
+        thirdLower: (dots[2]?.y ?? 0) - (dots[0]?.y ?? 0) > 8,
       };
     });
     expect(layout).toBeTruthy();
-    expect(layout!.gap).toBeGreaterThanOrEqual(7);
-    expect(layout!.gap).toBeLessThanOrEqual(9);
+    expect(layout!.sizes).toHaveLength(3);
+    expect(new Set(layout!.sizes.map((size) => Math.round(size))).size).toBe(1);
+    expect(layout!.sizes[0] ?? 0).toBeGreaterThan(24);
+    expect(layout!.topCount).toBe(2);
+    expect(layout!.thirdLower).toBe(true);
     expect(layout!.firstDotX).toBeGreaterThanOrEqual(layout!.cardX);
     expect(layout!.lastDotRight).toBeLessThanOrEqual(layout!.cardRight);
+  });
+
+  test('profile path rows and the slower chip stay at least 48px', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(async () => {
+      const today = new Date().toISOString().split('T')[0];
+      const value = {
+        currentTrack: 'math',
+        onboarded: true,
+        completedLessons: ['m1l1', 'm1l2'],
+        completedUnits: [],
+        xp: 40,
+        streak: 3,
+        streakBest: 3,
+        lastActivityDate: today,
+        dailyGoal: 2,
+        dailyLessonsCompleted: 1,
+        restDaysUsed: 0,
+        weakItems: [],
+        avatar: 'tulip',
+        name: 'فریبا جون',
+        startDate: '2026-01-01T00:00:00.000Z',
+        speechRate: 1,
+        autoplay: true,
+        activityDates: [today],
+      };
+      sessionStorage.setItem('pl-audio-unlocked', '1');
+      await new Promise<void>((resolve, reject) => {
+        const req = indexedDB.open('persian-learn', 1);
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if (!db.objectStoreNames.contains('progress')) db.createObjectStore('progress');
+          if (!db.objectStoreNames.contains('lessons')) db.createObjectStore('lessons');
+        };
+        req.onsuccess = () => {
+          const db = req.result;
+          const tx = db.transaction('progress', 'readwrite');
+          tx.objectStore('progress').put(value, 'current');
+          tx.oncomplete = () => {
+            db.close();
+            resolve();
+          };
+          tx.onerror = () => reject(tx.error ?? new Error('progress write failed'));
+        };
+        req.onerror = () => reject(req.error ?? new Error('indexedDB open failed'));
+      });
+    });
+
+    await page.goto('/profile');
+    await expect(page.getByText('سرعت صدا')).toBeVisible();
+    const mathPath = page.getByRole('button', { name: 'مسیر عددها' });
+    const alphabetPath = page.getByRole('button', { name: 'ب الفبا' });
+    expect((await mathPath.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(48);
+    expect((await alphabetPath.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(48);
+
+    await page.goto('/lesson/m1l3?ex=6');
+    const slow = page.locator('.slow-btn');
+    await expect(slow).toBeVisible();
+    expect((await slow.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(48);
   });
 });
