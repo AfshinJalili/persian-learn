@@ -1,0 +1,5902 @@
+{
+  "track": "alphabet",
+  "units": [
+    {
+      "id": "a1",
+      "title": "الف، آ و ب",
+      "emoji": "✍️",
+      "goal": "شناختن «ا»، «آ» و «ب» و خواندن اولین کلمه‌ها: با، آب، بابا",
+      "lessons": [
+        {
+          "id": "a1l1",
+          "title": "ا و آ",
+          "exercises": [
+            {
+              "id": "a1l1e1",
+              "type": "intro",
+              "prompt": "ا",
+              "audio_script": "سلام، خوش آمدید! امروز با اولین حرف الفبا آشنا می‌شویم: «الف». الف فقط یک خط صاف است، از بالا به پایین. وقتی الف وسط یا آخر کلمه بیاید، صدای «آ» می‌دهد؛ مثل آخر کلمهٔ «بابا».",
+              "payload": {
+                "display": "ا",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a1l1e2",
+              "type": "trace_letter",
+              "prompt": "ا",
+              "audio_script": "حالا با انگشت، الف را از بالا به پایین بکشید.",
+              "payload": {
+                "letter": "ا",
+                "forms": [
+                  "ا",
+                  "ـا",
+                  "ـا",
+                  "ا"
+                ]
+              },
+              "answer": "ا",
+              "distractors": [],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a1l1e3",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "الف کدام است؟ آن را لمس کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ا",
+              "distractors": [
+                "ب",
+                "ن"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "a1l1e4",
+              "type": "intro",
+              "prompt": "آ",
+              "audio_script": "این «آ» است: همان الف، با یک کلاه کوچک روی سرش که به آن «مد» می‌گوییم. «آ» بیشتر اول کلمه می‌آید و صدای «آ» می‌دهد؛ مثل «آب» و «آفتاب».",
+              "payload": {
+                "display": "آ",
+                "visual": "💧"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a1l1e5",
+              "type": "trace_letter",
+              "prompt": "آ",
+              "audio_script": "اول خط صاف الف را از بالا به پایین بکشید، بعد کلاه کوچکش را رویش بگذارید.",
+              "payload": {
+                "letter": "آ",
+                "forms": [
+                  "آ",
+                  "ـآ",
+                  "ـآ",
+                  "آ"
+                ]
+              },
+              "answer": "آ",
+              "distractors": [],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
+            },
+            {
+              "id": "a1l1e6",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«آ» کدام است؟ همان که کلاه دارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "آ",
+              "distractors": [
+                "ا",
+                "ب"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a1l1e7",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "حالا الفِ بدون کلاه را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ا",
+              "distractors": [
+                "آ",
+                "د"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a1l1e8",
+              "type": "tap_picture",
+              "prompt": "آ",
+              "audio_script": "کدام کلمه با «آ» شروع می‌شود؟ آب، نان یا کلید؟",
+              "payload": {
+                "display": "آ"
+              },
+              "answer": "💧",
+              "distractors": [
+                "🍞",
+                "🔑"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دوباره امتحان کنید."
+            },
+            {
+              "id": "a1l1e9",
+              "type": "tap_picture",
+              "prompt": "آ",
+              "audio_script": "کدام کلمه با «آ» شروع می‌شود؟ خانه، گوشی یا آفتاب؟",
+              "payload": {
+                "display": "آ"
+              },
+              "answer": "☀️",
+              "distractors": [
+                "🏠",
+                "📱"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            }
+          ]
+        },
+        {
+          "id": "a1l2",
+          "title": "ب",
+          "exercises": [
+            {
+              "id": "a1l2e1",
+              "type": "intro",
+              "prompt": "ب",
+              "audio_script": "این حرف «ب» است، با صدای «ب» مثل اول «بابا» و «باران». شکلش مثل یک کاسهٔ پهن است، با یک نقطه زیرش.",
+              "payload": {
+                "display": "ب",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a1l2e2",
+              "type": "trace_letter",
+              "prompt": "ب",
+              "audio_script": "کاسهٔ ب را از راست به چپ بکشید و بعد نقطهٔ زیرش را بگذارید.",
+              "payload": {
+                "letter": "ب",
+                "forms": [
+                  "بـ",
+                  "ـبـ",
+                  "ـب",
+                  "ب"
+                ]
+              },
+              "answer": "ب",
+              "distractors": [],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a1l2e3",
+              "type": "intro",
+              "prompt": "بـ  ـبـ  ـب  ب",
+              "audio_script": "«ب» به حرف بعدی می‌چسبد. وقتی اول یا وسط کلمه بیاید، کوتاه می‌شود و این شکل را پیدا می‌کند: «بـ». نقطه‌اش همیشه زیرش می‌ماند.",
+              "payload": {
+                "display": "بـ  ـبـ  ـب  ب",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a1l2e4",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«ب» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ب",
+              "distractors": [
+                "ا",
+                "آ"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "a1l2e5",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "شکل کوتاه «ب» را پیدا کنید؛ همان که اول کلمه می‌آید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "بـ",
+              "distractors": [
+                "ا",
+                "آ"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a1l2e6",
+              "type": "tap_picture",
+              "prompt": "ب",
+              "audio_script": "کدام کلمه با «ب» شروع می‌شود؟ باران، کلید یا گوشی؟",
+              "payload": {
+                "display": "ب"
+              },
+              "answer": "🌧️",
+              "distractors": [
+                "🔑",
+                "📱"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "a1l2e7",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "به جای نقطه دقت کنید: «ب» یک نقطه زیرش دارد. «ب» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ب",
+              "distractors": [
+                "ن",
+                "ت"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "به نقطه نگاه کنید: نقطهٔ «ب» پایین است. دوباره امتحان کنید."
+            },
+            {
+              "id": "a1l2e8",
+              "type": "tap_picture",
+              "prompt": "ب",
+              "audio_script": "کدام کلمه با «ب» شروع می‌شود؟ بستنی، چای یا خانه؟",
+              "payload": {
+                "display": "ب"
+              },
+              "answer": "🍦",
+              "distractors": [
+                "☕",
+                "🏠"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "a1l2e9",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر حرف را به شکل چسبیدهٔ خودش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "ب",
+                    "بـ"
+                  ],
+                  [
+                    "ا",
+                    "ـا"
+                  ]
+                ]
+              },
+              "answer": "ب=بـ|ا=ـا",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            }
+          ]
+        },
+        {
+          "id": "a1l3",
+          "title": "اولین کلمه‌ها: با، آب، بابا",
+          "exercises": [
+            {
+              "id": "a1l3e1",
+              "type": "intro",
+              "prompt": "با",
+              "audio_script": "حالا دو حرف را کنار هم می‌گذاریم. «ب» و «الف» با هم می‌شوند «با». ب به الف می‌چسبد. «با».",
+              "payload": {
+                "display": "با",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a1l3e2",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«با» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "با",
+              "distractors": [
+                "آب",
+                "ب"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a1l3e3",
+              "type": "intro",
+              "prompt": "آب",
+              "audio_script": "این کلمه «آب» است: اول «آ»، بعد «ب». آب!",
+              "payload": {
+                "display": "آب",
+                "visual": "💧"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a1l3e4",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها کلمهٔ «آب» را بسازید. از راست شروع کنید.",
+              "payload": {
+                "picture": "💧",
+                "letters": [
+                  "آ",
+                  "ب"
+                ]
+              },
+              "answer": "آب",
+              "distractors": [
+                "ا"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a1l3e5",
+              "type": "tap_picture",
+              "prompt": "آب",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "آب"
+              },
+              "answer": "💧",
+              "distractors": [
+                "🍞",
+                "🔑"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره امتحان کنید."
+            },
+            {
+              "id": "a1l3e6",
+              "type": "intro",
+              "prompt": "بابا",
+              "audio_script": "این کلمه «بابا» است: ب، الف، ب، الف. ببینید هر «ب» چطور به الفِ بعدش می‌چسبد. بابا!",
+              "payload": {
+                "display": "بابا",
+                "visual": "👨"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a1l3e7",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «بابا» را بسازید.",
+              "payload": {
+                "picture": "👨",
+                "letters": [
+                  "ب",
+                  "ا",
+                  "ب",
+                  "ا"
+                ]
+              },
+              "answer": "بابا",
+              "distractors": [
+                "آ"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a1l3e8",
+              "type": "tap_picture",
+              "prompt": "بابا",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "بابا"
+              },
+              "answer": "👨",
+              "distractors": [
+                "💧",
+                "🏠"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "a1l3e9",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "آب",
+                    "💧"
+                  ],
+                  [
+                    "بابا",
+                    "👨"
+                  ]
+                ]
+              },
+              "answer": "آب=💧|بابا=👨",
+              "distractors": [],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            },
+            {
+              "id": "a1l3e10",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "کلمهٔ «بابا» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "بابا",
+              "distractors": [
+                "آب",
+                "با"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a2",
+      "title": "د، زبر و ر",
+      "emoji": "🚪",
+      "goal": "یاد گرفتن «د» و «ر» و صدای کوتاه «اَ» (زبر)؛ خواندن: باد، بَد، اَدَب، دَر، اَبر",
+      "lessons": [
+        {
+          "id": "a2l1",
+          "title": "د",
+          "exercises": [
+            {
+              "id": "a2l1e1",
+              "type": "intro",
+              "prompt": "د",
+              "audio_script": "این حرف «د» است، با صدای «د» مثل اول «در» و «دست». شکلش مثل یک زاویهٔ کوچک است و نقطه ندارد.",
+              "payload": {
+                "display": "د",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a2l1e2",
+              "type": "trace_letter",
+              "prompt": "د",
+              "audio_script": "از بالا شروع کنید، کمی پایین بیایید و بعد به سمت راست بکشید.",
+              "payload": {
+                "letter": "د",
+                "forms": [
+                  "د",
+                  "ـد",
+                  "ـد",
+                  "د"
+                ]
+              },
+              "answer": "د",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
+            },
+            {
+              "id": "a2l1e3",
+              "type": "intro",
+              "prompt": "ـد",
+              "audio_script": "«د» هم مثل الف به حرف بعدی نمی‌چسبد؛ فقط حرف قبلی می‌تواند به آن بچسبد.",
+              "payload": {
+                "display": "ـد",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a2l1e4",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«د» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "د",
+              "distractors": [
+                "ب",
+                "ا"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a2l1e5",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "دقت کنید: «د» زاویه دارد و «ر» خمیده است. «د» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "د",
+              "distractors": [
+                "ر",
+                "ذ"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a2l1e6",
+              "type": "tap_picture",
+              "prompt": "د",
+              "audio_script": "کدام کلمه با «د» شروع می‌شود؟ در، سیب یا چای؟",
+              "payload": {
+                "display": "د"
+              },
+              "answer": "🚪",
+              "distractors": [
+                "🍎",
+                "☕"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "a2l1e7",
+              "type": "tap_picture",
+              "prompt": "د",
+              "audio_script": "کدام کلمه با «د» شروع می‌شود؟ کلید، دست یا خانه؟",
+              "payload": {
+                "display": "د"
+              },
+              "answer": "✋",
+              "distractors": [
+                "🔑",
+                "🏠"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "a2l1e8",
+              "type": "intro",
+              "prompt": "باد",
+              "audio_script": "حالا بخوانیم: ب، الف، د: «باد». مثل باد پاییز.",
+              "payload": {
+                "display": "باد",
+                "visual": "🌬️"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a2l1e9",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «باد» را بسازید.",
+              "payload": {
+                "picture": "🌬️",
+                "letters": [
+                  "ب",
+                  "ا",
+                  "د"
+                ]
+              },
+              "answer": "باد",
+              "distractors": [
+                "آ"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a2l1e10",
+              "type": "tap_picture",
+              "prompt": "باد",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "باد"
+              },
+              "answer": "🌬️",
+              "distractors": [
+                "💧",
+                "👨"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "دوباره امتحان کنید."
+            }
+          ]
+        },
+        {
+          "id": "a2l2",
+          "title": "زبر  ـَ",
+          "exercises": [
+            {
+              "id": "a2l2e1",
+              "type": "intro",
+              "prompt": "بَ",
+              "audio_script": "در فارسی بعضی صداها کوتاه‌اند و حرف جداگانه ندارند. صدای کوتاه «اَ» را با یک خط کوچک کج بالای حرف نشان می‌دهیم. اسمش «زبر» است. ب با زبر می‌شود «بَ».",
+              "payload": {
+                "display": "بَ",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a2l2e2",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«بَ» کوتاه را پیدا کنید، نه «با»ی کشیده.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "بَ",
+              "distractors": [
+                "با",
+                "ب"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "a2l2e3",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "حالا «با»ی کشیده را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "با",
+              "distractors": [
+                "بَ",
+                "آ"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a2l2e4",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«دَ» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "دَ",
+              "distractors": [
+                "دا",
+                "بَ"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a2l2e5",
+              "type": "intro",
+              "prompt": "اَ",
+              "audio_script": "اول کلمه، صدای کوتاه «اَ» را با الف و زبر می‌نویسیم: «اَ»؛ مثل اول کلمهٔ «اَبر».",
+              "payload": {
+                "display": "اَ",
+                "visual": "☁️"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a2l2e6",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "صدای کوتاه «اَ» کدام است؟",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "اَ",
+              "distractors": [
+                "آ",
+                "دَ"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "a2l2e7",
+              "type": "intro",
+              "prompt": "بَد",
+              "audio_script": "ب با زبر، «بَ»، و بعد د: «بَد». مثل «حال بد». امیدوارم حال شما همیشه خوب باشد!",
+              "payload": {
+                "display": "بَد",
+                "visual": "👎"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a2l2e8",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "«بَد» را بسازید. یادتان باشد: کوتاه، با زبر.",
+              "payload": {
+                "picture": "👎",
+                "letters": [
+                  "بَ",
+                  "د"
+                ]
+              },
+              "answer": "بَد",
+              "distractors": [
+                "با"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a2l2e9",
+              "type": "intro",
+              "prompt": "اَدَب",
+              "audio_script": "یک کلمهٔ زیبا: «اَدَب». الف با زبر «اَ»، دال با زبر «دَ»، و بعد ب: «اَدَب».",
+              "payload": {
+                "display": "اَدَب",
+                "visual": "🙏"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a2l2e10",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «اَدَب» را بسازید.",
+              "payload": {
+                "picture": "🙏",
+                "letters": [
+                  "اَ",
+                  "دَ",
+                  "ب"
+                ]
+              },
+              "answer": "اَدَب",
+              "distractors": [
+                "آ",
+                "د"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a2l2e11",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "کلمهٔ «بَد» را پیدا کنید؛ کوتاه، بدون الف.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "بَد",
+              "distractors": [
+                "باد",
+                "اَدَب"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            }
+          ]
+        },
+        {
+          "id": "a2l3",
+          "title": "ر",
+          "exercises": [
+            {
+              "id": "a2l3e1",
+              "type": "intro",
+              "prompt": "ر",
+              "audio_script": "این حرف «ر» است، با صدای «ر» مثل اول «روز» و «رنگ». شکلش یک خط کوچک خمیده است که کمی پایین‌تر از خط می‌رود. ر هم به حرف بعدی نمی‌چسبد.",
+              "payload": {
+                "display": "ر",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a2l3e2",
+              "type": "trace_letter",
+              "prompt": "ر",
+              "audio_script": "از بالا شروع کنید و با یک انحنای نرم به پایین و چپ بکشید.",
+              "payload": {
+                "letter": "ر",
+                "forms": [
+                  "ر",
+                  "ـر",
+                  "ـر",
+                  "ر"
+                ]
+              },
+              "answer": "ر",
+              "distractors": [],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a2l3e3",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«ر» را پیدا کنید. «ر» خمیده است و «د» زاویه دارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ر",
+              "distractors": [
+                "د",
+                "ز"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a2l3e4",
+              "type": "tap_picture",
+              "prompt": "ر",
+              "audio_script": "کدام کلمه با «ر» شروع می‌شود؟ رنگین‌کمان، نان یا کلید؟",
+              "payload": {
+                "display": "ر"
+              },
+              "answer": "🌈",
+              "distractors": [
+                "🍞",
+                "🔑"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "a2l3e5",
+              "type": "intro",
+              "prompt": "دَر",
+              "audio_script": "د با زبر، «دَ»، و بعد ر: «دَر». همان دری که هر روز باز و بسته می‌کنید.",
+              "payload": {
+                "display": "دَر",
+                "visual": "🚪"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a2l3e6",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "«دَر» را بسازید.",
+              "payload": {
+                "picture": "🚪",
+                "letters": [
+                  "دَ",
+                  "ر"
+                ]
+              },
+              "answer": "دَر",
+              "distractors": [
+                "د",
+                "ب"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a2l3e7",
+              "type": "intro",
+              "prompt": "اَبر",
+              "audio_script": "الف با زبر «اَ»، بعد ب، بعد ر: «اَبر». مثل ابرهای آسمان.",
+              "payload": {
+                "display": "اَبر",
+                "visual": "☁️"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a2l3e8",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "«اَبر» را بسازید.",
+              "payload": {
+                "picture": "☁️",
+                "letters": [
+                  "اَ",
+                  "ب",
+                  "ر"
+                ]
+              },
+              "answer": "اَبر",
+              "distractors": [
+                "آ",
+                "د"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a2l3e9",
+              "type": "tap_picture",
+              "prompt": "دَر",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "دَر"
+              },
+              "answer": "🚪",
+              "distractors": [
+                "☁️",
+                "💧"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "a2l3e10",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "دَر",
+                    "🚪"
+                  ],
+                  [
+                    "اَبر",
+                    "☁️"
+                  ],
+                  [
+                    "آب",
+                    "💧"
+                  ],
+                  [
+                    "باد",
+                    "🌬️"
+                  ]
+                ]
+              },
+              "answer": "دَر=🚪|اَبر=☁️|آب=💧|باد=🌬️",
+              "distractors": [],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            },
+            {
+              "id": "a2l3e11",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "کلمهٔ «اَبر» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "اَبر",
+              "distractors": [
+                "دَر",
+                "آب"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a3",
+      "title": "ن، م و زیر",
+      "emoji": "🍞",
+      "goal": "یاد گرفتن «ن» و «م» و صدای کوتاه «اِ» (زیر)؛ خواندن: نان، باران، مادر، بادام، مِداد",
+      "lessons": [
+        {
+          "id": "a3l1",
+          "title": "ن",
+          "exercises": [
+            {
+              "id": "a3l1e1",
+              "type": "intro",
+              "prompt": "ن",
+              "audio_script": "این حرف «ن» است، با صدای «ن» مثل اول «نان». شکلش یک کاسهٔ گرد است با یک نقطه بالایش.",
+              "payload": {
+                "display": "ن",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a3l1e2",
+              "type": "trace_letter",
+              "prompt": "ن",
+              "audio_script": "کاسهٔ گرد ن را بکشید و بعد نقطه را بالایش بگذارید.",
+              "payload": {
+                "letter": "ن",
+                "forms": [
+                  "نـ",
+                  "ـنـ",
+                  "ـن",
+                  "ن"
+                ]
+              },
+              "answer": "ن",
+              "distractors": [],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
+            },
+            {
+              "id": "a3l1e3",
+              "type": "intro",
+              "prompt": "نـ",
+              "audio_script": "اول و وسط کلمه، «ن» کوتاه می‌شود و شبیه «بـ» است؛ فرقشان فقط در نقطه است: نقطهٔ «نـ» بالاست و نقطهٔ «بـ» پایین.",
+              "payload": {
+                "display": "نـ",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a3l1e4",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«ن» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ن",
+              "distractors": [
+                "ب",
+                "ر"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a3l1e5",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "شکل کوتاه «ن» را پیدا کنید. نقطه کجاست؟",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "نـ",
+              "distractors": [
+                "بـ",
+                "د"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "به نقطه نگاه کنید: نقطهٔ «نـ» بالاست. دوباره امتحان کنید."
+            },
+            {
+              "id": "a3l1e6",
+              "type": "intro",
+              "prompt": "نان",
+              "audio_script": "ن، الف، ن: «نان». نان تازه و گرم سر سفره!",
+              "payload": {
+                "display": "نان",
+                "visual": "🍞"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a3l1e7",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "«نان» را بسازید.",
+              "payload": {
+                "picture": "🍞",
+                "letters": [
+                  "ن",
+                  "ا",
+                  "ن"
+                ]
+              },
+              "answer": "نان",
+              "distractors": [
+                "ب"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a3l1e8",
+              "type": "tap_picture",
+              "prompt": "نان",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "نان"
+              },
+              "answer": "🍞",
+              "distractors": [
+                "💧",
+                "🚪"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "a3l1e9",
+              "type": "intro",
+              "prompt": "باران",
+              "audio_script": "یک کلمهٔ بلندتر: ب، الف، ر، الف، ن: «باران».",
+              "payload": {
+                "display": "باران",
+                "visual": "🌧️"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a3l1e10",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "«باران» را بسازید. آرام، حرف به حرف.",
+              "payload": {
+                "picture": "🌧️",
+                "letters": [
+                  "ب",
+                  "ا",
+                  "ر",
+                  "ا",
+                  "ن"
+                ]
+              },
+              "answer": "باران",
+              "distractors": [
+                "د"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            }
+          ]
+        },
+        {
+          "id": "a3l2",
+          "title": "م",
+          "exercises": [
+            {
+              "id": "a3l2e1",
+              "type": "intro",
+              "prompt": "م",
+              "audio_script": "این حرف «م» است، با صدای «م» مثل اول «مادر» و «ماه». سرش یک دایرهٔ کوچک توپر است. وقتی آخر کلمه بیاید، یک دم رو به پایین هم دارد.",
+              "payload": {
+                "display": "م",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a3l2e2",
+              "type": "trace_letter",
+              "prompt": "م",
+              "audio_script": "اول دایرهٔ کوچک را بکشید، بعد دمش را رو به پایین ادامه بدهید.",
+              "payload": {
+                "letter": "م",
+                "forms": [
+                  "مـ",
+                  "ـمـ",
+                  "ـم",
+                  "م"
+                ]
+              },
+              "answer": "م",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a3l2e3",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«م» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "م",
+              "distractors": [
+                "ن",
+                "ر"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a3l2e4",
+              "type": "intro",
+              "prompt": "مادر",
+              "audio_script": "م، الف، د، ر: «مادر». یکی از قشنگ‌ترین کلمه‌های دنیا!",
+              "payload": {
+                "display": "مادر",
+                "visual": "👩"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a3l2e5",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "«مادر» را بسازید.",
+              "payload": {
+                "picture": "👩",
+                "letters": [
+                  "م",
+                  "ا",
+                  "د",
+                  "ر"
+                ]
+              },
+              "answer": "مادر",
+              "distractors": [
+                "ن"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a3l2e6",
+              "type": "intro",
+              "prompt": "بادام",
+              "audio_script": "ب، الف، د، الف، م: «بادام». همان بادامی که کنار چای می‌خوریم.",
+              "payload": {
+                "display": "بادام",
+                "visual": "🌰"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a3l2e7",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "«بادام» را بسازید.",
+              "payload": {
+                "picture": "🌰",
+                "letters": [
+                  "ب",
+                  "ا",
+                  "د",
+                  "ا",
+                  "م"
+                ]
+              },
+              "answer": "بادام",
+              "distractors": [
+                "ن"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a3l2e8",
+              "type": "tap_picture",
+              "prompt": "مادر",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "مادر"
+              },
+              "answer": "👩",
+              "distractors": [
+                "👨",
+                "🍞"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "دوباره امتحان کنید."
+            },
+            {
+              "id": "a3l2e9",
+              "type": "tap_picture",
+              "prompt": "بادام",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "بادام"
+              },
+              "answer": "🌰",
+              "distractors": [
+                "🍞",
+                "🌧️"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "a3l2e10",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "نان",
+                    "🍞"
+                  ],
+                  [
+                    "مادر",
+                    "👩"
+                  ],
+                  [
+                    "بادام",
+                    "🌰"
+                  ],
+                  [
+                    "بابا",
+                    "👨"
+                  ]
+                ]
+              },
+              "answer": "نان=🍞|مادر=👩|بادام=🌰|بابا=👨",
+              "distractors": [],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            }
+          ]
+        },
+        {
+          "id": "a3l3",
+          "title": "زیر  ـِ",
+          "exercises": [
+            {
+              "id": "a3l3e1",
+              "type": "intro",
+              "prompt": "بِ",
+              "audio_script": "صدای کوتاه «اِ» را با یک خط کوچک کج زیر حرف نشان می‌دهیم. اسمش «زیر» است. ب با زیر می‌شود «بِ». یادتان باشد: زبر بالای حرف است و زیر پایین آن.",
+              "payload": {
+                "display": "بِ",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a3l3e2",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«بِ» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "بِ",
+              "distractors": [
+                "بَ",
+                "با"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "a3l3e3",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«مِ» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "مِ",
+              "distractors": [
+                "مَ",
+                "ما"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a3l3e4",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "حالا «دَ» را پیدا کنید؛ با زبر.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "دَ",
+              "distractors": [
+                "دِ",
+                "دا"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a3l3e5",
+              "type": "intro",
+              "prompt": "مِداد",
+              "audio_script": "م با زیر، «مِ»، بعد د، الف، د: «مِداد». همان مدادی که با آن می‌نویسیم.",
+              "payload": {
+                "display": "مِداد",
+                "visual": "✏️"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a3l3e6",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "«مِداد» را بسازید. حواستان به زیرِ م باشد.",
+              "payload": {
+                "picture": "✏️",
+                "letters": [
+                  "مِ",
+                  "د",
+                  "ا",
+                  "د"
+                ]
+              },
+              "answer": "مِداد",
+              "distractors": [
+                "مَ"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a3l3e7",
+              "type": "tap_picture",
+              "prompt": "مِداد",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "مِداد"
+              },
+              "answer": "✏️",
+              "distractors": [
+                "🌰",
+                "🚪"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "a3l3e8",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "وقتی چیزی را به کسی می‌دهیم که با خودش ببرد، می‌گوییم «بِبَر». کلمهٔ «بِبَر» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "بِبَر",
+              "distractors": [
+                "بابا",
+                "بَد"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "a3l3e9",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "مِداد",
+                    "✏️"
+                  ],
+                  [
+                    "دَر",
+                    "🚪"
+                  ],
+                  [
+                    "اَبر",
+                    "☁️"
+                  ],
+                  [
+                    "نان",
+                    "🍞"
+                  ]
+                ]
+              },
+              "answer": "مِداد=✏️|دَر=🚪|اَبر=☁️|نان=🍞",
+              "distractors": [],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            },
+            {
+              "id": "a3l3e10",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "دقت کنید، این دو کلمه شبیه‌اند! «مِداد» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "مِداد",
+              "distractors": [
+                "مادر",
+                "بادام"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a4",
+      "title": "و و پیش",
+      "emoji": "💡",
+      "goal": "یاد گرفتن حرف «و» با صداهایش و صدای کوتاه «اُ» (پیش)؛ خواندن: مو، نور، دود، دُم، اُردو، رود، روبان",
+      "lessons": [
+        {
+          "id": "a4l1",
+          "title": "و",
+          "exercises": [
+            {
+              "id": "a4l1e1",
+              "type": "intro",
+              "prompt": "و",
+              "audio_script": "این حرف «و» است؛ اسمش «واو». سرش یک دایرهٔ کوچک است و دمش پایین می‌رود، کمی شبیه «ر» با یک سر گرد. «و» به حرف بعدی نمی‌چسبد. «و» معمولاً صدای «او» می‌دهد، مثل «مو» و «رود»، و گاهی صدای «و»، مثل «وان».",
+              "payload": {
+                "display": "و",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a4l1e2",
+              "type": "trace_letter",
+              "prompt": "و",
+              "audio_script": "حالا با انگشت، «واو» را روی خط‌ها بکشید. اول سر گردش را بکشید، بعد دمش را پایین بیاورید.",
+              "payload": {
+                "letter": "و",
+                "forms": [
+                  "و",
+                  "ـو",
+                  "ـو",
+                  "و"
+                ]
+              },
+              "answer": "و",
+              "distractors": [],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
+            },
+            {
+              "id": "a4l1e3",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«و» را پیدا کنید؛ همان که سر گرد دارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "و",
+              "distractors": [
+                "ر",
+                "د"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a4l1e4",
+              "type": "tap_picture",
+              "prompt": "و",
+              "audio_script": "کدام کلمه با «و» شروع می‌شود؟ سیب، وان یا کلید؟",
+              "payload": {
+                "display": "و"
+              },
+              "answer": "🛁",
+              "distractors": [
+                "🍎",
+                "🔑"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "a4l1e5",
+              "type": "intro",
+              "prompt": "مو",
+              "audio_script": "میم، واو: «مو». موی سر.",
+              "payload": {
+                "display": "مو",
+                "visual": "💇"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a4l1e6",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «مو» را بسازید.",
+              "payload": {
+                "picture": "💇",
+                "letters": [
+                  "م",
+                  "و"
+                ]
+              },
+              "answer": "مو",
+              "distractors": [
+                "ر"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a4l1e7",
+              "type": "tap_picture",
+              "prompt": "مو",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "مو"
+              },
+              "answer": "💇",
+              "distractors": [
+                "🍞",
+                "🚪"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دوباره امتحان کنید."
+            },
+            {
+              "id": "a4l1e8",
+              "type": "intro",
+              "prompt": "نور",
+              "audio_script": "نون، واو، رِ: «نور». نور چراغ.",
+              "payload": {
+                "display": "نور",
+                "visual": "💡"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a4l1e9",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «نور» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "💡",
+                "letters": [
+                  "ن",
+                  "و",
+                  "ر"
+                ]
+              },
+              "answer": "نور",
+              "distractors": [
+                "ر",
+                "د"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a4l1e10",
+              "type": "intro",
+              "prompt": "دود",
+              "audio_script": "دال، واو، دال: «دود». مثل دود سماور.",
+              "payload": {
+                "display": "دود",
+                "visual": "💨"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a4l1e11",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «دود» ساخته شود.",
+              "payload": {
+                "picture": "💨",
+                "letters": [
+                  "د",
+                  "و",
+                  "د"
+                ]
+              },
+              "answer": "دود",
+              "distractors": [
+                "ر"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a4l1e12",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "مو",
+                    "💇"
+                  ],
+                  [
+                    "نور",
+                    "💡"
+                  ],
+                  [
+                    "دود",
+                    "💨"
+                  ],
+                  [
+                    "نان",
+                    "🍞"
+                  ]
+                ]
+              },
+              "answer": "مو=💇|نور=💡|دود=💨|نان=🍞",
+              "distractors": [],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            }
+          ]
+        },
+        {
+          "id": "a4l2",
+          "title": "پیش  ـُ",
+          "exercises": [
+            {
+              "id": "a4l2e1",
+              "type": "intro",
+              "prompt": "بُ",
+              "audio_script": "صدای کوتاه «اُ» را با یک واو کوچک بالای حرف نشان می‌دهیم. اسمش «پیش» است. ب با پیش می‌شود «بُ». حالا هر سه صدای کوتاه را بلدید: زبر، زیر و پیش.",
+              "payload": {
+                "display": "بُ",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a4l2e2",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«بُ» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "بُ",
+              "distractors": [
+                "بَ",
+                "بِ"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "a4l2e3",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«مُ» کوتاه را پیدا کنید، نه «مو»ی کشیده.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "مُ",
+              "distractors": [
+                "مو",
+                "مَ"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a4l2e4",
+              "type": "intro",
+              "prompt": "اُ",
+              "audio_script": "اول کلمه، صدای «اُ» را با الف و پیش می‌نویسیم: «اُ»، مثل اول کلمهٔ «اُردو».",
+              "payload": {
+                "display": "اُ",
+                "visual": "⛺"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a4l2e5",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "صدای کوتاه «اُ» کدام است؟",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "اُ",
+              "distractors": [
+                "آ",
+                "اَ"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a4l2e6",
+              "type": "intro",
+              "prompt": "دُم",
+              "audio_script": "دال با پیش، میم: «دُم». مثل دُم گربه.",
+              "payload": {
+                "display": "دُم",
+                "visual": "🐈"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a4l2e7",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «دُم» را بسازید.",
+              "payload": {
+                "picture": "🐈",
+                "letters": [
+                  "دُ",
+                  "م"
+                ]
+              },
+              "answer": "دُم",
+              "distractors": [
+                "دو",
+                "م"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a4l2e8",
+              "type": "intro",
+              "prompt": "اُردو",
+              "audio_script": "الف با پیش، رِ، دال، واو: «اُردو». مثل اردوی تابستانی.",
+              "payload": {
+                "display": "اُردو",
+                "visual": "⛺"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a4l2e9",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «اُردو» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "⛺",
+                "letters": [
+                  "اُ",
+                  "ر",
+                  "د",
+                  "و"
+                ]
+              },
+              "answer": "اُردو",
+              "distractors": [
+                "آ",
+                "د"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a4l2e10",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "کلمهٔ «دُم» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "دُم",
+              "distractors": [
+                "دود",
+                "مو"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "a4l2e11",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "دُم",
+                    "🐈"
+                  ],
+                  [
+                    "اُردو",
+                    "⛺"
+                  ],
+                  [
+                    "مو",
+                    "💇"
+                  ],
+                  [
+                    "نور",
+                    "💡"
+                  ]
+                ]
+              },
+              "answer": "دُم=🐈|اُردو=⛺|مو=💇|نور=💡",
+              "distractors": [],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            }
+          ]
+        },
+        {
+          "id": "a4l3",
+          "title": "صداهای «و»",
+          "exercises": [
+            {
+              "id": "a4l3e1",
+              "type": "intro",
+              "prompt": "و",
+              "audio_script": "«و» چند جور خوانده می‌شود: «او» مثل «رود»، «و» مثل «وان»، و وقتی تنها بین دو کلمه بیاید، یعنی «و»ی ربط، معمولاً «اُ» یا «وَ» خوانده می‌شود؛ مثل «نان و آب».",
+              "payload": {
+                "display": "و",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a4l3e2",
+              "type": "intro",
+              "prompt": "رود",
+              "audio_script": "رِ، واو، دال: «رود». رودخانهٔ پرآب.",
+              "payload": {
+                "display": "رود",
+                "visual": "🏞️"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a4l3e3",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «رود» ساخته شود.",
+              "payload": {
+                "picture": "🏞️",
+                "letters": [
+                  "ر",
+                  "و",
+                  "د"
+                ]
+              },
+              "answer": "رود",
+              "distractors": [
+                "د",
+                "ر"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a4l3e4",
+              "type": "intro",
+              "prompt": "روبان",
+              "audio_script": "رِ، واو، بِ، الف، نون: «روبان». روبان قشنگ روی کادو.",
+              "payload": {
+                "display": "روبان",
+                "visual": "🎀"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a4l3e5",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «روبان» را بسازید.",
+              "payload": {
+                "picture": "🎀",
+                "letters": [
+                  "ر",
+                  "و",
+                  "ب",
+                  "ا",
+                  "ن"
+                ]
+              },
+              "answer": "روبان",
+              "distractors": [
+                "د"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a4l3e6",
+              "type": "tap_picture",
+              "prompt": "وان",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "وان"
+              },
+              "answer": "🛁",
+              "distractors": [
+                "🏞️",
+                "🎀"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "a4l3e7",
+              "type": "tap_picture",
+              "prompt": "رود",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "رود"
+              },
+              "answer": "🏞️",
+              "distractors": [
+                "💨",
+                "🛁"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "a4l3e8",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«نان و آب» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "نان و آب",
+              "distractors": [
+                "آب و نان",
+                "نان"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a4l3e9",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "کلمهٔ «روبان» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "روبان",
+              "distractors": [
+                "رود",
+                "بادام"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a4l3e10",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "رود",
+                    "🏞️"
+                  ],
+                  [
+                    "روبان",
+                    "🎀"
+                  ],
+                  [
+                    "وان",
+                    "🛁"
+                  ],
+                  [
+                    "دود",
+                    "💨"
+                  ]
+                ]
+              },
+              "answer": "رود=🏞️|روبان=🎀|وان=🛁|دود=💨",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a5",
+      "title": "ی، س و ش",
+      "emoji": "🌙",
+      "goal": "یاد گرفتن «ی»، «س» و «ش» و شکل‌های چسبیده‌شان؛ خواندن: ایران، بینی، دیوار، سیب، سبد، آسمان، شیر، شب، آش",
+      "lessons": [
+        {
+          "id": "a5l1",
+          "title": "ی",
+          "exercises": [
+            {
+              "id": "a5l1e1",
+              "type": "intro",
+              "prompt": "ی",
+              "audio_script": "این حرف «ی» است. معمولاً صدای «ای» می‌دهد، مثل «بینی» و «ایران»، و گاهی صدای «ی». آخر کلمه، «ی» یک کاسهٔ پهن و دنباله‌دار است و نقطه ندارد. اول و وسط کلمه کوتاه می‌شود و دو نقطه زیرش می‌گیرد: «یـ».",
+              "payload": {
+                "display": "ی",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a5l1e2",
+              "type": "trace_letter",
+              "prompt": "ی",
+              "audio_script": "حالا با انگشت، «یِ» را روی خط‌ها بکشید. کاسهٔ پهنش را از راست به چپ بکشید.",
+              "payload": {
+                "letter": "ی",
+                "forms": [
+                  "یـ",
+                  "ـیـ",
+                  "ـی",
+                  "ی"
+                ]
+              },
+              "answer": "ی",
+              "distractors": [],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a5l1e3",
+              "type": "intro",
+              "prompt": "یـ  ـیـ  ـی  ی",
+              "audio_script": "این چهار شکل «ی» است. شکل کوتاه، «یـ»، دو نقطه زیرش دارد؛ شکل آخر کلمه نقطه ندارد.",
+              "payload": {
+                "display": "یـ  ـیـ  ـی  ی",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a5l1e4",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«یِ» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ی",
+              "distractors": [
+                "ن",
+                "ب"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "a5l1e5",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "شکل کوتاه «ی» را پیدا کنید؛ همان که دو نقطه زیرش دارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "یـ",
+              "distractors": [
+                "بـ",
+                "نـ"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "نقطه‌ها را بشمارید: «یـ» دو نقطه زیرش دارد. دوباره امتحان کنید."
+            },
+            {
+              "id": "a5l1e6",
+              "type": "intro",
+              "prompt": "ایران",
+              "audio_script": "الف، یِ، رِ، الف، نون: «ایران». سرزمین ما.",
+              "payload": {
+                "display": "ایران",
+                "visual": "🇮🇷"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a5l1e7",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «ایران» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "🇮🇷",
+                "letters": [
+                  "ا",
+                  "ی",
+                  "ر",
+                  "ا",
+                  "ن"
+                ]
+              },
+              "answer": "ایران",
+              "distractors": [
+                "آ",
+                "د"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a5l1e8",
+              "type": "intro",
+              "prompt": "بینی",
+              "audio_script": "بِ، یِ، نون، یِ: «بینی». بینی روی صورت.",
+              "payload": {
+                "display": "بینی",
+                "visual": "👃"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a5l1e9",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «بینی» ساخته شود.",
+              "payload": {
+                "picture": "👃",
+                "letters": [
+                  "ب",
+                  "ی",
+                  "ن",
+                  "ی"
+                ]
+              },
+              "answer": "بینی",
+              "distractors": [
+                "ن",
+                "ب"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a5l1e10",
+              "type": "intro",
+              "prompt": "دیوار",
+              "audio_script": "دال، یِ، واو، الف، رِ: «دیوار». دیوار خانه.",
+              "payload": {
+                "display": "دیوار",
+                "visual": "🧱"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a5l1e11",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «دیوار» را بسازید.",
+              "payload": {
+                "picture": "🧱",
+                "letters": [
+                  "د",
+                  "ی",
+                  "و",
+                  "ا",
+                  "ر"
+                ]
+              },
+              "answer": "دیوار",
+              "distractors": [
+                "ر",
+                "ب"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a5l1e12",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "ایران",
+                    "🇮🇷"
+                  ],
+                  [
+                    "بینی",
+                    "👃"
+                  ],
+                  [
+                    "دیوار",
+                    "🧱"
+                  ]
+                ]
+              },
+              "answer": "ایران=🇮🇷|بینی=👃|دیوار=🧱",
+              "distractors": [],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            }
+          ]
+        },
+        {
+          "id": "a5l2",
+          "title": "س",
+          "exercises": [
+            {
+              "id": "a5l2e1",
+              "type": "intro",
+              "prompt": "س",
+              "audio_script": "این حرف «س» است؛ اسمش «سین». سه دندانهٔ کوچک دارد و یک کاسه، بدون نقطه. صدایش مثل اول «سیب» و «سبد» است.",
+              "payload": {
+                "display": "س",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a5l2e2",
+              "type": "trace_letter",
+              "prompt": "س",
+              "audio_script": "حالا با انگشت، «سین» را روی خط‌ها بکشید. سه دندانه را از راست بکشید، بعد کاسه را.",
+              "payload": {
+                "letter": "س",
+                "forms": [
+                  "سـ",
+                  "ـسـ",
+                  "ـس",
+                  "س"
+                ]
+              },
+              "answer": "س",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
+            },
+            {
+              "id": "a5l2e3",
+              "type": "intro",
+              "prompt": "سـ  ـسـ  ـس  س",
+              "audio_script": "اول و وسط کلمه، «س» کاسه‌اش را از دست می‌دهد و فقط سه دندانه می‌ماند: «سـ».",
+              "payload": {
+                "display": "سـ  ـسـ  ـس  س",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a5l2e4",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«س» را پیدا کنید؛ همان که نقطه ندارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "س",
+              "distractors": [
+                "ش",
+                "ن"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a5l2e5",
+              "type": "tap_picture",
+              "prompt": "س",
+              "audio_script": "کدام کلمه با «س» شروع می‌شود؟ نان، سیب یا چای؟",
+              "payload": {
+                "display": "س"
+              },
+              "answer": "🍎",
+              "distractors": [
+                "🍞",
+                "☕"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "a5l2e6",
+              "type": "intro",
+              "prompt": "سیب",
+              "audio_script": "سین، یِ، بِ: «سیب». سیب سرخ.",
+              "payload": {
+                "display": "سیب",
+                "visual": "🍎"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a5l2e7",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «سیب» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "🍎",
+                "letters": [
+                  "س",
+                  "ی",
+                  "ب"
+                ]
+              },
+              "answer": "سیب",
+              "distractors": [
+                "ش",
+                "ن"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a5l2e8",
+              "type": "intro",
+              "prompt": "سبد",
+              "audio_script": "سین، بِ، دال: «سبد». سبد خرید.",
+              "payload": {
+                "display": "سبد",
+                "visual": "🧺"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a5l2e9",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «سبد» ساخته شود.",
+              "payload": {
+                "picture": "🧺",
+                "letters": [
+                  "س",
+                  "ب",
+                  "د"
+                ]
+              },
+              "answer": "سبد",
+              "distractors": [
+                "ر",
+                "س"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a5l2e10",
+              "type": "intro",
+              "prompt": "آسمان",
+              "audio_script": "آ، سین، میم، الف، نون: «آسمان». آسمان شب.",
+              "payload": {
+                "display": "آسمان",
+                "visual": "🌌"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a5l2e11",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «آسمان» را بسازید.",
+              "payload": {
+                "picture": "🌌",
+                "letters": [
+                  "آ",
+                  "س",
+                  "م",
+                  "ا",
+                  "ن"
+                ]
+              },
+              "answer": "آسمان",
+              "distractors": [
+                "ا",
+                "ن"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a5l2e12",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "سیب",
+                    "🍎"
+                  ],
+                  [
+                    "سبد",
+                    "🧺"
+                  ],
+                  [
+                    "آسمان",
+                    "🌌"
+                  ],
+                  [
+                    "ایران",
+                    "🇮🇷"
+                  ]
+                ]
+              },
+              "answer": "سیب=🍎|سبد=🧺|آسمان=🌌|ایران=🇮🇷",
+              "distractors": [],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            }
+          ]
+        },
+        {
+          "id": "a5l3",
+          "title": "ش",
+          "exercises": [
+            {
+              "id": "a5l3e1",
+              "type": "intro",
+              "prompt": "ش",
+              "audio_script": "این حرف «ش» است؛ اسمش «شین». همان «س» است، با سه نقطه بالایش. صدایش مثل اول «شیر» و «شب» است.",
+              "payload": {
+                "display": "ش",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a5l3e2",
+              "type": "trace_letter",
+              "prompt": "ش",
+              "audio_script": "حالا با انگشت، «شین» را روی خط‌ها بکشید. اول دندانه‌ها و کاسه را بکشید، بعد سه نقطه را بالایش بگذارید.",
+              "payload": {
+                "letter": "ش",
+                "forms": [
+                  "شـ",
+                  "ـشـ",
+                  "ـش",
+                  "ش"
+                ]
+              },
+              "answer": "ش",
+              "distractors": [],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a5l3e3",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«ش» را پیدا کنید؛ همان که سه نقطه دارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ش",
+              "distractors": [
+                "س",
+                "ن"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "به نقطه‌ها نگاه کنید: «ش» سه نقطه دارد و «س» هیچ. دوباره امتحان کنید."
+            },
+            {
+              "id": "a5l3e4",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "حالا «س» را پیدا کنید؛ بدون نقطه.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "س",
+              "distractors": [
+                "ش",
+                "ی"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a5l3e5",
+              "type": "intro",
+              "prompt": "شیر",
+              "audio_script": "شین، یِ، رِ: «شیر». یک لیوان شیر.",
+              "payload": {
+                "display": "شیر",
+                "visual": "🥛"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a5l3e6",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «شیر» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "🥛",
+                "letters": [
+                  "ش",
+                  "ی",
+                  "ر"
+                ]
+              },
+              "answer": "شیر",
+              "distractors": [
+                "س",
+                "ر"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a5l3e7",
+              "type": "intro",
+              "prompt": "شب",
+              "audio_script": "شین، بِ: «شب». شب بخیر!",
+              "payload": {
+                "display": "شب",
+                "visual": "🌙"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a5l3e8",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «شب» ساخته شود.",
+              "payload": {
+                "picture": "🌙",
+                "letters": [
+                  "ش",
+                  "ب"
+                ]
+              },
+              "answer": "شب",
+              "distractors": [
+                "س"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a5l3e9",
+              "type": "intro",
+              "prompt": "آش",
+              "audio_script": "آ، شین: «آش». آش رشتهٔ خوش‌مزه.",
+              "payload": {
+                "display": "آش",
+                "visual": "🍲"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a5l3e10",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «آش» را بسازید.",
+              "payload": {
+                "picture": "🍲",
+                "letters": [
+                  "آ",
+                  "ش"
+                ]
+              },
+              "answer": "آش",
+              "distractors": [
+                "ا",
+                "س"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a5l3e11",
+              "type": "tap_picture",
+              "prompt": "موش",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "موش"
+              },
+              "answer": "🐭",
+              "distractors": [
+                "🍲",
+                "🥛"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره امتحان کنید."
+            },
+            {
+              "id": "a5l3e12",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "شیر",
+                    "🥛"
+                  ],
+                  [
+                    "شب",
+                    "🌙"
+                  ],
+                  [
+                    "آش",
+                    "🍲"
+                  ],
+                  [
+                    "سیب",
+                    "🍎"
+                  ]
+                ]
+              },
+              "answer": "شیر=🥛|شب=🌙|آش=🍲|سیب=🍎",
+              "distractors": [],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a6",
+      "title": "ت، ک، ل و گ",
+      "emoji": "🔑",
+      "goal": "یاد گرفتن «ت»، «ک»، «ل» و «گ»؛ خواندن: دست، تب، اتوبوس، کتاب، کباب، اسکناس، لب، کلید، سلام، گل، گوشی، انگور",
+      "lessons": [
+        {
+          "id": "a6l1",
+          "title": "ت",
+          "exercises": [
+            {
+              "id": "a6l1e1",
+              "type": "intro",
+              "prompt": "ت",
+              "audio_script": "این حرف «ت» است. شکلش درست مثل «ب» است، اما دو نقطه بالایش دارد. صدایش مثل اول «تب» و آخر «دست» است.",
+              "payload": {
+                "display": "ت",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l1e2",
+              "type": "trace_letter",
+              "prompt": "ت",
+              "audio_script": "حالا با انگشت، «تِ» را روی خط‌ها بکشید. کاسه را بکشید و دو نقطه را بالایش بگذارید.",
+              "payload": {
+                "letter": "ت",
+                "forms": [
+                  "تـ",
+                  "ـتـ",
+                  "ـت",
+                  "ت"
+                ]
+              },
+              "answer": "ت",
+              "distractors": [],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
+            },
+            {
+              "id": "a6l1e3",
+              "type": "intro",
+              "prompt": "تـ  ـتـ  ـت  ت",
+              "audio_script": "«ت» هم مثل «ب» اول و وسط کلمه کوتاه می‌شود: «تـ». فقط نقطه‌ها فرق دارند.",
+              "payload": {
+                "display": "تـ  ـتـ  ـت  ت",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l1e4",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«تِ» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ت",
+              "distractors": [
+                "ب",
+                "ن"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "نقطه‌ها را نگاه کنید: «ت» دو نقطه بالا دارد. دوباره امتحان کنید."
+            },
+            {
+              "id": "a6l1e5",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "شکل کوتاه «ت» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "تـ",
+              "distractors": [
+                "بـ",
+                "نـ"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "a6l1e6",
+              "type": "intro",
+              "prompt": "دست",
+              "audio_script": "دال، سین، تِ: «دست». دست‌هایتان درد نکند!",
+              "payload": {
+                "display": "دست",
+                "visual": "✋"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l1e7",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «دست» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "✋",
+                "letters": [
+                  "د",
+                  "س",
+                  "ت"
+                ]
+              },
+              "answer": "دست",
+              "distractors": [
+                "س",
+                "ب"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a6l1e8",
+              "type": "intro",
+              "prompt": "تب",
+              "audio_script": "تِ، بِ: «تب». مثل وقتی که تب دارید. ان‌شاءالله هیچ‌وقت!",
+              "payload": {
+                "display": "تب",
+                "visual": "🤒"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l1e9",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «تب» ساخته شود.",
+              "payload": {
+                "picture": "🤒",
+                "letters": [
+                  "ت",
+                  "ب"
+                ]
+              },
+              "answer": "تب",
+              "distractors": [
+                "ب"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a6l1e10",
+              "type": "intro",
+              "prompt": "اتوبوس",
+              "audio_script": "الف، تِ، واو، بِ، واو، سین: «اتوبوس». اتوبوس شهری.",
+              "payload": {
+                "display": "اتوبوس",
+                "visual": "🚌"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l1e11",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «اتوبوس» را بسازید.",
+              "payload": {
+                "picture": "🚌",
+                "letters": [
+                  "ا",
+                  "ت",
+                  "و",
+                  "ب",
+                  "و",
+                  "س"
+                ]
+              },
+              "answer": "اتوبوس",
+              "distractors": [
+                "ب",
+                "ر"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a6l1e12",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "دست",
+                    "✋"
+                  ],
+                  [
+                    "تب",
+                    "🤒"
+                  ],
+                  [
+                    "اتوبوس",
+                    "🚌"
+                  ],
+                  [
+                    "شیر",
+                    "🥛"
+                  ]
+                ]
+              },
+              "answer": "دست=✋|تب=🤒|اتوبوس=🚌|شیر=🥛",
+              "distractors": [],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            }
+          ]
+        },
+        {
+          "id": "a6l2",
+          "title": "ک",
+          "exercises": [
+            {
+              "id": "a6l2e1",
+              "type": "intro",
+              "prompt": "ک",
+              "audio_script": "این حرف «ک» است؛ اسمش «کاف». یک خط بلند کج در بالا دارد و یک کاسه در پایین. صدایش مثل اول «کتاب» و «کلید» است.",
+              "payload": {
+                "display": "ک",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l2e2",
+              "type": "trace_letter",
+              "prompt": "ک",
+              "audio_script": "حالا با انگشت، «کاف» را روی خط‌ها بکشید. اول کاسه را بکشید، بعد خط کج بالایش را.",
+              "payload": {
+                "letter": "ک",
+                "forms": [
+                  "کـ",
+                  "ـکـ",
+                  "ـک",
+                  "ک"
+                ]
+              },
+              "answer": "ک",
+              "distractors": [],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a6l2e3",
+              "type": "intro",
+              "prompt": "کـ  ـکـ  ـک  ک",
+              "audio_script": "اول و وسط کلمه، «ک» این‌طور کوتاه می‌شود: «کـ».",
+              "payload": {
+                "display": "کـ  ـکـ  ـک  ک",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l2e4",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«کاف» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ک",
+              "distractors": [
+                "گ",
+                "س"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a6l2e5",
+              "type": "tap_picture",
+              "prompt": "ک",
+              "audio_script": "کدام کلمه با «ک» شروع می‌شود؟ آب، کتاب یا نان؟",
+              "payload": {
+                "display": "ک"
+              },
+              "answer": "📖",
+              "distractors": [
+                "💧",
+                "🍞"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "a6l2e6",
+              "type": "intro",
+              "prompt": "کتاب",
+              "audio_script": "کاف، تِ، الف، بِ: «کتاب». کتابی که به‌زودی خودتان می‌خوانید!",
+              "payload": {
+                "display": "کتاب",
+                "visual": "📖"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l2e7",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «کتاب» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "📖",
+                "letters": [
+                  "ک",
+                  "ت",
+                  "ا",
+                  "ب"
+                ]
+              },
+              "answer": "کتاب",
+              "distractors": [
+                "ب",
+                "ن"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a6l2e8",
+              "type": "intro",
+              "prompt": "کباب",
+              "audio_script": "کاف، بِ، الف، بِ: «کباب». کباب داغ.",
+              "payload": {
+                "display": "کباب",
+                "visual": "🍢"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l2e9",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «کباب» ساخته شود.",
+              "payload": {
+                "picture": "🍢",
+                "letters": [
+                  "ک",
+                  "ب",
+                  "ا",
+                  "ب"
+                ]
+              },
+              "answer": "کباب",
+              "distractors": [
+                "ت"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a6l2e10",
+              "type": "intro",
+              "prompt": "اسکناس",
+              "audio_script": "الف، سین، کاف، نون، الف، سین: «اسکناس». همان اسکناسی که در درس پول دیدیم.",
+              "payload": {
+                "display": "اسکناس",
+                "visual": "💵"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l2e11",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «اسکناس» را بسازید.",
+              "payload": {
+                "picture": "💵",
+                "letters": [
+                  "ا",
+                  "س",
+                  "ک",
+                  "ن",
+                  "ا",
+                  "س"
+                ]
+              },
+              "answer": "اسکناس",
+              "distractors": [
+                "ش",
+                "ک"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a6l2e12",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "کتاب",
+                    "📖"
+                  ],
+                  [
+                    "کباب",
+                    "🍢"
+                  ],
+                  [
+                    "اسکناس",
+                    "💵"
+                  ],
+                  [
+                    "دست",
+                    "✋"
+                  ]
+                ]
+              },
+              "answer": "کتاب=📖|کباب=🍢|اسکناس=💵|دست=✋",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            }
+          ]
+        },
+        {
+          "id": "a6l3",
+          "title": "ل",
+          "exercises": [
+            {
+              "id": "a6l3e1",
+              "type": "intro",
+              "prompt": "ل",
+              "audio_script": "این حرف «ل» است؛ اسمش «لام». مثل یک الف بلند است که پایینش یک کاسه دارد. صدایش مثل اول «لب» و «لیمو» است.",
+              "payload": {
+                "display": "ل",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l3e2",
+              "type": "trace_letter",
+              "prompt": "ل",
+              "audio_script": "حالا با انگشت، «لام» را روی خط‌ها بکشید. از بالا شروع کنید، پایین بیایید و کاسه را بکشید.",
+              "payload": {
+                "letter": "ل",
+                "forms": [
+                  "لـ",
+                  "ـلـ",
+                  "ـل",
+                  "ل"
+                ]
+              },
+              "answer": "ل",
+              "distractors": [],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
+            },
+            {
+              "id": "a6l3e3",
+              "type": "intro",
+              "prompt": "لـ  ـلـ  ـل  ل",
+              "audio_script": "اول و وسط کلمه، «ل» کاسه‌اش را از دست می‌دهد و فقط خط بلندش می‌ماند: «لـ».",
+              "payload": {
+                "display": "لـ  ـلـ  ـل  ل",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l3e4",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«ل» را پیدا کنید؛ همان که پایینش کاسه دارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ل",
+              "distractors": [
+                "ا",
+                "ک"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a6l3e5",
+              "type": "intro",
+              "prompt": "لب",
+              "audio_script": "لام، بِ: «لب». لب‌های خندان.",
+              "payload": {
+                "display": "لب",
+                "visual": "👄"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l3e6",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «لب» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "👄",
+                "letters": [
+                  "ل",
+                  "ب"
+                ]
+              },
+              "answer": "لب",
+              "distractors": [
+                "ت"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a6l3e7",
+              "type": "intro",
+              "prompt": "کلید",
+              "audio_script": "کاف، لام، یِ، دال: «کلید». کلید خانه.",
+              "payload": {
+                "display": "کلید",
+                "visual": "🔑"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l3e8",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «کلید» ساخته شود.",
+              "payload": {
+                "picture": "🔑",
+                "letters": [
+                  "ک",
+                  "ل",
+                  "ی",
+                  "د"
+                ]
+              },
+              "answer": "کلید",
+              "distractors": [
+                "ک",
+                "ن"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a6l3e9",
+              "type": "intro",
+              "prompt": "سلام",
+              "audio_script": "سین، لام، الف، میم: «سلام». سلام، روزتان بخیر!",
+              "payload": {
+                "display": "سلام",
+                "visual": "👋"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l3e10",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «سلام» را بسازید.",
+              "payload": {
+                "picture": "👋",
+                "letters": [
+                  "س",
+                  "ل",
+                  "ا",
+                  "م"
+                ]
+              },
+              "answer": "سلام",
+              "distractors": [
+                "ش"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a6l3e11",
+              "type": "tap_picture",
+              "prompt": "لیمو",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "لیمو"
+              },
+              "answer": "🍋",
+              "distractors": [
+                "🔑",
+                "👄"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "a6l3e12",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "لب",
+                    "👄"
+                  ],
+                  [
+                    "کلید",
+                    "🔑"
+                  ],
+                  [
+                    "سلام",
+                    "👋"
+                  ],
+                  [
+                    "لیمو",
+                    "🍋"
+                  ]
+                ]
+              },
+              "answer": "لب=👄|کلید=🔑|سلام=👋|لیمو=🍋",
+              "distractors": [],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            }
+          ]
+        },
+        {
+          "id": "a6l4",
+          "title": "گ",
+          "exercises": [
+            {
+              "id": "a6l4e1",
+              "type": "intro",
+              "prompt": "گ",
+              "audio_script": "این حرف «گ» است؛ اسمش «گاف». همان «ک» است، با یک خط کج اضافه در بالا. صدایش مثل اول «گل» و «گوش» است.",
+              "payload": {
+                "display": "گ",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l4e2",
+              "type": "trace_letter",
+              "prompt": "گ",
+              "audio_script": "حالا با انگشت، «گاف» را روی خط‌ها بکشید. مثل «ک» بکشید و در آخر، خط کج دوم را بالایش اضافه کنید.",
+              "payload": {
+                "letter": "گ",
+                "forms": [
+                  "گـ",
+                  "ـگـ",
+                  "ـگ",
+                  "گ"
+                ]
+              },
+              "answer": "گ",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a6l4e3",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«گ» را پیدا کنید؛ همان که دو خط کج دارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "گ",
+              "distractors": [
+                "ک",
+                "ل"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "خط‌های بالا را بشمارید: «گ» دو خط دارد و «ک» یکی. دوباره امتحان کنید."
+            },
+            {
+              "id": "a6l4e4",
+              "type": "intro",
+              "prompt": "گل",
+              "audio_script": "گاف، لام: «گل». یک دسته گل.",
+              "payload": {
+                "display": "گل",
+                "visual": "🌷"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l4e5",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «گل» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "🌷",
+                "letters": [
+                  "گ",
+                  "ل"
+                ]
+              },
+              "answer": "گل",
+              "distractors": [
+                "ک"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a6l4e6",
+              "type": "intro",
+              "prompt": "گوشی",
+              "audio_script": "گاف، واو، شین، یِ: «گوشی». گوشی همراه شما.",
+              "payload": {
+                "display": "گوشی",
+                "visual": "📱"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l4e7",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «گوشی» ساخته شود.",
+              "payload": {
+                "picture": "📱",
+                "letters": [
+                  "گ",
+                  "و",
+                  "ش",
+                  "ی"
+                ]
+              },
+              "answer": "گوشی",
+              "distractors": [
+                "ک",
+                "س"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a6l4e8",
+              "type": "intro",
+              "prompt": "انگور",
+              "audio_script": "الف، نون، گاف، واو، رِ: «انگور». یک خوشه انگور.",
+              "payload": {
+                "display": "انگور",
+                "visual": "🍇"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a6l4e9",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «انگور» را بسازید.",
+              "payload": {
+                "picture": "🍇",
+                "letters": [
+                  "ا",
+                  "ن",
+                  "گ",
+                  "و",
+                  "ر"
+                ]
+              },
+              "answer": "انگور",
+              "distractors": [
+                "ک",
+                "د"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a6l4e10",
+              "type": "tap_picture",
+              "prompt": "سگ",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "سگ"
+              },
+              "answer": "🐕",
+              "distractors": [
+                "🌷",
+                "🍇"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "a6l4e11",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "گل",
+                    "🌷"
+                  ],
+                  [
+                    "گوشی",
+                    "📱"
+                  ],
+                  [
+                    "انگور",
+                    "🍇"
+                  ],
+                  [
+                    "سگ",
+                    "🐕"
+                  ]
+                ]
+              },
+              "answer": "گل=🌷|گوشی=📱|انگور=🍇|سگ=🐕",
+              "distractors": [],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            },
+            {
+              "id": "a6l4e12",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "کلمهٔ «گوش» را پیدا کنید؛ کوتاه‌تر از «گوشی».",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "گوش",
+              "distractors": [
+                "گوشی",
+                "گل"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a7",
+      "title": "ز، ه، ف، خ، ق، چ، ج و پ",
+      "emoji": "☕",
+      "goal": "یاد گرفتن هشت حرف پرکاربرد دیگر؛ خواندن: موز، ماه، کیف، خانه، خیار، قاشق، قوری، بشقاب، چای، چتر، جوراب، تاج، پول، پنیر، پرتقال",
+      "lessons": [
+        {
+          "id": "a7l1",
+          "title": "ز و ه",
+          "exercises": [
+            {
+              "id": "a7l1e1",
+              "type": "intro",
+              "prompt": "ز",
+              "audio_script": "این حرف «ز» است. همان «ر» است، با یک نقطه بالایش. صدایش مثل اول «زرد» و آخر «موز» است. «ز» هم به حرف بعدی نمی‌چسبد.",
+              "payload": {
+                "display": "ز",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l1e2",
+              "type": "trace_letter",
+              "prompt": "ز",
+              "audio_script": "حالا با انگشت، «زِ» را روی خط‌ها بکشید. مثل «ر» بکشید و یک نقطه بالایش بگذارید.",
+              "payload": {
+                "letter": "ز",
+                "forms": [
+                  "ز",
+                  "ـز",
+                  "ـز",
+                  "ز"
+                ]
+              },
+              "answer": "ز",
+              "distractors": [],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
+            },
+            {
+              "id": "a7l1e3",
+              "type": "intro",
+              "prompt": "موز",
+              "audio_script": "میم، واو، زِ: «موز». یک موز رسیده.",
+              "payload": {
+                "display": "موز",
+                "visual": "🍌"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l1e4",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «موز» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "🍌",
+                "letters": [
+                  "م",
+                  "و",
+                  "ز"
+                ]
+              },
+              "answer": "موز",
+              "distractors": [
+                "ر"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a7l1e5",
+              "type": "intro",
+              "prompt": "ه",
+              "audio_script": "این حرف «ه» است. صدایش مثل آخر «ماه» و اول «هوا» است. «ه» در جاهای مختلف کلمه شکل‌های خیلی متفاوتی دارد؛ در تمرین بعد هر چهار شکلش را می‌بینید.",
+              "payload": {
+                "display": "ه",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l1e6",
+              "type": "trace_letter",
+              "prompt": "ه",
+              "audio_script": "حالا با انگشت، «هِ» را روی خط‌ها بکشید. یک حلقهٔ گرد بکشید.",
+              "payload": {
+                "letter": "ه",
+                "forms": [
+                  "هـ",
+                  "ـهـ",
+                  "ـه",
+                  "ه"
+                ]
+              },
+              "answer": "ه",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a7l1e7",
+              "type": "intro",
+              "prompt": "هـ  ـهـ  ـه  ه",
+              "audio_script": "این چهار شکل «ه» است: اول کلمه «هـ»، وسط کلمه «ـهـ»، آخر کلمه «ـه» و تنها «ه». شکل‌ها فرق دارند، اما صدا یکی است.",
+              "payload": {
+                "display": "هـ  ـهـ  ـه  ه",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l1e8",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«هِ» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ه",
+              "distractors": [
+                "م",
+                "و"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a7l1e9",
+              "type": "intro",
+              "prompt": "ماه",
+              "audio_script": "میم، الف، هِ: «ماه». ماه شب چهارده.",
+              "payload": {
+                "display": "ماه",
+                "visual": "🌕"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l1e10",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «ماه» ساخته شود.",
+              "payload": {
+                "picture": "🌕",
+                "letters": [
+                  "م",
+                  "ا",
+                  "ه"
+                ]
+              },
+              "answer": "ماه",
+              "distractors": [
+                "م"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a7l1e11",
+              "type": "tap_picture",
+              "prompt": "کوه",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "کوه"
+              },
+              "answer": "⛰️",
+              "distractors": [
+                "🌕",
+                "🍌"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره امتحان کنید."
+            },
+            {
+              "id": "a7l1e12",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "موز",
+                    "🍌"
+                  ],
+                  [
+                    "ماه",
+                    "🌕"
+                  ],
+                  [
+                    "کوه",
+                    "⛰️"
+                  ]
+                ]
+              },
+              "answer": "موز=🍌|ماه=🌕|کوه=⛰️",
+              "distractors": [],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            }
+          ]
+        },
+        {
+          "id": "a7l2",
+          "title": "ف و خ",
+          "exercises": [
+            {
+              "id": "a7l2e1",
+              "type": "intro",
+              "prompt": "ف",
+              "audio_script": "این حرف «ف» است. سرش یک حلقهٔ کوچک است با یک نقطه بالایش. صدایش مثل اول «فرش» و آخر «کیف» است.",
+              "payload": {
+                "display": "ف",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l2e2",
+              "type": "trace_letter",
+              "prompt": "ف",
+              "audio_script": "حالا با انگشت، «فِ» را روی خط‌ها بکشید. حلقه را بکشید، دنباله‌اش را ادامه بدهید و نقطه را بگذارید.",
+              "payload": {
+                "letter": "ف",
+                "forms": [
+                  "فـ",
+                  "ـفـ",
+                  "ـف",
+                  "ف"
+                ]
+              },
+              "answer": "ف",
+              "distractors": [],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
+            },
+            {
+              "id": "a7l2e3",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«ف» را پیدا کنید؛ همان که یک نقطه دارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ف",
+              "distractors": [
+                "ق",
+                "و"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a7l2e4",
+              "type": "intro",
+              "prompt": "کیف",
+              "audio_script": "کاف، یِ، فِ: «کیف». کیف دستی.",
+              "payload": {
+                "display": "کیف",
+                "visual": "👜"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l2e5",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «کیف» را بسازید.",
+              "payload": {
+                "picture": "👜",
+                "letters": [
+                  "ک",
+                  "ی",
+                  "ف"
+                ]
+              },
+              "answer": "کیف",
+              "distractors": [
+                "ک"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a7l2e6",
+              "type": "intro",
+              "prompt": "خ",
+              "audio_script": "این حرف «خ» است. شکلش مثل یک کلاه کج با یک کاسهٔ بزرگ است، و یک نقطه بالایش. صدایش مثل اول «خانه» و «خیار» است.",
+              "payload": {
+                "display": "خ",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l2e7",
+              "type": "trace_letter",
+              "prompt": "خ",
+              "audio_script": "حالا با انگشت، «خِ» را روی خط‌ها بکشید. اول خط بالا را بکشید، بعد کاسه را و در آخر نقطه را.",
+              "payload": {
+                "letter": "خ",
+                "forms": [
+                  "خـ",
+                  "ـخـ",
+                  "ـخ",
+                  "خ"
+                ]
+              },
+              "answer": "خ",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a7l2e8",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«خ» را پیدا کنید؛ همان که نقطه‌اش بالاست.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "خ",
+              "distractors": [
+                "ج",
+                "ح"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "به جای نقطه دقت کنید: نقطهٔ «خ» بالاست. دوباره امتحان کنید."
+            },
+            {
+              "id": "a7l2e9",
+              "type": "intro",
+              "prompt": "خانه",
+              "audio_script": "خِ، الف، نون، هِ: «خانه». خانهٔ گرم و دلباز.",
+              "payload": {
+                "display": "خانه",
+                "visual": "🏠"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l2e10",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «خانه» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "🏠",
+                "letters": [
+                  "خ",
+                  "ا",
+                  "ن",
+                  "ه"
+                ]
+              },
+              "answer": "خانه",
+              "distractors": [
+                "ه"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a7l2e11",
+              "type": "tap_picture",
+              "prompt": "خیار",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "خیار"
+              },
+              "answer": "🥒",
+              "distractors": [
+                "🏠",
+                "👜"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "a7l2e12",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "کیف",
+                    "👜"
+                  ],
+                  [
+                    "خانه",
+                    "🏠"
+                  ],
+                  [
+                    "خیار",
+                    "🥒"
+                  ],
+                  [
+                    "برف",
+                    "❄️"
+                  ]
+                ]
+              },
+              "answer": "کیف=👜|خانه=🏠|خیار=🥒|برف=❄️",
+              "distractors": [],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            }
+          ]
+        },
+        {
+          "id": "a7l3",
+          "title": "ق",
+          "exercises": [
+            {
+              "id": "a7l3e1",
+              "type": "intro",
+              "prompt": "ق",
+              "audio_script": "این حرف «ق» است؛ اسمش «قاف». سرش مثل «ف» است، اما دو نقطه دارد و کاسهٔ پایینش گردتر است. صدایش مثل اول «قند» و «قوری» است.",
+              "payload": {
+                "display": "ق",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l3e2",
+              "type": "trace_letter",
+              "prompt": "ق",
+              "audio_script": "حالا با انگشت، «قاف» را روی خط‌ها بکشید. حلقه را بکشید، کاسهٔ گرد را پایین بیاورید و دو نقطه را بگذارید.",
+              "payload": {
+                "letter": "ق",
+                "forms": [
+                  "قـ",
+                  "ـقـ",
+                  "ـق",
+                  "ق"
+                ]
+              },
+              "answer": "ق",
+              "distractors": [],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
+            },
+            {
+              "id": "a7l3e3",
+              "type": "intro",
+              "prompt": "قـ  ـقـ  ـق  ق",
+              "audio_script": "اول و وسط کلمه، «ق» کوتاه می‌شود: «قـ». هنوز هم دو نقطه دارد.",
+              "payload": {
+                "display": "قـ  ـقـ  ـق  ق",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l3e4",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«ق» را پیدا کنید؛ همان که دو نقطه دارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ق",
+              "distractors": [
+                "ف",
+                "غ"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "a7l3e5",
+              "type": "intro",
+              "prompt": "قاشق",
+              "audio_script": "قاف، الف، شین، قاف: «قاشق». قاشق چای‌خوری.",
+              "payload": {
+                "display": "قاشق",
+                "visual": "🥄"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l3e6",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «قاشق» ساخته شود.",
+              "payload": {
+                "picture": "🥄",
+                "letters": [
+                  "ق",
+                  "ا",
+                  "ش",
+                  "ق"
+                ]
+              },
+              "answer": "قاشق",
+              "distractors": [
+                "ف",
+                "س"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a7l3e7",
+              "type": "intro",
+              "prompt": "قوری",
+              "audio_script": "قاف، واو، رِ، یِ: «قوری». قوری چای روی سماور.",
+              "payload": {
+                "display": "قوری",
+                "visual": "🫖"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l3e8",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «قوری» را بسازید.",
+              "payload": {
+                "picture": "🫖",
+                "letters": [
+                  "ق",
+                  "و",
+                  "ر",
+                  "ی"
+                ]
+              },
+              "answer": "قوری",
+              "distractors": [
+                "ف"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a7l3e9",
+              "type": "intro",
+              "prompt": "بشقاب",
+              "audio_script": "بِ، شین، قاف، الف، بِ: «بشقاب». بشقاب غذا.",
+              "payload": {
+                "display": "بشقاب",
+                "visual": "🍽️"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l3e10",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «بشقاب» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "🍽️",
+                "letters": [
+                  "ب",
+                  "ش",
+                  "ق",
+                  "ا",
+                  "ب"
+                ]
+              },
+              "answer": "بشقاب",
+              "distractors": [
+                "س",
+                "ف"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a7l3e11",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "قاشق",
+                    "🥄"
+                  ],
+                  [
+                    "قوری",
+                    "🫖"
+                  ],
+                  [
+                    "بشقاب",
+                    "🍽️"
+                  ],
+                  [
+                    "کیف",
+                    "👜"
+                  ]
+                ]
+              },
+              "answer": "قاشق=🥄|قوری=🫖|بشقاب=🍽️|کیف=👜",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            }
+          ]
+        },
+        {
+          "id": "a7l4",
+          "title": "چ و ج",
+          "exercises": [
+            {
+              "id": "a7l4e1",
+              "type": "intro",
+              "prompt": "چ",
+              "audio_script": "این حرف «چ» است. شکلش مثل «خ» است، اما سه نقطه زیرش دارد. صدایش مثل اول «چای» و «چتر» است.",
+              "payload": {
+                "display": "چ",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l4e2",
+              "type": "trace_letter",
+              "prompt": "چ",
+              "audio_script": "حالا با انگشت، «چِ» را روی خط‌ها بکشید. خط بالا و کاسه را بکشید، بعد سه نقطه را داخل کاسه بگذارید.",
+              "payload": {
+                "letter": "چ",
+                "forms": [
+                  "چـ",
+                  "ـچـ",
+                  "ـچ",
+                  "چ"
+                ]
+              },
+              "answer": "چ",
+              "distractors": [],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a7l4e3",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«چ» را پیدا کنید؛ همان که سه نقطه دارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "چ",
+              "distractors": [
+                "ج",
+                "خ"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a7l4e4",
+              "type": "intro",
+              "prompt": "چای",
+              "audio_script": "چِ، الف، یِ: «چای». یک استکان چای داغ!",
+              "payload": {
+                "display": "چای",
+                "visual": "☕"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l4e5",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «چای» ساخته شود.",
+              "payload": {
+                "picture": "☕",
+                "letters": [
+                  "چ",
+                  "ا",
+                  "ی"
+                ]
+              },
+              "answer": "چای",
+              "distractors": [
+                "ج"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a7l4e6",
+              "type": "intro",
+              "prompt": "ج",
+              "audio_script": "این حرف «ج» است؛ اسمش «جیم». شکلش مثل «چ» است، اما فقط یک نقطه دارد. صدایش مثل اول «جوراب» و آخر «تاج» است.",
+              "payload": {
+                "display": "ج",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l4e7",
+              "type": "trace_letter",
+              "prompt": "ج",
+              "audio_script": "حالا با انگشت، «جیم» را روی خط‌ها بکشید. خط بالا و کاسه را بکشید و یک نقطه را داخل کاسه بگذارید.",
+              "payload": {
+                "letter": "ج",
+                "forms": [
+                  "جـ",
+                  "ـجـ",
+                  "ـج",
+                  "ج"
+                ]
+              },
+              "answer": "ج",
+              "distractors": [],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
+            },
+            {
+              "id": "a7l4e8",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«ج» را پیدا کنید؛ همان که یک نقطه زیرش دارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ج",
+              "distractors": [
+                "چ",
+                "خ"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "نقطه‌ها را بشمارید: «ج» یک نقطه دارد و «چ» سه تا. دوباره امتحان کنید."
+            },
+            {
+              "id": "a7l4e9",
+              "type": "intro",
+              "prompt": "جوراب",
+              "audio_script": "جیم، واو، رِ، الف، بِ: «جوراب». یک جفت جوراب گرم.",
+              "payload": {
+                "display": "جوراب",
+                "visual": "🧦"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l4e10",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «جوراب» را بسازید.",
+              "payload": {
+                "picture": "🧦",
+                "letters": [
+                  "ج",
+                  "و",
+                  "ر",
+                  "ا",
+                  "ب"
+                ]
+              },
+              "answer": "جوراب",
+              "distractors": [
+                "چ"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a7l4e11",
+              "type": "tap_picture",
+              "prompt": "چتر",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "چتر"
+              },
+              "answer": "☂️",
+              "distractors": [
+                "☕",
+                "🧦"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "a7l4e12",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "چای",
+                    "☕"
+                  ],
+                  [
+                    "جوراب",
+                    "🧦"
+                  ],
+                  [
+                    "چتر",
+                    "☂️"
+                  ],
+                  [
+                    "تاج",
+                    "👑"
+                  ]
+                ]
+              },
+              "answer": "چای=☕|جوراب=🧦|چتر=☂️|تاج=👑",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            }
+          ]
+        },
+        {
+          "id": "a7l5",
+          "title": "پ",
+          "exercises": [
+            {
+              "id": "a7l5e1",
+              "type": "intro",
+              "prompt": "پ",
+              "audio_script": "این حرف «پ» است. شکلش مثل «ب» است، اما سه نقطه زیرش دارد. صدایش مثل اول «پا» و «پول» است.",
+              "payload": {
+                "display": "پ",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l5e2",
+              "type": "trace_letter",
+              "prompt": "پ",
+              "audio_script": "حالا با انگشت، «پِ» را روی خط‌ها بکشید. کاسه را بکشید و سه نقطه را زیرش بگذارید.",
+              "payload": {
+                "letter": "پ",
+                "forms": [
+                  "پـ",
+                  "ـپـ",
+                  "ـپ",
+                  "پ"
+                ]
+              },
+              "answer": "پ",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a7l5e3",
+              "type": "intro",
+              "prompt": "پـ  ـپـ  ـپ  پ",
+              "audio_script": "«پ» هم مثل «ب» اول و وسط کلمه کوتاه می‌شود: «پـ».",
+              "payload": {
+                "display": "پـ  ـپـ  ـپ  پ",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l5e4",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«پ» را پیدا کنید؛ همان که سه نقطه زیرش دارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "پ",
+              "distractors": [
+                "ب",
+                "ت"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "نقطه‌ها را بشمارید: «پ» سه نقطه زیرش دارد. دوباره امتحان کنید."
+            },
+            {
+              "id": "a7l5e5",
+              "type": "tap_picture",
+              "prompt": "پ",
+              "audio_script": "کدام کلمه با «پ» شروع می‌شود؟ دست، گوش یا پا؟",
+              "payload": {
+                "display": "پ"
+              },
+              "answer": "🦶",
+              "distractors": [
+                "✋",
+                "👂"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "a7l5e6",
+              "type": "intro",
+              "prompt": "پول",
+              "audio_script": "پِ، واو، لام: «پول». پول خرید.",
+              "payload": {
+                "display": "پول",
+                "visual": "💵"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l5e7",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «پول» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "💵",
+                "letters": [
+                  "پ",
+                  "و",
+                  "ل"
+                ]
+              },
+              "answer": "پول",
+              "distractors": [
+                "ب"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a7l5e8",
+              "type": "intro",
+              "prompt": "پنیر",
+              "audio_script": "پِ، نون، یِ، رِ: «پنیر». نان و پنیر صبحانه.",
+              "payload": {
+                "display": "پنیر",
+                "visual": "🧀"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l5e9",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «پنیر» ساخته شود.",
+              "payload": {
+                "picture": "🧀",
+                "letters": [
+                  "پ",
+                  "ن",
+                  "ی",
+                  "ر"
+                ]
+              },
+              "answer": "پنیر",
+              "distractors": [
+                "ب",
+                "ت"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a7l5e10",
+              "type": "intro",
+              "prompt": "پرتقال",
+              "audio_script": "پِ، رِ، تِ، قاف، الف، لام: «پرتقال». پرتقال آب‌دار.",
+              "payload": {
+                "display": "پرتقال",
+                "visual": "🍊"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a7l5e11",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «پرتقال» را بسازید.",
+              "payload": {
+                "picture": "🍊",
+                "letters": [
+                  "پ",
+                  "ر",
+                  "ت",
+                  "ق",
+                  "ا",
+                  "ل"
+                ]
+              },
+              "answer": "پرتقال",
+              "distractors": [
+                "ب",
+                "ف"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a7l5e12",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "پول",
+                    "💵"
+                  ],
+                  [
+                    "پنیر",
+                    "🧀"
+                  ],
+                  [
+                    "پرتقال",
+                    "🍊"
+                  ],
+                  [
+                    "توپ",
+                    "⚽"
+                  ]
+                ]
+              },
+              "answer": "پول=💵|پنیر=🧀|پرتقال=🍊|توپ=⚽",
+              "distractors": [],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "a8",
+      "title": "حرف‌های هم‌صدا و مرور الفبا",
+      "emoji": "📖",
+      "goal": "آشنایی با حرف‌های هم‌صدا (ت/ط، س/ص/ث، ز/ذ/ض/ظ، ه/ح، ق/غ)، حرف‌های «ع» و «ژ»، و پایان الفبا",
+      "lessons": [
+        {
+          "id": "a8l1",
+          "title": "ط، هم‌صدای ت",
+          "exercises": [
+            {
+              "id": "a8l1e1",
+              "type": "intro",
+              "prompt": "ط",
+              "audio_script": "این حرف «ط» است؛ اسمش «طا». درست مثل «ت» خوانده می‌شود. در فارسی بعضی صداها دو یا چند حرف دارند؛ در بعضی کلمه‌ها «ت» می‌نویسیم و در بعضی «ط». هر کلمه را باید همان‌طور که هست یاد بگیریم.",
+              "payload": {
+                "display": "ط",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l1e2",
+              "type": "trace_letter",
+              "prompt": "ط",
+              "audio_script": "حالا با انگشت، «طا» را روی خط‌ها بکشید. اول بیضی پایین را بکشید، بعد خط بلند را از بالا رویش بیاورید.",
+              "payload": {
+                "letter": "ط",
+                "forms": [
+                  "طـ",
+                  "ـطـ",
+                  "ـط",
+                  "ط"
+                ]
+              },
+              "answer": "ط",
+              "distractors": [],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
+            },
+            {
+              "id": "a8l1e3",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«ط» را پیدا کنید؛ بدون نقطه.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ط",
+              "distractors": [
+                "ظ",
+                "ت"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a8l1e4",
+              "type": "intro",
+              "prompt": "طوطی",
+              "audio_script": "طا، واو، طا، یِ: «طوطی». طوطی سخنگو.",
+              "payload": {
+                "display": "طوطی",
+                "visual": "🦜"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l1e5",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «طوطی» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "🦜",
+                "letters": [
+                  "ط",
+                  "و",
+                  "ط",
+                  "ی"
+                ]
+              },
+              "answer": "طوطی",
+              "distractors": [
+                "ت",
+                "و"
+              ],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a8l1e6",
+              "type": "intro",
+              "prompt": "بطری",
+              "audio_script": "بِ، طا، رِ، یِ: «بطری». یک بطری آب.",
+              "payload": {
+                "display": "بطری",
+                "visual": "🧴"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l1e7",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «بطری» ساخته شود.",
+              "payload": {
+                "picture": "🧴",
+                "letters": [
+                  "ب",
+                  "ط",
+                  "ر",
+                  "ی"
+                ]
+              },
+              "answer": "بطری",
+              "distractors": [
+                "ت"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a8l1e8",
+              "type": "tap_picture",
+              "prompt": "طوطی",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "طوطی"
+              },
+              "answer": "🦜",
+              "distractors": [
+                "🧴",
+                "🚌"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "دوباره امتحان کنید."
+            },
+            {
+              "id": "a8l1e9",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "کلمهٔ «طوطی» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "طوطی",
+              "distractors": [
+                "توت",
+                "بطری"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "a8l1e10",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "طوطی",
+                    "🦜"
+                  ],
+                  [
+                    "بطری",
+                    "🧴"
+                  ],
+                  [
+                    "دست",
+                    "✋"
+                  ],
+                  [
+                    "اتوبوس",
+                    "🚌"
+                  ]
+                ]
+              },
+              "answer": "طوطی=🦜|بطری=🧴|دست=✋|اتوبوس=🚌",
+              "distractors": [],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            }
+          ]
+        },
+        {
+          "id": "a8l2",
+          "title": "ص و ث، هم‌صدای س",
+          "exercises": [
+            {
+              "id": "a8l2e1",
+              "type": "intro",
+              "prompt": "ص",
+              "audio_script": "این حرف «ص» است؛ اسمش «صاد». مثل «س» خوانده می‌شود. سرش یک حلقهٔ کشیده است و کاسه‌ای مثل «س» دارد. مثل اول «صابون» و «صندلی».",
+              "payload": {
+                "display": "ص",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l2e2",
+              "type": "trace_letter",
+              "prompt": "ص",
+              "audio_script": "حالا با انگشت، «صاد» را روی خط‌ها بکشید. حلقهٔ کشیده را بکشید، بعد کاسه را.",
+              "payload": {
+                "letter": "ص",
+                "forms": [
+                  "صـ",
+                  "ـصـ",
+                  "ـص",
+                  "ص"
+                ]
+              },
+              "answer": "ص",
+              "distractors": [],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a8l2e3",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«ص» را پیدا کنید؛ همان که حلقه دارد و نقطه ندارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ص",
+              "distractors": [
+                "ض",
+                "س"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a8l2e4",
+              "type": "intro",
+              "prompt": "صابون",
+              "audio_script": "صاد، الف، بِ، واو، نون: «صابون». صابون دست‌شویی.",
+              "payload": {
+                "display": "صابون",
+                "visual": "🧼"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l2e5",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «صابون» را بسازید.",
+              "payload": {
+                "picture": "🧼",
+                "letters": [
+                  "ص",
+                  "ا",
+                  "ب",
+                  "و",
+                  "ن"
+                ]
+              },
+              "answer": "صابون",
+              "distractors": [
+                "س",
+                "ب"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a8l2e6",
+              "type": "intro",
+              "prompt": "صندلی",
+              "audio_script": "صاد، نون، دال، لام، یِ: «صندلی». صندلی کنار میز.",
+              "payload": {
+                "display": "صندلی",
+                "visual": "🪑"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l2e7",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «صندلی» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "🪑",
+                "letters": [
+                  "ص",
+                  "ن",
+                  "د",
+                  "ل",
+                  "ی"
+                ]
+              },
+              "answer": "صندلی",
+              "distractors": [
+                "س"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a8l2e8",
+              "type": "intro",
+              "prompt": "ث",
+              "audio_script": "این حرف «ث» است. شکلش مثل «ت» است، اما سه نقطه بالایش دارد. این هم مثل «س» خوانده می‌شود.",
+              "payload": {
+                "display": "ث",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l2e9",
+              "type": "trace_letter",
+              "prompt": "ث",
+              "audio_script": "حالا با انگشت، «ثِ» را روی خط‌ها بکشید. کاسه را بکشید و سه نقطه را بالایش بگذارید.",
+              "payload": {
+                "letter": "ث",
+                "forms": [
+                  "ثـ",
+                  "ـثـ",
+                  "ـث",
+                  "ث"
+                ]
+              },
+              "answer": "ث",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
+            },
+            {
+              "id": "a8l2e10",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«ث» را پیدا کنید؛ همان که سه نقطه دارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ث",
+              "distractors": [
+                "ت",
+                "ب"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "نقطه‌ها را بشمارید: «ث» سه نقطه دارد. دوباره امتحان کنید."
+            },
+            {
+              "id": "a8l2e11",
+              "type": "intro",
+              "prompt": "مثلث",
+              "audio_script": "میم، ثِ، لام، ثِ: «مثلث». یک شکل سه‌گوش.",
+              "payload": {
+                "display": "مثلث",
+                "visual": "🔺"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l2e12",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «مثلث» ساخته شود.",
+              "payload": {
+                "picture": "🔺",
+                "letters": [
+                  "م",
+                  "ث",
+                  "ل",
+                  "ث"
+                ]
+              },
+              "answer": "مثلث",
+              "distractors": [
+                "ت",
+                "س"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            }
+          ]
+        },
+        {
+          "id": "a8l3",
+          "title": "ذ، ض و ظ، هم‌صدای ز",
+          "exercises": [
+            {
+              "id": "a8l3e1",
+              "type": "intro",
+              "prompt": "ذ",
+              "audio_script": "این حرف «ذ» است؛ اسمش «ذال». همان «د» است، با یک نقطه بالایش، و مثل «ز» خوانده می‌شود. مثل اول «ذرت».",
+              "payload": {
+                "display": "ذ",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l3e2",
+              "type": "trace_letter",
+              "prompt": "ذ",
+              "audio_script": "حالا با انگشت، «ذال» را روی خط‌ها بکشید. مثل «د» بکشید و یک نقطه بالایش بگذارید.",
+              "payload": {
+                "letter": "ذ",
+                "forms": [
+                  "ذ",
+                  "ـذ",
+                  "ـذ",
+                  "ذ"
+                ]
+              },
+              "answer": "ذ",
+              "distractors": [],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a8l3e3",
+              "type": "tap_picture",
+              "prompt": "ذرت",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "ذرت"
+              },
+              "answer": "🌽",
+              "distractors": [
+                "🍌",
+                "🥣"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "a8l3e4",
+              "type": "intro",
+              "prompt": "ض",
+              "audio_script": "این حرف «ض» است؛ اسمش «ضاد». همان «ص» است، با یک نقطه بالایش، و این هم مثل «ز» خوانده می‌شود.",
+              "payload": {
+                "display": "ض",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l3e5",
+              "type": "trace_letter",
+              "prompt": "ض",
+              "audio_script": "حالا با انگشت، «ضاد» را روی خط‌ها بکشید. مثل «ص» بکشید و یک نقطه بالایش بگذارید.",
+              "payload": {
+                "letter": "ض",
+                "forms": [
+                  "ضـ",
+                  "ـضـ",
+                  "ـض",
+                  "ض"
+                ]
+              },
+              "answer": "ض",
+              "distractors": [],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
+            },
+            {
+              "id": "a8l3e6",
+              "type": "tap_picture",
+              "prompt": "مریض",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "مریض"
+              },
+              "answer": "🤒",
+              "distractors": [
+                "🌽",
+                "🧼"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "نزدیک بود! دوباره نگاه کنید."
+            },
+            {
+              "id": "a8l3e7",
+              "type": "intro",
+              "prompt": "ظ",
+              "audio_script": "این حرف «ظ» است؛ اسمش «ظا». همان «ط» است، با یک نقطه، و این هم مثل «ز» خوانده می‌شود. مثل اول «ظرف».",
+              "payload": {
+                "display": "ظ",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l3e8",
+              "type": "trace_letter",
+              "prompt": "ظ",
+              "audio_script": "حالا با انگشت، «ظا» را روی خط‌ها بکشید. مثل «ط» بکشید و یک نقطه کنار خط بلندش بگذارید.",
+              "payload": {
+                "letter": "ظ",
+                "forms": [
+                  "ظـ",
+                  "ـظـ",
+                  "ـظ",
+                  "ظ"
+                ]
+              },
+              "answer": "ظ",
+              "distractors": [],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a8l3e9",
+              "type": "intro",
+              "prompt": "ظرف",
+              "audio_script": "ظا، رِ، فِ: «ظرف». ظرف میوه.",
+              "payload": {
+                "display": "ظرف",
+                "visual": "🥣"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l3e10",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «ظرف» را بسازید.",
+              "payload": {
+                "picture": "🥣",
+                "letters": [
+                  "ظ",
+                  "ر",
+                  "ف"
+                ]
+              },
+              "answer": "ظرف",
+              "distractors": [
+                "ط",
+                "ز"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a8l3e11",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "ذرت",
+                    "🌽"
+                  ],
+                  [
+                    "مریض",
+                    "🤒"
+                  ],
+                  [
+                    "ظرف",
+                    "🥣"
+                  ],
+                  [
+                    "موز",
+                    "🍌"
+                  ]
+                ]
+              },
+              "answer": "ذرت=🌽|مریض=🤒|ظرف=🥣|موز=🍌",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ با حوصله دوباره وصل کنید."
+            }
+          ]
+        },
+        {
+          "id": "a8l4",
+          "title": "ح و غ",
+          "exercises": [
+            {
+              "id": "a8l4e1",
+              "type": "intro",
+              "prompt": "ح",
+              "audio_script": "این حرف «ح» است. شکلش مثل «خ» و «ج» است، اما هیچ نقطه‌ای ندارد. مثل «ه» خوانده می‌شود. مثل اول «حمام» و آخر «صبح».",
+              "payload": {
+                "display": "ح",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l4e2",
+              "type": "trace_letter",
+              "prompt": "ح",
+              "audio_script": "حالا با انگشت، «حِ» را روی خط‌ها بکشید. خط بالا و کاسه را بکشید؛ نقطه لازم نیست.",
+              "payload": {
+                "letter": "ح",
+                "forms": [
+                  "حـ",
+                  "ـحـ",
+                  "ـح",
+                  "ح"
+                ]
+              },
+              "answer": "ح",
+              "distractors": [],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
+            },
+            {
+              "id": "a8l4e3",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«ح» را پیدا کنید؛ همان که نقطه ندارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ح",
+              "distractors": [
+                "ج",
+                "خ"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            },
+            {
+              "id": "a8l4e4",
+              "type": "intro",
+              "prompt": "حمام",
+              "audio_script": "حِ، میم، الف، میم: «حمام». یک حمام گرم.",
+              "payload": {
+                "display": "حمام",
+                "visual": "🛁"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l4e5",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «حمام» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "🛁",
+                "letters": [
+                  "ح",
+                  "م",
+                  "ا",
+                  "م"
+                ]
+              },
+              "answer": "حمام",
+              "distractors": [
+                "ه",
+                "ن"
+              ],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a8l4e6",
+              "type": "tap_picture",
+              "prompt": "صبح",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "صبح"
+              },
+              "answer": "🌅",
+              "distractors": [
+                "🛁",
+                "🌙"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "عجله نکنید؛ با حوصله دوباره امتحان کنید."
+            },
+            {
+              "id": "a8l4e7",
+              "type": "intro",
+              "prompt": "غ",
+              "audio_script": "این حرف «غ» است؛ اسمش «غین». سرش مثل یک «ع» کوچک است با یک نقطه بالایش. مثل «ق» خوانده می‌شود. مثل آخر «مرغ» و «باغ».",
+              "payload": {
+                "display": "غ",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l4e8",
+              "type": "trace_letter",
+              "prompt": "غ",
+              "audio_script": "حالا با انگشت، «غین» را روی خط‌ها بکشید. سر کوچکش را بکشید، کاسه را پایین بیاورید و نقطه را بگذارید.",
+              "payload": {
+                "letter": "غ",
+                "forms": [
+                  "غـ",
+                  "ـغـ",
+                  "ـغ",
+                  "غ"
+                ]
+              },
+              "answer": "غ",
+              "distractors": [],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a8l4e9",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«غ» را پیدا کنید؛ همان که نقطه دارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "غ",
+              "distractors": [
+                "ع",
+                "ف"
+              ],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "یک بار دیگر گوش کنید و دوباره انتخاب کنید."
+            },
+            {
+              "id": "a8l4e10",
+              "type": "intro",
+              "prompt": "مرغ",
+              "audio_script": "میم، رِ، غین: «مرغ». مرغ و خروس.",
+              "payload": {
+                "display": "مرغ",
+                "visual": "🐔"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l4e11",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حرف‌ها را به ترتیب بچینید تا «مرغ» ساخته شود.",
+              "payload": {
+                "picture": "🐔",
+                "letters": [
+                  "م",
+                  "ر",
+                  "غ"
+                ]
+              },
+              "answer": "مرغ",
+              "distractors": [
+                "ق"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a8l4e12",
+              "type": "tap_picture",
+              "prompt": "باغ",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "باغ"
+              },
+              "answer": "🌳",
+              "distractors": [
+                "🐔",
+                "🛁"
+              ],
+              "feedback_correct": "بسیار خوب!",
+              "feedback_wrong": "دوباره امتحان کنید."
+            }
+          ]
+        },
+        {
+          "id": "a8l5",
+          "title": "ع، ژ و پایان الفبا",
+          "exercises": [
+            {
+              "id": "a8l5e1",
+              "type": "intro",
+              "prompt": "ع",
+              "audio_script": "این حرف «ع» است؛ اسمش «عین». همان «غ» است، بدون نقطه. صدایش مثل یک مکث کوتاه است، مثل اول «عسل» و آخر «شمع».",
+              "payload": {
+                "display": "ع",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l5e2",
+              "type": "trace_letter",
+              "prompt": "ع",
+              "audio_script": "حالا با انگشت، «عین» را روی خط‌ها بکشید. سر کوچکش را بکشید و کاسه را پایین بیاورید.",
+              "payload": {
+                "letter": "ع",
+                "forms": [
+                  "عـ",
+                  "ـعـ",
+                  "ـع",
+                  "ع"
+                ]
+              },
+              "answer": "ع",
+              "distractors": [],
+              "feedback_correct": "احسنت!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر روی خط‌ها بکشید."
+            },
+            {
+              "id": "a8l5e3",
+              "type": "intro",
+              "prompt": "عسل",
+              "audio_script": "عین، سین، لام: «عسل». عسل و نان، صبحانهٔ خوب.",
+              "payload": {
+                "display": "عسل",
+                "visual": "🍯"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "بسیار خوب، حالا امتحانش کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l5e4",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "با این حرف‌ها «عسل» را بسازید.",
+              "payload": {
+                "picture": "🍯",
+                "letters": [
+                  "ع",
+                  "س",
+                  "ل"
+                ]
+              },
+              "answer": "عسل",
+              "distractors": [
+                "غ",
+                "س"
+              ],
+              "feedback_correct": "خسته نباشید، کاملاً درست بود.",
+              "feedback_wrong": "ترتیب حرف‌ها را دوباره نگاه کنید؛ از راست شروع کنید."
+            },
+            {
+              "id": "a8l5e5",
+              "type": "tap_picture",
+              "prompt": "ساعت",
+              "audio_script": "این کلمه را بخوانید. کدام تصویر است؟",
+              "payload": {
+                "display": "ساعت"
+              },
+              "answer": "⏰",
+              "distractors": [
+                "🍯",
+                "🧥"
+              ],
+              "feedback_correct": "دقیقاً همین است!",
+              "feedback_wrong": "اشکالی ندارد؛ یک بار دیگر امتحان کنید."
+            },
+            {
+              "id": "a8l5e6",
+              "type": "intro",
+              "prompt": "ژ",
+              "audio_script": "این حرف «ژ» است. همان «ز» است، با سه نقطه بالایش. صدایش مثل اول «ژاکت» است.",
+              "payload": {
+                "display": "ژ",
+                "visual": ""
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "خب، حالا تمرین کنیم.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l5e7",
+              "type": "trace_letter",
+              "prompt": "ژ",
+              "audio_script": "حالا با انگشت، «ژِ» را روی خط‌ها بکشید. مثل «ر» بکشید و سه نقطه بالایش بگذارید.",
+              "payload": {
+                "letter": "ژ",
+                "forms": [
+                  "ژ",
+                  "ـژ",
+                  "ـژ",
+                  "ژ"
+                ]
+              },
+              "answer": "ژ",
+              "distractors": [],
+              "feedback_correct": "عالی، همین‌طور ادامه بدهید.",
+              "feedback_wrong": "دوباره از نقطهٔ شروع، آرام و با حوصله بکشید."
+            },
+            {
+              "id": "a8l5e8",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "«ژ» را پیدا کنید؛ همان که سه نقطه دارد.",
+              "payload": {
+                "choice_kind": "letter"
+              },
+              "answer": "ژ",
+              "distractors": [
+                "ز",
+                "ر"
+              ],
+              "feedback_correct": "آفرین، خیلی خوب پیش می‌روید.",
+              "feedback_wrong": "اشکالی ندارد؛ دکمهٔ صدا را بزنید و دوباره گوش کنید."
+            },
+            {
+              "id": "a8l5e9",
+              "type": "intro",
+              "prompt": "ژاکت",
+              "audio_script": "ژِ، الف، کاف، تِ: «ژاکت». ژاکت گرم زمستانی.",
+              "payload": {
+                "display": "ژاکت",
+                "visual": "🧥"
+              },
+              "answer": "",
+              "distractors": [],
+              "feedback_correct": "آماده‌اید؟ برویم سراغ تمرین.",
+              "feedback_wrong": ""
+            },
+            {
+              "id": "a8l5e10",
+              "type": "build_word",
+              "prompt": "بسازید",
+              "audio_script": "حالا «ژاکت» را بسازید؛ از راست شروع کنید.",
+              "payload": {
+                "picture": "🧥",
+                "letters": [
+                  "ژ",
+                  "ا",
+                  "ک",
+                  "ت"
+                ]
+              },
+              "answer": "ژاکت",
+              "distractors": [
+                "ز"
+              ],
+              "feedback_correct": "آفرین!",
+              "feedback_wrong": "اشکالی ندارد؛ کلمه را آرام بگویید و حرف‌ها را به ترتیب بچینید."
+            },
+            {
+              "id": "a8l5e11",
+              "type": "match_pairs",
+              "prompt": "وصل کنید",
+              "audio_script": "هر کلمه را به تصویرش وصل کنید.",
+              "payload": {
+                "pairs": [
+                  [
+                    "عسل",
+                    "🍯"
+                  ],
+                  [
+                    "ساعت",
+                    "⏰"
+                  ],
+                  [
+                    "ژاکت",
+                    "🧥"
+                  ],
+                  [
+                    "کاغذ",
+                    "📄"
+                  ]
+                ]
+              },
+              "answer": "عسل=🍯|ساعت=⏰|ژاکت=🧥|کاغذ=📄",
+              "distractors": [],
+              "feedback_correct": "عالی بود!",
+              "feedback_wrong": "یکی از جفت‌ها درست نیست؛ دوباره نگاه کنید."
+            },
+            {
+              "id": "a8l5e12",
+              "type": "listen_choose",
+              "prompt": "گوش کنید",
+              "audio_script": "تبریک! حالا همهٔ حرف‌های الفبا را بلدید. خسته نباشید! به عنوان آخرین تمرین، کلمهٔ «ایران» را پیدا کنید.",
+              "payload": {
+                "choice_kind": "word"
+              },
+              "answer": "ایران",
+              "distractors": [
+                "آسمان",
+                "انگور"
+              ],
+              "feedback_correct": "درست است، آفرین بر شما!",
+              "feedback_wrong": "دقت کنید و دوباره امتحان کنید."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
