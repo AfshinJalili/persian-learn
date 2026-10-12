@@ -45,6 +45,7 @@ export default function CountObjectsExercise({
           tokens={objects}
           boxWidth={box.width}
           boxHeight={box.height}
+          cardWidth={box.offsetWidth}
         />
       </div>
       <div className="grid3">

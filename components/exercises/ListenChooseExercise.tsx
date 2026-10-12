@@ -90,6 +90,7 @@ export default function ListenChooseExercise({
                   layout={clusterLayout}
                   boxWidth={box.width}
                   boxHeight={box.height}
+                  cardWidth={box.offsetWidth}
                 />
               ) : option.length <= 2 ? (
                 <span className="glyph" style={{ fontSize: 84 }}>

@@ -248,7 +248,7 @@ test.describe('Codex review navigation fixes', () => {
     expect(Math.min(...sizes)).toBeGreaterThanOrEqual(32);
 
     const tenApples = page.locator('[data-gallery-section="match_pairs"] [data-count="10"] .object-cluster');
-    await expect(tenApples).toHaveAttribute('data-layout', 'match');
+    await expect(tenApples).toHaveAttribute('data-layout', 'row');
     await expect(tenApples).toHaveAttribute('data-count', '10');
     const tenLayout = await tenApples.evaluate((element) => {
       const cluster = element as HTMLElement;
@@ -268,7 +268,7 @@ test.describe('Codex review navigation fixes', () => {
     expect(tenLayout.fill).toBeGreaterThan(0.7);
 
     const fourApples = page.locator('[data-gallery-section="match_pairs"] [data-count="4"] .object-cluster');
-    await expect(fourApples).toHaveAttribute('data-layout', 'match');
+    await expect(fourApples).toHaveAttribute('data-layout', 'row');
     const fourFill = await fourApples.evaluate((element) => {
       const cluster = element as HTMLElement;
       const apples = cluster.closest('.match-object-apples') as HTMLElement | null;
@@ -285,7 +285,7 @@ test.describe('Codex review navigation fixes', () => {
     expect(fourFill.fill).toBeGreaterThanOrEqual(0.65);
 
     const fiveApples = page.locator('[data-gallery-section="match_pairs"] [data-count="5"] .object-cluster');
-    await expect(fiveApples).toHaveAttribute('data-layout', 'match');
+    await expect(fiveApples).toHaveAttribute('data-layout', 'row');
     const fiveFill = await fiveApples.evaluate((element) => {
       const cluster = element as HTMLElement;
       const apples = cluster.closest('.match-object-apples') as HTMLElement | null;
@@ -300,6 +300,27 @@ test.describe('Codex review navigation fixes', () => {
     });
     expect(fiveFill.size).toBeGreaterThanOrEqual(32);
     expect(fiveFill.fill).toBeGreaterThanOrEqual(0.65);
+
+    const sixApples = page.locator('[data-gallery-section="match_pairs"] [data-count="6"] .object-cluster');
+    await expect(sixApples).toHaveAttribute('data-layout', 'row');
+    const sixFill = await sixApples.evaluate((element) => {
+      const cluster = element as HTMLElement;
+      const apples = cluster.closest('.match-object-apples') as HTMLElement | null;
+      const size = Number.parseInt(cluster.style.getPropertyValue('--object-size') || '0', 10);
+      const cols = Number.parseInt(cluster.style.getPropertyValue('--object-cols') || '0', 10);
+      const gap = Number.parseFloat(getComputedStyle(cluster).gap) || 4;
+      const clusterWidth = cols * size + Math.max(0, cols - 1) * gap;
+      return {
+        size,
+        cols,
+        rows: cluster.style.getPropertyValue('--object-rows'),
+        fill: apples && apples.clientWidth > 0 ? clusterWidth / apples.clientWidth : 0,
+      };
+    });
+    expect(sixFill.cols).toBe(5);
+    expect(sixFill.rows).toBe('2');
+    expect(sixFill.size).toBeGreaterThanOrEqual(32);
+    expect(sixFill.fill).toBeGreaterThanOrEqual(0.65);
   });
 
   test('match-pairs number tray stays fully above بررسی on a four-row question', async ({ page }) => {

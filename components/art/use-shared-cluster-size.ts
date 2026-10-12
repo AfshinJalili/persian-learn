@@ -22,28 +22,33 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(
   const fullest = Math.max(1, ...counts);
   const fallback = options?.fallback ?? OBJECT_CARD_INNER_FALLBACK;
   const layout = options?.layout ?? 'grid';
-  const gap = layout === 'match' ? OBJECT_MATCH_GAP : OBJECT_CLUSTER_GAP;
+  const gap = layout === 'match' || layout === 'row' ? OBJECT_MATCH_GAP : OBJECT_CLUSTER_GAP;
   const fallbackWidth = fallback.width;
   const fallbackHeight = fallback.height;
   const [size, setSize] = useState(() =>
     objectClusterLayoutForBox(fullest, fallbackWidth, fallbackHeight, gap, layout).size
   );
-  const [box, setBox] = useState(() => ({ width: fallbackWidth, height: fallbackHeight }));
+  const [box, setBox] = useState(() => ({
+    width: fallbackWidth,
+    height: fallbackHeight,
+    offsetWidth: fallbackWidth,
+  }));
 
   useLayoutEffect(() => {
     const root = ref.current;
     if (!root) return;
 
-    const applyBox = (innerW: number, innerH: number) => {
+    const applyBox = (innerW: number, innerH: number, offsetWidth: number) => {
       if (!Number.isFinite(innerW) || !Number.isFinite(innerH) || innerW < 8 || innerH < 8) {
-        setBox({ width: fallbackWidth, height: fallbackHeight });
+        setBox({ width: fallbackWidth, height: fallbackHeight, offsetWidth: fallbackWidth });
         setSize(
           objectClusterLayoutForBox(fullest, fallbackWidth, fallbackHeight, gap, layout).size
         );
         return;
       }
-      setBox({ width: innerW, height: innerH });
-      setSize(objectClusterLayoutForBox(fullest, innerW, innerH, gap, layout).size);
+      const cardWidth = offsetWidth > 8 ? offsetWidth : innerW;
+      setBox({ width: innerW, height: innerH, offsetWidth: cardWidth });
+      setSize(objectClusterLayoutForBox(fullest, innerW, innerH, gap, layout, cardWidth).size);
     };
 
     const innerFromNode = (node: HTMLElement) => {
@@ -53,11 +58,12 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(
       const padRight = Number.parseFloat(style.paddingRight) || 0;
       const padBottom = Number.parseFloat(style.paddingBottom) || 0;
       if (layout === 'picture') {
-        return { width: node.clientWidth, height: node.clientHeight };
+        return { width: node.clientWidth, height: node.clientHeight, offsetWidth: node.offsetWidth };
       }
       return {
         width: node.clientWidth - padX - padRight,
         height: node.clientHeight - padY - padBottom,
+        offsetWidth: node.offsetWidth,
       };
     };
 
@@ -69,9 +75,13 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(
           const style = getComputedStyle(node);
           const padX = (Number.parseFloat(style.paddingLeft) || 0) + (Number.parseFloat(style.paddingRight) || 0);
           const padY = (Number.parseFloat(style.paddingTop) || 0) + (Number.parseFloat(style.paddingBottom) || 0);
-          return { width: box.inlineSize + padX, height: box.blockSize + padY };
+          return {
+            width: box.inlineSize + padX,
+            height: box.blockSize + padY,
+            offsetWidth: node.offsetWidth,
+          };
         }
-        return { width: box.inlineSize, height: box.blockSize };
+        return { width: box.inlineSize, height: box.blockSize, offsetWidth: node.offsetWidth };
       }
       return innerFromNode(node);
     };
@@ -81,14 +91,14 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLDivElement>(
       : root.querySelector(MEASURE_SELECTOR)) as HTMLElement | null;
     const node = card ?? root;
     const first = innerFromNode(node);
-    applyBox(first.width, first.height);
+    applyBox(first.width, first.height, first.offsetWidth);
 
     if (typeof ResizeObserver === 'undefined') return;
     const observer = new ResizeObserver((entries) => {
       const entry = entries.find((item) => item.target === node) ?? entries[0];
       if (!entry) return;
       const next = innerFromEntry(entry);
-      applyBox(next.width, next.height);
+      applyBox(next.width, next.height, next.offsetWidth);
     });
     observer.observe(node);
     return () => observer.disconnect();

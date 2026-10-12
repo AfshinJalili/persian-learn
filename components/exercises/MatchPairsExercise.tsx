@@ -61,7 +61,7 @@ export default function MatchPairsExercise({
   const appleCounts = rightOptions.map((option) => splitObjectTokens(option).length);
   const { ref, box } = useSharedClusterSize(appleCounts, {
     fallback: OBJECT_MATCH_INNER_FALLBACK,
-    layout: 'match',
+    layout: 'row',
   });
 
   useEffect(() => {
@@ -159,9 +159,10 @@ export default function MatchPairsExercise({
                   <div className="match-object-apples">
                     <ObjectCluster
                       token={option}
-                      layout="match"
+                      layout="row"
                       boxWidth={box.width}
                       boxHeight={box.height}
+                      cardWidth={box.offsetWidth}
                     />
                   </div>
                   {placed ? (

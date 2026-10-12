@@ -5,7 +5,12 @@ import { exerciseChoices } from '@/lib/shuffle';
 import { exerciseHeading } from '@/lib/exercise-copy';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
-import { DICE_PIP_COUNTS, ObjectCluster } from '@/components/art/objects';
+import {
+  DICE_PIP_COUNTS,
+  OBJECT_CLUSTER_MIN_SIZE,
+  OBJECT_SINGLE_WIDTH_RATIO,
+  ObjectCluster,
+} from '@/components/art/objects';
 import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
 interface ChooseDigitExerciseProps {
@@ -41,13 +46,26 @@ export default function ChooseDigitExercise({
             tokens={pips}
             boxWidth={box.width}
             boxHeight={box.height}
+            cardWidth={box.offsetWidth}
           />
         </div>
       ) : (
         <div ref={ref} className="card object-count-card" data-digit-display>
           <span
             className="glyph"
-            style={{ fontSize: Math.max(32, Math.floor(box.width * 0.7)) }}
+            style={{
+              fontSize: Math.max(
+                OBJECT_CLUSTER_MIN_SIZE,
+                Math.floor(
+                  Math.min(
+                    (box.offsetWidth > 8 ? box.offsetWidth : box.width) *
+                      OBJECT_SINGLE_WIDTH_RATIO,
+                    box.width,
+                    box.height
+                  )
+                )
+              ),
+            }}
           >
             {display}
           </span>

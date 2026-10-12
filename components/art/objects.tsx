@@ -284,15 +284,22 @@ export function objectClusterLayoutForBox(
   innerWidth: number,
   innerHeight: number,
   gap: number = OBJECT_CLUSTER_GAP,
-  layout: ObjectClusterLayout = 'grid'
+  layout: ObjectClusterLayout = 'grid',
+  cardOffsetWidth?: number
 ): { cols: number; rows: number; size: number; unclamped: number } {
   if (count <= 0) {
     return { cols: 1, rows: 1, size: 0, unclamped: 0 };
   }
 
   if (count === 1) {
-    const ratio = layout === 'picture' ? 1 : OBJECT_SINGLE_WIDTH_RATIO;
-    const unclamped = innerWidth * ratio;
+    const widthBasis =
+      cardOffsetWidth && cardOffsetWidth > 8 ? cardOffsetWidth : innerWidth;
+    const unclamped =
+      layout === 'picture'
+        ? innerWidth
+        : layout === 'row' || layout === 'match'
+          ? Math.min(widthBasis * OBJECT_SINGLE_WIDTH_RATIO, innerWidth)
+          : Math.min(widthBasis * OBJECT_SINGLE_WIDTH_RATIO, innerWidth, innerHeight);
     return {
       cols: 1,
       rows: 1,
@@ -310,7 +317,7 @@ export function objectClusterLayoutForBox(
   if (layout === 'row') {
     const cols = Math.min(5, count);
     const rows = count > 5 ? 2 : 1;
-    const unclamped = sizeFor(cols, rows);
+    const unclamped = (innerWidth - gap * Math.max(0, cols - 1)) / cols;
     return {
       cols,
       rows,
@@ -393,9 +400,17 @@ export function objectClusterItemSizeForBox(
   innerWidth: number,
   innerHeight: number,
   gap: number = OBJECT_CLUSTER_GAP,
-  layout: ObjectClusterLayout = 'grid'
+  layout: ObjectClusterLayout = 'grid',
+  cardOffsetWidth?: number
 ): number {
-  return objectClusterLayoutForBox(count, innerWidth, innerHeight, gap, layout).size;
+  return objectClusterLayoutForBox(
+    count,
+    innerWidth,
+    innerHeight,
+    gap,
+    layout,
+    cardOffsetWidth
+  ).size;
 }
 
 export function objectClusterItemSize(count: number): number {
@@ -461,6 +476,7 @@ export function ObjectCluster({
   layout = 'grid',
   boxWidth,
   boxHeight,
+  cardWidth,
 }: {
   token?: string;
   tokens?: string[];
@@ -468,16 +484,18 @@ export function ObjectCluster({
   layout?: ObjectClusterLayout;
   boxWidth?: number;
   boxHeight?: number;
+  cardWidth?: number;
 }) {
   const parts = tokens ?? (token ? splitObjectTokens(token) : []);
   const count = parts.length;
-  const gap = layout === 'match' ? OBJECT_MATCH_GAP : OBJECT_CLUSTER_GAP;
+  const gap = layout === 'match' || layout === 'row' ? OBJECT_MATCH_GAP : OBJECT_CLUSTER_GAP;
   const fitted = objectClusterLayoutForBox(
     count,
     boxWidth && boxWidth > 8 ? boxWidth : OBJECT_CARD_INNER_FALLBACK.width,
     boxHeight && boxHeight > 8 ? boxHeight : OBJECT_CARD_INNER_FALLBACK.height,
     gap,
-    layout
+    layout,
+    cardWidth
   );
   const cols = fitted.cols;
   const rows = fitted.rows;

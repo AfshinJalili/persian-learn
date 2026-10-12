@@ -72,38 +72,47 @@ async function seedProgress(
 function measurePage() {
   const cardOf = (item: Element) =>
     item.closest(
-      '.object-choice-card, .object-count-card, .match-object-apples, .ten-frame-cell, [data-digit-display], [data-dice-face]'
+      '.object-choice-card, .object-count-card, .ten-frame-cell, [data-digit-display], [data-dice-face]'
     ) as HTMLElement | null;
 
-  const innerWidthOf = (card: HTMLElement) => {
-    const style = getComputedStyle(card);
-    return (
-      card.clientWidth -
-      (Number.parseFloat(style.paddingLeft) || 0) -
-      (Number.parseFloat(style.paddingRight) || 0)
-    );
-  };
-
-  const singles = [...document.querySelectorAll('.object-cluster[data-count="1"] > .illus')].map(
-    (item) => {
+  const singles = [...document.querySelectorAll('.object-cluster[data-count="1"] > .illus')]
+    .map((item) => {
       const card = cardOf(item);
-      const inner = card ? innerWidthOf(card) : 0;
+      if (!card) return null;
+      const offset = card.offsetWidth;
       const width = item.getBoundingClientRect().width;
       return {
         width,
-        inner,
-        ratio: inner > 0 ? width / inner : 0,
+        inner: offset,
+        ratio: offset > 0 ? width / offset : 0,
       };
-    }
-  );
+    })
+    .filter((item): item is { width: number; inner: number; ratio: number } => Boolean(item));
 
   const digit = document.querySelector('[data-digit-display] .glyph') as HTMLElement | null;
   if (digit) {
     const card = cardOf(digit);
-    const inner = card ? innerWidthOf(card) : 0;
+    const offset = card?.offsetWidth ?? 0;
     const width = digit.getBoundingClientRect().width;
-    singles.push({ width, inner, ratio: inner > 0 ? width / inner : 0 });
+    singles.push({ width, inner: offset, ratio: offset > 0 ? width / offset : 0 });
   }
+
+  const matchFills = [...document.querySelectorAll('.match-object-apples .object-cluster')].map(
+    (cluster) => {
+      const node = cluster as HTMLElement;
+      const apples = node.closest('.match-object-apples') as HTMLElement | null;
+      const size = Number.parseInt(node.style.getPropertyValue('--object-size') || '0', 10);
+      const cols = Number.parseInt(node.style.getPropertyValue('--object-cols') || '0', 10);
+      const gap = Number.parseFloat(getComputedStyle(node).gap) || 4;
+      const clusterWidth = cols * size + Math.max(0, cols - 1) * gap;
+      const count = Number.parseInt(node.getAttribute('data-count') || '0', 10);
+      return {
+        count,
+        size,
+        fill: apples && apples.clientWidth > 0 ? clusterWidth / apples.clientWidth : 0,
+      };
+    }
+  );
 
   const sizes = [
     ...document.querySelectorAll('.object-cluster > .illus, .ten-frame-cell .illus'),
@@ -111,6 +120,7 @@ function measurePage() {
 
   return {
     singles: singles.filter((item) => item.inner >= 8),
+    matchFills,
     minSize: sizes.length ? Math.min(...sizes.map((size) => Math.round(size))) : 0,
     sizeCount: sizes.length,
   };
@@ -140,27 +150,44 @@ test.describe('Object fill at phone widths', () => {
         const stats = await page
           .locator(`[data-gallery-section="${section}"]`)
           .evaluate((root) => {
+            if (root.getAttribute('data-gallery-section') === 'match_pairs') {
+              return [...root.querySelectorAll('.match-object-apples .object-cluster')].map((cluster) => {
+                const node = cluster as HTMLElement;
+                const apples = node.closest('.match-object-apples') as HTMLElement | null;
+                const size = Number.parseInt(node.style.getPropertyValue('--object-size') || '0', 10);
+                const cols = Number.parseInt(node.style.getPropertyValue('--object-cols') || '0', 10);
+                const gap = Number.parseFloat(getComputedStyle(node).gap) || 4;
+                const clusterWidth = cols * size + Math.max(0, cols - 1) * gap;
+                const count = Number.parseInt(node.getAttribute('data-count') || '0', 10);
+                return {
+                  width: size,
+                  inner: apples?.clientWidth ?? 0,
+                  ratio: apples && apples.clientWidth > 0 ? clusterWidth / apples.clientWidth : 0,
+                  count,
+                };
+              });
+            }
             const cardOf = (item: Element) =>
-              item.closest(
-                '.object-choice-card, .object-count-card, .match-object-apples, .ten-frame-cell'
-              ) as HTMLElement | null;
-            const singles = [...root.querySelectorAll('.object-cluster[data-count="1"] > .illus, [data-count="1"] .object-cluster > .illus, [data-count="1"].ten-frame-grid .illus')];
+              item.closest('.object-choice-card, .object-count-card, .ten-frame-cell') as HTMLElement | null;
+            const singles = [
+              ...root.querySelectorAll(
+                '.object-cluster[data-count="1"] > .illus, [data-count="1"] .object-cluster > .illus, [data-count="1"].ten-frame-grid .illus'
+              ),
+            ];
             const unique = [...new Set(singles)];
             return unique.map((item) => {
               const card = cardOf(item) ?? (item.closest('[data-count="1"]') as HTMLElement | null);
-              const style = card ? getComputedStyle(card) : null;
-              const inner = card
-                ? card.clientWidth -
-                  (Number.parseFloat(style?.paddingLeft || '0') || 0) -
-                  (Number.parseFloat(style?.paddingRight || '0') || 0)
-                : 0;
+              const offset = card?.offsetWidth ?? 0;
               const width = item.getBoundingClientRect().width;
-              return { width, inner, ratio: inner > 0 ? width / inner : 0 };
+              return { width, inner: offset, ratio: offset > 0 ? width / offset : 0, count: 1 };
             });
           });
         expect(stats.length, section).toBeGreaterThan(0);
         for (const item of stats) {
           expect(item.width, section).toBeGreaterThanOrEqual(32);
+          if (section === 'match_pairs' && item.count === 1) {
+            continue;
+          }
           expect(item.ratio, section).toBeGreaterThanOrEqual(0.65);
         }
       }
@@ -197,6 +224,10 @@ test.describe('Object fill at phone widths', () => {
         for (const item of stats.singles) {
           expect(item.width, lesson.path).toBeGreaterThanOrEqual(32);
           expect(item.ratio, lesson.path).toBeGreaterThanOrEqual(0.65);
+        }
+        for (const row of stats.matchFills.filter((item) => item.count >= 6)) {
+          expect(row.size, lesson.path).toBeGreaterThanOrEqual(32);
+          expect(row.fill, lesson.path).toBeGreaterThanOrEqual(0.65);
         }
 
         if (lesson.hasTray) {

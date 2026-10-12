@@ -244,14 +244,14 @@ describe('MatchPairsExercise object rows', () => {
     const clusters = [...container.querySelectorAll('.match-object-apples .object-cluster')] as HTMLElement[];
     expect(clusters).toHaveLength(3);
     const ten = clusters.find((cluster) => cluster.getAttribute('data-count') === '10');
-    expect(ten).toHaveAttribute('data-layout', 'match');
+    expect(ten).toHaveAttribute('data-layout', 'row');
     expect(ten?.style.getPropertyValue('--object-cols')).toBe('5');
     expect(ten?.style.getPropertyValue('--object-rows')).toBe('2');
     const size = Number.parseInt(ten?.style.getPropertyValue('--object-size') ?? '0', 10);
     expect(size).toBeGreaterThanOrEqual(32);
   });
 
-  it('lays 6 objects in a filled 3x2 grid instead of a 32px row with empty cells', () => {
+  it('lays 6 objects in a filled 5x2 row instead of a compact grid with empty cells', () => {
     const { container } = render(
       <MatchPairsExercise
         exercise={{
@@ -272,7 +272,7 @@ describe('MatchPairsExercise object rows', () => {
     );
     const clusters = [...container.querySelectorAll('.match-object-apples .object-cluster')] as HTMLElement[];
     const six = clusters.find((cluster) => cluster.getAttribute('data-count') === '6');
-    expect(six).toHaveAttribute('data-layout', 'match');
+    expect(six).toHaveAttribute('data-layout', 'row');
     expect(six?.style.getPropertyValue('--object-cols')).toBe('5');
     expect(six?.style.getPropertyValue('--object-rows')).toBe('2');
     const size = Number.parseInt(six?.style.getPropertyValue('--object-size') ?? '0', 10);
@@ -303,7 +303,7 @@ describe('MatchPairsExercise object rows', () => {
     expect(tray).toBeTruthy();
     expect(list?.nextElementSibling).toBe(tray);
     const five = container.querySelector('[data-count="5"]') as HTMLElement | null;
-    expect(five).toHaveAttribute('data-layout', 'match');
+    expect(five).toHaveAttribute('data-layout', 'row');
     expect(five?.style.getPropertyValue('--object-cols')).toBe('5');
     expect(five?.style.getPropertyValue('--object-rows')).toBe('1');
     const size = Number.parseInt(five?.style.getPropertyValue('--object-size') ?? '0', 10);

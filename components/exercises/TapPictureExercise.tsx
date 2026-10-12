@@ -64,6 +64,7 @@ export default function TapPictureExercise({
                 layout={clusterLayout}
                 boxWidth={box.width}
                 boxHeight={box.height}
+                cardWidth={box.offsetWidth}
               />
             </ChoiceButton>
           );

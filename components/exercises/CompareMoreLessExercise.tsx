@@ -60,6 +60,7 @@ export default function CompareMoreLessExercise({
             token={left}
             boxWidth={box.width}
             boxHeight={box.height}
+            cardWidth={box.offsetWidth}
           />
         </button>
         <button
@@ -72,6 +73,7 @@ export default function CompareMoreLessExercise({
             token={right}
             boxWidth={box.width}
             boxHeight={box.height}
+            cardWidth={box.offsetWidth}
           />
         </button>
       </div>

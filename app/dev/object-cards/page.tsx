@@ -24,6 +24,7 @@ function FillingCard({
         token={token.repeat(count)}
         boxWidth={box.width}
         boxHeight={box.height}
+        cardWidth={box.offsetWidth}
       />
     </div>
   );
@@ -39,6 +40,7 @@ function CompareRow({ left, right, token }: { left: number; right: number; token
           token={token.repeat(left)}
           boxWidth={box.width}
           boxHeight={box.height}
+          cardWidth={box.offsetWidth}
         />
       </div>
       <div className="card object-choice-card">
@@ -46,6 +48,7 @@ function CompareRow({ left, right, token }: { left: number; right: number; token
           token={token.repeat(right)}
           boxWidth={box.width}
           boxHeight={box.height}
+          cardWidth={box.offsetWidth}
         />
       </div>
     </div>
@@ -81,16 +84,17 @@ function ThreeCardTypeGallery({
 function MatchPairGalleryRow({ count, token }: { count: number; token: string }) {
   const { ref, box } = useSharedClusterSize([count], {
     fallback: OBJECT_MATCH_INNER_FALLBACK,
-    layout: 'match',
+    layout: 'row',
   });
   return (
     <div ref={ref} className="row-card match-object-row" data-count={count}>
       <div className="match-object-apples">
         <ObjectCluster
           token={token.repeat(count)}
-          layout="match"
+          layout="row"
           boxWidth={box.width}
           boxHeight={box.height}
+          cardWidth={box.offsetWidth}
         />
       </div>
       <span className="card match-digit-slot">
