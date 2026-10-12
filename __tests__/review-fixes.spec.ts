@@ -251,15 +251,22 @@ test.describe('Codex review navigation fixes', () => {
     expect(Math.min(...sizes)).toBeGreaterThanOrEqual(32);
 
     const tenApples = page.locator('[data-gallery-section="match_pairs"] [data-count="10"] .object-cluster');
-    await expect(tenApples).toHaveAttribute('data-layout', 'row');
+    await expect(tenApples).toHaveAttribute('data-layout', 'grid');
     await expect(tenApples).toHaveAttribute('data-count', '10');
-    const tenLayout = await tenApples.evaluate((element) => ({
-      cols: (element as HTMLElement).style.getPropertyValue('--object-cols'),
-      rows: (element as HTMLElement).style.getPropertyValue('--object-rows'),
-      size: Number.parseInt((element as HTMLElement).style.getPropertyValue('--object-size') || '0', 10),
-    }));
-    expect(tenLayout.cols).toBe('5');
-    expect(tenLayout.rows).toBe('2');
+    const tenLayout = await tenApples.evaluate((element) => {
+      const cluster = element as HTMLElement;
+      const apples = cluster.closest('.match-object-apples') as HTMLElement | null;
+      const size = Number.parseInt(cluster.style.getPropertyValue('--object-size') || '0', 10);
+      const cols = Number.parseInt(cluster.style.getPropertyValue('--object-cols') || '0', 10);
+      const clusterWidth = cols * size + Math.max(0, cols - 1) * 8;
+      return {
+        cols: cluster.style.getPropertyValue('--object-cols'),
+        rows: cluster.style.getPropertyValue('--object-rows'),
+        size,
+        fill: apples && apples.clientWidth > 0 ? clusterWidth / apples.clientWidth : 0,
+      };
+    });
     expect(tenLayout.size).toBeGreaterThanOrEqual(32);
+    expect(tenLayout.fill).toBeGreaterThan(0.7);
   });
 });

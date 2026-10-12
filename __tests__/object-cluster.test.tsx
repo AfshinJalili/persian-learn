@@ -30,6 +30,16 @@ describe('ObjectCluster', () => {
     expect(objectClusterItemSizeForBox(9, 80, 80)).toBe(32);
   });
 
+  it('fills a wide match-pair box with a best-fit grid above 32px', () => {
+    const six = objectClusterLayoutForBox(6, 220, 84);
+    const ten = objectClusterLayoutForBox(10, 220, 84);
+    expect(six).toMatchObject({ cols: 3, rows: 2 });
+    expect(six.size).toBeGreaterThan(OBJECT_CLUSTER_MIN_SIZE);
+    expect(ten).toMatchObject({ cols: 5, rows: 2 });
+    expect(ten.size).toBeGreaterThan(OBJECT_CLUSTER_MIN_SIZE);
+    expect(objectClusterLayoutForBox(8, 220, 84).size).toBe(six.size);
+  });
+
   it('uses the fullest card size so a smaller count cannot hint the answer', () => {
     expect(sharedObjectClusterItemSize([1, 2, 3])).toBe(objectClusterItemSize(3));
     expect(sharedObjectClusterItemSize([1, 2, 3])).toBe(sharedObjectClusterItemSize([3]));

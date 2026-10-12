@@ -252,6 +252,7 @@ export function splitObjectTokens(token: string): string[] {
 export const OBJECT_CLUSTER_GAP = 8;
 export const OBJECT_CLUSTER_MIN_SIZE = 32;
 export const OBJECT_CARD_INNER_FALLBACK = { width: 81, height: 140 };
+export const OBJECT_MATCH_INNER_FALLBACK = { width: 220, height: 84 };
 
 export type ObjectClusterLayout = 'grid' | 'row';
 

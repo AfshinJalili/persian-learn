@@ -10,13 +10,11 @@ import SpeakerButton from '@/components/SpeakerButton';
 import {
   ObjectArt,
   ObjectCluster,
-  OBJECT_CLUSTER_GAP,
-  OBJECT_CLUSTER_MIN_SIZE,
+  OBJECT_MATCH_INNER_FALLBACK,
   looksLikeObjects,
-  objectClusterItemSizeForBox,
-  objectClusterRows,
   splitObjectTokens,
 } from '@/components/art/objects';
+import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
 interface Props {
   exercise: Exercise;
@@ -61,15 +59,9 @@ export default function MatchPairsExercise({
     rightOptions.every(looksLikeObjects) &&
     leftOptions.every((item) => /^[0-9۰-۹]+$/.test(item));
   const appleCounts = rightOptions.map((option) => splitObjectTokens(option).length);
-  const appleFullest = Math.max(1, ...appleCounts);
-  const appleRows = objectClusterRows(appleFullest, 'row');
-  const appleSize = objectClusterItemSizeForBox(
-    appleFullest,
-    236,
-    Math.max(72, appleRows * OBJECT_CLUSTER_MIN_SIZE + Math.max(0, appleRows - 1) * OBJECT_CLUSTER_GAP),
-    OBJECT_CLUSTER_GAP,
-    'row'
-  );
+  const { ref, size: appleSize, box } = useSharedClusterSize(appleCounts, {
+    fallback: OBJECT_MATCH_INNER_FALLBACK,
+  });
 
   useEffect(() => {
     selectedRef.current = null;
@@ -145,7 +137,8 @@ export default function MatchPairsExercise({
       </div>
       {objectLayout ? (
         <>
-          {rightOptions.map((option) => {
+          <div ref={ref} className="match-object-list">
+            {rightOptions.map((option) => {
             const placed = pairForRight(option);
             const correct =
               placed && answerPairs.some(([left, right]) => left === placed[0] && right === option);
@@ -168,7 +161,12 @@ export default function MatchPairsExercise({
                 }}
               >
                 <div className="match-object-apples">
-                  <ObjectCluster token={option} itemSize={appleSize} layout="row" />
+                  <ObjectCluster
+                    token={option}
+                    itemSize={appleSize}
+                    boxWidth={box.width}
+                    boxHeight={box.height}
+                  />
                 </div>
                 {placed ? (
                   <span className={`card match-digit-slot ${correct ? 'correct' : ''}`}>
@@ -188,6 +186,7 @@ export default function MatchPairsExercise({
               </button>
             );
           })}
+          </div>
           <div
             style={{
               display: 'flex',

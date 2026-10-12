@@ -604,7 +604,15 @@ h2,
   margin-inline: 0;
 }
 
+.match-object-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-5);
+  width: 100%;
+}
+
 .match-object-row {
+  width: 100%;
   align-items: center;
 }
 

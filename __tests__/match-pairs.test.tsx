@@ -242,10 +242,39 @@ describe('MatchPairsExercise object rows', () => {
     expect(clusters).toHaveLength(3);
     expect(new Set(clusters.map((cluster) => cluster.style.getPropertyValue('--object-size'))).size).toBe(1);
     const ten = clusters.find((cluster) => cluster.getAttribute('data-count') === '10');
-    expect(ten).toHaveAttribute('data-layout', 'row');
+    expect(ten).toHaveAttribute('data-layout', 'grid');
     expect(ten?.style.getPropertyValue('--object-cols')).toBe('5');
     expect(ten?.style.getPropertyValue('--object-rows')).toBe('2');
     const size = Number.parseInt(ten?.style.getPropertyValue('--object-size') ?? '0', 10);
-    expect(size).toBeGreaterThanOrEqual(32);
+    expect(size).toBeGreaterThan(32);
+  });
+
+  it('lays 6 objects in a filled 3x2 grid instead of a 32px row with empty cells', () => {
+    const { container } = render(
+      <MatchPairsExercise
+        exercise={{
+          id: 'm3l1e9',
+          type: 'match_pairs',
+          prompt: '🔗',
+          audio_script: 'هر عدد را به تصویری وصل کنید که همان تعداد پرتقال دارد.',
+          payload: {},
+          answer: '۴=🍊🍊🍊🍊|۵=🍊🍊🍊🍊🍊|۶=🍊🍊🍊🍊🍊🍊',
+          distractors: [],
+          feedback_correct: 'ok',
+          feedback_wrong: 'no',
+        }}
+        userAnswer=""
+        onAnswerChange={() => {}}
+        disabled={false}
+      />
+    );
+    const clusters = [...container.querySelectorAll('.match-object-apples .object-cluster')] as HTMLElement[];
+    expect(new Set(clusters.map((cluster) => cluster.style.getPropertyValue('--object-size'))).size).toBe(1);
+    const six = clusters.find((cluster) => cluster.getAttribute('data-count') === '6');
+    expect(six).toHaveAttribute('data-layout', 'grid');
+    expect(six?.style.getPropertyValue('--object-cols')).toBe('3');
+    expect(six?.style.getPropertyValue('--object-rows')).toBe('2');
+    const size = Number.parseInt(six?.style.getPropertyValue('--object-size') ?? '0', 10);
+    expect(size).toBeGreaterThan(32);
   });
 });

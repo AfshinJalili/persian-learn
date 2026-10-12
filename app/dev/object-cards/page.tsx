@@ -3,7 +3,8 @@
 import {
   ObjectArt,
   ObjectCluster,
-  objectClusterItemSizeForBox,
+  OBJECT_MATCH_INNER_FALLBACK,
+  objectClusterLayoutForBox,
   objectClusterNeedsWideCard,
 } from '@/components/art/objects';
 import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
@@ -81,6 +82,27 @@ function ThreeCardTypeGallery({
   );
 }
 
+function MatchPairGalleryRow({ count, token }: { count: number; token: string }) {
+  const { ref, size, box } = useSharedClusterSize([count], {
+    fallback: OBJECT_MATCH_INNER_FALLBACK,
+  });
+  return (
+    <div ref={ref} className="row-card match-object-row" data-count={count}>
+      <div className="match-object-apples">
+        <ObjectCluster
+          token={token.repeat(count)}
+          itemSize={size}
+          boxWidth={box.width}
+          boxHeight={box.height}
+        />
+      </div>
+      <span className="card match-digit-slot">
+        <span className="glyph">{count}</span>
+      </span>
+    </div>
+  );
+}
+
 function TenFrame({ count, token }: { count: number; token: string }) {
   return (
     <div className="ten-frame-grid" data-count={count}>
@@ -94,7 +116,11 @@ function TenFrame({ count, token }: { count: number; token: string }) {
 }
 
 export default function ObjectCardsGalleryPage() {
-  const appleSize = objectClusterItemSizeForBox(3, 210, 72, 8, 'row');
+  const appleSize = objectClusterLayoutForBox(
+    3,
+    OBJECT_MATCH_INNER_FALLBACK.width,
+    OBJECT_MATCH_INNER_FALLBACK.height
+  ).size;
 
   return (
     <div
@@ -156,23 +182,9 @@ export default function ObjectCardsGalleryPage() {
 
         <section data-gallery-section="match_pairs">
           <h2>وصل کردن ۱ تا ۱۰</h2>
-          {Array.from({ length: 10 }, (_, index) => {
-            const count = index + 1;
-            return (
-              <div key={count} className="row-card match-object-row" data-count={count}>
-                <div className="match-object-apples">
-                  <ObjectCluster
-                    token={'🍎'.repeat(count)}
-                    itemSize={objectClusterItemSizeForBox(count, 210, 72, 8, 'row')}
-                    layout="row"
-                  />
-                </div>
-                <span className="card match-digit-slot">
-                  <span className="glyph">{count}</span>
-                </span>
-              </div>
-            );
-          })}
+          {Array.from({ length: 10 }, (_, index) => (
+            <MatchPairGalleryRow key={index + 1} count={index + 1} token="🍎" />
+          ))}
           <p className="muted">اندازهٔ مشترک برای سؤال ۱ تا ۳: {appleSize}px</p>
         </section>
 
