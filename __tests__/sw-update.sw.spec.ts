@@ -166,3 +166,119 @@ test('offline navigation falls back to the cached page', async ({ page, context 
   await expect(page.locator('.app-phone').first()).toBeVisible();
   await context.setOffline(false);
 });
+
+const AUDIO = '/audio/0bca6c7cfc6f2a1e8b791f0ee5e020b0.mp3';
+
+async function controlled(page: import('@playwright/test').Page) {
+  await page.goto('/home');
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+  });
+  await page.reload();
+  await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
+}
+
+test('a range request caches the full audio file and ranges are served offline', async ({
+  page,
+  context,
+}) => {
+  await controlled(page);
+
+  const online = await page.evaluate(async (src) => {
+    const full = new Uint8Array(await (await fetch(src, { cache: 'no-store', headers: { 'x-probe': '1' } })).arrayBuffer());
+    const res = await fetch(src, { headers: { Range: 'bytes=0-99' } });
+    const part = new Uint8Array(await res.arrayBuffer());
+    const cacheName = (await caches.keys()).find((n) => n.startsWith('persian-learn-'))!;
+    const cached = await (await caches.open(cacheName)).match(src);
+    return {
+      size: full.length,
+      status: res.status,
+      contentRange: res.headers.get('Content-Range'),
+      partOk: part.length === 100 && part.every((b, i) => b === full[i]),
+      cachedStatus: cached?.status ?? 0,
+      cachedSize: cached ? (await cached.arrayBuffer()).byteLength : 0,
+    };
+  }, AUDIO);
+  expect(online.status).toBe(206);
+  expect(online.contentRange).toBe(`bytes 0-99/${online.size}`);
+  expect(online.partOk).toBe(true);
+  expect(online.cachedStatus).toBe(200);
+  expect(online.cachedSize).toBe(online.size);
+
+  await context.setOffline(true);
+  const offline = await page.evaluate(async (src) => {
+    const cacheName = (await caches.keys()).find((n) => n.startsWith('persian-learn-'))!;
+    const full = new Uint8Array(await (await (await caches.open(cacheName)).match(src))!.arrayBuffer());
+    const size = full.length;
+    const mid = await fetch(src, { headers: { Range: 'bytes=1000-1999' } });
+    const midBytes = new Uint8Array(await mid.arrayBuffer());
+    const open = await fetch(src, { headers: { Range: `bytes=${size - 10}-` } });
+    const suffix = await fetch(src, { headers: { Range: 'bytes=-50' } });
+    const whole = await fetch(src);
+    const bad = await fetch(src, { headers: { Range: `bytes=${size + 5}-` } });
+    // A real <audio> element (which sends Range) must load offline too.
+    const audio = new Audio(src);
+    const loaded = await new Promise<boolean>((resolve) => {
+      audio.addEventListener('loadedmetadata', () => resolve(true));
+      audio.addEventListener('error', () => resolve(false));
+      setTimeout(() => resolve(false), 8000);
+    });
+    return {
+      size,
+      mid: {
+        status: mid.status,
+        range: mid.headers.get('Content-Range'),
+        length: mid.headers.get('Content-Length'),
+        accept: mid.headers.get('Accept-Ranges'),
+        ok: midBytes.length === 1000 && midBytes.every((b, i) => b === full[1000 + i]),
+      },
+      open: { status: open.status, range: open.headers.get('Content-Range'), len: (await open.arrayBuffer()).byteLength },
+      suffix: { status: suffix.status, range: suffix.headers.get('Content-Range'), len: (await suffix.arrayBuffer()).byteLength },
+      whole: { status: whole.status, len: (await whole.arrayBuffer()).byteLength },
+      bad: bad.status,
+      loaded,
+    };
+  }, AUDIO);
+  await context.setOffline(false);
+  const n = offline.size;
+  expect(offline.mid).toEqual({ status: 206, range: `bytes 1000-1999/${n}`, length: '1000', accept: 'bytes', ok: true });
+  expect(offline.open).toEqual({ status: 206, range: `bytes ${n - 10}-${n - 1}/${n}`, len: 10 });
+  expect(offline.suffix).toEqual({ status: 206, range: `bytes ${n - 50}-${n - 1}/${n}`, len: 50 });
+  expect(offline.whole).toEqual({ status: 200, len: n });
+  expect(offline.bad).toBe(416);
+  expect(offline.loaded).toBe(true);
+});
+
+test('audio saved by the legacy worker survives the upgrade', async ({ page, context }) => {
+  test.setTimeout(60000);
+  await page.request.get('/__test/legacy-sw/on');
+  await controlled(page);
+  // Save a full audio file in the legacy cache, as the old worker would have.
+  await page.evaluate(async (src) => {
+    const res = await fetch(src, { cache: 'no-store', headers: { 'x-probe': '1' } });
+    await (await caches.open('persian-learn-v2')).put(src, res);
+  }, AUDIO);
+  await page.request.get('/__test/legacy-sw/off');
+  await page.goto('/home');
+  await expect
+    .poll(() => page.evaluate(() => caches.keys()).catch(() => ['persian-learn-v2']), { timeout: 20000 })
+    .not.toContain('persian-learn-v2');
+  await page.waitForTimeout(1500);
+  await page.waitForLoadState('load');
+
+  const carried = await page.evaluate(async (src) => {
+    const names = await caches.keys();
+    const hit = await caches.match(src);
+    return { names, status: hit?.status ?? 0 };
+  }, AUDIO);
+  expect(carried.names.some((n) => n.startsWith('persian-learn-'))).toBe(true);
+  expect(carried.status).toBe(200);
+
+  await context.setOffline(true);
+  const offline = await page.evaluate(async (src) => {
+    const res = await fetch(src, { headers: { Range: 'bytes=0-9' } });
+    return { status: res.status, len: (await res.arrayBuffer()).byteLength };
+  }, AUDIO);
+  await context.setOffline(false);
+  expect(offline).toEqual({ status: 206, len: 10 });
+});

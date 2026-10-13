@@ -77,3 +77,49 @@ for (const viewport of VIEWPORTS) {
     }
   });
 }
+
+// In a question with several picture cards, the single item must never look
+// smaller than the items of a multi-item card next to it.
+const PICTURE_VIEWPORTS = [
+  { width: 360, height: 640 },
+  { width: 367, height: 740 },
+  { width: 375, height: 667 },
+  { width: 390, height: 844 },
+  { width: 412, height: 915 },
+] as const;
+
+for (const viewport of PICTURE_VIEWPORTS) {
+  test(`m1l1 single item is at least as large as multi-item items at ${viewport.width}x${viewport.height}`, async ({
+    page,
+  }) => {
+    test.setTimeout(120000);
+    await page.setViewportSize(viewport);
+    await seed(page);
+    let checked = 0;
+    for (let ex = 1; ex <= 8; ex += 1) {
+      const path = `/lesson/m1l1?ex=${ex}`;
+      await page.goto(path);
+      await expect(page.locator('.object-choice-card').first(), path).toBeVisible();
+      await page.waitForTimeout(400);
+      const m = await page.evaluate(() => {
+        const cards = [...document.querySelectorAll('.object-choice-card')].map((card) => {
+          const items = [...card.querySelectorAll('.object-cluster > .illus')].map(
+            (item) => item.getBoundingClientRect().width
+          );
+          return { count: items.length, size: Math.min(...items), cardWidth: (card as HTMLElement).offsetWidth };
+        });
+        const se = document.scrollingElement!;
+        return { cards, scrolls: se.scrollHeight > se.clientHeight + 1 };
+      });
+      expect(m.scrolls, path).toBe(false);
+      const single = m.cards.find((card) => card.count === 1);
+      const multi = m.cards.filter((card) => card.count > 1);
+      if (!single || multi.length === 0) continue;
+      checked += 1;
+      const largestMulti = Math.max(...multi.map((card) => card.size));
+      console.log(path, viewport.width, `single=${single.size.toFixed(1)} (${(single.size / single.cardWidth).toFixed(2)} of card) largestMulti=${largestMulti.toFixed(1)}`);
+      expect(single.size, path).toBeGreaterThanOrEqual(largestMulti - 0.5);
+    }
+    expect(checked).toBeGreaterThan(0);
+  });
+}

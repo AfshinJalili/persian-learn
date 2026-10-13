@@ -6,7 +6,6 @@ import {
   MATCH_ROW_PADDING,
   OBJECT_CLUSTER_MIN_SIZE,
   OBJECT_MATCH_SINGLE_MAX,
-  OBJECT_SINGLE_WIDTH_RATIO,
   ObjectCluster,
   matchApplesBoxFromList,
   objectClusterColumns,
@@ -18,16 +17,20 @@ import {
 
 describe('ObjectCluster', () => {
   it('picks the tall-card column count that maximizes item size', () => {
-    expect(objectClusterLayoutForBox(1, 81, 140)).toMatchObject({
-      cols: 1,
-      rows: 1,
-      size: Math.floor(81 * OBJECT_SINGLE_WIDTH_RATIO),
-    });
+    // A single item is never smaller than the items of a 2-item card in the
+    // same box (66px here), even when that is more than 70% of the width.
+    expect(objectClusterLayoutForBox(1, 81, 140)).toMatchObject({ cols: 1, rows: 1, size: 66 });
+    for (const [w, h] of [[81, 140], [88, 200], [100, 90], [304, 200], [60, 300]]) {
+      const single = objectClusterLayoutForBox(1, w, h).size;
+      for (let n = 2; n <= 10; n += 1) {
+        expect(single).toBeGreaterThanOrEqual(objectClusterLayoutForBox(n, w, h).size);
+      }
+    }
     expect(objectClusterLayoutForBox(2, 81, 140)).toMatchObject({ cols: 1, rows: 2, size: 66 });
     expect(objectClusterLayoutForBox(3, 81, 140)).toMatchObject({ cols: 1, rows: 3, size: 41 });
     expect(objectClusterLayoutForBox(4, 81, 140)).toMatchObject({ cols: 2, rows: 2, size: 36 });
     expect(objectClusterLayoutForBox(5, 81, 140)).toMatchObject({ cols: 2, rows: 3, size: 36 });
-    expect(objectClusterItemSize(1)).toBe(Math.floor(81 * OBJECT_SINGLE_WIDTH_RATIO));
+    expect(objectClusterItemSize(1)).toBe(66);
     expect(objectClusterItemSize(5)).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
     expect(objectClusterItemSize(10)).toBeGreaterThanOrEqual(8);
   });
