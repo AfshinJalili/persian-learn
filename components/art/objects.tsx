@@ -467,7 +467,12 @@ export function objectClusterLayoutForBox(
               innerHeight,
               OBJECT_MATCH_SINGLE_MAX
             )
-          : Math.min(widthBasis * OBJECT_SINGLE_WIDTH_RATIO, innerWidth, innerHeight);
+          : Math.max(
+              Math.min(widthBasis * OBJECT_SINGLE_WIDTH_RATIO, innerWidth, innerHeight),
+              // Never smaller than each item of a 2-item card in the same box
+              // (narrow three-across cards stack two items at nearly full width).
+              objectClusterLayoutForBox(2, innerWidth, innerHeight, gap, layout).unclamped
+            );
     return {
       cols: 1,
       rows: 1,
