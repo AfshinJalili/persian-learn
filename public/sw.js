@@ -54,18 +54,90 @@ async function cacheFirst(request) {
     return cached;
   }
   const response = await fetch(request);
-  if (response.ok) {
-    cache.put(request, response.clone());
+  if (response.status === 200) {
+    cache.put(request, response.clone()).catch(() => undefined);
   }
   return response;
+}
+
+// Audio elements send Range requests and get 206 Partial Content back, which
+// the Cache API refuses to store. So audio is always cached as the full 200
+// file (fetched without Range) and range requests are sliced from it.
+function isAudio(pathname) {
+  return pathname.startsWith('/audio/');
+}
+
+function parseRange(header, size) {
+  const match = /^bytes=(\d*)-(\d*)$/.exec((header || '').trim());
+  if (!match || (match[1] === '' && match[2] === '')) {
+    return null;
+  }
+  let start;
+  let end;
+  if (match[1] === '') {
+    const suffix = Number(match[2]);
+    start = Math.max(0, size - suffix);
+    end = size - 1;
+  } else {
+    start = Number(match[1]);
+    end = match[2] === '' ? size - 1 : Math.min(Number(match[2]), size - 1);
+  }
+  if (start > end || start >= size) {
+    return null;
+  }
+  return { start, end };
+}
+
+async function rangeResponse(full, rangeHeader) {
+  const blob = await full.blob();
+  const size = blob.size;
+  const range = parseRange(rangeHeader, size);
+  const type = full.headers.get('Content-Type') || 'audio/mpeg';
+  if (!range) {
+    return new Response(null, {
+      status: 416,
+      headers: { 'Content-Range': `bytes */${size}` },
+    });
+  }
+  const body = blob.slice(range.start, range.end + 1, type);
+  return new Response(body, {
+    status: 206,
+    statusText: 'Partial Content',
+    headers: {
+      'Content-Type': type,
+      'Content-Range': `bytes ${range.start}-${range.end}/${size}`,
+      'Content-Length': String(body.size),
+      'Accept-Ranges': 'bytes',
+    },
+  });
+}
+
+async function audioCacheFirst(request) {
+  const cache = await caches.open(CACHE_NAME);
+  const url = new URL(request.url);
+  const key = url.pathname;
+  let full = await cache.match(key, { ignoreVary: true });
+  if (!full || full.status !== 200) {
+    // Separate fetch without the Range header so we get (and keep) the whole file.
+    full = await fetch(key, { credentials: 'same-origin' });
+    if (full.status !== 200) {
+      return full;
+    }
+    await cache.put(key, full.clone()).catch(() => undefined);
+  }
+  const rangeHeader = request.headers.get('Range');
+  if (!rangeHeader) {
+    return full;
+  }
+  return rangeResponse(full, rangeHeader);
 }
 
 async function networkFirst(request) {
   const cache = await caches.open(CACHE_NAME);
   try {
     const response = await fetch(request);
-    if (response.ok) {
-      cache.put(request, response.clone());
+    if (response.status === 200) {
+      cache.put(request, response.clone()).catch(() => undefined);
     }
     return response;
   } catch (error) {
@@ -94,10 +166,11 @@ async function carryOverAudio(oldNames) {
   for (const name of oldNames) {
     const old = await caches.open(name);
     for (const request of await old.keys()) {
-      if (new URL(request.url).pathname.startsWith('/audio/')) {
+      if (isAudio(new URL(request.url).pathname)) {
         const response = await old.match(request);
-        if (response) {
-          await target.put(request, response);
+        const key = new URL(request.url).pathname;
+        if (response && response.status === 200 && !(await target.match(key))) {
+          await target.put(key, response).catch(() => undefined);
         }
       }
     }
@@ -150,6 +223,10 @@ self.addEventListener('fetch', (event) => {
 
   const strategy =
     request.mode === 'navigate' ? 'network-first' : offlineStrategy(url.pathname);
+  if (strategy === 'cache-first' && isAudio(url.pathname)) {
+    event.respondWith(audioCacheFirst(request));
+    return;
+  }
   if (strategy === 'cache-first') {
     event.respondWith(cacheFirst(request));
     return;
