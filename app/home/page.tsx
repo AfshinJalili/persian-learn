@@ -1,35 +1,54 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Check, Lock, Star } from 'lucide-react';
+import { Check, Lock, Star, Trophy } from 'lucide-react';
 import { getProgress } from '@/lib/progress';
 import { loadTrack, isLessonUnlocked } from '@/lib/content';
 import type { Track, Lesson, UserProgress } from '@/lib/types';
-import { playAudio } from '@/lib/audio';
-import { homeGreeting } from '@/lib/learner';
+import { isAudioUnlocked, playAudio } from '@/lib/audio';
+import { consumeHomeGreeting, homeGreeting } from '@/lib/learner';
 import { formatPersianNumber } from '@/lib/persian';
 import AudioUnlockOverlay from '@/components/AudioUnlockOverlay';
 import SpeakerButton from '@/components/SpeakerButton';
 import BottomNav from '@/components/ui/BottomNav';
 import HodaMascot from '@/components/HodaMascot';
+import { FlameIcon, StarIcon } from '@/components/art/StatIcons';
 import { AvatarArt, PomegranateSvg, resolveAvatarId } from '@/components/art/objects';
 
-function FlameIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 2.5c.6 3.2 5.8 5.6 5.8 11.2A5.8 5.8 0 0 1 12 21.5a5.8 5.8 0 0 1-5.8-5.8c0-3 1.8-4.6 2.8-6 .3 1.8 1.2 2.8 2.2 3.2C10.6 9.6 11 5.6 12 2.5z" fill="#F08A24" />
-      <path d="M12 12.2c.4 1.8 3 2.8 3 5.2a3 3 0 0 1-6 0c0-1.6 1-2.6 1.6-3.4.2.9.6 1.3 1 1.5-.1-1.2 0-2.2.4-3.3z" fill="#FFC83D" />
-    </svg>
-  );
+function nodeKind(args: {
+  isCompleted: boolean;
+  isCurrent: boolean;
+  unlocked: boolean;
+  isLast: boolean;
+}): 'done' | 'current' | 'milestone' | 'locked' {
+  if (args.isCompleted) return 'done';
+  if (args.isCurrent) return 'current';
+  if (args.isLast && args.unlocked) return 'milestone';
+  return 'locked';
 }
 
-function StarIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
-      <path d="M12 2.8l2.8 5.8 6.3.8-4.6 4.4 1.2 6.3L12 17l-5.7 3.1 1.2-6.3L2.9 9.4l6.3-.8z" />
-    </svg>
-  );
+function NodeGlyph({
+  kind,
+  isLast,
+}: {
+  kind: ReturnType<typeof nodeKind>;
+  isLast: boolean;
+}) {
+  switch (kind) {
+    case 'done':
+      return <Check strokeWidth={2.6} />;
+    case 'current':
+      return isLast ? <Trophy strokeWidth={2.2} /> : <Star fill="currentColor" stroke="none" />;
+    case 'milestone':
+      return <Trophy strokeWidth={2.2} />;
+    case 'locked':
+      return <Lock strokeWidth={2.6} />;
+    default: {
+      const _exhaustive: never = kind;
+      return _exhaustive;
+    }
+  }
 }
 
 function nodePosition(index: number, total: number) {
@@ -44,6 +63,8 @@ export default function HomePage() {
   const [progress, setProgress] = useState<UserProgress | null>(null);
   const [track, setTrack] = useState<Track | null>(null);
   const [loading, setLoading] = useState(true);
+  const [focusNext, setFocusNext] = useState(false);
+  const currentLessonRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -53,13 +74,24 @@ export default function HomePage() {
 
       const trackData = await loadTrack(prog.currentTrack);
       setTrack(trackData);
+      setFocusNext(new URLSearchParams(window.location.search).get('focus') === 'next');
       setLoading(false);
 
-      playAudio(homeGreeting()).catch(() => {});
+      if (isAudioUnlocked() && consumeHomeGreeting()) {
+        playAudio(homeGreeting()).catch(() => {});
+      }
     }
 
     load();
   }, []);
+
+  useEffect(() => {
+    if (loading) return;
+    const node = currentLessonRef.current;
+    if (node && typeof node.scrollIntoView === 'function') {
+      node.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+  }, [loading, track, progress]);
 
   const handleLessonClick = (lesson: Lesson) => {
     if (!progress || !track) return;
@@ -87,13 +119,19 @@ export default function HomePage() {
     track.units[0];
 
   const currentLesson = currentUnit.lessons.find((lesson) => !progress.completedLessons.includes(lesson.id));
+  const currentIndex = currentLesson
+    ? currentUnit.lessons.findIndex((lesson) => lesson.id === currentLesson.id)
+    : -1;
+  const currentRight =
+    currentIndex >= 0 ? nodePosition(currentIndex, currentUnit.lessons.length).right : 0;
+  const hideMascot = currentRight >= 220;
   const unitNumber = Number(currentUnit.id.replace(/\D/g, '')) || 1;
   const pathHeight = Math.max(420, (currentUnit.lessons.length - 1) * 88 + 120);
   const trackLabel = progress.currentTrack === 'math' ? 'حساب' : 'حرف';
 
   return (
     <div className="app-phone">
-      <AudioUnlockOverlay />
+      <AudioUnlockOverlay phrase={homeGreeting()} sessionOnce />
       <div className="home-top">
         <span className="chip" aria-label={`مسیر: ${trackLabel}`}>
           {progress.currentTrack === 'math' ? (
@@ -149,37 +187,33 @@ export default function HomePage() {
             const isCurrent = lesson.id === currentLesson?.id;
             const unlocked = isLessonUnlocked(track, lesson.id, progress.completedLessons);
             const { right, top } = nodePosition(lessonIndex, currentUnit.lessons.length);
-            const isReview = !unlocked && lessonIndex === currentUnit.lessons.length - 1;
-
-            let kind = 'locked';
-            if (isCompleted) kind = 'done';
-            else if (isCurrent) kind = 'current';
-            else if (isReview) kind = 'review locked';
+            const isLast = lessonIndex === currentUnit.lessons.length - 1;
+            const kind = nodeKind({ isCompleted, isCurrent, unlocked, isLast });
+            const flipTooltip = isCurrent && right >= 220;
 
             return (
-              <div key={lesson.id}>
-                <button
-                  type="button"
-                  onClick={() => handleLessonClick(lesson)}
-                  aria-label={isCurrent ? 'شروع' : lesson.title}
-                  className={`node ${kind}`}
-                  style={{ right, top }}
-                >
-                  {isCompleted && <Check strokeWidth={2.6} />}
-                  {isCurrent && <Star fill="currentColor" stroke="none" />}
-                  {!unlocked && !isCompleted && !isCurrent && <Lock strokeWidth={2.6} />}
-                </button>
-                {isCurrent && (
-                  <div className="tooltip" style={{ right: right + 65, top: top + 26 }}>
-                    شروع
-                  </div>
-                )}
-              </div>
+              <button
+                key={lesson.id}
+                type="button"
+                ref={isCurrent ? currentLessonRef : undefined}
+                data-next-lesson={isCurrent ? 'true' : undefined}
+                onClick={() => handleLessonClick(lesson)}
+                aria-label={isCurrent ? 'شروع' : lesson.title}
+                className={`path-hit${flipTooltip ? ' tooltip-flip' : ''}`}
+                style={{ right, top }}
+              >
+                <span className={`node ${kind}${isCurrent && focusNext ? ' pulse' : ''}`}>
+                  <NodeGlyph kind={kind} isLast={isLast} />
+                </span>
+                {isCurrent && <span className="tooltip">شروع</span>}
+              </button>
             );
           })}
-          <span className="illus" style={{ width: 112, height: 112, position: 'absolute', right: 4, top: 268 }}>
-            <HodaMascot className="w-full h-full" />
-          </span>
+          {hideMascot ? null : (
+            <span className="illus" style={{ width: 112, height: 112, position: 'absolute', right: 4, top: 292 }}>
+              <HodaMascot className="w-full h-full" />
+            </span>
+          )}
         </div>
       </div>
       <BottomNav active="home" />

@@ -11,6 +11,7 @@ test.describe('Codex review navigation fixes', () => {
 
   test('the lesson-complete replay button returns to that lesson', async ({ page }) => {
     await page.goto('/');
+    await expect(page.getByText('گوش کنید')).toBeVisible();
     await page.getByRole('button', { name: /شروع/ }).click();
     await expect(page.getByText('یک تصویر برای خودتان انتخاب کنید')).toBeVisible();
     await page.getByRole('button', { name: '🌷' }).click();
@@ -22,5 +23,394 @@ test.describe('Codex review navigation fixes', () => {
     await page.goto('/lesson-complete?xp=10&lesson=سلام&id=m1l1');
     await page.getByRole('button', { name: 'همین درس را دوباره بخوانیم' }).click();
     await expect(page).toHaveURL(/\/lesson\/m1l1/);
+  });
+
+  test('home chips and bottom nav stay tappable at 48px', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: /شروع/ }).click();
+    await page.getByRole('button', { name: 'ادامه' }).click();
+    await page.getByRole('button', { name: /عددها و حساب/ }).click();
+    await page.waitForURL('**/home');
+
+    const chip = page.locator('.chip').first();
+    const chipBox = await chip.boundingBox();
+    expect(chipBox?.height ?? 0).toBeGreaterThanOrEqual(48);
+
+    const nav = page.locator('nav.nav');
+    await expect(nav).toBeVisible();
+    const position = await nav.evaluate((element) => getComputedStyle(element).position);
+    expect(['sticky', 'fixed']).toContain(position);
+
+    await page.getByRole('button', { name: 'من' }).click();
+    await expect(page).toHaveURL(/\/profile/);
+    await expect(page.getByLabel('پخش خودکار')).toHaveCount(0);
+
+    const tile = page.locator('.letter-tile').first();
+    const tileBox = await tile.boundingBox();
+    expect(tileBox?.width ?? 0).toBeGreaterThanOrEqual(56);
+    expect(tileBox?.height ?? 0).toBeGreaterThanOrEqual(56);
+
+    const pad = await page.locator('.content').evaluate((element) => parseFloat(getComputedStyle(element).paddingBottom));
+    expect(pad).toBeGreaterThanOrEqual(98 + 16);
+  });
+
+  test('lesson-complete continue opens home with the next lesson in view', async ({ page }) => {
+    await page.goto('/');
+    await page.getByRole('button', { name: /شروع/ }).click();
+    await page.getByRole('button', { name: 'ادامه' }).click();
+    await page.getByRole('button', { name: /عددها و حساب/ }).click();
+    await page.waitForURL('**/home');
+
+    await page.goto('/lesson-complete?xp=10&lesson=سلام&id=m1l1');
+    await page.getByRole('button', { name: 'ادامه' }).click();
+    await expect(page).toHaveURL(/\/home\?focus=next/);
+    await expect(page.locator('[data-next-lesson="true"]')).toBeInViewport();
+  });
+
+  test('subitize cards share the lesson content inset', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(async () => {
+      const today = new Date().toISOString().split('T')[0];
+      const value = {
+        currentTrack: 'math',
+        onboarded: true,
+        completedLessons: ['m1l1'],
+        completedUnits: [],
+        xp: 40,
+        streak: 3,
+        streakBest: 3,
+        lastActivityDate: today,
+        dailyGoal: 2,
+        dailyLessonsCompleted: 1,
+        restDaysUsed: 0,
+        weakItems: [],
+        avatar: 'tulip',
+        name: 'فریبا جون',
+        startDate: '2026-01-01T00:00:00.000Z',
+        speechRate: 1,
+        autoplay: true,
+        activityDates: [today],
+      };
+      sessionStorage.setItem('pl-audio-unlocked', '1');
+      await new Promise<void>((resolve, reject) => {
+        const req = indexedDB.open('persian-learn', 1);
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if (!db.objectStoreNames.contains('progress')) db.createObjectStore('progress');
+          if (!db.objectStoreNames.contains('lessons')) db.createObjectStore('lessons');
+        };
+        req.onsuccess = () => {
+          const db = req.result;
+          const tx = db.transaction('progress', 'readwrite');
+          tx.objectStore('progress').put(value, 'current');
+          tx.oncomplete = () => {
+            db.close();
+            resolve();
+          };
+          tx.onerror = () => reject(tx.error ?? new Error('progress write failed'));
+        };
+        req.onerror = () => reject(req.error ?? new Error('indexedDB open failed'));
+      });
+    });
+
+    await page.goto('/lesson/m1l2?ex=1');
+    await expect(page.getByText('با یک نگاه')).toBeVisible();
+
+    const check = page.getByRole('button', { name: /بررسی/ });
+    const grid = page.locator('.picture-grid');
+    const cards = page.locator('.picture-grid .object-choice-card');
+    await expect(cards).toHaveCount(3);
+
+    const checkBox = await check.boundingBox();
+    const gridBox = await grid.boundingBox();
+    const boxes = (await Promise.all([0, 1, 2].map((index) => cards.nth(index).boundingBox()))).filter(
+      (box): box is NonNullable<typeof box> => Boolean(box)
+    );
+    expect(checkBox && gridBox && boxes.length === 3).toBeTruthy();
+
+    expect(gridBox!.x).toBeGreaterThanOrEqual(20);
+    expect(Math.abs(gridBox!.x - checkBox!.x)).toBeLessThanOrEqual(2);
+    expect(Math.abs(gridBox!.width - checkBox!.width)).toBeLessThanOrEqual(2);
+
+    const ordered = [...boxes].sort((left, right) => left.x - right.x);
+    const gap = ordered[1].x - (ordered[0].x + ordered[0].width);
+    expect(gap).toBeGreaterThanOrEqual(11);
+    expect(gap).toBeLessThanOrEqual(13);
+
+    const layout = await page.evaluate(() => {
+      const cards = [...document.querySelectorAll('.picture-grid .object-choice-card')];
+      const sizes = cards.map((card) => {
+        const item = card.querySelector('.object-cluster > .illus') as HTMLElement | null;
+        return item?.getBoundingClientRect().width ?? 0;
+      });
+      const three = cards.find(
+        (element) => element.querySelectorAll('.object-cluster > .illus').length === 3
+      );
+      if (!three) return null;
+      const cardBox = three.getBoundingClientRect();
+      const dots = [...three.querySelectorAll('.object-cluster > .illus')]
+        .map((dot) => dot.getBoundingClientRect())
+        .sort((left, right) => left.y - right.y || left.x - right.x);
+      return {
+        sizes,
+        cardX: cardBox.x,
+        cardRight: cardBox.right,
+        firstDotX: dots[0]?.x ?? 0,
+        lastDotRight: Math.max(...dots.map((dot) => dot.right)),
+        cols: Number.parseInt(
+          (three.querySelector('.object-cluster') as HTMLElement | null)?.style.getPropertyValue(
+            '--object-cols'
+          ) || '0',
+          10
+        ),
+      };
+    });
+    expect(layout).toBeTruthy();
+    expect(layout!.sizes).toHaveLength(3);
+    expect(Math.min(...layout!.sizes)).toBeGreaterThanOrEqual(32);
+    expect(layout!.firstDotX).toBeGreaterThanOrEqual(layout!.cardX);
+    expect(layout!.lastDotRight).toBeLessThanOrEqual(layout!.cardRight);
+  });
+
+  test('profile path rows and the slower chip stay at least 48px', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(async () => {
+      const today = new Date().toISOString().split('T')[0];
+      const value = {
+        currentTrack: 'math',
+        onboarded: true,
+        completedLessons: ['m1l1', 'm1l2'],
+        completedUnits: [],
+        xp: 40,
+        streak: 3,
+        streakBest: 3,
+        lastActivityDate: today,
+        dailyGoal: 2,
+        dailyLessonsCompleted: 1,
+        restDaysUsed: 0,
+        weakItems: [],
+        avatar: 'tulip',
+        name: 'فریبا جون',
+        startDate: '2026-01-01T00:00:00.000Z',
+        speechRate: 1,
+        autoplay: true,
+        activityDates: [today],
+      };
+      sessionStorage.setItem('pl-audio-unlocked', '1');
+      await new Promise<void>((resolve, reject) => {
+        const req = indexedDB.open('persian-learn', 1);
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if (!db.objectStoreNames.contains('progress')) db.createObjectStore('progress');
+          if (!db.objectStoreNames.contains('lessons')) db.createObjectStore('lessons');
+        };
+        req.onsuccess = () => {
+          const db = req.result;
+          const tx = db.transaction('progress', 'readwrite');
+          tx.objectStore('progress').put(value, 'current');
+          tx.oncomplete = () => {
+            db.close();
+            resolve();
+          };
+          tx.onerror = () => reject(tx.error ?? new Error('progress write failed'));
+        };
+        req.onerror = () => reject(req.error ?? new Error('indexedDB open failed'));
+      });
+    });
+
+    await page.goto('/profile');
+    await expect(page.getByText('سرعت صدا')).toBeVisible();
+    const mathPath = page.getByRole('button', { name: 'مسیر عددها' });
+    const alphabetPath = page.getByRole('button', { name: 'ب الفبا' });
+    expect((await mathPath.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(48);
+    expect((await alphabetPath.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(48);
+
+    await page.goto('/lesson/m1l3?ex=6');
+    const slow = page.locator('.slow-btn');
+    await expect(slow).toBeVisible();
+    expect((await slow.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(48);
+    const turtle = slow.locator('svg');
+    await expect(turtle).toBeVisible();
+    const turtleBox = await turtle.boundingBox();
+    expect(turtleBox?.width ?? 0).toBeGreaterThanOrEqual(24);
+    expect(turtleBox?.height ?? 0).toBeGreaterThanOrEqual(24);
+    await expect(turtle.locator('ellipse').first()).toHaveAttribute('fill', '#3E9A00');
+  });
+
+  test('gallery object items stay at least 32px and wrap after five', async ({ page }) => {
+    await page.goto('/dev/object-cards');
+    await expect(page.locator('[data-object-gallery]')).toBeVisible();
+    await page.waitForTimeout(300);
+    const sizes = await page.evaluate(() => {
+      const items = [...document.querySelectorAll('.object-cluster > .illus, .ten-frame-cell .illus')];
+      return items.map((item) => Math.round(item.getBoundingClientRect().width));
+    });
+    expect(sizes.length).toBeGreaterThan(20);
+    expect(Math.min(...sizes)).toBeGreaterThanOrEqual(32);
+
+    const tenApples = page.locator('[data-gallery-section="match_pairs"] [data-count="10"] .object-cluster');
+    await expect(tenApples).toHaveAttribute('data-layout', 'row');
+    await expect(tenApples).toHaveAttribute('data-count', '10');
+    const tenLayout = await tenApples.evaluate((element) => {
+      const cluster = element as HTMLElement;
+      const apples = cluster.closest('.match-object-apples') as HTMLElement | null;
+      const size = Number.parseInt(cluster.style.getPropertyValue('--object-size') || '0', 10);
+      const cols = Number.parseInt(cluster.style.getPropertyValue('--object-cols') || '0', 10);
+      const gap = Number.parseFloat(getComputedStyle(cluster).gap) || 4;
+      const clusterWidth = cols * size + Math.max(0, cols - 1) * gap;
+      return {
+        cols: cluster.style.getPropertyValue('--object-cols'),
+        rows: cluster.style.getPropertyValue('--object-rows'),
+        size,
+        fill: apples && apples.clientWidth > 0 ? clusterWidth / apples.clientWidth : 0,
+      };
+    });
+    expect(tenLayout.size).toBeGreaterThanOrEqual(32);
+    expect(tenLayout.fill).toBeGreaterThan(0.7);
+
+    const fourApples = page.locator('[data-gallery-section="match_pairs"] [data-count="4"] .object-cluster');
+    await expect(fourApples).toHaveAttribute('data-layout', 'row');
+    const fourFill = await fourApples.evaluate((element) => {
+      const cluster = element as HTMLElement;
+      const apples = cluster.closest('.match-object-apples') as HTMLElement | null;
+      const size = Number.parseInt(cluster.style.getPropertyValue('--object-size') || '0', 10);
+      const cols = Number.parseInt(cluster.style.getPropertyValue('--object-cols') || '0', 10);
+      const gap = Number.parseFloat(getComputedStyle(cluster).gap) || 4;
+      const clusterWidth = cols * size + Math.max(0, cols - 1) * gap;
+      return {
+        size,
+        fill: apples && apples.clientWidth > 0 ? clusterWidth / apples.clientWidth : 0,
+      };
+    });
+    expect(fourFill.size).toBeGreaterThanOrEqual(32);
+    expect(fourFill.fill).toBeGreaterThanOrEqual(0.65);
+
+    const fiveApples = page.locator('[data-gallery-section="match_pairs"] [data-count="5"] .object-cluster');
+    await expect(fiveApples).toHaveAttribute('data-layout', 'row');
+    const fiveFill = await fiveApples.evaluate((element) => {
+      const cluster = element as HTMLElement;
+      const apples = cluster.closest('.match-object-apples') as HTMLElement | null;
+      const size = Number.parseInt(cluster.style.getPropertyValue('--object-size') || '0', 10);
+      const cols = Number.parseInt(cluster.style.getPropertyValue('--object-cols') || '0', 10);
+      const gap = Number.parseFloat(getComputedStyle(cluster).gap) || 4;
+      const clusterWidth = cols * size + Math.max(0, cols - 1) * gap;
+      return {
+        size,
+        fill: apples && apples.clientWidth > 0 ? clusterWidth / apples.clientWidth : 0,
+      };
+    });
+    expect(fiveFill.size).toBeGreaterThanOrEqual(32);
+    expect(fiveFill.fill).toBeGreaterThanOrEqual(0.65);
+
+    const sixApples = page.locator('[data-gallery-section="match_pairs"] [data-count="6"] .object-cluster');
+    await expect(sixApples).toHaveAttribute('data-layout', 'row');
+    const sixFill = await sixApples.evaluate((element) => {
+      const cluster = element as HTMLElement;
+      const apples = cluster.closest('.match-object-apples') as HTMLElement | null;
+      const size = Number.parseInt(cluster.style.getPropertyValue('--object-size') || '0', 10);
+      const cols = Number.parseInt(cluster.style.getPropertyValue('--object-cols') || '0', 10);
+      const gap = Number.parseFloat(getComputedStyle(cluster).gap) || 4;
+      const clusterWidth = cols * size + Math.max(0, cols - 1) * gap;
+      return {
+        size,
+        cols,
+        rows: cluster.style.getPropertyValue('--object-rows'),
+        fill: apples && apples.clientWidth > 0 ? clusterWidth / apples.clientWidth : 0,
+      };
+    });
+    expect(sixFill.cols).toBe(6);
+    expect(sixFill.rows).toBe('1');
+    expect(sixFill.size).toBeGreaterThanOrEqual(32);
+    expect(sixFill.fill).toBeGreaterThanOrEqual(0.65);
+  });
+
+  test('match-pairs number tray stays fully above بررسی on a four-row question', async ({ page }) => {
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto('/');
+    await page.evaluate(async () => {
+      const today = new Date().toISOString().split('T')[0];
+      const value = {
+        currentTrack: 'math',
+        onboarded: true,
+        completedLessons: [
+          'm1l1',
+          'm1l2',
+          'm1l3',
+          'm1l4',
+          'm1l5',
+          'm2l1',
+          'm2l2',
+          'm2l3',
+          'm2l4',
+          'm2l5',
+          'm3l1',
+        ],
+        completedUnits: [],
+        xp: 400,
+        streak: 3,
+        streakBest: 3,
+        lastActivityDate: today,
+        dailyGoal: 2,
+        dailyLessonsCompleted: 1,
+        restDaysUsed: 0,
+        weakItems: [],
+        avatar: 'tulip',
+        name: 'فریبا جون',
+        startDate: '2026-01-01T00:00:00.000Z',
+        speechRate: 1,
+        autoplay: true,
+        activityDates: [today],
+      };
+      sessionStorage.setItem('pl-audio-unlocked', '1');
+      await new Promise<void>((resolve, reject) => {
+        const req = indexedDB.open('persian-learn', 1);
+        req.onupgradeneeded = () => {
+          const db = req.result;
+          if (!db.objectStoreNames.contains('progress')) db.createObjectStore('progress');
+          if (!db.objectStoreNames.contains('lessons')) db.createObjectStore('lessons');
+        };
+        req.onsuccess = () => {
+          const db = req.result;
+          const tx = db.transaction('progress', 'readwrite');
+          tx.objectStore('progress').put(value, 'current');
+          tx.oncomplete = () => {
+            db.close();
+            resolve();
+          };
+          tx.onerror = () => reject(tx.error ?? new Error('progress write failed'));
+        };
+        req.onerror = () => reject(req.error ?? new Error('indexedDB open failed'));
+      });
+    });
+
+    await page.goto('/lesson/m3l2?ex=8');
+    const tray = page.locator('[data-match-tray]');
+    const check = page.getByRole('button', { name: /بررسی/ });
+    await expect(tray).toBeVisible();
+    await expect(check).toBeVisible();
+    const rows = page.locator('.match-object-row');
+    await expect(rows).toHaveCount(4);
+    for (let index = 0; index < 4; index += 1) {
+      await expect(rows.nth(index)).toBeInViewport();
+    }
+    const listOverflow = await page.locator('.match-object-list').evaluate((el) =>
+      Math.max(0, el.scrollHeight - el.clientHeight)
+    );
+    expect(listOverflow).toBeLessThanOrEqual(2);
+
+    const trayBox = await tray.boundingBox();
+    const checkBox = await check.boundingBox();
+    expect(trayBox).toBeTruthy();
+    expect(checkBox).toBeTruthy();
+    expect(trayBox!.y).toBeGreaterThanOrEqual(0);
+    expect(trayBox!.y + trayBox!.height).toBeLessThanOrEqual(checkBox!.y + 1);
+
+    const sizes = await page.evaluate(() =>
+      [...document.querySelectorAll('.match-object-apples .object-cluster > .illus')].map((item) =>
+        Math.round(item.getBoundingClientRect().width)
+      )
+    );
+    expect(sizes.length).toBeGreaterThan(0);
+    expect(Math.min(...sizes)).toBeGreaterThanOrEqual(32);
   });
 });

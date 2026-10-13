@@ -5,13 +5,48 @@ import { playOptionAudio } from '@/lib/spoken-option';
 import { comparePrompt } from '@/lib/compare';
 import { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
-import { ObjectArt } from '@/components/art/objects';
+import { ObjectCluster, objectClusterChoiceGridClass, splitObjectTokens } from '@/components/art/objects';
+import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
 interface CompareMoreLessExerciseProps {
   exercise: Exercise;
   userAnswer: string;
   onAnswerChange: (answer: string) => void;
   disabled: boolean;
+}
+
+function CompareSide({
+  value,
+  token,
+  selected,
+  disabled,
+  onSelect,
+}: {
+  value: 'left' | 'right';
+  token: string;
+  selected: boolean;
+  disabled: boolean;
+  onSelect: (value: 'left' | 'right', token: string) => void;
+}) {
+  const { ref, box } = useSharedClusterSize<HTMLButtonElement>([
+    splitObjectTokens(token).length,
+  ]);
+  return (
+    <button
+      ref={ref}
+      type="button"
+      onClick={() => onSelect(value, token)}
+      disabled={disabled}
+      className={`card object-choice-card ${selected ? 'selected' : ''}`}
+    >
+      <ObjectCluster
+        token={token}
+        boxWidth={box.width}
+        boxHeight={box.height}
+        cardWidth={box.offsetWidth}
+      />
+    </button>
+  );
 }
 
 export default function CompareMoreLessExercise({
@@ -38,23 +73,26 @@ export default function CompareMoreLessExercise({
         <SpeakerButton text={exercise.audio_script} />
         <h2>{comparePrompt(ask)}</h2>
       </div>
-      <div className="grid2">
-        <button
-          type="button"
-          onClick={() => select('left', left)}
+      <div
+        className={objectClusterChoiceGridClass(
+          Math.max(splitObjectTokens(left).length, splitObjectTokens(right).length),
+          2
+        )}
+      >
+        <CompareSide
+          value="left"
+          token={left}
+          selected={userAnswer === 'left'}
           disabled={disabled}
-          className={`card h-40 ${userAnswer === 'left' ? 'selected' : ''}`}
-        >
-          <ObjectArt token={left} size={96} />
-        </button>
-        <button
-          type="button"
-          onClick={() => select('right', right)}
+          onSelect={select}
+        />
+        <CompareSide
+          value="right"
+          token={right}
+          selected={userAnswer === 'right'}
           disabled={disabled}
-          className={`card h-40 ${userAnswer === 'right' ? 'selected' : ''}`}
-        >
-          <ObjectArt token={right} size={96} />
-        </button>
+          onSelect={select}
+        />
       </div>
       <button
         type="button"

@@ -1,9 +1,12 @@
+'use client';
+
 import { exerciseChoices } from '@/lib/shuffle';
-import { exerciseHeading } from '@/lib/exercise-copy';
+import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
-import { ObjectArt } from '@/components/art/objects';
+import { ObjectCluster } from '@/components/art/objects';
+import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
 interface Props {
   exercise: Exercise;
@@ -24,6 +27,7 @@ export default function CountObjectsExercise({
   const options = exerciseChoices(exercise);
   const count = Number.isFinite(payload.count) ? payload.count : 0;
   const objects = Array.from({ length: Math.max(0, count) }, () => payload.objects || '•');
+  const { ref, box } = useSharedClusterSize([objects.length]);
 
   const handleSelect = (option: string) => {
     if (disabled) return;
@@ -34,22 +38,15 @@ export default function CountObjectsExercise({
     <>
       <div className="prompt">
         <SpeakerButton text={exercise.audio_script} />
-        <h2>{exerciseHeading(exercise)}</h2>
+        <h2 className={exerciseHeadingClass(exercise)}>{exerciseHeading(exercise)}</h2>
       </div>
-      <div className="card" style={{ height: 250, background: '#FFF8EC' }}>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: `repeat(${count === 4 ? 2 : Math.min(count, 3) || 2}, 96px)`,
-            gap: '18px 40px',
-          }}
-        >
-          {objects.map((obj, index) => (
-            <span key={`${obj}-${index}`} className="relative inline-grid">
-              <ObjectArt token={obj} size={96} />
-            </span>
-          ))}
-        </div>
+      <div ref={ref} className="card object-count-card">
+        <ObjectCluster
+          tokens={objects}
+          boxWidth={box.width}
+          boxHeight={box.height}
+          cardWidth={box.offsetWidth}
+        />
       </div>
       <div className="grid3">
         {options.map((option) => {

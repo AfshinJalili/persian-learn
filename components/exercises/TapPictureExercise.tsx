@@ -1,9 +1,17 @@
+'use client';
+
 import { exerciseChoices } from '@/lib/shuffle';
-import { exerciseHeading } from '@/lib/exercise-copy';
+import { exerciseHeading, exerciseHeadingClass, exerciseHeadingStyle } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
-import { ObjectArt } from '@/components/art/objects';
+import {
+  ObjectCluster,
+  objectClusterChoiceGridClass,
+  splitObjectTokens,
+  type ObjectClusterLayout,
+} from '@/components/art/objects';
+import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
 interface Props {
   exercise: Exercise;
@@ -11,6 +19,52 @@ interface Props {
   onAnswerChange: (answer: string) => void;
   disabled: boolean;
   answerState?: 'idle' | 'correct' | 'wrong';
+}
+
+function SizedPictureChoice({
+  option,
+  layout,
+  selected,
+  disabled,
+  state,
+  dim,
+  peers,
+  onSelect,
+}: {
+  option: string;
+  layout: ObjectClusterLayout;
+  selected: boolean;
+  disabled: boolean;
+  state: 'idle' | 'correct' | 'wrong';
+  dim: boolean;
+  peers: string[];
+  onSelect: (option: string) => void;
+}) {
+  const { ref, box } = useSharedClusterSize<HTMLButtonElement>(
+    [splitObjectTokens(option).length],
+    { layout }
+  );
+  return (
+    <ChoiceButton
+      ref={ref}
+      selected={selected}
+      disabled={disabled}
+      state={state}
+      dim={dim}
+      name={option}
+      peers={peers}
+      onClick={() => onSelect(option)}
+      className="object-choice-card"
+    >
+      <ObjectCluster
+        token={option}
+        layout={layout}
+        boxWidth={box.width}
+        boxHeight={box.height}
+        cardWidth={box.offsetWidth}
+      />
+    </ChoiceButton>
+  );
 }
 
 export default function TapPictureExercise({
@@ -21,6 +75,8 @@ export default function TapPictureExercise({
   answerState = 'idle',
 }: Props) {
   const options = exerciseChoices(exercise);
+  const counts = options.map((option) => splitObjectTokens(option).length);
+  const clusterLayout = exercise.id.startsWith('a') ? 'picture' : 'grid';
 
   const handleSelect = (option: string) => {
     if (disabled) return;
@@ -31,27 +87,29 @@ export default function TapPictureExercise({
     <>
       <div className="prompt">
         <SpeakerButton text={exercise.audio_script} />
-        <h2>{exerciseHeading(exercise)}</h2>
+        <h2 className={exerciseHeadingClass(exercise)} style={exerciseHeadingStyle(exercise)}>
+          {exerciseHeading(exercise)}
+        </h2>
       </div>
-      <div className="grid2">
+      <div
+        className={objectClusterChoiceGridClass(Math.max(1, ...counts), options.length, 'picture-grid')}
+      >
         {options.map((option) => {
           const selected = userAnswer === option;
           const state =
             disabled && answerState !== 'idle' && selected ? answerState : 'idle';
           return (
-            <ChoiceButton
+            <SizedPictureChoice
               key={option}
+              option={option}
+              layout={clusterLayout}
               selected={selected}
               disabled={disabled}
               state={state}
               dim={disabled && !selected}
-              name={option}
               peers={options}
-              onClick={() => handleSelect(option)}
-              className="h-[172px]"
-            >
-              <ObjectArt token={option} size={116} />
-            </ChoiceButton>
+              onSelect={handleSelect}
+            />
           );
         })}
       </div>

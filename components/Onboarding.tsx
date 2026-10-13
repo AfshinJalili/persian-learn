@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { unlockAudio, playAudio, stopAudio } from '@/lib/audio';
-import { LEARNER_NAME } from '@/lib/learner';
+import { LEARNER_NAME, onboardingSpokenWelcome, welcomeBubble } from '@/lib/learner';
 import { OnboardingGate } from '@/lib/onboarding-gate';
 import { getProgress, saveProgress } from '@/lib/progress';
 import BackChevron from '@/components/BackChevron';
@@ -12,7 +12,7 @@ import HodaMascot from '@/components/HodaMascot';
 import SpeakerButton from '@/components/SpeakerButton';
 import { AVATARS, AvatarArt, PomegranateSvg } from '@/components/art/objects';
 
-const WELCOME = 'سلام! من هُدی هستم. خوش آمدید.';
+const WELCOME = onboardingSpokenWelcome();
 const AVATAR_PROMPT = 'یک تصویر برای خودتان انتخاب کنید';
 const TRACK_PROMPT = 'امروز چه یاد بگیریم؟';
 
@@ -29,6 +29,7 @@ function Dots({ step }: { step: number }) {
 export default function Onboarding() {
   const [step, setStep] = useState(0);
   const [selectedAvatar, setSelectedAvatar] = useState('tulip');
+  const [heardWelcome, setHeardWelcome] = useState(false);
   const gateRef = useRef(new OnboardingGate());
   const router = useRouter();
 
@@ -83,14 +84,16 @@ export default function Onboarding() {
       <div className="app-phone">
         <div className="content center" style={{ paddingTop: 8 }}>
           <Dots step={0} />
-          <div className="bubble">سلام! من هُدی هستم.</div>
-          <HodaMascot className="w-[230px] h-[230px]" />
+          <div className="mascot-speech">
+            <p className="speech-bubble">{welcomeBubble()}</p>
+            <HodaMascot className="w-[230px] h-[230px]" />
+          </div>
           <h1>خوش آمدید</h1>
           <p className="body-lg">با هم، آرام‌آرام عدد و خواندن یاد می‌گیریم.</p>
           <div className="flex items-center gap-4">
-            <SpeakerButton text={WELCOME} />
+            <SpeakerButton text={WELCOME} onPlay={() => setHeardWelcome(true)} />
             <span className="muted" style={{ fontWeight: 700 }}>
-              دوباره گوش کنید
+              {heardWelcome ? 'دوباره گوش کنید' : 'گوش کنید'}
             </span>
           </div>
         </div>
@@ -141,7 +144,7 @@ export default function Onboarding() {
             ))}
           </div>
         </div>
-        <div className="bottom" style={{ display: 'flex', flexDirection: 'column', gap: 12, paddingTop: 16, paddingBottom: 20 }}>
+        <div className="bottom">
           <button type="button" className="btn btn-primary" onClick={handleContinueFromAvatar}>
             ادامه
             <ArrowLeft strokeWidth={2.6} />

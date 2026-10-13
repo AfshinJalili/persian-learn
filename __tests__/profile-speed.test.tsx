@@ -1,20 +1,22 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
-import { render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ProfilePage from '../app/profile/page';
-import { AUDIO_SPEEDS } from '../lib/audio';
+import { FAMILY_HELPER_HOLD_MS } from '../lib/use-long-press';
 
 const setAudioSpeed = jest.fn();
+const playAudio = jest.fn<() => Promise<void>>();
 const saveProgress = jest.fn<(progress: unknown) => Promise<void>>();
 const getProgress = jest.fn();
+const routerPush = jest.fn();
 
 jest.mock('next/navigation', () => ({
-  useRouter: () => ({ push: jest.fn() }),
+  useRouter: () => ({ push: routerPush }),
 }));
 
 jest.mock('@/lib/audio', () => ({
   AUDIO_SPEEDS: [0.9, 1, 1.1, 1.2, 1.3],
-  playAudio: jest.fn(() => Promise.resolve()),
+  playAudio: () => playAudio(),
   setAudioSpeed: (speed: number) => setAudioSpeed(speed),
 }));
 
@@ -36,8 +38,11 @@ jest.mock('@/components/ui/BottomNav', () => ({
 describe('Profile voice speed', () => {
   beforeEach(() => {
     setAudioSpeed.mockReset();
+    playAudio.mockReset();
     saveProgress.mockReset();
     getProgress.mockReset();
+    routerPush.mockReset();
+    playAudio.mockResolvedValue(undefined);
     saveProgress.mockResolvedValue(undefined);
     getProgress.mockResolvedValue({
       currentTrack: 'math',
@@ -61,15 +66,115 @@ describe('Profile voice speed', () => {
     });
   });
 
-  it('offers 0.9x through 1.3x and saves the chosen rate', async () => {
-    const user = userEvent.setup();
+  it('uses a labeled slider and saves the chosen rate', async () => {
     render(<ProfilePage />);
-    for (const rate of AUDIO_SPEEDS) {
-      expect(await screen.findByRole('button', { name: `${rate.toFixed(1)} برابر` })).toBeInTheDocument();
-    }
+    const slider = await screen.findByRole('slider', { name: 'سرعت صدا' });
+    expect(screen.getByText('آهسته')).toBeInTheDocument();
+    expect(screen.getByText('تند')).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: '1.2 برابر' }));
+    fireEvent.change(slider, { target: { value: '1.2' } });
     expect(setAudioSpeed).toHaveBeenCalledWith(1.2);
     expect(saveProgress).toHaveBeenCalledWith(expect.objectContaining({ speechRate: 1.2 }));
+  });
+
+  it('plays a sample at the chosen speed', async () => {
+    const user = userEvent.setup();
+    render(<ProfilePage />);
+    await user.click(await screen.findByRole('button', { name: 'نمونه را بشنوید' }));
+    expect(playAudio).toHaveBeenCalled();
+  });
+
+  it('uses large letter tiles and icons on stat headers', async () => {
+    render(<ProfilePage />);
+    const tile = await screen.findByText('آ');
+    expect(tile).toHaveClass('letter-tile');
+    expect(screen.getByText('روز پیاپی').closest('.k')?.querySelector('svg')).toBeTruthy();
+    expect(screen.getByText('امتیاز').closest('.k')?.querySelector('svg')).toBeTruthy();
+    expect(screen.getByText('حرف').closest('.k')?.querySelector('svg')).toBeTruthy();
+  });
+
+  it('hides autoplay until a family-helper long-press', async () => {
+    render(<ProfilePage />);
+    await screen.findByText('سرعت صدا');
+    expect(screen.queryByLabelText('پخش خودکار')).not.toBeInTheDocument();
+
+    jest.useFakeTimers();
+    fireEvent.pointerDown(screen.getByLabelText('تنظیمات خانواده'), { button: 0 });
+    act(() => {
+      jest.advanceTimersByTime(FAMILY_HELPER_HOLD_MS);
+    });
+    jest.useRealTimers();
+
+    expect(screen.getByLabelText('پخش خودکار')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'تمام' })).toBeInTheDocument();
+  });
+
+  it('closes the family-helper panel with تمام and after leaving the screen', async () => {
+    const user = userEvent.setup();
+    const { unmount } = render(<ProfilePage />);
+    await screen.findByText('سرعت صدا');
+
+    jest.useFakeTimers();
+    fireEvent.pointerDown(screen.getByLabelText('تنظیمات خانواده'), { button: 0 });
+    act(() => {
+      jest.advanceTimersByTime(FAMILY_HELPER_HOLD_MS);
+    });
+    jest.useRealTimers();
+
+    await user.click(screen.getByRole('button', { name: 'تمام' }));
+    expect(screen.queryByLabelText('پخش خودکار')).not.toBeInTheDocument();
+
+    jest.useFakeTimers();
+    fireEvent.pointerDown(screen.getByLabelText('تنظیمات خانواده'), { button: 0 });
+    act(() => {
+      jest.advanceTimersByTime(FAMILY_HELPER_HOLD_MS);
+    });
+    jest.useRealTimers();
+    expect(screen.getByLabelText('پخش خودکار')).toBeInTheDocument();
+    unmount();
+
+    render(<ProfilePage />);
+    await screen.findByText('سرعت صدا');
+    expect(screen.queryByLabelText('پخش خودکار')).not.toBeInTheDocument();
+  });
+
+  it('keeps empty progress tracks empty and fills 1/12 proportionally', async () => {
+    getProgress.mockResolvedValue({
+      currentTrack: 'math',
+      onboarded: true,
+      completedLessons: ['m1l1'],
+      completedUnits: [],
+      xp: 10,
+      streak: 1,
+      streakBest: 1,
+      lastActivityDate: '',
+      dailyGoal: 2,
+      dailyLessonsCompleted: 1,
+      restDaysUsed: 0,
+      activityDates: [],
+      weakItems: [],
+      avatar: 'tulip',
+      name: 'فریبا جون',
+      startDate: '2026-01-01T00:00:00.000Z',
+      speechRate: 1,
+      autoplay: true,
+    });
+    const { container } = render(<ProfilePage />);
+    await screen.findByText('سرعت صدا');
+    expect(screen.getByText(/از ۱۲/)).toBeInTheDocument();
+    const fills = container.querySelectorAll('.track-block .progress > i');
+    expect(fills[0]).toHaveAttribute('data-filled', 'true');
+    expect((fills[0] as HTMLElement).style.width).toBe(`${(1 / 12) * 100}%`);
+    expect(fills[1]).toHaveAttribute('data-filled', 'false');
+    expect((fills[1] as HTMLElement).style.width).toBe('0%');
+  });
+
+  it('opens the alphabet home without waiting for the track clip to finish', async () => {
+    const user = userEvent.setup();
+    playAudio.mockImplementation(() => new Promise(() => {}));
+    render(<ProfilePage />);
+    await screen.findByText('سرعت صدا');
+    await user.click(screen.getByRole('button', { name: 'ب الفبا' }));
+    expect(routerPush).toHaveBeenCalledWith('/home');
   });
 });

@@ -2,9 +2,17 @@
 
 import { Exercise } from '@/lib/types';
 import { exerciseChoices } from '@/lib/shuffle';
-import { exerciseHeading } from '@/lib/exercise-copy';
+import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
+import { digitDisplayFontSize, isSequenceDisplay, sequenceTokens } from '@/lib/digit-display';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
+import {
+  DICE_PIP_COUNTS,
+  ObjectCluster,
+  looksLikeObjects,
+  splitObjectTokens,
+} from '@/components/art/objects';
+import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
 interface ChooseDigitExerciseProps {
   exercise: Exercise;
@@ -23,18 +31,56 @@ export default function ChooseDigitExercise({
 }: ChooseDigitExerciseProps) {
   const { display } = exercise.payload as { display: string };
   const choices = exerciseChoices(exercise);
+  const diceFace = Boolean(DICE_PIP_COUNTS[display]);
+  const objectDisplay = diceFace || looksLikeObjects(display);
+  const sequence = !objectDisplay && isSequenceDisplay(display);
+  const tokens = sequence ? sequenceTokens(display) : [display];
+  const { ref, box } = useSharedClusterSize([
+    Math.max(1, objectDisplay ? splitObjectTokens(display).length : tokens.length),
+  ]);
+  const fontSize = digitDisplayFontSize(box.width, box.height, box.offsetWidth, tokens.length);
 
   return (
     <>
       <div className="prompt">
         <SpeakerButton text={exercise.audio_script} />
-        <h2>{exerciseHeading(exercise)}</h2>
+        <h2 className={exerciseHeadingClass(exercise)}>{exerciseHeading(exercise)}</h2>
       </div>
-      <div className="card h-[180px]">
-        <div className="glyph" style={{ fontSize: 96 }}>
-          {display}
+      {diceFace ? (
+        <div ref={ref} className="card object-count-card" data-dice-face={display}>
+          <ObjectCluster
+            token={display}
+            boxWidth={box.width}
+            boxHeight={box.height}
+            cardWidth={box.offsetWidth}
+          />
         </div>
-      </div>
+      ) : objectDisplay ? (
+        <div ref={ref} className="card object-count-card" data-object-display>
+          <ObjectCluster
+            tokens={splitObjectTokens(display)}
+            boxWidth={box.width}
+            boxHeight={box.height}
+            cardWidth={box.offsetWidth}
+          />
+        </div>
+      ) : sequence ? (
+        <div ref={ref} className="card object-count-card" data-digit-sequence>
+          <span className="digit-sequence" style={{ fontSize }}>
+            {tokens.map((token, index) => (
+              <span key={`${token}-${index}`} className="glyph">
+                {token}
+              </span>
+            ))}
+          </span>
+        </div>
+      ) : (
+        <div ref={ref} className="card object-count-card" data-digit-display>
+          <span className="glyph" style={{ fontSize }}>
+            {display}
+          </span>
+        </div>
+      )}
       <div className="grid3">
         {choices.map((choice) => {
           const selected = userAnswer === choice;

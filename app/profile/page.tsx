@@ -4,44 +4,36 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Pencil } from 'lucide-react';
 import { getProgress, saveProgress } from '@/lib/progress';
-import { loadTrack, trackCompletionPercent } from '@/lib/content';
-import type { Track, UserProgress } from '@/lib/types';
-import { AUDIO_SPEEDS, playAudio, setAudioSpeed } from '@/lib/audio';
+import { loadTrack } from '@/lib/content';
+import { MATH_UNIT_COUNT } from '@/lib/math-unit-count';
+import type { UserProgress } from '@/lib/types';
+import { playAudio, setAudioSpeed } from '@/lib/audio';
 import { LEARNER_NAME } from '@/lib/learner';
 import { formatPersianNumber } from '@/lib/persian';
+import { useLongPress } from '@/lib/use-long-press';
 import BottomNav from '@/components/ui/BottomNav';
+import VoiceSpeedControl from '@/components/ui/VoiceSpeedControl';
+import { FlameIcon, LetterIcon, StarIcon } from '@/components/art/StatIcons';
 import { AVATARS, AvatarArt, resolveAvatarId } from '@/components/art/objects';
 
 const LETTERS = ['آ', 'ب', 'پ', 'ت', 'ث', 'ج', 'چ', 'ح', 'خ', 'د', 'ذ', 'ر'];
 
-function FlameIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 2.5c.6 3.2 5.8 5.6 5.8 11.2A5.8 5.8 0 0 1 12 21.5a5.8 5.8 0 0 1-5.8-5.8c0-3 1.8-4.6 2.8-6 .3 1.8 1.2 2.8 2.2 3.2C10.6 9.6 11 5.6 12 2.5z" fill="#F08A24" />
-      <path d="M12 12.2c.4 1.8 3 2.8 3 5.2a3 3 0 0 1-6 0c0-1.6 1-2.6 1.6-3.4.2.9.6 1.3 1 1.5-.1-1.2 0-2.2.4-3.3z" fill="#FFC83D" />
-    </svg>
-  );
-}
-
 export default function ProfilePage() {
   const [progress, setProgress] = useState<UserProgress | null>(null);
-  const [mathTrack, setMathTrack] = useState<Track | null>(null);
-  const [alphabetTrack, setAlphabetTrack] = useState<Track | null>(null);
+  const [helperOpen, setHelperOpen] = useState(false);
   const router = useRouter();
+  const helperHold = useLongPress(() => setHelperOpen(true));
 
   useEffect(() => {
     async function load() {
-      const [prog, math, alphabet] = await Promise.all([
-        getProgress(),
-        loadTrack('math'),
-        loadTrack('alphabet'),
-      ]);
+      const prog = await getProgress();
       setProgress(prog);
-      setMathTrack(math);
-      setAlphabetTrack(alphabet);
       setAudioSpeed(prog.speechRate || 1);
+      loadTrack('math').catch(() => {});
+      loadTrack('alphabet').catch(() => {});
     }
     load();
+    return () => setHelperOpen(false);
   }, []);
 
   if (!progress) {
@@ -54,8 +46,13 @@ export default function ProfilePage() {
   });
   const mathDone = progress.completedLessons.filter((id) => id.startsWith('m')).length;
   const alphaDone = progress.completedLessons.filter((id) => id.startsWith('a')).length;
-  const mathUnits = Math.min(6, Math.max(1, Math.ceil(mathDone / 5) || 1));
+  const mathUnits = Math.min(
+    MATH_UNIT_COUNT,
+    mathDone === 0 ? 0 : Math.max(1, Math.ceil(mathDone / 5))
+  );
   const learnedLetters = Math.min(32, alphaDone);
+  const mathPercent = MATH_UNIT_COUNT > 0 ? (mathUnits / MATH_UNIT_COUNT) * 100 : 0;
+  const alphabetPercent = (learnedLetters / 32) * 100;
   const avatarId = resolveAvatarId(progress.avatar);
 
   const persist = async (next: UserProgress) => {
@@ -66,7 +63,7 @@ export default function ProfilePage() {
   const switchTrack = async (track: 'math' | 'alphabet') => {
     const next = { ...progress, currentTrack: track };
     await persist(next);
-    await playAudio(track === 'math' ? 'عددها و حساب' : 'الفبا و خواندن');
+    playAudio(track === 'math' ? 'عددها و حساب' : 'الفبا و خواندن').catch(() => {});
     router.push('/home');
   };
 
@@ -81,108 +78,115 @@ export default function ProfilePage() {
     <div className="app-phone">
       <div className="content" style={{ paddingTop: 4, gap: 10 }}>
         <div className="flex items-center gap-4">
-          <span className="grid place-items-center rounded-full" style={{ width: 80, height: 80, background: '#FDE7EA' }}>
-            <AvatarArt id={avatarId} size={54} />
-          </span>
-          <div style={{ flex: 1 }}>
-            <div className="h1">{LEARNER_NAME}</div>
-            <div className="muted">از {joinedLabel} با ما</div>
-          </div>
+          <button type="button" className="family-helper-target" aria-label="تنظیمات خانواده" {...helperHold}>
+            <span className="grid place-items-center rounded-full" style={{ width: 80, height: 80, background: '#FDE7EA' }}>
+              <AvatarArt id={avatarId} size={54} />
+            </span>
+            <div style={{ flex: 1 }}>
+              <div className="h1">{LEARNER_NAME}</div>
+              <div className="muted">از {joinedLabel} با ما</div>
+            </div>
+          </button>
           <button type="button" className="icon-btn" aria-label="تغییر تصویر" onClick={cycleAvatar}>
             <Pencil strokeWidth={2.6} />
           </button>
         </div>
         <div className="flex gap-2.5">
           <div className="stat" style={{ borderColor: '#1F6408' }}>
-            <div className="k" style={{ background: '#1F6408', color: '#fff' }}>روز پیاپی</div>
-            <div className="v">
+            <div className="k" style={{ background: '#1F6408', color: '#fff' }}>
               <FlameIcon />
-              {formatPersianNumber(progress.streak)}
+              <span className="k-label">روز پیاپی</span>
             </div>
+            <div className="v">{formatPersianNumber(progress.streak)}</div>
           </div>
           <div className="stat" style={{ borderColor: '#FFC83D' }}>
-            <div className="k" style={{ background: '#FFC83D', color: '#1B2A22' }}>امتیاز</div>
+            <div className="k" style={{ background: '#FFC83D', color: '#1B2A22' }}>
+              <StarIcon />
+              <span className="k-label">امتیاز</span>
+            </div>
             <div className="v">{formatPersianNumber(progress.xp)}</div>
           </div>
           <div className="stat" style={{ borderColor: '#7B2A55' }}>
-            <div className="k" style={{ background: '#7B2A55', color: '#fff' }}>حرف</div>
+            <div className="k" style={{ background: '#7B2A55', color: '#fff' }}>
+              <LetterIcon />
+              <span className="k-label">حرف</span>
+            </div>
             <div className="v">{formatPersianNumber(learnedLetters)}</div>
           </div>
         </div>
-        <div className="row-card" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 8, padding: '12px 16px' }}>
-          <button
-            type="button"
-            onClick={() => switchTrack('math')}
-            aria-label="مسیر عددها"
-            className="flex justify-between font-extrabold w-full"
-          >
-            <span>عددها و حساب</span>
-            <span className="muted">بخش {formatPersianNumber(mathUnits)} از ۶</span>
-          </button>
-          <div className="progress" style={{ flex: 'none' }}>
-            <i style={{ width: `${mathTrack ? trackCompletionPercent(progress.completedLessons, mathTrack) : 0}%`, background: 'var(--teal-700)' }} />
+        <div className="row-card tracks-card">
+          <div className="track-block">
+            <button
+              type="button"
+              onClick={() => switchTrack('math')}
+              aria-label="مسیر عددها"
+              className="flex justify-between font-extrabold w-full"
+            >
+              <span>عددها و حساب</span>
+              <span className="muted">
+                بخش {formatPersianNumber(mathUnits)} از {formatPersianNumber(MATH_UNIT_COUNT)}
+              </span>
+            </button>
+            <div className="progress" style={{ flex: 'none' }}>
+              <i data-filled={mathPercent > 0 ? 'true' : 'false'} style={{ width: `${mathPercent}%` }} />
+            </div>
           </div>
-          <button
-            type="button"
-            onClick={() => switchTrack('alphabet')}
-            aria-label="ب الفبا"
-            className="flex justify-between font-extrabold w-full mt-1.5"
-          >
-            <span>الفبا و خواندن</span>
-            <span className="muted">{formatPersianNumber(learnedLetters)} حرف از ۳۲</span>
-          </button>
-          <div className="progress" style={{ flex: 'none' }}>
-            <i style={{ width: `${Math.min(100, (learnedLetters / 32) * 100)}%`, background: 'var(--plum-700)' }} />
+          <div className="track-block">
+            <button
+              type="button"
+              onClick={() => switchTrack('alphabet')}
+              aria-label="ب الفبا"
+              className="flex justify-between font-extrabold w-full"
+            >
+              <span>الفبا و خواندن</span>
+              <span className="muted">{formatPersianNumber(learnedLetters)} حرف از ۳۲</span>
+            </button>
+            <div className="progress" style={{ flex: 'none' }}>
+              <i
+                data-filled={alphabetPercent > 0 ? 'true' : 'false'}
+                style={{ width: `${alphabetPercent}%` }}
+              />
+            </div>
           </div>
-          <div className="flex flex-wrap gap-1.5 mt-1">
+          <div className="letter-grid">
             {LETTERS.map((letter, index) => (
               <span
                 key={letter}
-                className="grid place-items-center font-extrabold"
-                style={{
-                  width: 44,
-                  height: 46,
-                  borderRadius: 12,
-                  fontSize: 26,
-                  background: index < learnedLetters ? '#F6E6EF' : 'var(--surface-2)',
-                  color: index < learnedLetters ? '#7B2A55' : '#4A5A51',
-                }}
+                className="letter-tile"
+                data-learned={index < learnedLetters ? 'true' : 'false'}
               >
                 {letter}
               </span>
             ))}
           </div>
         </div>
-        <div className="row-card" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 12, padding: '14px 16px' }}>
-          <span style={{ fontWeight: 700 }}>سرعت صدا</span>
-          <div className="speed-picks">
-            {AUDIO_SPEEDS.map((rate) => (
+        <VoiceSpeedControl
+          value={progress.speechRate || 1}
+          onChange={(rate) => {
+            void persist({ ...progress, speechRate: rate });
+          }}
+        />
+        {helperOpen ? (
+          <div
+            className="row-card"
+            style={{ flexDirection: 'column', alignItems: 'stretch', gap: 12, padding: '12px 16px' }}
+            data-family-helper-panel
+          >
+            <div className="flex justify-between items-center gap-3">
+              <span style={{ fontWeight: 700 }}>پخش خودکار صدا</span>
               <button
-                key={rate}
                 type="button"
-                className={`speed-pick ${Math.abs(progress.speechRate - rate) < 0.001 ? 'on' : ''}`}
-                aria-pressed={Math.abs(progress.speechRate - rate) < 0.001}
-                aria-label={`${rate.toFixed(1)} برابر`}
-                onClick={async () => {
-                  setAudioSpeed(rate);
-                  await persist({ ...progress, speechRate: rate });
-                }}
-              >
-                {rate.toFixed(1)}×
-              </button>
-            ))}
+                className={`toggle ${progress.autoplay ? '' : 'off'}`}
+                aria-pressed={progress.autoplay}
+                aria-label="پخش خودکار"
+                onClick={() => persist({ ...progress, autoplay: !progress.autoplay })}
+              />
+            </div>
+            <button type="button" className="btn btn-secondary" onClick={() => setHelperOpen(false)}>
+              تمام
+            </button>
           </div>
-        </div>
-        <div className="row-card justify-between" style={{ padding: '10px 16px' }}>
-          <span style={{ fontWeight: 700 }}>پخش خودکار صدا</span>
-          <button
-            type="button"
-            className={`toggle ${progress.autoplay ? '' : 'off'}`}
-            aria-pressed={progress.autoplay}
-            aria-label="پخش خودکار"
-            onClick={() => persist({ ...progress, autoplay: !progress.autoplay })}
-          />
-        </div>
+        ) : null}
       </div>
       <BottomNav active="profile" />
     </div>

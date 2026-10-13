@@ -6,16 +6,25 @@ export type AudioSpeed = (typeof AUDIO_SPEEDS)[number];
 let currentAudio: HTMLAudioElement | null = null;
 let audioUnlocked = false;
 let audioSpeed = 1.0;
+let playGeneration = 0;
 
 function persistUnlock() {
-  if (typeof sessionStorage !== 'undefined') {
-    sessionStorage.setItem('pl-audio-unlocked', '1');
+  try {
+    if (typeof sessionStorage !== 'undefined') {
+      sessionStorage.setItem('pl-audio-unlocked', '1');
+    }
+  } catch {
+    /* private mode / blocked storage */
   }
 }
 
 function readPersistedUnlock(): boolean {
-  if (typeof sessionStorage === 'undefined') return false;
-  return sessionStorage.getItem('pl-audio-unlocked') === '1';
+  try {
+    if (typeof sessionStorage === 'undefined') return false;
+    return sessionStorage.getItem('pl-audio-unlocked') === '1';
+  } catch {
+    return false;
+  }
 }
 
 if (typeof window !== 'undefined' && readPersistedUnlock()) {
@@ -49,22 +58,71 @@ export function hydrateAudioSpeed(rate: number | undefined | null) {
   audioSpeed = 1;
 }
 
-export async function playAudio(text: string, slow: boolean = false): Promise<void> {
-  stopAudio();
-
-  const speed = slow ? 0.75 : audioSpeed;
-  const key = spokenTextKey(text);
-  if (!key) {
-    return;
+function haltCurrent() {
+  const audio = currentAudio;
+  currentAudio = null;
+  if (!audio) return;
+  audio.pause();
+  try {
+    audio.currentTime = 0;
+  } catch {
+    /* not seekable until loaded */
   }
+}
 
-  const audioId = await generateAudioId(key);
-  const audioPath = audioUrlForHash(audioId);
+export function stopAudio() {
+  playGeneration += 1;
+  haltCurrent();
+  finishPlayback();
+}
+
+export async function playAudio(
+  text: string,
+  slow: boolean = false,
+  signal?: AbortSignal
+): Promise<void> {
+  if (signal?.aborted) return;
+
+  stopAudio();
+  const token = playGeneration;
+
+  const onAbort = () => {
+    if (token === playGeneration) stopAudio();
+  };
+  signal?.addEventListener('abort', onAbort, { once: true });
 
   try {
-    await playAudioFile(audioPath, speed);
-  } catch {
-    /* missing Sulafat clip: stay silent — never use device TTS */
+    const speed = slow ? 0.75 : audioSpeed;
+    const key = spokenTextKey(text);
+    if (!key) {
+      return;
+    }
+
+    const audioId = await generateAudioId(key);
+    if (token !== playGeneration || signal?.aborted) {
+      return;
+    }
+
+    const audioPath = audioUrlForHash(audioId);
+    try {
+      await playAudioFile(audioPath, speed, token);
+    } catch {
+      /* missing Sulafat clip: stay silent — never use device TTS */
+    }
+  } finally {
+    signal?.removeEventListener('abort', onAbort);
+  }
+}
+
+export async function playAudioSequence(
+  texts: string[],
+  options?: { slow?: boolean; signal?: AbortSignal }
+): Promise<void> {
+  const slow = options?.slow ?? false;
+  const signal = options?.signal;
+  for (const text of texts) {
+    if (signal?.aborted) return;
+    await playAudio(text, slow, signal);
   }
 }
 
@@ -87,8 +145,12 @@ function applyPlaybackRate(audio: HTMLAudioElement, rate: number) {
   prefixed.webkitPreservesPitch = true;
 }
 
-function playAudioFile(path: string, rate: number): Promise<void> {
+function playAudioFile(path: string, rate: number, token: number): Promise<void> {
   return new Promise((resolve, reject) => {
+    if (token !== playGeneration) {
+      resolve();
+      return;
+    }
     settlePlayback = resolve;
     try {
       currentAudio = new Audio(path);
@@ -97,35 +159,45 @@ function playAudioFile(path: string, rate: number): Promise<void> {
       reject(err);
       return;
     }
-    applyPlaybackRate(currentAudio, rate);
+    const audio = currentAudio;
+    const keepRate = () => applyPlaybackRate(audio, rate);
+    keepRate();
+    audio.addEventListener('loadedmetadata', keepRate);
+    audio.addEventListener('playing', keepRate);
+    audio.addEventListener('durationchange', keepRate);
 
-    currentAudio.addEventListener('ended', () => {
-      currentAudio = null;
+    audio.addEventListener('ended', () => {
+      if (token !== playGeneration) return;
+      if (currentAudio === audio) currentAudio = null;
       finishPlayback();
     });
 
-    currentAudio.addEventListener('error', (err) => {
-      currentAudio = null;
+    audio.addEventListener('error', (err) => {
+      if (token !== playGeneration) return;
+      if (currentAudio === audio) currentAudio = null;
       settlePlayback = null;
       reject(err);
     });
 
-    currentAudio.play().catch((err) => {
-      currentAudio = null;
-      settlePlayback = null;
-      reject(err);
-    });
+    audio
+      .play()
+      .then(() => {
+        if (token !== playGeneration) {
+          audio.pause();
+          return;
+        }
+        keepRate();
+      })
+      .catch((err) => {
+        if (token !== playGeneration) {
+          resolve();
+          return;
+        }
+        if (currentAudio === audio) currentAudio = null;
+        settlePlayback = null;
+        reject(err);
+      });
   });
-}
-
-export function stopAudio() {
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio.currentTime = 0;
-    currentAudio = null;
-  }
-
-  finishPlayback();
 }
 
 export function isPlaying(): boolean {

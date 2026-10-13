@@ -418,8 +418,12 @@ export function spokenOption(token: string, peers: string[] = []): string {
   return repeatedEmojiSpeech(parts, peers);
 }
 
-export function playOptionAudio(token: string, peers: string[] = []): Promise<void> {
+export function playOptionAudio(
+  token: string,
+  peers: string[] = [],
+  signal?: AbortSignal
+): Promise<void> {
   const spoken = spokenOption(token, peers);
   if (!spoken) return Promise.resolve();
-  return playAudio(spoken);
+  return playAudio(spoken, false, signal);
 }

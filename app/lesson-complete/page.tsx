@@ -10,15 +10,7 @@ import { lessonCompleteSpoken, lessonCompleteTitle } from '@/lib/learner';
 import type { UserProgress } from '@/lib/types';
 import HodaMascot from '@/components/HodaMascot';
 import SpeakerButton from '@/components/SpeakerButton';
-
-function FlameIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 2.5c.6 3.2 5.8 5.6 5.8 11.2A5.8 5.8 0 0 1 12 21.5a5.8 5.8 0 0 1-5.8-5.8c0-3 1.8-4.6 2.8-6 .3 1.8 1.2 2.8 2.2 3.2C10.6 9.6 11 5.6 12 2.5z" fill="#F08A24" />
-      <path d="M12 12.2c.4 1.8 3 2.8 3 5.2a3 3 0 0 1-6 0c0-1.6 1-2.6 1.6-3.4.2.9.6 1.3 1 1.5-.1-1.2 0-2.2.4-3.3z" fill="#FFC83D" />
-    </svg>
-  );
-}
+import { FlameIcon } from '@/components/art/StatIcons';
 
 export default function LessonCompletePage() {
   const [progress, setProgress] = useState<UserProgress | null>(null);
@@ -106,8 +98,8 @@ export default function LessonCompletePage() {
           </div>
         </div>
       </div>
-      <div className="bottom" style={{ display: 'flex', flexDirection: 'column', gap: 8, paddingBottom: 20 }}>
-        <button type="button" onClick={() => router.push('/home')} className="btn btn-primary">
+      <div className="bottom">
+        <button type="button" onClick={() => router.push('/home?focus=next')} className="btn btn-primary">
           ادامه
           <ArrowLeft strokeWidth={2.6} />
         </button>

@@ -4,7 +4,9 @@ import { Exercise } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import { shuffleSeeded } from '@/lib/shuffle';
 import { playOptionAudio } from '@/lib/spoken-option';
+import { maybePlayMatchUndoHint } from '@/lib/match-undo-hint';
 import SpeakerButton from '@/components/SpeakerButton';
+import { PlacedItem, PlacedUndoBadge } from '@/components/PlacedUndoBadge';
 
 interface BuildWordExerciseProps {
   exercise: Exercise;
@@ -33,7 +35,15 @@ export default function BuildWordExercise({
     const newSelected = [...selectedLetters, letter];
     setSelectedLetters(newSelected);
     onAnswerChange(newSelected.join(''));
+    maybePlayMatchUndoHint();
     playOptionAudio(letter, tiles).catch(() => {});
+  };
+
+  const handlePlacedClick = (index: number) => {
+    if (disabled) return;
+    const next = selectedLetters.filter((_, letterIndex) => letterIndex !== index);
+    setSelectedLetters(next);
+    onAnswerChange(next.join(''));
   };
 
   const handleClear = () => {
@@ -58,12 +68,24 @@ export default function BuildWordExercise({
           <div className="text-2xl text-brown-400">حروف را انتخاب کنید</div>
         ) : (
           selectedLetters.map((letter, index) => (
-            <div
-              key={`${letter}-${index}`}
-              className="bg-[var(--blue-100)] border-4 border-[var(--blue-700)] rounded-2xl w-16 h-20 flex items-center justify-center"
-            >
-              <span className="text-5xl font-bold text-brown-900 leading-none">{letter}</span>
-            </div>
+            <PlacedItem key={`${letter}-${index}`} className="build-placed-wrap">
+              <button
+                type="button"
+                aria-label={letter}
+                data-build-placed={letter}
+                disabled={disabled}
+                onClick={() => handlePlacedClick(index)}
+                className="bg-[var(--blue-100)] border-4 border-[var(--blue-700)] rounded-2xl w-16 h-20 min-h-[48px] flex items-center justify-center match-digit-slot-placed"
+              >
+                <span className="glyph text-5xl font-bold text-brown-900 leading-none">{letter}</span>
+              </button>
+              <PlacedUndoBadge
+                value={letter}
+                locked={disabled}
+                onUndo={() => handlePlacedClick(index)}
+                marker="build"
+              />
+            </PlacedItem>
           ))
         )}
       </div>

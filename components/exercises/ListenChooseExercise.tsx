@@ -1,10 +1,22 @@
+'use client';
+
 import { playAudio } from '@/lib/audio';
 import { exerciseChoices } from '@/lib/shuffle';
-import { exerciseHeading } from '@/lib/exercise-copy';
+import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
-import { ObjectArt } from '@/components/art/objects';
+import {
+  OBJECT_CLUSTER_MIN_SIZE,
+  ObjectArt,
+  ObjectCluster,
+  looksLikeObjects,
+  objectClusterChoiceGridClass,
+  splitObjectTokens,
+  type ObjectClusterLayout,
+} from '@/components/art/objects';
+import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
+import TurtleIcon from '@/components/ui/TurtleIcon';
 
 interface Props {
   exercise: Exercise;
@@ -12,6 +24,64 @@ interface Props {
   onAnswerChange: (answer: string) => void;
   disabled: boolean;
   answerState?: 'idle' | 'correct' | 'wrong';
+}
+
+function SizedListenChoice({
+  option,
+  layout,
+  selected,
+  disabled,
+  state,
+  dim,
+  peers,
+  onSelect,
+}: {
+  option: string;
+  layout: ObjectClusterLayout;
+  selected: boolean;
+  disabled: boolean;
+  state: 'idle' | 'correct' | 'wrong';
+  dim: boolean;
+  peers: string[];
+  onSelect: (option: string) => void;
+}) {
+  const object = looksLikeObjects(option);
+  const { ref, box } = useSharedClusterSize<HTMLButtonElement>(
+    [object ? splitObjectTokens(option).length : 1],
+    { layout }
+  );
+  return (
+    <ChoiceButton
+      ref={ref}
+      selected={selected}
+      disabled={disabled}
+      state={state}
+      dim={dim}
+      name={option}
+      peers={peers}
+      onClick={() => onSelect(option)}
+      className="object-choice-card"
+    >
+      {object ? (
+        <ObjectCluster
+          token={option}
+          layout={layout}
+          boxWidth={box.width}
+          boxHeight={box.height}
+          cardWidth={box.offsetWidth}
+        />
+      ) : option.length <= 2 ? (
+        <span className="glyph" style={{ fontSize: 84 }}>
+          {option}
+        </span>
+      ) : (
+        <ObjectArt
+          token={option}
+          size={Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.min(box.width, box.height))}
+        />
+      )}
+    </ChoiceButton>
+  );
 }
 
 export default function ListenChooseExercise({
@@ -24,6 +94,10 @@ export default function ListenChooseExercise({
   const options = exerciseChoices(exercise);
   const payload = exercise.payload as { choice_kind?: string };
   const isLetter = payload.choice_kind === 'letter' || options.every((option) => option.length <= 2);
+  const objectCounts = options.map((option) =>
+    looksLikeObjects(option) ? splitObjectTokens(option).length : 1
+  );
+  const clusterLayout = exercise.id.startsWith('a') ? 'picture' : 'grid';
 
   const handleSelect = (option: string) => {
     if (disabled) return;
@@ -35,47 +109,38 @@ export default function ListenChooseExercise({
   };
 
   return (
-    <div className="content-center flex flex-col items-center gap-5">
-      <h2>{exerciseHeading(exercise)}</h2>
+    <div className="content-center flex flex-1 min-h-0 w-full flex-col items-center gap-4 overflow-hidden">
+      <h2 className={exerciseHeadingClass(exercise)}>{exerciseHeading(exercise)}</h2>
       <SpeakerButton text={exercise.audio_script} size="xl" />
       <button type="button" className="slow-btn" onClick={handleSlow}>
-        <svg viewBox="0 0 32 24" aria-hidden="true">
-          <path d="M8 18a9.5 8.5 0 0 1 19 0z" fill="currentColor" />
-          <path d="M12.5 17.5l2-5h6l2 5M14.5 12.5l3-3.4 3 3.4" fill="none" stroke="#E3EEFB" strokeWidth="1.4" strokeLinejoin="round" />
-          <circle cx="5" cy="15" r="3.4" fill="currentColor" />
-          <path d="M7 16.5l2 1" stroke="currentColor" strokeWidth="2.4" />
-          <rect x="10" y="17" width="4" height="4.5" rx="1.6" fill="currentColor" />
-          <rect x="21" y="17" width="4" height="4.5" rx="1.6" fill="currentColor" />
-          <path d="M27 17.5l3 1.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          <circle cx="4" cy="14" r=".9" fill="#E3EEFB" />
-        </svg>
+        <TurtleIcon size={28} />
         آهسته‌تر
       </button>
-      <div className={isLetter || options.length === 3 ? 'grid3 w-full' : 'grid2 w-full'}>
+      <div
+        className={
+          looksLikeObjects(options.join(''))
+            ? `${objectClusterChoiceGridClass(Math.max(1, ...objectCounts), options.length)} w-full`
+            : isLetter || options.length === 3
+              ? 'grid3 w-full'
+              : 'grid2 w-full'
+        }
+      >
         {options.map((option) => {
           const selected = userAnswer === option;
           const state =
             disabled && answerState !== 'idle' && selected ? answerState : 'idle';
           return (
-            <ChoiceButton
+            <SizedListenChoice
               key={option}
+              option={option}
+              layout={clusterLayout}
               selected={selected}
               disabled={disabled}
               state={state}
               dim={disabled && !selected}
-              name={option}
               peers={options}
-              onClick={() => handleSelect(option)}
-              className="h-[150px]"
-            >
-              {option.length <= 2 ? (
-                <span className="glyph" style={{ fontSize: 84 }}>
-                  {option}
-                </span>
-              ) : (
-                <ObjectArt token={option} size={72} />
-              )}
-            </ChoiceButton>
+              onSelect={handleSelect}
+            />
           );
         })}
       </div>

@@ -11,3 +11,14 @@ export function exerciseHeading(exercise: Exercise): string {
   }
   return prompt;
 }
+
+export function exerciseHeadingClass(exercise: Exercise): string | undefined {
+  return /^[0-9۰-۹]{1,2}$/.test(exerciseHeading(exercise)) ? 'prompt-numeral' : undefined;
+}
+
+export function exerciseHeadingStyle(exercise: Exercise):
+  | { fontSize: number; lineHeight: number; fontWeight: number }
+  | undefined {
+  if (!exerciseHeadingClass(exercise)) return undefined;
+  return { fontSize: 48, lineHeight: 1.1, fontWeight: 800 };
+}

@@ -106,12 +106,13 @@ test.describe('Mobile QA 390x844', () => {
     await snap(page, '08-lesson-complete.png');
 
     await page.getByRole('button', { name: 'ادامه' }).click();
-    await page.waitForURL('**/home');
+    await page.waitForURL(/\/home/);
+    await expect(page.locator('[data-next-lesson="true"]')).toBeInViewport();
 
     await page.getByRole('button', { name: 'من' }).click();
     await page.waitForURL('**/profile');
-    await expect(page.getByRole('button', { name: '1.0 برابر' })).toBeVisible();
-    await expect(page.getByRole('button', { name: '1.2 برابر' })).toBeVisible();
+    await expect(page.getByRole('slider', { name: 'سرعت صدا' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'نمونه را بشنوید' })).toBeVisible();
     await snap(page, '09-profile.png');
 
     await page.getByRole('button', { name: 'ب الفبا' }).click();
@@ -126,7 +127,7 @@ test.describe('Mobile QA 390x844', () => {
     await expect(page).toHaveURL(/\/lesson-complete/);
 
     await page.getByRole('button', { name: 'ادامه' }).click();
-    await page.waitForURL('**/home');
+    await page.waitForURL(/\/home/);
     await page.getByRole('button', { name: 'پیشرفت' }).click();
     await page.waitForURL('**/streak');
     await snap(page, '12-streak.png');
