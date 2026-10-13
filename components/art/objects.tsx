@@ -390,7 +390,7 @@ export function splitObjectTokens(token: string): string[] {
 export const OBJECT_CLUSTER_GAP = 8;
 export const OBJECT_MATCH_GAP = 4;
 export const OBJECT_CLUSTER_MIN_SIZE = 32;
-export const OBJECT_SINGLE_WIDTH_RATIO = 0.85;
+export const OBJECT_SINGLE_WIDTH_RATIO = 0.7;
 export const OBJECT_MATCH_SINGLE_MAX = 96;
 export const OBJECT_CARD_INNER_FALLBACK = { width: 81, height: 140 };
 export const OBJECT_MATCH_INNER_FALLBACK = { width: 220, height: 72 };
