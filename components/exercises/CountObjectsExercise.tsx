@@ -40,7 +40,11 @@ export default function CountObjectsExercise({
         <SpeakerButton text={exercise.audio_script} />
         <h2 className={exerciseHeadingClass(exercise)}>{exerciseHeading(exercise)}</h2>
       </div>
-      <div ref={ref} className="card object-count-card">
+      <div
+        ref={ref}
+        className="card object-count-card"
+        data-single-art={objects.length === 1 || undefined}
+      >
         <ObjectCluster
           tokens={objects}
           boxWidth={box.width}

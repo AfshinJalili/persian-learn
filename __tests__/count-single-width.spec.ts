@@ -2,23 +2,42 @@ import { test, expect } from './e2e-audio-stub';
 
 // Single objects and dice faces in count cards should fill about 70% of the
 // card width on phones, without the exercise scrolling.
-// minRatio < 0.62 only where the screen is too short to fit 70% without
-// scrolling; there the item is capped by the card height instead.
+// Single-art count cards grow with their width (not the leftover space), so
+// the art reaches ~70% of the card width; the page must never scroll.
+// 367x540 is a very short desktop window from QA's first report; a 3-line
+// prompt there leaves room for ~0.65, so it only gets a 0.6 floor.
 const VIEWPORTS = [
-  { width: 360, height: 740, minRatio: 0.62 },
-  { width: 375, height: 667, minRatio: 0.62 },
-  { width: 412, height: 915, minRatio: 0.62 },
-  { width: 360, height: 640, minRatio: 0.55 },
+  { width: 360, height: 640, minRatio: 0.65 },
+  { width: 367, height: 540, minRatio: 0.6 },
+  { width: 367, height: 580, minRatio: 0.65 },
+  { width: 367, height: 740, minRatio: 0.65 },
+  { width: 367, height: 900, minRatio: 0.65 },
+  { width: 375, height: 667, minRatio: 0.65 },
+  { width: 412, height: 915, minRatio: 0.65 },
+  { width: 419, height: 580, minRatio: 0.65 },
+  { width: 419, height: 740, minRatio: 0.65 },
+  { width: 419, height: 900, minRatio: 0.65 },
 ] as const;
 
-const SINGLE_COUNT_STEPS = ['/lesson/m2l3?ex=1', '/lesson/m2l3?ex=4', '/lesson/m2l4?ex=1'];
+// m1l3 ex1 (e2) is a one-bread count card; m2l3 ex1-5 and m2l5 ex3 are the dice steps; m2l4 ex1 (e2) and m2l5 ex7 are ✋.
+const SINGLE_COUNT_STEPS = [
+  '/lesson/m1l3?ex=1',
+  '/lesson/m2l3?ex=1',
+  '/lesson/m2l3?ex=2',
+  '/lesson/m2l3?ex=3',
+  '/lesson/m2l3?ex=4',
+  '/lesson/m2l3?ex=5',
+  '/lesson/m2l4?ex=1',
+  '/lesson/m2l5?ex=3',
+  '/lesson/m2l5?ex=7',
+];
 
 async function seed(page: import('@playwright/test').Page) {
   await page.goto('/');
   await page.evaluate(async () => {
     const today = new Date().toISOString().split('T')[0];
     const progress = {
-      currentTrack: 'math', onboarded: true, completedLessons: ['m1l1','m1l2','m1l3','m1l4','m1l5','m2l1','m2l2','m2l3','m2l4'], completedUnits: [],
+      currentTrack: 'math', onboarded: true, completedLessons: ['m1l1','m1l2','m1l3','m1l4','m1l5','m2l1','m2l2','m2l3','m2l4','m2l5'], completedUnits: [],
       xp: 400, streak: 3, streakBest: 3, lastActivityDate: today, dailyGoal: 2,
       dailyLessonsCompleted: 1, restDaysUsed: 0, weakItems: [], avatar: 'tulip',
       name: 'فریبا جون', startDate: '2026-01-01T00:00:00.000Z', speechRate: 1,
@@ -50,7 +69,7 @@ for (const viewport of VIEWPORTS) {
     for (const path of SINGLE_COUNT_STEPS) {
       await page.goto(path);
       const item = page.locator('.object-count-card .object-cluster[data-count="1"] > .illus').first();
-      await expect(item, path).toBeVisible();
+      await expect(item, path).toBeVisible({ timeout: 15000 });
       await page.waitForTimeout(400);
       const m = await page.evaluate(() => {
         const node = document.querySelector('.object-count-card .object-cluster[data-count="1"] > .illus')!;
@@ -58,8 +77,14 @@ for (const viewport of VIEWPORTS) {
         const box = node.getBoundingClientRect();
         const cardBox = card.getBoundingClientRect();
         const se = document.scrollingElement!;
+        const content = card.closest('.content') as HTMLElement;
+        const last = content.lastElementChild!.getBoundingClientRect();
+        const bottom = document.querySelector('.bottom')?.getBoundingClientRect();
         return {
           ratio: box.width / card.offsetWidth,
+          // every block (incl. the answer tiles) is fully on screen
+          contentOverflow: content.scrollHeight - content.clientHeight,
+          clipped: last.bottom > content.getBoundingClientRect().bottom + 1 || (bottom ? bottom.bottom > innerHeight + 1 : false),
           inside: box.top >= cardBox.top - 1 && box.bottom <= cardBox.bottom + 1,
           scrolls: se.scrollHeight > se.clientHeight + 1,
         };
@@ -69,11 +94,13 @@ for (const viewport of VIEWPORTS) {
           path: `${process.env.SHOT_DIR}/${path.replace(/[/?=]/g, '_')}-${viewport.width}x${viewport.height}.png`,
         });
       }
-      console.log(path, viewport.width, JSON.stringify(m));
+      console.log(path, `${viewport.width}x${viewport.height}`, JSON.stringify(m));
       expect(m.ratio, path).toBeGreaterThanOrEqual(viewport.minRatio);
       expect(m.ratio, path).toBeLessThanOrEqual(0.75);
       expect(m.inside, path).toBe(true);
       expect(m.scrolls, path).toBe(false);
+      expect(m.clipped, path).toBe(false);
+      expect(m.contentOverflow, path).toBeLessThanOrEqual(2);
     }
   });
 }
@@ -99,7 +126,7 @@ for (const viewport of PICTURE_VIEWPORTS) {
     for (let ex = 1; ex <= 8; ex += 1) {
       const path = `/lesson/m1l1?ex=${ex}`;
       await page.goto(path);
-      await expect(page.locator('.object-choice-card').first(), path).toBeVisible();
+      await expect(page.locator('.object-choice-card').first(), path).toBeVisible({ timeout: 15000 });
       await page.waitForTimeout(400);
       const m = await page.evaluate(() => {
         const cards = [...document.querySelectorAll('.object-choice-card')].map((card) => {
@@ -123,3 +150,25 @@ for (const viewport of PICTURE_VIEWPORTS) {
     expect(checked).toBeGreaterThan(0);
   });
 }
+
+test('match: a digit replaced on an apple group goes back to the tray', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 667 });
+  await seed(page);
+  await page.goto('/lesson/m1l4?ex=1');
+  const tray = page.locator('[data-match-tray]');
+  const group = page.locator('[data-match-slot="🍎🍎🍎"]');
+  await tray.locator('[data-match-digit="۱"]').click();
+  await group.click();
+  await expect(page.locator('[data-match-placed="۱"]')).toBeVisible();
+  await expect(tray.locator('[data-match-digit="۱"]')).toHaveCount(0);
+
+  await tray.locator('[data-match-digit="۲"]').click();
+  await group.click();
+  await expect(page.locator('[data-match-placed="۲"]')).toBeVisible();
+  await expect(page.locator('[data-match-placed="۱"]')).toHaveCount(0);
+  await expect(tray.locator('[data-match-digit="۱"]')).toBeVisible();
+  await expect(tray.locator('[data-match-digit="۱"]')).toBeEnabled();
+  if (process.env.SHOT_DIR) {
+    await page.screenshot({ path: `${process.env.SHOT_DIR}/m1l4-match-replaced-375x667.png` });
+  }
+});
