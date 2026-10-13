@@ -13,11 +13,12 @@ describe('offline caching strategy', () => {
     expect(offlineStrategy('/audio/manifest.json')).toBe('cache-first');
   });
 
-  it('uses stale-while-revalidate for lesson routes and app pages', () => {
-    expect(offlineStrategy('/lesson/m1l1')).toBe('stale-while-revalidate');
-    expect(offlineStrategy('/lesson/a2l1')).toBe('stale-while-revalidate');
-    expect(offlineStrategy('/home')).toBe('stale-while-revalidate');
-    expect(offlineStrategy('/lesson-complete')).toBe('stale-while-revalidate');
+  it('uses network-first for lesson routes, app pages and lesson content', () => {
+    expect(offlineStrategy('/lesson/m1l1')).toBe('network-first');
+    expect(offlineStrategy('/lesson/a2l1')).toBe('network-first');
+    expect(offlineStrategy('/home')).toBe('network-first');
+    expect(offlineStrategy('/lesson-complete')).toBe('network-first');
+    expect(offlineStrategy('/content/math.json')).toBe('network-first');
   });
 });
 
@@ -28,9 +29,10 @@ describe('service worker', () => {
     expect(source).toContain("pathname.startsWith('/_next/static')");
     expect(source).toContain("pathname.startsWith('/lesson/')");
     expect(source).toContain("cache-first");
-    expect(source).toContain('stale-while-revalidate');
+    expect(source).toContain('network-first');
+    expect(source).not.toContain('stale-while-revalidate');
     expect(offlineStrategy('/_next/static/chunks/app.js')).toBe('cache-first');
-    expect(offlineStrategy('/lesson/m1l1')).toBe('stale-while-revalidate');
+    expect(offlineStrategy('/lesson/m1l1')).toBe('network-first');
   });
 
   it('does not precache audio clips at install', () => {
@@ -39,5 +41,13 @@ describe('service worker', () => {
     expect(precache).not.toContain('/audio');
     expect(precache).not.toContain('.mp3');
     expect(source).not.toContain('.mp3');
+  });
+
+  it('versions the cache per build and takes over immediately', () => {
+    expect(source).toContain("searchParams.get('v')");
+    expect(source).not.toMatch(/const CACHE_NAME = 'persian-learn-v2'/);
+    expect(source).toContain('self.skipWaiting()');
+    expect(source).toContain('self.clients.claim()');
+    expect(source).toContain('caches.delete');
   });
 });
