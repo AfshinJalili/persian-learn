@@ -597,3 +597,51 @@ describe('MatchPairsExercise letter undo', () => {
     expect(screen.getByRole('button', { name: 'ب' })).toHaveClass('dim');
   });
 });
+
+describe('MatchPairsExercise digit-to-objects replacement', () => {
+  function applesExercise(): Exercise {
+    return {
+      id: 'm1l4e2',
+      type: 'match_pairs',
+      prompt: 'وصل کنید',
+      audio_script: 'هر عدد را به سیب‌هایش وصل کنید.',
+      payload: {},
+      answer: '۱=🍎|۲=🍎🍎|۳=🍎🍎🍎',
+      distractors: [],
+      feedback_correct: 'ok',
+      feedback_wrong: 'no',
+    };
+  }
+
+  it('sends the replaced digit back to the tray', async () => {
+    const user = userEvent.setup();
+    const { container } = render(
+      <MatchPairsExercise
+        exercise={applesExercise()}
+        userAnswer=""
+        onAnswerChange={jest.fn()}
+        disabled={false}
+      />
+    );
+    const tray = () => container.querySelector('[data-match-tray]')!;
+    const group = () => container.querySelector('[data-match-slot="🍎🍎🍎"]') as HTMLElement;
+
+    await user.click(tray().querySelector('[data-match-digit="۱"]')!);
+    await user.click(group());
+    expect(container.querySelector('[data-match-placed="۱"]')).not.toBeNull();
+    expect(tray().querySelector('[data-match-digit="۱"]')).toBeNull();
+
+    await user.click(tray().querySelector('[data-match-digit="۲"]')!);
+    await user.click(group());
+
+    expect(container.querySelector('[data-match-placed="۲"]')).not.toBeNull();
+    expect(container.querySelector('[data-match-placed="۱"]')).toBeNull();
+    const back = tray().querySelector('[data-match-digit="۱"]') as HTMLButtonElement | null;
+    expect(back).not.toBeNull();
+    expect(back!.disabled).toBe(false);
+    // ...and it can be placed again.
+    await user.click(back!);
+    await user.click(container.querySelector('[data-match-slot="🍎"]') as HTMLElement);
+    expect(container.querySelector('[data-match-placed="۱"]')).not.toBeNull();
+  });
+});

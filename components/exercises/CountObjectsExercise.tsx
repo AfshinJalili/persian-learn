@@ -1,5 +1,6 @@
 'use client';
 
+import { singleArtStyle } from '@/components/art/single-art';
 import { exerciseChoices } from '@/lib/shuffle';
 import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
@@ -40,7 +41,12 @@ export default function CountObjectsExercise({
         <SpeakerButton text={exercise.audio_script} />
         <h2 className={exerciseHeadingClass(exercise)}>{exerciseHeading(exercise)}</h2>
       </div>
-      <div ref={ref} className="card object-count-card">
+      <div
+        ref={ref}
+        className="card object-count-card"
+        data-single-art={objects.length === 1 || undefined}
+        style={singleArtStyle(objects.length === 1, box.offsetWidth)}
+      >
         <ObjectCluster
           tokens={objects}
           boxWidth={box.width}

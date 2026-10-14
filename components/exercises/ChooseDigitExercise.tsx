@@ -1,5 +1,6 @@
 'use client';
 
+import { singleArtStyle } from '@/components/art/single-art';
 import { Exercise } from '@/lib/types';
 import { exerciseChoices } from '@/lib/shuffle';
 import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
@@ -38,6 +39,7 @@ export default function ChooseDigitExercise({
   const { ref, box } = useSharedClusterSize([
     Math.max(1, objectDisplay ? splitObjectTokens(display).length : tokens.length),
   ]);
+  const singleArt = objectDisplay && splitObjectTokens(display).length === 1;
   const fontSize = digitDisplayFontSize(box.width, box.height, box.offsetWidth, tokens.length);
 
   return (
@@ -47,7 +49,13 @@ export default function ChooseDigitExercise({
         <h2 className={exerciseHeadingClass(exercise)}>{exerciseHeading(exercise)}</h2>
       </div>
       {diceFace ? (
-        <div ref={ref} className="card object-count-card" data-dice-face={display}>
+        <div
+          ref={ref}
+          className="card object-count-card"
+          data-dice-face={display}
+          data-single-art={singleArt || undefined}
+          style={singleArtStyle(singleArt, box.offsetWidth)}
+        >
           <ObjectCluster
             token={display}
             boxWidth={box.width}
@@ -56,7 +64,13 @@ export default function ChooseDigitExercise({
           />
         </div>
       ) : objectDisplay ? (
-        <div ref={ref} className="card object-count-card" data-object-display>
+        <div
+          ref={ref}
+          className="card object-count-card"
+          data-object-display
+          data-single-art={singleArt || undefined}
+          style={singleArtStyle(singleArt, box.offsetWidth)}
+        >
           <ObjectCluster
             tokens={splitObjectTokens(display)}
             boxWidth={box.width}

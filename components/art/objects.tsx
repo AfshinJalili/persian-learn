@@ -35,7 +35,7 @@ export function TeaSvg() {
 
 export function BreadSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="6.5 28.5 87 47" aria-hidden="true">
       <rect x="8" y="30" width="84" height="44" rx="22" fill="#C07F32" />
       <rect x="8" y="30" width="84" height="44" rx="22" fill="none" stroke="#8A5A2B" strokeWidth="3" />
       <path d="M26 40v24M42 40v24M58 40v24M74 40v24" stroke="#8A5A2B" strokeWidth="4" strokeLinecap="round" />
@@ -221,7 +221,7 @@ function HandFinger({
 
 export function IndexHandSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="8.5 6.5 65 85" aria-hidden="true">
       <HandFinger x={42} y={8} width={16} height={52} />
       <rect x="28" y="50" width="44" height="40" rx="16" fill={HAND_FILL} stroke={HAND_LINE} strokeWidth="3" />
       <HandFinger x={10} y={58} width={22} height={12} />
@@ -231,7 +231,7 @@ export function IndexHandSvg() {
 
 export function VictoryHandSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="6.5 6.8 76.5 84.7" aria-hidden="true">
       <g transform="rotate(-16 40 58)">
         <HandFinger x={32} y={8} width={14} height={54} />
       </g>
@@ -246,7 +246,7 @@ export function VictoryHandSvg() {
 
 export function RaisedHandSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="2.5 6.5 83 85" aria-hidden="true">
       <HandFinger x={16} y={20} width={11} height={42} />
       <HandFinger x={30} y={12} width={11} height={50} />
       <HandFinger x={44} y={8} width={12} height={54} />
@@ -321,7 +321,7 @@ export function PlateSvg() {
 export function DiceSvg({ pips }: { pips: number }) {
   const spots = DICE_PIP_LAYOUT[pips] ?? DICE_PIP_LAYOUT[1];
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="8 8 84 84" aria-hidden="true">
       <rect x="8" y="8" width="84" height="84" rx="18" fill="#1B2A22" />
       {spots?.map(([cx, cy]) => (
         <circle key={`${cx}-${cy}`} cx={cx} cy={cy} r="12" fill="#F4E6D0" />
@@ -390,7 +390,9 @@ export function splitObjectTokens(token: string): string[] {
 export const OBJECT_CLUSTER_GAP = 8;
 export const OBJECT_MATCH_GAP = 4;
 export const OBJECT_CLUSTER_MIN_SIZE = 32;
-export const OBJECT_SINGLE_WIDTH_RATIO = 0.85;
+// Box ratio for a single item: with tight viewBoxes the drawn art fills the
+// box, so 0.77 leaves the visible art at >= 0.70 of the card width.
+export const OBJECT_SINGLE_WIDTH_RATIO = 0.77;
 export const OBJECT_MATCH_SINGLE_MAX = 96;
 export const OBJECT_CARD_INNER_FALLBACK = { width: 81, height: 140 };
 export const OBJECT_MATCH_INNER_FALLBACK = { width: 220, height: 72 };
@@ -398,6 +400,7 @@ export const OBJECT_MATCH_LIST_FALLBACK = { width: 342, height: 280 };
 export const MATCH_LIST_GAP = 4;
 export const MATCH_ROW_PADDING = 12;
 export const MATCH_ROW_GAP = 8;
+export const MATCH_ROW_MIN_HEIGHT = 56;
 export const MATCH_DIGIT_SLOT = 48;
 export const MATCH_UNDO_BADGE = 48;
 export const MATCH_UNDO_GAP = 4;
@@ -467,7 +470,12 @@ export function objectClusterLayoutForBox(
               innerHeight,
               OBJECT_MATCH_SINGLE_MAX
             )
-          : Math.min(widthBasis * OBJECT_SINGLE_WIDTH_RATIO, innerWidth, innerHeight);
+          : Math.max(
+              Math.min(widthBasis * OBJECT_SINGLE_WIDTH_RATIO, innerWidth, innerHeight),
+              // Never smaller than each item of a 2-item card in the same box
+              // (narrow three-across cards stack two items at nearly full width).
+              objectClusterLayoutForBox(2, innerWidth, innerHeight, gap, layout).unclamped
+            );
     return {
       cols: 1,
       rows: 1,
@@ -604,7 +612,11 @@ export function matchApplesBoxFromList(
   rowCount: number
 ): { width: number; height: number; offsetWidth: number } {
   const rows = Math.max(1, rowCount);
-  const rowHeight = (list.height - MATCH_LIST_GAP * Math.max(0, rows - 1)) / rows;
+  // Rows keep a tap-sized minimum (CSS min-height); the list scrolls beyond it.
+  const rowHeight = Math.max(
+    MATCH_ROW_MIN_HEIGHT,
+    (list.height - MATCH_LIST_GAP * Math.max(0, rows - 1)) / rows
+  );
   const chromeX = MATCH_ROW_PADDING * 2 + MATCH_ROW_GAP + MATCH_DIGIT_SLOT;
   const chromeY = MATCH_ROW_PADDING * 2;
   return {

@@ -1,10 +1,10 @@
-export type OfflineStrategy = 'cache-first' | 'stale-while-revalidate' | 'network';
+export type OfflineStrategy = 'cache-first' | 'network-first' | 'network';
 
+// Mirrors offlineStrategy() in sw/service-worker.js (served at /sw.js).
 export function offlineStrategy(pathname: string): OfflineStrategy {
   if (
     pathname.startsWith('/_next/static') ||
     pathname.startsWith('/fonts/') ||
-    pathname.startsWith('/content/') ||
     pathname.startsWith('/icons/') ||
     pathname.startsWith('/audio/') ||
     pathname.endsWith('.woff2')
@@ -13,6 +13,7 @@ export function offlineStrategy(pathname: string): OfflineStrategy {
   }
 
   if (
+    pathname.startsWith('/content/') ||
     pathname === '/' ||
     pathname === '/home' ||
     pathname === '/streak' ||
@@ -21,7 +22,7 @@ export function offlineStrategy(pathname: string): OfflineStrategy {
     pathname === '/manifest.json' ||
     pathname.startsWith('/lesson/')
   ) {
-    return 'stale-while-revalidate';
+    return 'network-first';
   }
 
   return 'network';

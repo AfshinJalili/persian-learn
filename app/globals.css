@@ -538,6 +538,95 @@ h2.prompt-numeral {
   padding: 12px;
 }
 
+/* A single picture or die is sized to ~77% of the card width (drawn art >= 70%), so the card's
+   height follows its width instead of whatever space is left. It may still
+   shrink (flex-shrink) when the screen is too short, so nothing scrolls. */
+.app-phone:not(.object-gallery-page) .object-count-card[data-single-art] {
+  flex: 0 1 calc(var(--single-card-w, 100cqi) * 0.77 + 24px + 6px);
+  height: auto;
+  max-height: calc(var(--single-card-w, 100cqi) * 0.77 + 24px + 6px);
+  min-height: 0;
+  /* The art is sized from this box; don't let the art size the box back. */
+  contain: size;
+}
+
+/* Short screens: make room for that card by compacting the prompt, the
+   answer tiles and the check bar on single-art count steps only. */
+@media (max-height: 760px) {
+  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .prompt h2:not(.prompt-numeral) {
+    font-size: 22px;
+    line-height: 1.35;
+  }
+
+  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .prompt .speaker {
+    width: 56px;
+    height: 56px;
+  }
+
+  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .content > .grid3 > .card {
+    height: 88px;
+    max-height: 88px;
+  }
+
+  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .content > .grid3 > .card .glyph {
+    font-size: 64px;
+    line-height: 1;
+  }
+
+  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .bottom {
+    padding: 8px var(--s-5) 12px;
+  }
+}
+
+/* Match steps on short screens: smaller prompt and row padding so rows keep
+   their 48px tap targets with less scrolling. */
+@media (max-height: 620px) {
+  .app-phone:has(.match-pairs-board) .prompt h2:not(.prompt-numeral) {
+    font-size: 19px;
+    line-height: 1.3;
+  }
+
+  .app-phone:has(.match-pairs-board) .prompt .speaker {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* Short screens: tighter match rows; the tap target stays >= 48px. */
+@media (max-height: 700px) {
+  .app-phone .row-card.match-object-row {
+    padding: 4px 12px;
+    min-height: 56px;
+  }
+}
+
+@media (max-height: 620px) {
+  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .prompt h2:not(.prompt-numeral) {
+    font-size: 19px;
+    line-height: 1.3;
+  }
+
+  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .content.content-fit {
+    gap: 8px;
+    padding-top: 8px;
+  }
+
+  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .prompt .speaker {
+    width: 48px;
+    height: 48px;
+  }
+
+  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .content > .grid3 > .card {
+    height: 72px;
+    max-height: 72px;
+  }
+
+  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .content > .grid3 > .card .glyph {
+    font-size: 52px;
+    line-height: 1;
+  }
+}
+
 .app-phone.object-gallery-page .object-count-card {
   min-height: max(240px, calc(70cqi + 72px));
   max-height: none;
@@ -807,7 +896,10 @@ h2.prompt-numeral {
   min-height: 0;
   gap: 4px;
   width: 100%;
-  overflow: hidden;
+  /* Rows never shrink below a tap target; on very short screens the list
+     scrolls instead (the digit tray stays put). */
+  overflow-x: hidden;
+  overflow-y: auto;
   scrollbar-width: none;
 }
 
@@ -819,8 +911,8 @@ h2.prompt-numeral {
 
 .row-card.match-object-row {
   width: 100%;
-  flex: 1 1 0;
-  min-height: 0;
+  flex: 1 0 0;
+  min-height: 64px;
   align-items: stretch;
   gap: 8px;
   padding: 12px;
@@ -1003,13 +1095,13 @@ h2.prompt-numeral {
 }
 
 .row-card.match-object-row > button {
-  min-height: 0;
+  min-height: 48px;
 }
 
 .match-object-row > [data-match-slot] {
   flex: 1;
   min-width: 0;
-  min-height: 0;
+  min-height: 48px;
   display: flex;
   align-items: center;
   border: 0;
