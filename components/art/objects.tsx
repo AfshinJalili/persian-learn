@@ -400,6 +400,7 @@ export const OBJECT_MATCH_LIST_FALLBACK = { width: 342, height: 280 };
 export const MATCH_LIST_GAP = 4;
 export const MATCH_ROW_PADDING = 12;
 export const MATCH_ROW_GAP = 8;
+export const MATCH_ROW_MIN_HEIGHT = 56;
 export const MATCH_DIGIT_SLOT = 48;
 export const MATCH_UNDO_BADGE = 48;
 export const MATCH_UNDO_GAP = 4;
@@ -611,7 +612,11 @@ export function matchApplesBoxFromList(
   rowCount: number
 ): { width: number; height: number; offsetWidth: number } {
   const rows = Math.max(1, rowCount);
-  const rowHeight = (list.height - MATCH_LIST_GAP * Math.max(0, rows - 1)) / rows;
+  // Rows keep a tap-sized minimum (CSS min-height); the list scrolls beyond it.
+  const rowHeight = Math.max(
+    MATCH_ROW_MIN_HEIGHT,
+    (list.height - MATCH_LIST_GAP * Math.max(0, rows - 1)) / rows
+  );
   const chromeX = MATCH_ROW_PADDING * 2 + MATCH_ROW_GAP + MATCH_DIGIT_SLOT;
   const chromeY = MATCH_ROW_PADDING * 2;
   return {
