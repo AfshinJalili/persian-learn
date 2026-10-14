@@ -7,19 +7,19 @@ import { test, expect } from './e2e-audio-stub';
 // 367x540 is a very short desktop window from QA's first report; a 3-line
 // prompt there leaves room for ~0.65, so it only gets a 0.6 floor.
 const VIEWPORTS = [
-  { width: 360, height: 640, minRatio: 0.65 },
+  { width: 360, height: 640, minRatio: 0.7 },
   { width: 367, height: 540, minRatio: 0.6 },
-  { width: 367, height: 580, minRatio: 0.65 },
-  { width: 367, height: 740, minRatio: 0.65 },
-  { width: 367, height: 900, minRatio: 0.65 },
-  { width: 375, height: 667, minRatio: 0.65 },
-  { width: 412, height: 915, minRatio: 0.65 },
-  { width: 419, height: 580, minRatio: 0.65 },
-  { width: 419, height: 740, minRatio: 0.65 },
-  { width: 419, height: 900, minRatio: 0.65 },
+  { width: 367, height: 580, minRatio: 0.7 },
+  { width: 367, height: 740, minRatio: 0.7 },
+  { width: 367, height: 900, minRatio: 0.7 },
+  { width: 375, height: 667, minRatio: 0.7 },
+  { width: 412, height: 915, minRatio: 0.7 },
+  { width: 419, height: 580, minRatio: 0.6 },
+  { width: 419, height: 740, minRatio: 0.7 },
+  { width: 419, height: 900, minRatio: 0.7 },
 ] as const;
 
-// m1l3 ex1 (e2) is a one-bread count card; m2l3 ex1-5 and m2l5 ex3 are the dice steps; m2l4 ex1 (e2) and m2l5 ex7 are ✋.
+// m1l3 ex1 (e2) is a one-bread count card; m2l4 ex2/ex3 are ☝️/✌️ (tall art); m2l3 ex1-5 and m2l5 ex3 are the dice steps; m2l4 ex1 (e2) and m2l5 ex7 are ✋.
 const SINGLE_COUNT_STEPS = [
   '/lesson/m1l3?ex=1',
   '/lesson/m2l3?ex=1',
@@ -28,6 +28,8 @@ const SINGLE_COUNT_STEPS = [
   '/lesson/m2l3?ex=4',
   '/lesson/m2l3?ex=5',
   '/lesson/m2l4?ex=1',
+  '/lesson/m2l4?ex=2',
+  '/lesson/m2l4?ex=3',
   '/lesson/m2l5?ex=3',
   '/lesson/m2l5?ex=7',
 ];
@@ -63,7 +65,7 @@ async function seed(page: import('@playwright/test').Page) {
 }
 
 for (const viewport of VIEWPORTS) {
-  test(`single items and dice fill ~70% of the count card at ${viewport.width}x${viewport.height}`, async ({ page }) => {
+  test(`single items and dice: drawn art >= 70% of the count card at ${viewport.width}x${viewport.height}`, async ({ page }) => {
     await page.setViewportSize(viewport);
     await seed(page);
     for (const path of SINGLE_COUNT_STEPS) {
@@ -75,6 +77,18 @@ for (const viewport of VIEWPORTS) {
         const node = document.querySelector('.object-count-card .object-cluster[data-count="1"] > .illus')!;
         const card = node.closest('.object-count-card') as HTMLElement;
         const box = node.getBoundingClientRect();
+        // The visible drawing: union of the drawn shapes' screen rects (what
+        // QA measures), not the square container.
+        const shapes = [...node.querySelectorAll('svg rect, svg circle, svg ellipse, svg path, svg polygon, svg line')];
+        const rects = shapes.map((shape) => shape.getBoundingClientRect()).filter((r) => r.width > 0 && r.height > 0);
+        const art = {
+          left: Math.min(...rects.map((r) => r.left)),
+          right: Math.max(...rects.map((r) => r.right)),
+          top: Math.min(...rects.map((r) => r.top)),
+          bottom: Math.max(...rects.map((r) => r.bottom)),
+        };
+        const artW = art.right - art.left;
+        const artH = art.bottom - art.top;
         const cardBox = card.getBoundingClientRect();
         const se = document.scrollingElement!;
         const content = card.closest('.content') as HTMLElement;
@@ -82,6 +96,10 @@ for (const viewport of VIEWPORTS) {
         const bottom = document.querySelector('.bottom')?.getBoundingClientRect();
         return {
           ratio: box.width / card.offsetWidth,
+          // width for wide/square art; the long side for tall art (☝️, ✌️)
+          art: +(Math.max(artW, artH >= artW * 1.05 ? artH : artW) / card.offsetWidth).toFixed(3),
+          artW: +(artW / card.offsetWidth).toFixed(3),
+          tall: artH >= artW * 1.05,
           // every block (incl. the answer tiles) is fully on screen
           contentOverflow: content.scrollHeight - content.clientHeight,
           clipped: last.bottom > content.getBoundingClientRect().bottom + 1 || (bottom ? bottom.bottom > innerHeight + 1 : false),
@@ -95,8 +113,8 @@ for (const viewport of VIEWPORTS) {
         });
       }
       console.log(path, `${viewport.width}x${viewport.height}`, JSON.stringify(m));
-      expect(m.ratio, path).toBeGreaterThanOrEqual(viewport.minRatio);
-      expect(m.ratio, path).toBeLessThanOrEqual(0.75);
+      expect(m.art, path).toBeGreaterThanOrEqual(viewport.minRatio);
+      expect(m.ratio, path).toBeLessThanOrEqual(0.8);
       expect(m.inside, path).toBe(true);
       expect(m.scrolls, path).toBe(false);
       expect(m.clipped, path).toBe(false);

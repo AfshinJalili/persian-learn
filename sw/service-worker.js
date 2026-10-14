@@ -58,7 +58,12 @@ async function cacheFirst(request) {
   if (cached) {
     return cached;
   }
-  const response = await fetch(request);
+  let response;
+  try {
+    response = await fetch(request);
+  } catch {
+    return fallbackResponse(request);
+  }
   if (response.status === 200) {
     await cache.put(request, response.clone()).catch(() => undefined);
   }
@@ -124,7 +129,11 @@ async function audioCacheFirst(request) {
   let full = await cache.match(key, { ignoreVary: true });
   if (!full || full.status !== 200) {
     // Separate fetch without the Range header so we get (and keep) the whole file.
-    full = await fetch(key, { credentials: 'same-origin' });
+    try {
+      full = await fetch(key, { credentials: 'same-origin' });
+    } catch {
+      return fallbackResponse(request);
+    }
     if (full.status !== 200) {
       return full;
     }
@@ -137,6 +146,31 @@ async function audioCacheFirst(request) {
   return rangeResponse(full, rangeHeader);
 }
 
+function isRsc(request) {
+  return request.headers.get('RSC') === '1' || new URL(request.url).searchParams.has('_rsc');
+}
+
+const OFFLINE_HTML =
+  '<!doctype html><html lang="fa" dir="rtl"><meta charset="utf-8">' +
+  '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+  '<body style="font-family:sans-serif;text-align:center;padding:48px 24px">' +
+  '<p>اینترنت وصل نیست. لطفاً دوباره امتحان کنید.</p>' +
+  '<button onclick="location.reload()" style="font-size:20px;padding:12px 24px">دوباره</button>' +
+  '</body></html>';
+
+// Every path answers with a Response (never a rejected promise), so a failed
+// or cancelled request can't surface as a service-worker network error.
+function fallbackResponse(request) {
+  if (request.mode === 'navigate') {
+    return new Response(OFFLINE_HTML, {
+      status: 503,
+      headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    });
+  }
+  // A non-OK RSC response makes the Next router fall back to a full page load.
+  return new Response('', { status: 504, statusText: 'Offline' });
+}
+
 async function networkFirst(request) {
   const cache = await caches.open(CACHE_NAME);
   try {
@@ -146,15 +180,17 @@ async function networkFirst(request) {
       await cache.put(request, response.clone()).catch(() => undefined);
     }
     return response;
-  } catch (error) {
+  } catch {
+    // Network failed or the request was cancelled (e.g. the router moved on).
+    const rsc = isRsc(request);
     const cached =
       (await cache.match(request)) ||
-      (await cache.match(request, { ignoreSearch: true })) ||
-      (request.mode === 'navigate' ? await cache.match('/home') : undefined);
-    if (cached) {
-      return cached;
-    }
-    throw error;
+      // An RSC request must never get an HTML page back.
+      (!rsc ? await cache.match(request, { ignoreSearch: true }) : undefined) ||
+      (request.mode === 'navigate'
+        ? (await cache.match('/home')) || (await cache.match('/'))
+        : undefined);
+    return cached || fallbackResponse(request);
   }
 }
 
@@ -357,15 +393,16 @@ self.addEventListener('fetch', (event) => {
 
   const strategy =
     request.mode === 'navigate' ? 'network-first' : offlineStrategy(url.pathname);
+  const safe = (promise) => promise.catch(() => fallbackResponse(request));
   if (strategy === 'cache-first' && isAudio(url.pathname)) {
-    event.respondWith(audioCacheFirst(request));
+    event.respondWith(safe(audioCacheFirst(request)));
     return;
   }
   if (strategy === 'cache-first') {
-    event.respondWith(cacheFirst(request));
+    event.respondWith(safe(cacheFirst(request)));
     return;
   }
   if (strategy === 'network-first') {
-    event.respondWith(networkFirst(request));
+    event.respondWith(safe(networkFirst(request)));
   }
 });

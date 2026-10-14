@@ -1,5 +1,6 @@
 'use client';
 
+import { singleArtStyle } from '@/components/art/single-art';
 import { exerciseChoices } from '@/lib/shuffle';
 import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
@@ -44,6 +45,7 @@ export default function CountObjectsExercise({
         ref={ref}
         className="card object-count-card"
         data-single-art={objects.length === 1 || undefined}
+        style={singleArtStyle(objects.length === 1, box.offsetWidth)}
       >
         <ObjectCluster
           tokens={objects}

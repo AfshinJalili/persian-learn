@@ -538,13 +538,13 @@ h2.prompt-numeral {
   padding: 12px;
 }
 
-/* A single picture or die is sized to ~70% of the card width, so the card's
+/* A single picture or die is sized to ~77% of the card width (drawn art >= 70%), so the card's
    height follows its width instead of whatever space is left. It may still
    shrink (flex-shrink) when the screen is too short, so nothing scrolls. */
 .app-phone:not(.object-gallery-page) .object-count-card[data-single-art] {
-  flex: 0 1 calc(70cqi + 24px + 6px);
+  flex: 0 1 calc(var(--single-card-w, 100cqi) * 0.77 + 24px + 6px);
   height: auto;
-  max-height: calc(70cqi + 24px + 6px);
+  max-height: calc(var(--single-card-w, 100cqi) * 0.77 + 24px + 6px);
   min-height: 0;
   /* The art is sized from this box; don't let the art size the box back. */
   contain: size;

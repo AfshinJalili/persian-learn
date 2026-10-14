@@ -1,5 +1,6 @@
 'use client';
 
+import { singleArtStyle } from '@/components/art/single-art';
 import { Exercise } from '@/lib/types';
 import { exerciseChoices } from '@/lib/shuffle';
 import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
@@ -53,6 +54,7 @@ export default function ChooseDigitExercise({
           className="card object-count-card"
           data-dice-face={display}
           data-single-art={singleArt || undefined}
+          style={singleArtStyle(singleArt, box.offsetWidth)}
         >
           <ObjectCluster
             token={display}
@@ -67,6 +69,7 @@ export default function ChooseDigitExercise({
           className="card object-count-card"
           data-object-display
           data-single-art={singleArt || undefined}
+          style={singleArtStyle(singleArt, box.offsetWidth)}
         >
           <ObjectCluster
             tokens={splitObjectTokens(display)}

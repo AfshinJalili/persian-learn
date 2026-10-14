@@ -1,3 +1,4 @@
+import math from '../public/content/math.json';
 import { test, expect } from '@playwright/test';
 
 // The worker that shipped before the fix: fixed cache name, stale-while-
@@ -5,11 +6,11 @@ import { test, expect } from '@playwright/test';
 // It is served by scripts/sw-test-server.mjs while /__test/legacy-sw is on.
 const OLD_MARKER = 'OLD-BUILD-MARKER';
 
-async function seedOnboarded(page: import('@playwright/test').Page) {
-  await page.evaluate(async () => {
+async function seedOnboarded(page: import('@playwright/test').Page, completed: string[] = []) {
+  await page.evaluate(async (completedLessons) => {
     const today = new Date().toISOString().split('T')[0];
     const progress = {
-      currentTrack: 'math', onboarded: true, completedLessons: [], completedUnits: [],
+      currentTrack: 'math', onboarded: true, completedLessons, completedUnits: [],
       xp: 0, streak: 1, streakBest: 1, lastActivityDate: today, dailyGoal: 2,
       dailyLessonsCompleted: 0, restDaysUsed: 0, weakItems: [], avatar: 'tulip',
       name: 'فریبا جون', startDate: '2026-01-01T00:00:00.000Z', speechRate: 1,
@@ -31,7 +32,7 @@ async function seedOnboarded(page: import('@playwright/test').Page) {
       };
       req.onerror = () => reject(req.error);
     });
-  });
+  }, completed);
 }
 
 test.describe.configure({ mode: 'serial' });
@@ -366,4 +367,92 @@ test('audio saved by the legacy worker survives the upgrade', async ({ page, con
   }, AUDIO);
   await context.setOffline(false);
   expect(offline).toEqual({ status: 206, len: 10 });
+});
+
+test('finishing a lesson and going home logs no console or network errors', async ({ page }) => {
+  test.setTimeout(120000);
+  const errors: string[] = [];
+  page.on('console', (msg) => {
+    if (msg.type() === 'error') errors.push(`console: ${msg.text()}`);
+  });
+  page.on('pageerror', (err) => errors.push(`pageerror: ${err.message}`));
+  page.on('requestfailed', (req) => {
+    const failure = req.failure()?.errorText ?? '';
+    // A request the app itself cancels (router abort) is not a failure.
+    if (failure.includes('ERR_ABORTED')) return;
+    errors.push(`requestfailed: ${req.url()} ${failure}`);
+  });
+  page.on('response', (res) => {
+    if (res.status() >= 500) errors.push(`http ${res.status()}: ${res.url()}`);
+  });
+
+  await controlled(page);
+  await seedOnboarded(page, ['m1l1', 'm1l2', 'm1l3']);
+  await page.goto('/lesson/m1l4');
+  await expect(page.getByRole('button', { name: 'بستن درس' })).toBeVisible();
+  // Stub audio so steps don't wait on clips.
+  await page.evaluate(() => {
+    HTMLMediaElement.prototype.play = function play() {
+      queueMicrotask(() => this.dispatchEvent(new Event('ended')));
+      return Promise.resolve();
+    };
+  });
+  const lesson = math.units.flatMap((unit) => unit.lessons).find((item) => item.id === 'm1l4')!;
+  for (const exercise of lesson.exercises) {
+    if (exercise.type === 'intro') {
+      await page.getByRole('button', { name: /ادامه/ }).click();
+      continue;
+    }
+    if (exercise.type === 'match_pairs') {
+      for (const [left, right] of exercise.answer.split('|').map((pair) => pair.split('='))) {
+        await page.locator(`[data-match-digit="${left}"]`).click();
+        await page.locator(`[data-match-slot="${right}"]`).click();
+      }
+    } else {
+      await page.getByRole('button', { name: exercise.answer, exact: true }).first().click();
+    }
+    await page.getByRole('button', { name: /بررسی/ }).click();
+    await page.getByRole('button', { name: 'ادامه' }).click();
+  }
+  await expect(page).toHaveURL(/\/lesson-complete/, { timeout: 15000 });
+  await page.waitForTimeout(1500);
+  await page.locator('.btn-primary').first().click();
+  await expect(page).toHaveURL(/\/home/, { timeout: 15000 });
+  await page.waitForTimeout(3000);
+  expect(errors).toEqual([]);
+});
+
+test('failed or uncached requests always get a Response, never a network error', async ({
+  page,
+  context,
+}) => {
+  await controlled(page);
+  const failed: string[] = [];
+  page.on('requestfailed', (req) => failed.push(`${req.url()} ${req.failure()?.errorText}`));
+  await context.setOffline(true);
+  const result = await page.evaluate(async () => {
+    const out: Record<string, number | string> = {};
+    for (const [name, url, init] of [
+      ['rsc', '/lesson/m1l4?_rsc=abc', { headers: { RSC: '1' } }],
+      ['content', '/content/missing.json', {}],
+      ['static', '/_next/static/chunks/missing.js', {}],
+      ['audio', '/audio/missing.mp3', { headers: { Range: 'bytes=0-9' } }],
+    ] as const) {
+      try {
+        const res = await fetch(url, init as RequestInit);
+        out[name] = res.status;
+        if (name === 'rsc') out.rscType = res.headers.get('Content-Type') ?? '';
+      } catch (error) {
+        out[name] = `threw: ${String(error)}`;
+      }
+    }
+    return out;
+  });
+  // An offline navigation to a page that was never cached gets a page too.
+  const nav = await page.goto('/lesson/m9l9').catch((error) => String(error));
+  await context.setOffline(false);
+  expect(result).toMatchObject({ rsc: 504, content: 504, static: 504, audio: 504 });
+  expect(String(result.rscType)).not.toContain('text/html');
+  expect(typeof nav, String(nav)).not.toBe('string');
+  expect(failed.filter((line) => !line.includes('ERR_ABORTED'))).toEqual([]);
 });
