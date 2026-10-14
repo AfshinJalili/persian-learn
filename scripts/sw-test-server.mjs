@@ -35,7 +35,7 @@ http
       const upstreamRes = await fetch(`http://127.0.0.1:${upstream}${req.url}`);
       const body = await upstreamRes.text();
       res.writeHead(200, { 'Content-Type': 'application/javascript', 'Cache-Control': 'no-cache' });
-      res.end(`${body}\n// deploy ${bump}\n`);
+      res.end(body.replace("const SW_VERSION = '", `const SW_VERSION = 'deploy${bump}-`));
       return;
     }
     if (legacyOn && path === '/sw.js') {

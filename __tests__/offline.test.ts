@@ -23,7 +23,7 @@ describe('offline caching strategy', () => {
 });
 
 describe('service worker', () => {
-  const source = readFileSync('public/sw.js', 'utf8');
+  const source = readFileSync('sw/service-worker.js', 'utf8');
 
   it('caches lesson routes and Next.js assets at runtime', () => {
     expect(source).toContain("pathname.startsWith('/_next/static')");
@@ -44,7 +44,7 @@ describe('service worker', () => {
   });
 
   it('versions the cache per build and takes over immediately', () => {
-    expect(source).toContain("searchParams.get('v')");
+    expect(source).toContain("const SW_VERSION = '__BUILD_ID__'");
     expect(source).not.toMatch(/const CACHE_NAME = 'persian-learn-v2'/);
     expect(source).toContain('self.skipWaiting()');
     expect(source).toContain('self.clients.claim()');

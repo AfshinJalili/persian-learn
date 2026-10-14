@@ -98,7 +98,7 @@ test('a returning user on the old worker gets the new build without a manual rel
   }));
   expect(state.caches).not.toContain('persian-learn-v2');
   expect(state.caches.some((name) => name.startsWith('persian-learn-'))).toBe(true);
-  expect(state.script).toMatch(/\/sw\.js\?v=/);
+  expect(state.script).toMatch(/\/sw\.js$/);
 
   // 3. Later navigations come from the network (network-first), not a stale copy.
   await page.evaluate(async () => {
@@ -110,48 +110,133 @@ test('a returning user on the old worker gets the new build without a manual rel
   await page.screenshot({ path: '/workspace/pl-fix-artifacts/sw-upgraded-home.png' });
 });
 
-test('a later deploy reloads the page once, but never in the middle of a lesson', async ({
-  page,
-}) => {
-  test.setTimeout(60000);
-  await page.goto('/home');
-  await page.evaluate(async () => {
-    await navigator.serviceWorker.ready;
-  });
-  await page.reload();
-  await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
+type Win = { __marker?: number };
 
-  // Mid-lesson: a new worker takes over but the page must not reload.
-  await seedOnboarded(page);
-  await page.goto('/lesson/m1l1');
-  await expect(page.getByRole('button', { name: 'بستن درس' })).toBeVisible();
-  await page.evaluate(() => ((window as unknown as { __marker: number }).__marker = 1));
+async function deploy(page: import('@playwright/test').Page) {
   await page.request.get('/__test/sw-bump');
   await page.evaluate(async () => {
     const reg = await navigator.serviceWorker.getRegistration();
     await reg?.update();
   });
-  await page.waitForTimeout(4000);
-  expect(await page.evaluate(() => (window as unknown as { __marker?: number }).__marker)).toBe(1);
+}
 
-  // Outside a lesson: the next deploy reloads the page exactly once.
-  await page.goto('/home');
-  await page.evaluate(() => ((window as unknown as { __marker: number }).__marker = 1));
+const marker = (page: import('@playwright/test').Page) =>
+  page.evaluate(() => (window as unknown as Win).__marker).catch(() => 1);
+
+test('a deploy during a lesson is applied when she leaves the lesson, not before', async ({
+  page,
+}) => {
+  test.setTimeout(60000);
+  await controlled(page);
+  await seedOnboarded(page);
+  await page.goto('/lesson/m1l1');
+  await expect(page.getByRole('button', { name: 'بستن درس' })).toBeVisible();
+  await page.evaluate(() => ((window as unknown as Win).__marker = 1));
   let loads = 0;
   page.on('load', () => (loads += 1));
-  await page.request.get('/__test/sw-bump');
+
+  await deploy(page);
+  await page.waitForTimeout(4000);
+  expect(await marker(page)).toBe(1); // no reload mid-lesson
+  expect(loads).toBe(0);
+
+  // Leaving the lesson with client-side routing (as the app's close button
+  // and lesson end do) is a safe point: the update applies then.
+  await page.evaluate(() => history.pushState({}, '', '/home'));
+  await expect.poll(() => marker(page), { timeout: 15000 }).toBeUndefined();
+  await page.waitForTimeout(2500);
+  expect(loads).toBe(1);
+  await expect(page.locator('.app-phone').first()).toBeVisible();
+});
+
+test('a second deploy in the same tab reloads again, with no reload loop', async ({ page }) => {
+  test.setTimeout(60000);
+  await controlled(page);
+  let loads = 0;
+  page.on('load', () => (loads += 1));
+
+  for (const round of [1, 2]) {
+    await page.evaluate(() => ((window as unknown as Win).__marker = 1));
+    await deploy(page);
+    await expect.poll(() => marker(page), { timeout: 15000 }).toBeUndefined();
+    await page.waitForLoadState('load');
+    await page.waitForTimeout(2500);
+    expect(loads, `after deploy ${round}`).toBe(round);
+  }
+  // No further reloads once settled.
+  await page.waitForTimeout(3000);
+  expect(loads).toBe(2);
+  await expect(page.locator('.app-phone').first()).toBeVisible();
+});
+
+test('a phone left on a lesson by the legacy worker updates when she leaves the lesson', async ({
+  page,
+}) => {
+  test.setTimeout(90000);
+  await page.request.get('/__test/legacy-sw/on');
+  await controlled(page);
+  // A legacy-build lesson page: no update hooks, leaves via client-side
+  // routing (an RSC fetch for /home, then pushState), like the old app.
+  await page.evaluate(async () => {
+    const cache = await caches.open('persian-learn-v2');
+    await cache.put(
+      '/lesson/m1l1',
+      new Response(
+        `<!doctype html><html><body><h1 id="old">OLD LESSON</h1>
+        <button id="leave" onclick="fetch('/home?_rsc=x', { headers: { RSC: '1' } }).then(() => history.pushState({}, '', '/home'))">leave</button>
+        </body></html>`,
+        { headers: { 'Content-Type': 'text/html' } }
+      )
+    );
+  });
+  await page.goto('/lesson/m1l1');
+  await expect(page.locator('#old')).toBeVisible();
+
+  // Deploy the new worker while she is mid-lesson.
+  await page.request.get('/__test/legacy-sw/off');
   await page.evaluate(async () => {
     const reg = await navigator.serviceWorker.getRegistration();
     await reg?.update();
   });
   await expect
-    .poll(() => page.evaluate(() => (window as unknown as { __marker?: number }).__marker).catch(() => 1), {
-      timeout: 15000,
-    })
-    .toBeUndefined();
+    .poll(() => page.evaluate(() => caches.keys()).catch(() => ['persian-learn-v2']), { timeout: 20000 })
+    .not.toContain('persian-learn-v2');
   await page.waitForTimeout(3000);
-  expect(loads).toBe(1);
+  await expect(page.locator('#old')).toBeVisible(); // not reloaded mid-lesson
+
+  await page.locator('#leave').click();
+  await expect(page.locator('#old')).toHaveCount(0, { timeout: 15000 });
+  await expect(page).toHaveURL(/\/home$/);
   await expect(page.locator('.app-phone').first()).toBeVisible();
+});
+
+test('lesson pages cached by the legacy worker still open offline after the upgrade', async ({
+  page,
+  context,
+}) => {
+  test.setTimeout(90000);
+  await page.request.get('/__test/legacy-sw/on');
+  await controlled(page);
+  await seedOnboarded(page);
+  await page.goto('/lesson/m1l1'); // the legacy worker caches it
+  await expect(page.getByRole('button', { name: 'بستن درس' })).toBeVisible();
+  await expect
+    .poll(() => page.evaluate(async () => Boolean(await (await caches.open('persian-learn-v2')).match('/lesson/m1l1'))))
+    .toBe(true);
+
+  await page.request.get('/__test/legacy-sw/off');
+  await page.goto('/home');
+  await expect
+    .poll(() => page.evaluate(() => caches.keys()).catch(() => ['persian-learn-v2']), { timeout: 20000 })
+    .not.toContain('persian-learn-v2');
+  await page.waitForTimeout(2000);
+  await page.waitForLoadState('load');
+
+  await context.setOffline(true);
+  await page.goto('/lesson/m1l1');
+  await expect(page).toHaveURL(/\/lesson\/m1l1$/);
+  await expect(page.getByRole('button', { name: 'بستن درس' })).toBeVisible({ timeout: 15000 });
+  await context.setOffline(false);
 });
 
 test('offline navigation falls back to the cached page', async ({ page, context }) => {

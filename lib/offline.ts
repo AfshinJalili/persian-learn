@@ -1,6 +1,6 @@
 export type OfflineStrategy = 'cache-first' | 'network-first' | 'network';
 
-// Mirrors offlineStrategy() in public/sw.js.
+// Mirrors offlineStrategy() in sw/service-worker.js (served at /sw.js).
 export function offlineStrategy(pathname: string): OfflineStrategy {
   if (
     pathname.startsWith('/_next/static') ||
