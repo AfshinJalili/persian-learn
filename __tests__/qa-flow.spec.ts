@@ -47,6 +47,13 @@ async function completeOnboarding(page: Page, trackLabel: string) {
 async function playLesson(page: Page, lesson: ReturnType<typeof lessonById>) {
   for (const exercise of lesson.exercises) {
     if (exercise.type === 'intro') {
+      const countCards = page.locator('[data-count-card]');
+      const cardCount = await countCards.count();
+      for (let index = 0; index < cardCount; index += 1) {
+        const card = countCards.nth(index);
+        await card.click();
+        await expect(card).toHaveAttribute('data-heard', 'true', { timeout: 10000 });
+      }
       await page.getByRole('button', { name: /ادامه/ }).click();
       continue;
     }

@@ -1,25 +1,49 @@
 'use client';
 
-import { isValidElement, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { isValidElement, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+
+function gradientId(prefix: string, reactId: string): string {
+  return `${prefix}-${reactId.replace(/[^a-zA-Z0-9_-]/g, '')}`;
+}
 
 export function AppleSvg() {
+  const fillId = gradientId('ap-g', useId());
   return (
-    <svg viewBox="15.5 10.5 69 79.6" aria-hidden="true">
-      <path d="M50 30c-8-6-30-8-34 14-3 18 10 44 24 46 4 .6 7-2 10-2s6 2.6 10 2c14-2 27-28 24-46-4-22-26-20-34-14z" fill="#D93A2B" />
-      <path d="M28 44c2-8 8-11 13-11" stroke="#F4A091" strokeWidth="5" fill="none" strokeLinecap="round" />
-      <path d="M50 31c0-8 2-14 6-18" stroke="#6B4226" strokeWidth="5" fill="none" strokeLinecap="round" />
-      <path d="M55 22c6-10 18-12 24-8-4 8-14 12-24 8z" fill="#3E9A00" />
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <defs>
+        <radialGradient id={fillId} cx="38%" cy="38%" r="70%">
+          <stop offset="0" stopColor="#F0624B" />
+          <stop offset=".6" stopColor="#D93A2B" />
+          <stop offset="1" stopColor="#A82519" />
+        </radialGradient>
+      </defs>
+      <path
+        d="M50 28c-9-7-34-8-38 16-3 20 11 46 26 48 5 .7 8-2 12-2s7 2.7 12 2c15-2 29-28 26-48-4-24-29-23-38-16z"
+        fill={`url(#${fillId})`}
+      />
+      <path d="M27 42c2-8 8-12 14-12" stroke="#FFB4A6" strokeWidth="5" fill="none" strokeLinecap="round" opacity=".9" />
+      <path d="M50 30c0-8 2-15 7-20" stroke="#6B4226" strokeWidth="5" fill="none" strokeLinecap="round" />
+      <path d="M56 20c7-11 20-13 27-8-5 9-16 13-27 8z" fill="#4C9A1A" />
+      <path d="M58 19c7-3 14-5 22-6" stroke="#2E6E0C" strokeWidth="1.6" fill="none" />
     </svg>
   );
 }
 
 export function PomegranateSvg() {
+  const fillId = gradientId('pm-g', useId());
   return (
-    <svg viewBox="16 12 68 78" aria-hidden="true">
-      <path d="M38 24l4-12 8 8 8-8 4 12z" fill="#8E1B2E" />
-      <circle cx="50" cy="56" r="34" fill="#B3243A" />
-      <path d="M30 46c3-9 10-14 17-15" stroke="#E98A98" strokeWidth="5" fill="none" strokeLinecap="round" />
-      <circle cx="50" cy="24" r="6" fill="#8E1B2E" />
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <defs>
+        <radialGradient id={fillId} cx="38%" cy="40%" r="70%">
+          <stop offset="0" stopColor="#D9465A" />
+          <stop offset=".6" stopColor="#B3243A" />
+          <stop offset="1" stopColor="#7E1426" />
+        </radialGradient>
+      </defs>
+      <path d="M37 26l3-14 6 6 4-8 4 8 6-6 3 14z" fill="#8E1B2E" />
+      <circle cx="50" cy="58" r="36" fill={`url(#${fillId})`} />
+      <path d="M28 50c3-10 11-16 19-17" stroke="#F3A2AE" strokeWidth="5" fill="none" strokeLinecap="round" />
+      <ellipse cx="50" cy="25" rx="11" ry="5" fill="#6E1222" />
     </svg>
   );
 }
@@ -119,10 +143,45 @@ export function EggSvg() {
 }
 
 export function OrangeSvg() {
+  const fillId = gradientId('or-g', useId());
   return (
-    <svg viewBox="20 18 60 68" aria-hidden="true">
-      <circle cx="50" cy="56" r="30" fill="#D66A0C" />
-      <path d="M50 28c6-10 16-12 22-8-4 8-12 10-22 8z" fill="#3E9A00" />
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <defs>
+        <radialGradient id={fillId} cx="38%" cy="38%" r="70%">
+          <stop offset="0" stopColor="#FFB547" />
+          <stop offset=".6" stopColor="#F28C12" />
+          <stop offset="1" stopColor="#C96A05" />
+        </radialGradient>
+      </defs>
+      <circle cx="50" cy="56" r="36" fill={`url(#${fillId})`} />
+      <path d="M29 48c3-9 10-14 18-15" stroke="#FFE0A8" strokeWidth="5" fill="none" strokeLinecap="round" />
+      <circle cx="50" cy="21" r="3.5" fill="#6B4226" />
+      <path d="M52 20c8-9 20-9 25-3-6 6-16 8-25 3z" fill="#4C9A1A" />
+      <g fill="#D97A0A" opacity=".5">
+        <circle cx="62" cy="62" r="1.3" />
+        <circle cx="44" cy="72" r="1.3" />
+        <circle cx="68" cy="46" r="1.3" />
+      </g>
+    </svg>
+  );
+}
+
+
+export function SparrowSvg() {
+  return (
+    <svg viewBox="0 0 100 100" aria-hidden="true">
+      <path d="M74 58l22-10-4 20z" fill="#7A4E2D" />
+      <ellipse cx="54" cy="60" rx="34" ry="28" fill="#B07A4A" />
+      <ellipse cx="46" cy="70" rx="22" ry="16" fill="#F2DDBF" />
+      <path d="M58 50c14-4 26 4 26 16-10 4-22 2-30-6z" fill="#7A4E2D" />
+      <path d="M64 56l14 4M62 62l12 3" stroke="#F2DDBF" strokeWidth="2.6" strokeLinecap="round" />
+      <circle cx="34" cy="40" r="20" fill="#B07A4A" />
+      <path d="M22 30c6-8 18-10 26-4-8 0-16 2-26 4z" fill="#7A4E2D" />
+      <path d="M15 43l-11 3 11 4z" fill="#E7A23B" />
+      <circle cx="28" cy="38" r="5" fill="#1B2A22" />
+      <circle cx="26.5" cy="36.5" r="1.7" fill="#fff" />
+      <circle cx="36" cy="48" r="4" fill="#F28B6B" opacity=".45" />
+      <path d="M48 86v8M58 86v8" stroke="#7A4E2D" strokeWidth="3.5" strokeLinecap="round" />
     </svg>
   );
 }
@@ -345,6 +404,7 @@ export type AvatarId = (typeof AVATARS)[number]['id'];
 
 const EMOJI_ART: Record<string, ReactNode> = {
   '🍎': <AppleSvg />,
+  '🐦': <SparrowSvg />,
   '🍞': <BreadSvg />,
   '☕': <TeaSvg />,
   '🍇': <PomegranateSvg />,
@@ -439,8 +499,8 @@ const HAND_ART: Record<string, ReactNode> = {
 // Width / height of each drawing's tight viewBox (the viewBoxes hug the ink,
 // so these are the visible art's proportions).
 const SVG_ASPECT = new Map<unknown, number>([
-  [AppleSvg, 0.867],
-  [PomegranateSvg, 0.872],
+  [AppleSvg, 1.0],
+  [PomegranateSvg, 1.0],
   [TeaSvg, 0.951],
   [BreadSvg, 1.851],
   [TulipSvg, 0.667],
@@ -450,7 +510,8 @@ const SVG_ASPECT = new Map<unknown, number>([
   [KeySvg, 1.0],
   [PhoneSvg, 0.476],
   [EggSvg, 0.824],
-  [OrangeSvg, 0.882],
+  [OrangeSvg, 1.0],
+  [SparrowSvg, 1.0],
   [HouseSvg, 1.097],
   [WaterSvg, 0.732],
   [DotSvg, 1.0],

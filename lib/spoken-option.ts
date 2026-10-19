@@ -58,6 +58,7 @@ const LETTER_NAMES: Record<string, string> = {
 
 const EMOJI_WORDS: Record<string, string> = {
   '🍎': 'سیب',
+  '🐦': 'گنجشک',
   '🍞': 'نان',
   '☕': 'چای',
   '🍇': 'انگور',

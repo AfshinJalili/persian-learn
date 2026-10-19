@@ -6,11 +6,13 @@ describe('spokenOption', () => {
     expect(spokenOption('☕')).toBe('چای');
     expect(spokenOption('🍞')).toBe('نان');
     expect(spokenOption('🍎')).toBe('سیب');
+    expect(spokenOption('🐦')).toBe('گنجشک');
   });
 
   it('speaks a count plus the word for repeated pictures', () => {
     expect(spokenOption('☕☕')).toBe('دو چای');
     expect(spokenOption('🍞🍞🍞')).toBe('سه نان');
+    expect(spokenOption('🐦🐦')).toBe('دو گنجشک');
   });
 
   it('speaks number words for digits', () => {

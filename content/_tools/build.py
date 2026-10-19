@@ -83,8 +83,11 @@ class Track:
             "distractors": list(distractors), "feedback_correct": fc, "feedback_wrong": fw})
 
     # ---- generic exercise helpers (on-screen prompts are icons/symbols, research §5.3) ----
-    def intro(self, display, audio, visual="", teaches=(), prompt=None):
-        self.ex("intro", prompt or display, audio, {"display": display, "visual": visual, "teaches": list(teaches)})
+    def intro(self, display, audio, visual="", teaches=(), prompt=None, labels=None):
+        payload = {"display": display, "visual": visual, "teaches": list(teaches)}
+        if labels is not None:
+            payload["labels"] = list(labels)
+        self.ex("intro", prompt or display, audio, payload)
 
     def listen(self, audio, answer, distractors, kind, prompt="🔊", fw=None):
         self.ex("listen_choose", prompt, audio, {"choice_kind": kind}, answer, distractors, fw=fw)
