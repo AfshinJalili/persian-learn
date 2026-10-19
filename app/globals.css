@@ -2564,7 +2564,7 @@ h2.prompt-numeral {
 }
 
 .cc-word {
-  font-size: 1.25rem;
+  font-size: 1.375rem;
   line-height: 1.1;
   white-space: nowrap;
   font-weight: 700;
@@ -2721,7 +2721,7 @@ h2.prompt-numeral {
   }
 
   .cc-intro-screen .cc-word {
-    font-size: 1.25rem;
+    font-size: 1.375rem;
     line-height: 1.15;
   }
 }
