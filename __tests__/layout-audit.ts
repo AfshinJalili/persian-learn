@@ -37,6 +37,11 @@ export async function auditLayout(page: Page, { zoom = 1 }: { zoom?: number } = 
       el.closest('svg') !== null && el.tagName.toLowerCase() !== 'svg' ||
       el.closest('[aria-hidden="true"]') !== null && !el.matches('[aria-hidden="true"]') ||
       el.closest('[data-layout-audit="skip"]') !== null ||
+      // Visually hidden screen-reader text (1x1px, clipped) is meant to clip.
+      (() => {
+        const r = el.getBoundingClientRect();
+        return r.width <= 1 && r.height <= 1 && getComputedStyle(el).overflow === 'hidden';
+      })() ||
       ['script', 'style', 'link', 'meta', 'next-route-announcer', 'nextjs-portal', 'canvas'].includes(el.tagName.toLowerCase());
 
     const se = document.scrollingElement!;

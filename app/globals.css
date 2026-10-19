@@ -2751,6 +2751,7 @@ h2.prompt-numeral {
     flex: none;
     width: 100%;
     height: auto;
+    min-height: var(--cc-zone-h, 64px);
   }
 }
 
@@ -2788,7 +2789,7 @@ h2.prompt-numeral {
 }
 
 [data-count-gallery] .cc-zone {
-  min-height: 0;
+  min-height: var(--cc-zone-h, 0px);
   height: auto;
   align-self: stretch;
 }

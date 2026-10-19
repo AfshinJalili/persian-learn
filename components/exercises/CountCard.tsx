@@ -1,6 +1,6 @@
 'use client';
 
-import { useLayoutEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import { Check } from 'lucide-react';
 import { ObjectArt, looksLikeObjects, splitObjectTokens } from '@/components/art/objects';
 import SpeakerIcon from '@/components/ui/SpeakerIcon';
@@ -243,7 +243,7 @@ export default function CountCard({
           ) : null}
         </span>
       </div>
-      <div ref={zoneRef} className="cc-zone" aria-hidden="true" style={{ minHeight: layout.height }}>
+      <div ref={zoneRef} className="cc-zone" aria-hidden="true" style={{ '--cc-zone-h': `${layout.height}px` } as CSSProperties}>
         <div className="cc-cluster" style={{ width: layout.width, height: layout.height }}>
           {layout.positions.map((position, index) => {
             const highlighted = highlightIndex === index;
