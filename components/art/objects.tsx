@@ -395,7 +395,7 @@ export const OBJECT_CLUSTER_MIN_SIZE = 32;
 // Width of a single item's art box as a share of the card width. The
 // viewBoxes hug the ink and tall art gets a taller (not narrower) box, so the
 // visible art is this wide: >= 0.70 with room for antialiasing and rounding.
-export const OBJECT_SINGLE_WIDTH_RATIO = 0.73;
+export const OBJECT_SINGLE_WIDTH_RATIO = 0.76;
 export const OBJECT_MATCH_SINGLE_MAX = 96;
 export const OBJECT_CARD_INNER_FALLBACK = { width: 81, height: 140 };
 export const OBJECT_MATCH_INNER_FALLBACK = { width: 220, height: 72 };
@@ -510,7 +510,9 @@ export function objectClusterLayoutForBox(
     // height limit is innerHeight * aspect (cards grow to make room for it).
     const unclamped =
       layout === 'picture'
-        ? Math.min(innerWidth, innerHeight * ratio)
+        ? // Alphabet picture cards fill the inner box; the drawing is
+          // letterboxed inside the square illus.
+          innerWidth
         : layout === 'row' || layout === 'match'
           ? Math.min(
               widthBasis * OBJECT_SINGLE_WIDTH_RATIO,
@@ -528,13 +530,13 @@ export function objectClusterLayoutForBox(
               innerWidth,
               innerHeight * ratio
             );
-    const size = Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.floor(unclamped));
+    const size = Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.round(unclamped));
     return {
       cols: 1,
       rows: 1,
       unclamped,
       size,
-      height: Math.floor(size / ratio),
+      height: Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.round(size / ratio)),
     };
   }
 
@@ -851,7 +853,7 @@ function SingleObjectArt({
   const art = objectArtForToken(token);
   const hand = isHandToken(token);
   const h = height ?? size;
-  if (!art && !fluid && PICTOGRAPH.test(token)) {
+  if (!art && !fluid && isInkFitGlyph(token)) {
     return (
       <span
         className="illus"
@@ -960,13 +962,21 @@ export function ObjectArt({
   return <SingleObjectArt token={parts[0] ?? token} size={size} />;
 }
 
-const PICTOGRAPH = /\p{Extended_Pictographic}/u;
+/** Clap, same/different marks, and clock faces: ink-fitted glyphs (no SVG). */
+const INK_FIT_GLYPH = /[\u{1F44F}\u{2705}\u{274C}\u{1F550}-\u{1F567}]/u;
+
+export function isInkFitGlyph(token: string): boolean {
+  return INK_FIT_GLYPH.test(normalizeObjectToken(token)) || INK_FIT_GLYPH.test(token);
+}
 
 export function looksLikeObjects(token: string): boolean {
   return splitGraphemes(token).some((part) => {
     const key = normalizeObjectToken(part);
     return Boolean(
-      objectArtForToken(part) || DICE_PIP_COUNTS[part] || DICE_PIP_COUNTS[key] || PICTOGRAPH.test(part)
+      objectArtForToken(part) ||
+        DICE_PIP_COUNTS[part] ||
+        DICE_PIP_COUNTS[key] ||
+        isInkFitGlyph(part)
     );
   });
 }

@@ -559,7 +559,7 @@ h2.prompt-numeral {
   padding: 12px;
 }
 
-/* A single picture or die is sized to 73% of the card width (drawn art >= 70%), so the card's
+/* A single picture or die is sized to 76% of the card width (drawn art >= 70%), so the card's
    height follows its width instead of whatever space is left. It never
    shrinks: on short screens the exercise scrolls instead. */
 .app-phone:not(.object-gallery-page) .object-count-card[data-single-art] {

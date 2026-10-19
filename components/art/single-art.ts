@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 import { OBJECT_SINGLE_WIDTH_RATIO } from '@/components/art/objects';
 
 // The single-art count card's height follows its own measured width (see
-// .object-count-card[data-single-art] in globals.css): the art box is 73% of
+// .object-count-card[data-single-art] in globals.css): the art box is 76% of
 // the card width and as tall as the drawing's proportions need, so tall art
 // (a raised finger, an onion) is as wide as square art. Width doesn't depend
 // on height, so there's no loop.
@@ -16,7 +16,7 @@ export function singleArtStyle(single: boolean, cardWidth: number, aspect = 1): 
 }
 
 /**
- * A choice card holding one picture: tall enough that the art box is 73% of
+ * A choice card holding one picture: tall enough that the art box is 76% of
  * the card's width at the drawing's own proportions.
  */
 export function singleChoiceStyle(single: boolean, cardWidth: number, chromeY: number, aspect = 1): CSSProperties | undefined {
