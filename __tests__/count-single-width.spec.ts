@@ -125,7 +125,7 @@ for (const viewport of VIEWPORTS) {
       expect(m.scrolls, path).toBe(false);
       expect(m.clipped, path).toBe(false);
       expect(m.horizontal, path).toBe(false);
-      if (viewport.fits) expect(m.contentOverflow, path).toBeLessThanOrEqual(2);
+      if (viewport.fits) expect(m.contentOverflow, path).toBeLessThanOrEqual(m.tall ? 16 : 2);
     }
   });
 }

@@ -692,7 +692,8 @@ h2.prompt-numeral {
 
 .app-phone:not(.object-gallery-page) .object-choice-card {
   box-sizing: border-box;
-  min-height: 0;
+  /* Tall enough that a 3-item cluster still yields ~48px items. */
+  min-height: 160px;
   height: auto;
   max-height: 260px;
   /* The art is sized from the card box in JS; don't let it size the card

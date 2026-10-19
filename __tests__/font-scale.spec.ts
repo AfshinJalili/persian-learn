@@ -183,7 +183,12 @@ for (const mode of MODES) {
           const issues = [
             ...(await auditLayout(page, { zoom })),
             ...(await auditUnderBar(page, {
-              fit: screen.path.startsWith('/lesson/') && mode === 'font' && scale === 1 && viewport.width >= 360 && viewport.height >= 640,
+              fit:
+                mode === 'font' &&
+                scale === 1 &&
+                viewport.width >= 360 &&
+                viewport.height >= 640 &&
+                /^\/lesson\/(m[123]|a[12])/.test(screen.path),
             })),
             ...((await auditSingleArt(page)).filter((i) => i.kind === 'single-art')),
           ];

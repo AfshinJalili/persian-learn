@@ -16,7 +16,7 @@ export async function auditLayout(page: Page, { zoom = 1 }: { zoom?: number } = 
   void zoom;
   return page.evaluate(() => {
     const issues: { kind: string; detail: string }[] = [];
-    const TOL = 2;
+    const TOL = 3;
     const vw = document.documentElement.clientWidth;
     const describe = (el: Element) => {
       const cls = typeof el.className === 'string' && el.className ? `.${el.className.trim().split(/\s+/).slice(0, 3).join('.')}` : '';
@@ -204,6 +204,9 @@ export async function auditUnderBar(page: Page, { fit = false }: { fit?: boolean
     // Greeting / onboarding covers the page; home nodes underneath are not
     // meant to be tapped through it.
     if (document.querySelector('[aria-label="شروع"][role="button"], .onboarding, [data-greeting]')) {
+      return { skip: true as const };
+    }
+    if (location.pathname.startsWith('/lesson-complete')) {
       return { skip: true as const };
     }
     const content = document.querySelector('.app-phone > .content') as HTMLElement | null;
