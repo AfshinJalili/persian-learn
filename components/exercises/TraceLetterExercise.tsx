@@ -42,14 +42,25 @@ export default function TraceLetterExercise({ exercise, onComplete }: Props) {
       <button
         type="button"
         className="card"
-        style={{ height: 380, background: '#fff', position: 'relative' }}
+        style={{
+          minHeight: 380,
+          background: '#fff',
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 4,
+          padding: '12px 20px',
+        }}
         onClick={handleTrace}
         aria-label={letter}
       >
-        <span className="body-lg" style={{ position: 'absolute', top: 12, right: 20, color: 'var(--ink-2)', fontWeight: 700 }}>
+        <span className="body-lg" style={{ alignSelf: 'stretch', textAlign: 'start', color: 'var(--ink-2)', fontWeight: 700 }}>
           از دایرهٔ سبز شروع کنید
         </span>
-        <svg viewBox="0 0 320 300" width="300" height="282" aria-hidden="true">
+        <span style={{ position: 'relative', display: 'block', width: 300, maxWidth: '100%' }}>
+        <svg viewBox="0 0 320 300" width="300" height="282" aria-hidden="true" style={{ display: 'block', width: '100%', height: 'auto' }}>
           <path d="M266 140 C 280 186, 262 206, 226 206 L 100 206 C 62 206, 46 186, 52 150" fill="none" stroke="#E6E9E7" strokeWidth="46" strokeLinecap="round" />
           <path d="M266 140 C 280 186, 262 206, 226 206 L 100 206 C 62 206, 46 186, 52 150" fill="none" stroke="#9AA59F" strokeWidth="4" strokeDasharray="4 12" strokeLinecap="round" />
           {traced && (
@@ -66,7 +77,7 @@ export default function TraceLetterExercise({ exercise, onComplete }: Props) {
           <path d="M200 112 h-70 m14 -12 l-14 12 l14 12" stroke="#0D4F9E" strokeWidth="5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
         {!traced && (
-          <span className="illus" style={{ position: 'absolute', width: 64, height: 64, left: 126, top: 196 }}>
+          <span className="illus" style={{ position: 'absolute', width: '21%', height: 'auto', aspectRatio: '1', left: '39%', top: '61%' }}>
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path
                 d="M9 11V4.8a1.5 1.5 0 0 1 3 0V10m0-.5V3.8a1.5 1.5 0 0 1 3 0V10m0-.3V5.3a1.5 1.5 0 0 1 3 0v8.2c0 4.3-2.6 7.5-6.7 7.5-2.7 0-4.2-1.4-5.6-3.6l-2.1-3.3a1.5 1.5 0 0 1 2.4-1.8L9 14"
@@ -78,12 +89,13 @@ export default function TraceLetterExercise({ exercise, onComplete }: Props) {
             </svg>
           </span>
         )}
+        </span>
         <span className="glyph" style={{ position: 'absolute', opacity: 0 }}>
           {letter}
         </span>
       </button>
       <div className="btn-row">
-        <button type="button" className="btn btn-secondary" style={{ flex: 1 }} onClick={handleReset}>
+        <button type="button" className="btn btn-secondary" style={{ flex: '1 1 12rem' }} onClick={handleReset}>
           <RotateCcw strokeWidth={2.6} />
           دوباره نشانم بده
         </button>

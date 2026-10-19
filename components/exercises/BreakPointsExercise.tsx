@@ -75,14 +75,14 @@ export default function BreakPointsExercise({
         {letters.map((letter, index) => (
           <div key={`${letter}-${index}`} className="flex items-center">
             <div className="bg-white border-4 border-brown-600 rounded-3xl w-14 h-20 flex items-center justify-center shadow-lg">
-              <span className="text-4xl font-bold text-brown-900">{letter}</span>
+              <span className="text-[36px] font-bold text-brown-900">{letter}</span>
             </div>
             {index < letters.length - 1 && (
               <button
                 type="button"
                 onClick={() => toggleBreak(index)}
                 disabled={disabled}
-                className={`mx-1 w-10 h-10 rounded-full border-4 flex items-center justify-center ${
+                className={`mx-1 w-12 h-12 rounded-full border-4 flex items-center justify-center ${
                   breakPoints.has(index)
                     ? 'bg-[var(--clay-400)] border-[var(--clay-800)] text-white'
                     : 'bg-white border-brown-400 text-brown-400'

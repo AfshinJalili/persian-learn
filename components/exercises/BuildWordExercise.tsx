@@ -61,7 +61,7 @@ export default function BuildWordExercise({
         <div className="text-3xl font-black">{exercise.prompt}</div>
       </div>
 
-      <div className="text-8xl">{picture}</div>
+      <div className="text-[96px]">{picture}</div>
 
       <div className="bg-white border-8 border-brown-600 rounded-3xl p-6 min-h-[120px] w-full flex items-center justify-center gap-2 flex-wrap">
         {selectedLetters.length === 0 ? (
@@ -77,7 +77,7 @@ export default function BuildWordExercise({
                 onClick={() => handlePlacedClick(index)}
                 className="bg-[var(--blue-100)] border-4 border-[var(--blue-700)] rounded-2xl w-16 h-20 min-h-[48px] flex items-center justify-center match-digit-slot-placed"
               >
-                <span className="glyph text-5xl font-bold text-brown-900 leading-none">{letter}</span>
+                <span className="glyph text-[48px] font-bold text-brown-900 leading-none">{letter}</span>
               </button>
               <PlacedUndoBadge
                 value={letter}
@@ -99,7 +99,7 @@ export default function BuildWordExercise({
             disabled={disabled}
             className="bg-white border-4 border-brown-600 rounded-3xl w-16 h-20 flex items-center justify-center shadow-lg"
           >
-            <span className="text-5xl font-bold text-brown-900 leading-none">{letter}</span>
+            <span className="text-[48px] font-bold text-brown-900 leading-none">{letter}</span>
           </button>
         ))}
       </div>

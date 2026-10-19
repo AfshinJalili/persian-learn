@@ -98,7 +98,7 @@ export default function CompareMoreLessExercise({
         type="button"
         onClick={() => select('equal', 'یکسان هستند')}
         disabled={disabled}
-        className={`card h-20 w-full ${userAnswer === 'equal' ? 'selected' : ''}`}
+        className={`card min-h-20 h-auto w-full shrink-0 py-2 ${userAnswer === 'equal' ? 'selected' : ''}`}
       >
         <span className="body-lg font-bold">یکسان هستند</span>
       </button>

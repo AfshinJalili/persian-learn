@@ -323,7 +323,7 @@ export default function MatchPairsExercise({
                   {looksLikeObjects(option) ? (
                     <ObjectArt token={option} size={48} />
                   ) : (
-                    <span className="glyph text-4xl font-extrabold">{option}</span>
+                    <span className="glyph text-[36px] font-extrabold">{option}</span>
                   )}
                 </button>
               );
@@ -356,7 +356,7 @@ export default function MatchPairsExercise({
                   {looksLikeObjects(option) ? (
                     <ObjectArt token={option} size={48} />
                   ) : (
-                    <span className="glyph text-4xl font-extrabold">{option}</span>
+                    <span className="glyph text-[36px] font-extrabold">{option}</span>
                   )}
                 </button>
               );

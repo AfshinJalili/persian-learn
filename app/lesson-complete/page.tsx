@@ -67,13 +67,13 @@ export default function LessonCompletePage() {
         </g>
       </svg>
       <div className="content center" style={{ paddingTop: 12, gap: 16, position: 'relative' }}>
-        <HodaMascot className="w-[230px] h-[230px]" pose="cheer" />
+        <HodaMascot className="w-[230px] h-[230px] max-w-full" pose="cheer" />
         <div className="display">{title}</div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap justify-center items-center gap-3">
           <SpeakerButton text={spoken} size="sm" />
           <p className="body-lg">{lessonLine}</p>
         </div>
-        <div className="flex gap-3 w-full">
+        <div className="stat-row w-full">
           <div className="stat" style={{ borderColor: '#FFC83D' }}>
             <div className="k" style={{ background: '#FFC83D', color: '#1B2A22' }}>امتیاز</div>
             <div className="v">

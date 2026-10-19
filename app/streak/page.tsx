@@ -57,7 +57,7 @@ export default function StreakPage() {
           <SpeakerButton text={title} size="sm" />
           <h1>{title}</h1>
         </div>
-        <div className="row-card w-full justify-between" style={{ padding: '12px 14px', gap: 0 }}>
+        <div className="row-card week-row w-full justify-between" style={{ padding: '12px 14px', gap: 0 }}>
           {DAY_LETTERS.map((letter, index) => {
             const isFilled = isActiveOnWeekday(progress, index);
             const isToday = index === iranWeekIndex;
@@ -104,7 +104,7 @@ export default function StreakPage() {
               {formatPersianNumber(done)} از {formatPersianNumber(goal)}
             </text>
           </svg>
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: '1 1 8rem', minWidth: 0 }}>
             <div className="h2" style={{ fontWeight: 800 }}>
               هدف امروز: {formatPersianNumber(goal)} درس
             </div>
@@ -119,7 +119,7 @@ export default function StreakPage() {
               <path d="M19.5 14.5A8 8 0 0 1 9.5 4.5a8 8 0 1 0 10 10z" />
             </svg>
           </span>
-          <div style={{ flex: 1 }}>
+          <div style={{ flex: '1 1 8rem', minWidth: 0 }}>
             نگران نباشید! هر هفته ۲ روز استراحت دارید و رشته‌تان قطع نمی‌شود.
           </div>
         </div>

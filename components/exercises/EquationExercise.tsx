@@ -39,7 +39,7 @@ export default function EquationExercise({
       <div className="bg-cream-100 border-4 border-brown-600 rounded-3xl p-6 w-full">
         <div className="flex flex-wrap items-center justify-center gap-4">
           <div className="text-4xl break-all">{glyph.repeat(leftCount) || '∅'}</div>
-          <div className="text-5xl font-bold text-brown-900">{op}</div>
+          <div className="text-[48px] font-bold text-brown-900">{op}</div>
           <div className="text-4xl break-all">{glyph.repeat(rightCount) || '∅'}</div>
         </div>
       </div>
@@ -53,7 +53,7 @@ export default function EquationExercise({
             name={choice}
             peers={choices}
             onClick={() => onAnswerChange(choice)}
-            className="p-6 text-6xl leading-none"
+            className="px-2 py-6 text-[60px] leading-none"
           >
             {choice}
           </ChoiceButton>

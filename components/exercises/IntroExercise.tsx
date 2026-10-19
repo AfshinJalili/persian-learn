@@ -16,7 +16,10 @@ export default function IntroExercise({ exercise, onContinue }: Props) {
     .filter(Boolean);
 
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center min-h-0">
+    <div
+      className="flex flex-1 flex-col items-center gap-4 text-center"
+      style={{ justifyContent: 'safe center' }}
+    >
       <SpeakerButton text={exercise.audio_script} size="md" />
       <div className="flex flex-wrap items-end justify-center gap-4">
         {groups.map((group, index) => (
