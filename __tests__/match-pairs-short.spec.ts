@@ -24,7 +24,9 @@ const steps = tracks.flatMap(({ track, lessons }) => lessons.flatMap((lesson) =>
 const allIds = lessons.map((lesson) => lesson.id);
 
 async function seed(page: import('@playwright/test').Page, currentTrack: string) {
-  await page.goto('/');
+  // Seed from a page that does not run the app, so the app's first-run
+  // default progress cannot land after (and overwrite) the seed.
+  await page.goto('/manifest.json');
   await page.evaluate(async ({ completedLessons, currentTrack }) => {
     const today = new Date().toISOString().split('T')[0];
     const progress = {

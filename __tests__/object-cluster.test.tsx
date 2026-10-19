@@ -8,6 +8,7 @@ import {
   OBJECT_MATCH_SINGLE_MAX,
   ObjectCluster,
   matchApplesBoxFromList,
+  MATCH_ROW_BORDER,
   objectClusterColumns,
   objectClusterItemSize,
   objectClusterItemSizeForBox,
@@ -90,7 +91,7 @@ describe('ObjectCluster', () => {
       OBJECT_MATCH_SINGLE_MAX
     );
     const apples = matchApplesBoxFromList({ width: 342, height: 280, offsetWidth: 342 }, 3);
-    expect(apples.width).toBe(342 - (MATCH_ROW_PADDING * 2 + MATCH_ROW_GAP + MATCH_DIGIT_SLOT));
+    expect(apples.width).toBe(342 - (MATCH_ROW_PADDING * 2 + MATCH_ROW_BORDER * 2 + MATCH_ROW_GAP + MATCH_DIGIT_SLOT));
     expect(apples.height).toBeLessThan(208);
     expect(objectClusterLayoutForBox(1, apples.width, apples.height, 4, 'row', apples.offsetWidth).size).toBeLessThanOrEqual(
       OBJECT_MATCH_SINGLE_MAX

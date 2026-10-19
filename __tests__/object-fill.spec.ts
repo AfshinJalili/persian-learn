@@ -31,7 +31,9 @@ async function seedProgress(
   page: import('@playwright/test').Page,
   overrides: { currentTrack?: 'math' | 'alphabet'; completedLessons?: string[] } = {}
 ) {
-  await page.goto('/');
+  // Seed from a page that does not run the app, so the app's first-run
+  // default progress cannot land after (and overwrite) the seed.
+  await page.goto('/manifest.json');
   await page.evaluate(async (value) => {
     const today = new Date().toISOString().split('T')[0];
     const progress = {
@@ -300,7 +302,9 @@ test.describe('Object fill at phone widths', () => {
           if (section === 'ten_frame' || (section === 'match_pairs' && item.count < 6)) {
             continue;
           }
-          expect(item.ratio, section).toBeGreaterThanOrEqual(0.65);
+          // Single count art: >= 0.70. Six-plus match rows keep their own
+          // row-fill rule (a single item there is a row item, not count art).
+          expect(item.ratio, section).toBeGreaterThanOrEqual(section === 'match_pairs' ? 0.65 : 0.7);
         }
       }
 
@@ -379,6 +383,9 @@ test.describe('Object fill at phone widths', () => {
             expect(height, path).toBeLessThanOrEqual(300);
           }
           for (const scroller of first.innerScrolls) {
+            // Below 640px tall the lesson column scrolls instead of shrinking
+            // the art; nothing inside it may scroll on its own.
+            if (viewport.height < 640 && /\bcontent\b/.test(scroller.className)) continue;
             expect(scroller.overflow, `${path} ${scroller.className}`).toBeLessThanOrEqual(2);
           }
           if ((await hasItems.count()) === 0) {
@@ -399,16 +406,17 @@ test.describe('Object fill at phone widths', () => {
           }
           for (const item of stats.singles) {
             expect(item.width, path).toBeGreaterThanOrEqual(32);
-            expect(item.ratio, path).toBeGreaterThanOrEqual(0.65);
+            expect(item.ratio, path).toBeGreaterThanOrEqual(0.7);
           }
           for (const item of stats.dice) {
             expect(item.width, path).toBeGreaterThanOrEqual(32);
-            expect(item.ratio, path).toBeGreaterThanOrEqual(0.65);
+            expect(item.ratio, path).toBeGreaterThanOrEqual(0.7);
           }
           for (const item of stats.contained) {
             expect(item.overflow, path).toBeLessThanOrEqual(2);
           }
           for (const scroller of stats.innerScrolls) {
+            if (viewport.height < 640 && /\bcontent\b/.test(scroller.className)) continue;
             expect(scroller.overflow, `${path} ${scroller.className}`).toBeLessThanOrEqual(2);
           }
           const list = page.locator(

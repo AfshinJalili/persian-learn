@@ -68,7 +68,9 @@ test.describe('Codex review navigation fixes', () => {
   });
 
   test('subitize cards share the lesson content inset', async ({ page }) => {
-    await page.goto('/');
+    // Seed from a page that does not run the app, so the app's first-run
+    // default progress cannot land after (and overwrite) the seed.
+    await page.goto('/manifest.json');
     await page.evaluate(async () => {
       const today = new Date().toISOString().split('T')[0];
       const value = {
@@ -173,7 +175,9 @@ test.describe('Codex review navigation fixes', () => {
   });
 
   test('profile path rows and the slower chip stay at least 48px', async ({ page }) => {
-    await page.goto('/');
+    // Seed from a page that does not run the app, so the app's first-run
+    // default progress cannot land after (and overwrite) the seed.
+    await page.goto('/manifest.json');
     await page.evaluate(async () => {
       const today = new Date().toISOString().split('T')[0];
       const value = {
@@ -326,7 +330,9 @@ test.describe('Codex review navigation fixes', () => {
 
   test('match-pairs number tray stays fully above بررسی on a four-row question', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
-    await page.goto('/');
+    // Seed from a page that does not run the app, so the app's first-run
+    // default progress cannot land after (and overwrite) the seed.
+    await page.goto('/manifest.json');
     await page.evaluate(async () => {
       const today = new Date().toISOString().split('T')[0];
       const value = {

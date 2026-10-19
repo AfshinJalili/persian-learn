@@ -17,7 +17,8 @@ describe('digit display fitting', () => {
   });
 
   it('caps a single numeral to the inner box so it cannot overflow the card', () => {
-    expect(digitDisplayFontSize(250, 140, 282, 1)).toBe(140);
+    // 1.1em line box inside a 140px-tall box
+    expect(digitDisplayFontSize(250, 140, 282, 1)).toBe(Math.floor(140 / 1.1));
     expect(digitDisplayFontSize(250, 220, 282, 1)).toBe(Math.floor(282 * 0.7));
   });
 
