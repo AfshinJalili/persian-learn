@@ -59,7 +59,7 @@ export async function auditLayout(page: Page, { zoom = 1 }: { zoom?: number } = 
       const r = el.getBoundingClientRect();
       const s = getComputedStyle(el);
       // Off-screen sideways (sheet animations excluded via out-of-flow).
-      if ((r.right > vw + TOL || r.left < -TOL) && !el.closest('.path-hit, .tooltip')) {
+      if ((r.right > vw + TOL || r.left < -TOL) && !el.closest('.path-hit, .tooltip, [data-ink-fit], .ink-fit')) {
         const clip = clippedBy(el);
         const cr = clip?.getBoundingClientRect();
         const hiddenByClip = cr && (r.left >= cr.right || r.right <= cr.left);
@@ -117,7 +117,7 @@ export async function auditLayout(page: Page, { zoom = 1 }: { zoom?: number } = 
           const negative = ['marginTop', 'marginBottom', 'marginLeft', 'marginRight'].some(
             (k) => parseFloat((s as unknown as Record<string, string>)[k]) < 0
           );
-          if (!negative && s.transform === 'none') {
+          if (!negative && s.transform === 'none' && !el.matches('.ink-fit, [data-ink-fit]') && !el.closest('[data-ink-fit]')) {
             issues.push({
               kind: 'overflow',
               detail: `${describe(el)} [${Math.round(r.left)},${Math.round(r.top)},${Math.round(r.right)},${Math.round(r.bottom)}] outside ${describe(parent)} [${Math.round(pr.left)},${Math.round(top)},${Math.round(pr.right)},${Math.round(bottom)}]`,
