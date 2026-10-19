@@ -77,12 +77,12 @@ export default function ProfilePage() {
   return (
     <div className="app-phone">
       <div className="content" style={{ paddingTop: 4, gap: 10 }}>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-4">
           <button type="button" className="family-helper-target" aria-label="تنظیمات خانواده" {...helperHold}>
             <span className="grid place-items-center rounded-full" style={{ width: 80, height: 80, background: '#FDE7EA' }}>
               <AvatarArt id={avatarId} size={54} />
             </span>
-            <div style={{ flex: 1 }}>
+            <div style={{ flex: '1 1 7rem', minWidth: 0 }}>
               <div className="h1">{LEARNER_NAME}</div>
               <div className="muted">از {joinedLabel} با ما</div>
             </div>
@@ -91,7 +91,7 @@ export default function ProfilePage() {
             <Pencil strokeWidth={2.6} />
           </button>
         </div>
-        <div className="flex gap-2.5">
+        <div className="stat-row">
           <div className="stat" style={{ borderColor: '#1F6408' }}>
             <div className="k" style={{ background: '#1F6408', color: '#fff' }}>
               <FlameIcon />

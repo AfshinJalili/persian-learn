@@ -20,7 +20,9 @@ export function digitDisplayFontSize(
   if (tokenCount <= 1) {
     return Math.max(
       32,
-      Math.floor(Math.min(widthBasis * 0.7, innerWidth, innerHeight))
+      // The numeral's line box is 1.1em tall (--lh-numeral), so a short
+      // card caps it by height / 1.1 and the digit is never clipped.
+      Math.floor(Math.min(widthBasis * 0.7, innerWidth, innerHeight / 1.1))
     );
   }
   const gaps = SEQUENCE_GAP * Math.max(0, tokenCount - 1);

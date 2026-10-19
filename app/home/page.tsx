@@ -51,6 +51,10 @@ function NodeGlyph({
   }
 }
 
+// Node positions are laid out on a 342px-wide design path and scaled to the
+// real width, so the path never spills sideways on narrow or zoomed screens.
+const PATH_WIDTH = 342;
+
 function nodePosition(index: number, total: number) {
   const pattern = [171, 96, 171, 246, 171];
   const right = pattern[index % pattern.length] ?? 171;
@@ -150,7 +154,7 @@ export default function HomePage() {
           <span>{formatPersianNumber(progress.streak)}</span>
         </span>
         <span className="chip" aria-label="امتیاز">
-          <span style={{ color: '#D98E04', display: 'grid', width: 28 }}>
+          <span style={{ color: '#D98E04', display: 'grid', width: 32 }}>
             <StarIcon />
           </span>
           <span>{formatPersianNumber(progress.xp)}</span>
@@ -160,18 +164,19 @@ export default function HomePage() {
         <div className="unit">
           <SpeakerButton text={currentUnit.title} size="sm" />
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: 22, fontWeight: 700, opacity: 0.95 }}>
+            <div style={{ fontSize: '1.375rem', fontWeight: 700, opacity: 0.95 }}>
               بخش {formatPersianNumber(unitNumber)}
             </div>
-            <div style={{ fontSize: 26, fontWeight: 800, lineHeight: '38px' }}>{currentUnit.title}</div>
+            <div style={{ fontSize: '1.625rem', fontWeight: 800, lineHeight: 1.45 }}>{currentUnit.title}</div>
           </div>
         </div>
         <div style={{ position: 'relative', flex: 1, minHeight: pathHeight }}>
           <svg
-            style={{ position: 'absolute', inset: 0 }}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
             width="342"
             height={pathHeight}
             viewBox={`0 0 342 ${pathHeight}`}
+            preserveAspectRatio="none"
           >
             <path
               d="M171 42 Q248.5 86 246 130 Q168.5 178 171 226 Q173.5 280 96 334 Q93.5 377 171 420"
@@ -200,7 +205,7 @@ export default function HomePage() {
                 onClick={() => handleLessonClick(lesson)}
                 aria-label={isCurrent ? 'شروع' : lesson.title}
                 className={`path-hit${flipTooltip ? ' tooltip-flip' : ''}`}
-                style={{ right, top }}
+                style={{ right: `${(right / PATH_WIDTH) * 100}%`, top }}
               >
                 <span className={`node ${kind}${isCurrent && focusNext ? ' pulse' : ''}`}>
                   <NodeGlyph kind={kind} isLast={isLast} />
@@ -210,7 +215,7 @@ export default function HomePage() {
             );
           })}
           {hideMascot ? null : (
-            <span className="illus" style={{ width: 112, height: 112, position: 'absolute', right: 4, top: 292 }}>
+            <span className="illus" style={{ width: 112, height: 112, position: 'absolute', right: '1%', top: 292 }}>
               <HodaMascot className="w-full h-full" />
             </span>
           )}

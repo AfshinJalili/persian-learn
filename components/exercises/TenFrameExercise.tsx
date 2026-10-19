@@ -48,7 +48,7 @@ export default function TenFrameExercise({
             name={choice}
             peers={choices}
             onClick={() => onAnswerChange(choice)}
-            className="p-6 text-5xl"
+            className="px-2 py-6 text-[48px]"
           >
             {choice}
           </ChoiceButton>

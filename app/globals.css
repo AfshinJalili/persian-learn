@@ -111,16 +111,16 @@
   --font: "Vazirmatn", system-ui, sans-serif;
   --fs-numeral: 72px;
   --lh-numeral: 1.1;
-  --fs-display: 40px;
-  --lh-display: 56px;
-  --fs-h1: 32px;
-  --lh-h1: 48px;
-  --fs-h2: 26px;
-  --lh-h2: 40px;
-  --fs-body-lg: 24px;
-  --lh-body-lg: 40px;
-  --fs-body: 22px;
-  --lh-body: 36px;
+  --fs-display: 2.5rem;
+  --lh-display: 3.5rem;
+  --fs-h1: 2rem;
+  --lh-h1: 3rem;
+  --fs-h2: 1.625rem;
+  --lh-h2: 2.5rem;
+  --fs-body-lg: 1.5rem;
+  --lh-body-lg: 2.5rem;
+  --fs-body: 1.375rem;
+  --lh-body: 2.25rem;
   --s-1: 4px;
   --s-2: 8px;
   --s-3: 12px;
@@ -221,6 +221,11 @@ button {
   container-type: inline-size;
 }
 
+.content:not(.content-fit) > * {
+  /* A scrolling column: blocks keep their size and the page scrolls. */
+  flex-shrink: 0;
+}
+
 .content::-webkit-scrollbar {
   display: none;
   width: 0;
@@ -230,8 +235,10 @@ button {
 .content:has(.match-pairs-board),
 .content:has(.cluster-stack),
 .content.content-fit {
+  /* Fit-to-screen at normal sizes; when the text is large or the screen is
+     short, the exercise scrolls vertically instead of squeezing its parts. */
   overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-y: auto;
   gap: 12px;
   padding-top: 12px;
 }
@@ -358,6 +365,7 @@ h2,
 
 .btn-row {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--s-3);
 }
 
@@ -438,7 +446,7 @@ h2,
   justify-content: center;
   gap: var(--s-2);
   font-weight: 700;
-  font-size: 22px;
+  font-size: 1.375rem;
   line-height: 1.2;
   text-align: center;
   border: 3px solid #b9d0ee;
@@ -486,8 +494,15 @@ h2,
   gap: var(--s-4);
 }
 
+.prompt {
+  flex-wrap: wrap;
+}
+
 .prompt h2 {
-  flex: 1;
+  /* Beside the speaker at normal sizes; on its own line once large text
+     would leave it too narrow. */
+  flex: 1 1 10rem;
+  min-width: 0;
 }
 
 .prompt h2.prompt-numeral,
@@ -532,17 +547,17 @@ h2.prompt-numeral {
 
 .app-phone:not(.object-gallery-page) .object-count-card {
   flex: 1 1 0;
-  min-height: 0;
+  min-height: 160px;
   max-height: min(55dvh, 100%);
   height: auto;
   padding: 12px;
 }
 
 /* A single picture or die is sized to ~77% of the card width (drawn art >= 70%), so the card's
-   height follows its width instead of whatever space is left. It may still
-   shrink (flex-shrink) when the screen is too short, so nothing scrolls. */
+   height follows its width instead of whatever space is left. It never
+   shrinks: on short screens the exercise scrolls instead. */
 .app-phone:not(.object-gallery-page) .object-count-card[data-single-art] {
-  flex: 0 1 calc(var(--single-card-w, 100cqi) * 0.77 + 24px + 6px);
+  flex: 0 0 calc(var(--single-card-w, 100cqi) * 0.77 + 24px + 6px);
   height: auto;
   max-height: calc(var(--single-card-w, 100cqi) * 0.77 + 24px + 6px);
   min-height: 0;
@@ -554,7 +569,7 @@ h2.prompt-numeral {
    answer tiles and the check bar on single-art count steps only. */
 @media (max-height: 760px) {
   .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .prompt h2:not(.prompt-numeral) {
-    font-size: 22px;
+    font-size: 1.375rem;
     line-height: 1.35;
   }
 
@@ -582,7 +597,7 @@ h2.prompt-numeral {
    their 48px tap targets with less scrolling. */
 @media (max-height: 620px) {
   .app-phone:has(.match-pairs-board) .prompt h2:not(.prompt-numeral) {
-    font-size: 19px;
+    font-size: 1.1875rem;
     line-height: 1.3;
   }
 
@@ -602,7 +617,7 @@ h2.prompt-numeral {
 
 @media (max-height: 620px) {
   .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .prompt h2:not(.prompt-numeral) {
-    font-size: 19px;
+    font-size: 1.1875rem;
     line-height: 1.3;
   }
 
@@ -634,7 +649,7 @@ h2.prompt-numeral {
 
 .app-phone:not(.object-gallery-page) .content .picture-grid {
   flex: 0 1 260px;
-  min-height: 0;
+  min-height: 160px;
   max-height: 260px;
   overflow: hidden;
   align-items: stretch;
@@ -643,14 +658,14 @@ h2.prompt-numeral {
 
 .app-phone:not(.object-gallery-page) .content .cluster-stack {
   flex: 1 1 0;
-  min-height: 0;
+  min-height: 240px;
   overflow: hidden;
 }
 
 .app-phone:not(.object-gallery-page) .content .grid2:has(.object-choice-card),
 .app-phone:not(.object-gallery-page) .content .grid3:has(.object-choice-card) {
   flex: 0 1 260px;
-  min-height: 0;
+  min-height: 160px;
   max-height: 260px;
   overflow: hidden;
   align-items: stretch;
@@ -672,8 +687,11 @@ h2.prompt-numeral {
 .app-phone:not(.object-gallery-page) .object-choice-card {
   box-sizing: border-box;
   min-height: 0;
-  height: 260px;
+  height: auto;
   max-height: 260px;
+  /* The art is sized from the card box in JS; don't let it size the card
+     back, so the grid can give up height on short screens. */
+  contain: size;
 }
 
 .object-choice-card:has(.object-cluster[data-count='3'][data-layout='grid']),
@@ -822,7 +840,9 @@ h2.prompt-numeral {
 }
 
 .glyph {
-  font-size: var(--fs-numeral);
+  /* Big numerals stay 72px (already large); only narrow (zoomed) screens
+     bring them down so three answer cards still fit across. */
+  font-size: min(var(--fs-numeral), 20cqi);
   line-height: var(--lh-numeral);
   font-weight: 800;
   font-feature-settings: "ss01";
@@ -850,14 +870,14 @@ h2.prompt-numeral {
 .app-phone:not(.object-gallery-page) .cluster-stack,
 .content > .cluster-stack {
   flex: 1 1 0;
-  min-height: 0;
+  min-height: 240px;
   overflow: hidden;
 }
 
 .app-phone:not(.object-gallery-page) .cluster-stack .object-choice-card,
 .app-phone:not(.object-gallery-page) .content > .cluster-stack .object-choice-card {
   flex: 1 1 0;
-  min-height: 0;
+  min-height: 72px;
   height: auto;
   max-height: none;
   padding: 12px;
@@ -881,7 +901,7 @@ h2.prompt-numeral {
 }
 
 .match-pairs-board {
-  flex: 1 1 0;
+  flex: 1 0 auto;
   min-height: 0;
   display: flex;
   flex-direction: column;
@@ -892,14 +912,13 @@ h2.prompt-numeral {
 .match-object-list {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1 0 auto;
   min-height: 0;
   gap: 4px;
   width: 100%;
-  /* Rows never shrink below a tap target; on very short screens the list
-     scrolls instead (the digit tray stays put). */
-  overflow-x: hidden;
-  overflow-y: auto;
+  /* Rows never shrink below a tap target; on short screens or with large
+     text the whole exercise scrolls instead. */
+  overflow: visible;
   scrollbar-width: none;
 }
 
@@ -915,7 +934,7 @@ h2.prompt-numeral {
   min-height: 64px;
   align-items: stretch;
   gap: 8px;
-  padding: 12px;
+  padding: 8px 12px;
   box-sizing: border-box;
 }
 
@@ -941,6 +960,7 @@ h2.prompt-numeral {
 
 .match-digit-tray {
   display: flex;
+  flex-wrap: wrap;
   flex: none;
   flex-shrink: 0;
   justify-content: center;
@@ -977,7 +997,7 @@ h2.prompt-numeral {
 
 .ten-frame-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(40px, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
   width: 100%;
   max-width: 24rem;
@@ -987,8 +1007,8 @@ h2.prompt-numeral {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 40px;
-  min-height: 40px;
+  min-width: 0;
+  min-height: 0;
   aspect-ratio: 1;
   border: 4px solid var(--line-strong);
   background: #fff8ec;
@@ -1057,7 +1077,7 @@ h2.prompt-numeral {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 28px;
+  font-size: 1.75rem;
   font-weight: 800;
   line-height: 1;
   color: var(--clay-800);
@@ -1131,6 +1151,9 @@ h2.prompt-numeral {
   position: absolute;
   inset-inline: 0;
   bottom: 0;
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: var(--s-5) var(--s-5) var(--s-6);
   border-radius: var(--r-lg) var(--r-lg) 0 0;
   box-shadow: var(--elev-3);
@@ -1152,6 +1175,7 @@ h2.prompt-numeral {
 
 .sheet-head {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--s-4);
 }
@@ -1190,6 +1214,8 @@ h2.prompt-numeral {
 
 .home-top {
   display: flex;
+  flex-wrap: wrap;
+  row-gap: 6px;
   align-items: center;
   justify-content: space-between;
   padding: 4px var(--s-5) var(--s-3);
@@ -1207,7 +1233,7 @@ h2.prompt-numeral {
   padding: var(--s-2) var(--s-4);
   border-radius: var(--r-pill);
   font-weight: 800;
-  font-size: 24px;
+  font-size: 1.5rem;
   line-height: 1.2;
   background: var(--surface);
   border: 3px solid var(--line);
@@ -1240,6 +1266,7 @@ h2.prompt-numeral {
 .nav a,
 .nav button {
   flex: 1;
+  min-width: 0;
   min-height: 72px;
   display: flex;
   flex-direction: column;
@@ -1247,8 +1274,11 @@ h2.prompt-numeral {
   justify-content: center;
   gap: 2px;
   font-weight: 700;
-  font-size: 22px;
-  line-height: 28px;
+  /* One-word labels in a third of the width: they grow with the phone's
+     font size until they would no longer fit on one line. */
+  font-size: min(1.375rem, 7.4vw);
+  line-height: 1.3;
+  white-space: nowrap;
   color: var(--ink-2);
   text-decoration: none;
   border-radius: var(--r-md);
@@ -1367,7 +1397,8 @@ h2.prompt-numeral {
   border-radius: var(--r-md);
   padding: 6px 18px;
   font-weight: 800;
-  font-size: 24px;
+  /* Grows with the font size but stays beside its node on a phone. */
+  font-size: min(1.5rem, 7vw);
   color: var(--green-900);
   white-space: nowrap;
   box-shadow: var(--elev-2);
@@ -1435,8 +1466,8 @@ h2.prompt-numeral {
   border-radius: var(--r-lg);
   padding: var(--s-3) var(--s-5);
   font-weight: 700;
-  font-size: 24px;
-  line-height: 38px;
+  font-size: 1.5rem;
+  line-height: 2.375rem;
 }
 
 .mascot-speech {
@@ -1454,8 +1485,8 @@ h2.prompt-numeral {
   border-radius: 28px;
   padding: 10px 22px;
   font-weight: 800;
-  font-size: 26px;
-  line-height: 38px;
+  font-size: 1.625rem;
+  line-height: 2.375rem;
   box-shadow: var(--elev-2);
   margin-bottom: 4px;
 }
@@ -1498,18 +1529,18 @@ h2.prompt-numeral {
   border: 3px solid var(--line);
   border-radius: var(--r-md);
   background: var(--surface);
-  overflow: hidden;
   text-align: center;
   min-height: 56px;
 }
 
 .stat .k {
+  border-radius: calc(var(--r-md) - 3px) calc(var(--r-md) - 3px) 0 0;
   font-weight: 800;
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1.15;
-  height: 56px;
   min-height: 56px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 6px;
@@ -1524,21 +1555,21 @@ h2.prompt-numeral {
 }
 
 .stat .k .k-label {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
   text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .stat .v {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   gap: 6px;
+  padding: 0 4px;
   font-weight: 900;
-  font-size: 28px;
-  line-height: 50px;
+  font-size: 1.75rem;
+  line-height: 1.4;
+  min-height: 50px;
 }
 
 .stat .v svg {
@@ -1605,7 +1636,7 @@ h2.prompt-numeral {
   display: grid;
   place-items: center;
   font-weight: 700;
-  font-size: 22px;
+  font-size: 1.375rem;
 }
 
 .seg .on {
@@ -1625,7 +1656,7 @@ h2.prompt-numeral {
   border: 3px solid var(--line-strong);
   border-radius: 20px;
   font-weight: 800;
-  font-size: 24px;
+  font-size: 1.5rem;
   background: var(--surface);
   color: var(--ink);
 }
@@ -1638,6 +1669,8 @@ h2.prompt-numeral {
 
 .speed-slider {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
   gap: var(--s-3);
   width: 100%;
@@ -1650,7 +1683,7 @@ h2.prompt-numeral {
   justify-content: center;
   gap: 4px;
   font-weight: 800;
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 1.2;
   min-width: 3.25rem;
   text-align: center;
@@ -1693,10 +1726,12 @@ h2.prompt-numeral {
 
 .family-helper-target {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 16px;
   flex: 1;
   min-width: 0;
+  overflow-wrap: anywhere;
   padding: 0;
   background: none;
   border: 0;
@@ -1706,7 +1741,7 @@ h2.prompt-numeral {
 
 .letter-grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(56px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(max(52px, 2.4em), 1fr));
   gap: 8px;
   justify-content: center;
 }
@@ -1732,7 +1767,8 @@ h2.prompt-numeral {
 .speed-slider input[type='range'] {
   -webkit-appearance: none;
   appearance: none;
-  flex: 1;
+  flex: 1 1 8rem;
+  min-width: 120px;
   width: 100%;
   height: 56px;
   margin: 0;
@@ -1775,4 +1811,194 @@ h2.prompt-numeral {
   border-radius: 50%;
   background: var(--green-700);
   border: 3px solid var(--green-800);
+}
+
+/* ---- Large system font ------------------------------------------------
+   Text sizes are in rem so they follow the phone's font size (Chrome text
+   size, iOS Dynamic Type). Layouts wrap and grow instead of clipping. */
+.sheet-head > .sheet-text {
+  flex: 1 1 9rem;
+  min-width: 0;
+}
+
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.stat-row > .stat {
+  flex: 1 1 6rem;
+}
+
+.week-row {
+  flex-wrap: wrap;
+  justify-content: space-around;
+  row-gap: 8px;
+}
+
+.unit > div,
+.family-helper-target > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.slow-btn {
+  max-width: 100%;
+}
+
+.grid2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Narrow CSS viewports: Android Chrome turns a large system font into page
+   zoom, so a 360px phone at 150% lays out at 240px. */
+@media (max-width: 340px) {
+  .content {
+    padding-inline: 12px;
+  }
+
+  .grid2,
+  .grid3,
+  .picture-grid {
+    gap: 8px;
+  }
+
+  .card {
+    min-width: min(var(--tap-min), 100%);
+  }
+
+  .lesson-top,
+  .bottom,
+  .home-top {
+    padding-inline: 12px;
+  }
+}
+
+/* Very short CSS viewports (zoomed or landscape): the whole screen scrolls as
+   one page; the bottom bar and the nav stay stuck to the bottom. */
+@media (max-height: 420px) {
+  .app-phone {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    overflow-x: clip;
+  }
+
+  .app-phone > .content {
+    flex: 1 0 auto;
+    overflow: visible;
+    overflow-x: clip;
+  }
+
+  .app-phone > .bottom {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+  }
+}
+
+.ten-frame-cell > .illus {
+  width: 80% !important;
+  height: 80% !important;
+}
+
+.ten-frame-cell > .illus .glyph {
+  font-size: min(32px, 100%) !important;
+}
+
+.row-card {
+  overflow-wrap: break-word;
+}
+
+.row-card > div {
+  min-width: 0;
+}
+
+/* With very large text the feedback sheet scrolls; its Continue / Try again
+   button stays pinned at the bottom of the sheet. */
+.sheet > .btn:last-child {
+  position: sticky;
+  bottom: 0;
+  flex-shrink: 0;
+}
+
+/* Info rows (streak goal, tips): the text drops under the picture instead
+   of being squeezed beside it. Match rows keep their one-line layout. */
+.content > .row-card:not(.match-object-row) {
+  flex-wrap: wrap;
+}
+
+@media (max-width: 340px) {
+  /* Picture answers stack one per row so each keeps a usable size. */
+  .app-phone:not(.object-gallery-page) .content .picture-grid,
+  .app-phone:not(.object-gallery-page) .content .grid3:has(.object-choice-card .object-cluster),
+  .app-phone:not(.object-gallery-page) .content .grid2:has(.object-choice-card .object-cluster) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: minmax(120px, auto);
+    flex: none;
+    max-height: none;
+  }
+
+  /* Square-ish cards: a picture fills the card width. */
+  .app-phone:not(.object-gallery-page) .content .picture-grid > .object-choice-card {
+    min-height: calc(100cqi + 24px);
+  }
+
+  .path-hit {
+    width: 72px;
+    height: 72px;
+  }
+
+  .node {
+    width: 60px;
+    height: 60px;
+  }
+
+  .node.current {
+    width: 72px;
+    height: 72px;
+  }
+
+  /* No room beside the node: the label sits just under it. */
+  .path-hit .tooltip,
+  .path-hit.tooltip-flip .tooltip {
+    top: calc(100% - 6px);
+    right: 50%;
+    left: auto;
+    transform: translateX(50%);
+    padding: 0 10px;
+    z-index: 3;
+  }
+
+  .path-hit .tooltip::before,
+  .path-hit .tooltip::after {
+    display: none;
+  }
+}
+
+/* Listen-and-choose: its parts are direct items of the fitted content, so
+   the answer grid gives up height on short screens and the whole step
+   scrolls when the text is large. */
+.listen-choose {
+  display: contents;
+}
+
+.listen-choose > h2 {
+  align-self: center;
+  text-align: center;
+}
+
+.listen-choose > .speaker,
+.listen-choose > .slow-btn {
+  align-self: center;
+}
+
+.listen-choose > .grid2,
+.listen-choose > .grid3 {
+  width: 100%;
 }

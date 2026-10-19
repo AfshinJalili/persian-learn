@@ -48,8 +48,8 @@ export default function NumberLineExercise({
       <p className="body-lg muted" style={{ marginTop: -8 }}>
         علامت سبز را روی عدد درست بگذارید.
       </p>
-      <div className="card" style={{ height: 300, alignContent: 'center', position: 'relative' }}>
-        <svg viewBox="0 0 342 230" width="342" height="230">
+      <div className="card" style={{ minHeight: 300, alignContent: 'center', position: 'relative' }}>
+        <svg viewBox="0 0 342 230" width="342" height="230" style={{ width: '100%', maxWidth: 342, height: 'auto' }}>
           <line x1="6" y1="144" x2="318" y2="144" stroke="#1B2A22" strokeWidth="5" strokeLinecap="round" />
           <path d="M4 144l14-10v20z" fill="#1B2A22" />
           {numbers.map((num, index) => {
@@ -70,7 +70,7 @@ export default function NumberLineExercise({
             );
           })}
         </svg>
-        <div className="flex justify-between w-[300px] font-bold text-[var(--ink-2)]">
+        <div className="flex flex-wrap justify-between gap-x-4 w-full max-w-[300px] font-bold text-[var(--ink-2)]">
           <span>کمتر</span>
           <span>بیشتر ←</span>
         </div>
@@ -87,6 +87,7 @@ export default function NumberLineExercise({
                 playOptionAudio(label).catch(() => {});
               }}
               className="flex-1 min-h-[56px]"
+              data-tap-strip
             />
           ))}
         </div>

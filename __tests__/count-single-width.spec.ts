@@ -1,23 +1,23 @@
 import { test, expect } from './e2e-audio-stub';
 
-// Single objects and dice faces in count cards should fill about 70% of the
-// card width on phones, without the exercise scrolling.
-// Single-art count cards grow with their width (not the leftover space), so
-// the art reaches ~70% of the card width; the page must never scroll.
-// 367x540 is a very short desktop window from QA's first report; a 3-line
-// prompt there leaves room for ~0.65, so it only gets a 0.6 floor.
+// Single objects and dice faces in count cards fill at least 70% of the card
+// width at every size. Single-art count cards grow with their width (not the
+// leftover space), so the art never shrinks: at normal sizes (360x640 and
+// up) everything fits without scrolling; on shorter screens the exercise
+// scrolls vertically and the Check bar stays at the bottom.
 const VIEWPORTS = [
-  { width: 360, height: 640, minRatio: 0.7 },
-  { width: 367, height: 540, minRatio: 0.6 },
-  { width: 367, height: 580, minRatio: 0.7 },
-  { width: 367, height: 740, minRatio: 0.7 },
-  { width: 367, height: 900, minRatio: 0.7 },
-  { width: 375, height: 667, minRatio: 0.7 },
-  { width: 412, height: 915, minRatio: 0.7 },
-  { width: 419, height: 580, minRatio: 0.6 },
-  { width: 419, height: 740, minRatio: 0.7 },
-  { width: 419, height: 900, minRatio: 0.7 },
+  { width: 360, height: 640, fits: true },
+  { width: 367, height: 540, fits: false },
+  { width: 367, height: 580, fits: false },
+  { width: 367, height: 740, fits: true },
+  { width: 367, height: 900, fits: true },
+  { width: 375, height: 667, fits: true },
+  { width: 412, height: 915, fits: true },
+  { width: 419, height: 580, fits: false },
+  { width: 419, height: 740, fits: true },
+  { width: 419, height: 900, fits: true },
 ] as const;
+const MIN_ART = 0.7;
 
 // m1l3 ex1 (e2) is a one-bread count card; m2l4 ex2/ex3 are ☝️/✌️ (tall art); m2l3 ex1-5 and m2l5 ex3 are the dice steps; m2l4 ex1 (e2) and m2l5 ex7 are ✋.
 const SINGLE_COUNT_STEPS = [
@@ -35,7 +35,9 @@ const SINGLE_COUNT_STEPS = [
 ];
 
 async function seed(page: import('@playwright/test').Page) {
-  await page.goto('/');
+  // Seed from a page that does not run the app, so the app's first-run
+  // default progress cannot land after (and overwrite) the seed.
+  await page.goto('/manifest.json');
   await page.evaluate(async () => {
     const today = new Date().toISOString().split('T')[0];
     const progress = {
@@ -92,6 +94,9 @@ for (const viewport of VIEWPORTS) {
         const cardBox = card.getBoundingClientRect();
         const se = document.scrollingElement!;
         const content = card.closest('.content') as HTMLElement;
+        // Scroll the last block into view first: on short screens the
+        // exercise scrolls, and every block must be reachable.
+        content.scrollTop = content.scrollHeight;
         const last = content.lastElementChild!.getBoundingClientRect();
         const bottom = document.querySelector('.bottom')?.getBoundingClientRect();
         return {
@@ -100,8 +105,9 @@ for (const viewport of VIEWPORTS) {
           art: +(Math.max(artW, artH >= artW * 1.05 ? artH : artW) / card.offsetWidth).toFixed(3),
           artW: +(artW / card.offsetWidth).toFixed(3),
           tall: artH >= artW * 1.05,
-          // every block (incl. the answer tiles) is fully on screen
+          // every block (incl. the answer tiles) is reachable on screen
           contentOverflow: content.scrollHeight - content.clientHeight,
+          horizontal: se.scrollWidth > se.clientWidth + 1 || content.scrollWidth > content.clientWidth + 1,
           clipped: last.bottom > content.getBoundingClientRect().bottom + 1 || (bottom ? bottom.bottom > innerHeight + 1 : false),
           inside: box.top >= cardBox.top - 1 && box.bottom <= cardBox.bottom + 1,
           scrolls: se.scrollHeight > se.clientHeight + 1,
@@ -113,12 +119,13 @@ for (const viewport of VIEWPORTS) {
         });
       }
       console.log(path, `${viewport.width}x${viewport.height}`, JSON.stringify(m));
-      expect(m.art, path).toBeGreaterThanOrEqual(viewport.minRatio);
+      expect(m.art, path).toBeGreaterThanOrEqual(MIN_ART);
       expect(m.ratio, path).toBeLessThanOrEqual(0.8);
       expect(m.inside, path).toBe(true);
       expect(m.scrolls, path).toBe(false);
       expect(m.clipped, path).toBe(false);
-      expect(m.contentOverflow, path).toBeLessThanOrEqual(2);
+      expect(m.horizontal, path).toBe(false);
+      if (viewport.fits) expect(m.contentOverflow, path).toBeLessThanOrEqual(2);
     }
   });
 }
@@ -168,6 +175,31 @@ for (const viewport of PICTURE_VIEWPORTS) {
     expect(checked).toBeGreaterThan(0);
   });
 }
+
+test('short screen 367x540: the count exercise scrolls, Check stays reachable and works', async ({ page }) => {
+  await page.setViewportSize({ width: 367, height: 540 });
+  await seed(page);
+  await page.goto('/lesson/m2l3?ex=1');
+  const card = page.locator('.object-count-card[data-single-art]');
+  await expect(card).toBeVisible({ timeout: 15000 });
+  const content = page.locator('.content');
+  const scroll = await content.evaluate((el) => el.scrollHeight - el.clientHeight);
+  expect(scroll, 'exercise scrolls instead of shrinking the die').toBeGreaterThan(0);
+  // Scroll down to the answers, pick the right one, then tap Check.
+  const answer = page.locator('.content > .grid3 button', { hasText: '۳' });
+  await answer.scrollIntoViewIfNeeded();
+  await answer.click();
+  const check = page.getByRole('button', { name: /بررسی/ });
+  await check.scrollIntoViewIfNeeded();
+  const box = (await check.boundingBox())!;
+  expect(box.y + box.height).toBeLessThanOrEqual(540 + 1);
+  expect(box.height).toBeGreaterThanOrEqual(48);
+  await check.click();
+  await expect(page.locator('.sheet.correct')).toBeVisible();
+  const cont = page.locator('.sheet .btn', { hasText: 'ادامه' });
+  await cont.scrollIntoViewIfNeeded();
+  await expect(cont).toBeInViewport();
+});
 
 test('match: a digit replaced on an apple group goes back to the tray', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 667 });

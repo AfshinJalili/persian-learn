@@ -86,7 +86,7 @@ export default function Onboarding() {
           <Dots step={0} />
           <div className="mascot-speech">
             <p className="speech-bubble">{welcomeBubble()}</p>
-            <HodaMascot className="w-[230px] h-[230px]" />
+            <HodaMascot className="w-[230px] h-[230px] max-w-full" />
           </div>
           <h1>خوش آمدید</h1>
           <p className="body-lg">با هم، آرام‌آرام عدد و خواندن یاد می‌گیریم.</p>

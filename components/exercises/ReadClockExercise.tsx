@@ -99,7 +99,7 @@ export default function ReadClockExercise({
       </div>
 
       {style === 'digital' ? (
-        <div className="bg-white border-8 border-brown-600 rounded-3xl px-8 py-6 text-6xl font-black">
+        <div className="bg-white border-8 border-brown-600 rounded-3xl px-8 py-6 text-[60px] font-black">
           {formatPersianNumber(hour)}:{minute.toString().padStart(2, '0').replace(/\d/g, (d) =>
             formatPersianNumber(Number(d))
           )}

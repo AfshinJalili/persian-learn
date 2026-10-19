@@ -71,7 +71,7 @@ function SizedListenChoice({
           cardWidth={box.offsetWidth}
         />
       ) : option.length <= 2 ? (
-        <span className="glyph" style={{ fontSize: 84 }}>
+        <span className="glyph" style={{ fontSize: 'min(84px, 20cqi)' }}>
           {option}
         </span>
       ) : (
@@ -109,7 +109,7 @@ export default function ListenChooseExercise({
   };
 
   return (
-    <div className="content-center flex flex-1 min-h-0 w-full flex-col items-center gap-4 overflow-hidden">
+    <div className="listen-choose">
       <h2 className={exerciseHeadingClass(exercise)}>{exerciseHeading(exercise)}</h2>
       <SpeakerButton text={exercise.audio_script} size="xl" />
       <button type="button" className="slow-btn" onClick={handleSlow}>

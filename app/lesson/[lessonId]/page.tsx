@@ -265,7 +265,7 @@ export default function LessonPage() {
                   <HodaMascot className="w-[60px] h-[60px]" />
                 )}
               </span>
-              <div style={{ flex: 1 }}>
+              <div className="sheet-text">
                 <div className="h1">
                   {kind === 'correct'
                     ? 'آفرین!'
@@ -291,7 +291,7 @@ export default function LessonPage() {
               />
             </div>
             {kind === 'correct' && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 800, fontSize: 24 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 800, fontSize: '1.5rem' }}>
                 <span style={{ color: '#D98E04', display: 'grid', width: 30 }}>
                   <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
                     <path d="M12 2.8l2.8 5.8 6.3.8-4.6 4.4 1.2 6.3L12 17l-5.7 3.1 1.2-6.3L2.9 9.4l6.3-.8z" />

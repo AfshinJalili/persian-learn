@@ -60,7 +60,7 @@ export default function PayAmountExercise({
     <div className="flex flex-col items-center gap-6">
       <div className="flex items-center gap-4 w-full">
         <SpeakerButton text={exercise.audio_script} />
-        <div className="text-6xl">{item}</div>
+        <div className="text-[60px]">{item}</div>
       </div>
       <div className="text-3xl font-bold text-brown-900">قیمت: {formatDisplayValue(price)}</div>
 

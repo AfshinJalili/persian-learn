@@ -30,16 +30,16 @@ export default function MakeChangeExercise({
     <div className="flex flex-col items-center gap-8">
       <div className="flex items-center gap-4 w-full">
         <SpeakerButton text={exercise.audio_script} />
-        <div className="text-6xl">{item}</div>
+        <div className="text-[60px]">{item}</div>
       </div>
 
       <div className="bg-cream-100 border-4 border-brown-600 rounded-3xl p-6 w-full">
-        <div className="flex justify-around items-center gap-4">
+        <div className="flex flex-wrap justify-around items-center gap-4">
           <div className="text-center">
             <div className="text-xl text-brown-600 mb-2">قیمت:</div>
             <div className="text-4xl font-bold text-brown-900">{formatDisplayValue(price)}</div>
           </div>
-          <div className="text-5xl text-brown-600">←</div>
+          <div className="text-[48px] text-brown-600">←</div>
           <div className="text-center">
             <div className="text-xl text-brown-600 mb-2">پرداخت شد:</div>
             <div className="text-4xl font-bold text-[var(--green-700)]">{formatDisplayValue(paid)}</div>

@@ -399,7 +399,10 @@ export const OBJECT_MATCH_INNER_FALLBACK = { width: 220, height: 72 };
 export const OBJECT_MATCH_LIST_FALLBACK = { width: 342, height: 280 };
 export const MATCH_LIST_GAP = 4;
 export const MATCH_ROW_PADDING = 12;
+/** Vertical padding of a match row; kept smaller so four rows still leave room for the art. */
+export const MATCH_ROW_PADDING_Y = 8;
 export const MATCH_ROW_GAP = 8;
+export const MATCH_ROW_BORDER = 3;
 export const MATCH_ROW_MIN_HEIGHT = 56;
 export const MATCH_DIGIT_SLOT = 48;
 export const MATCH_UNDO_BADGE = 48;
@@ -617,8 +620,8 @@ export function matchApplesBoxFromList(
     MATCH_ROW_MIN_HEIGHT,
     (list.height - MATCH_LIST_GAP * Math.max(0, rows - 1)) / rows
   );
-  const chromeX = MATCH_ROW_PADDING * 2 + MATCH_ROW_GAP + MATCH_DIGIT_SLOT;
-  const chromeY = MATCH_ROW_PADDING * 2;
+  const chromeX = MATCH_ROW_PADDING * 2 + MATCH_ROW_BORDER * 2 + MATCH_ROW_GAP + MATCH_DIGIT_SLOT;
+  const chromeY = MATCH_ROW_PADDING_Y * 2 + MATCH_ROW_BORDER * 2;
   return {
     width: Math.max(8, list.width - chromeX),
     height: Math.max(8, rowHeight - chromeY),
@@ -696,7 +699,7 @@ function SingleObjectArt({
       {art ?? (
         <span
           className="glyph"
-          style={fluid ? undefined : { fontSize: Math.min(size, 72) }}
+          style={fluid ? undefined : { fontSize: Math.min(Math.round(size * 0.78), 72), lineHeight: 1 }}
         >
           {token}
         </span>
