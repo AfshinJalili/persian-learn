@@ -505,12 +505,20 @@ async function idleAllowed() {
   return true;
 }
 
+function supersededWorker() {
+  const reg = self.registration;
+  return Boolean(reg.installing || reg.waiting || (reg.active && self.serviceWorker && reg.active !== self.serviceWorker));
+}
+
 // Fetches and stores clips not cached yet. Returns false if it went offline.
 async function warmClips(hashes, cached, pauseMs) {
   const cache = await caches.open(AUDIO_CACHE);
   const todo = hashes.map((hash) => `/audio/${hash}.mp3`).filter((path) => !cached.has(path));
   for (let i = 0; i < todo.length; i += WARM_CONCURRENCY) {
     if (self.navigator && self.navigator.onLine === false) return false;
+    // A newer worker is on its way: step aside so this job never holds up its
+    // activation. The new worker starts its own warm-up once it is active.
+    if (supersededWorker()) return false;
     const batch = todo.slice(i, i + WARM_CONCURRENCY);
     let offline = false;
     await Promise.all(
