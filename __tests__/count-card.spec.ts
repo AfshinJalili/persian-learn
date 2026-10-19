@@ -198,7 +198,7 @@ test.describe('Count cards', () => {
       const first = await page.evaluate(measureCountCards);
       expect(first).toHaveLength(10);
       await page.screenshot({
-        path: `/opt/cursor/artifacts/screenshots/count-1-10-${viewport.width}.png`,
+        path: test.info().outputPath(`count-1-10-${viewport.width}.png`),
         fullPage: true,
       });
       await page.waitForTimeout(400);
@@ -265,7 +265,7 @@ test.describe('Count cards', () => {
     expect(stats.helper).toContain('هر کارت را بزنید تا عددش را بشنوید');
     expect(stats.sidePad).toBe(24);
     await page.screenshot({
-      path: '/opt/cursor/artifacts/screenshots/intro-375x667.png',
+      path: test.info().outputPath('intro-375x667.png'),
       fullPage: false,
     });
   });
@@ -281,7 +281,7 @@ test.describe('Count cards', () => {
     await expect(page.getByRole('button', { name: 'یک سیب' })).toBeVisible();
     await page.waitForTimeout(500);
     await page.screenshot({
-      path: '/opt/cursor/artifacts/screenshots/intro-412.png',
+      path: test.info().outputPath('intro-412.png'),
       fullPage: false,
     });
   });
