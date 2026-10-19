@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event';
 import type { Exercise } from '../lib/types';
 import IntroExercise from '../components/exercises/IntroExercise';
 import {
-  COUNT_CARD_GAP_MIN,
   COUNT_CARD_MIN_SIZE,
+  COUNT_CARD_SIZES,
   countCardLayout,
 } from '../components/exercises/CountCard';
 
@@ -20,73 +20,83 @@ jest.mock('@/lib/audio', () => ({
   vibrate: jest.fn(),
 }));
 
-function itemBoxes(n: number, zoneWidth: number) {
-  const layout = countCardLayout(n, zoneWidth, 120);
-  return layout.positions.map((position) => ({
-    left: position.right,
-    right: position.right + layout.size,
-    top: position.top,
-    bottom: position.top + layout.size,
-    size: layout.size,
-  }));
-}
+// Spec §3 table at the 184px design zone: n → [S, step, W, H].
+const SPEC_TABLE: Record<number, [number, number, number, number]> = {
+  1: [96, 0, 96, 96],
+  2: [84, 66, 150, 88],
+  3: [70, 55, 180, 74],
+  4: [54, 42, 180, 58],
+  5: [44, 34, 180, 48],
+  6: [44, 34, 180, 86],
+  7: [44, 34, 180, 86],
+  8: [44, 34, 180, 86],
+  9: [44, 34, 180, 86],
+  10: [44, 34, 180, 86],
+};
 
 describe('countCardLayout', () => {
+  it.each([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])('matches the spec table at 184x96 for n=%s', (n) => {
+    const layout = countCardLayout(n, 184, 96);
+    const [size, step, width, height] = SPEC_TABLE[n];
+    expect(layout.size).toBe(size);
+    expect(layout.step).toBe(step);
+    expect(layout.width).toBe(width);
+    expect(layout.height).toBe(height);
+    expect(layout.positions).toHaveLength(n);
+  });
+
   it.each([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])(
-    'keeps equal item sizes and at least 8px gaps for n=%s',
+    'overlap layout stays inside the zone (184, 181, 154) for n=%s',
     (n) => {
-      for (const zoneWidth of [208, 192, 184, 154]) {
-        const layout = countCardLayout(n, zoneWidth);
+      for (const [zoneWidth, zoneHeight] of [
+        [184, 96],
+        [181, 102],
+        [154, 96],
+      ]) {
+        const layout = countCardLayout(n, zoneWidth, zoneHeight);
         expect(layout.size).toBeGreaterThanOrEqual(COUNT_CARD_MIN_SIZE);
-        expect(layout.positions).toHaveLength(n);
-        expect(new Set(layout.positions.map(() => layout.size)).size).toBe(1);
-        if (n >= 6) {
-          expect(layout.rows).toBe(2);
-          expect(layout.cols).toBe(5);
-          expect(layout.positions[5]?.top).toBe(layout.size + layout.gap);
-          expect(layout.positions[5]?.right).toBe(0);
-        } else {
-          expect(layout.rows).toBe(1);
-          expect(layout.cols).toBe(n);
-        }
+        if (n > 1) expect(layout.size).toBeLessThanOrEqual(COUNT_CARD_SIZES[Math.min(n, 5) - 1]);
+        expect(layout.width).toBeLessThanOrEqual(zoneWidth);
+        expect(layout.height).toBeLessThanOrEqual(zoneHeight);
+        expect(layout.rows).toBe(n > 5 ? 2 : 1);
+        expect(layout.cols).toBe(Math.min(n, 5));
         if (n > 1) {
-          expect(layout.gap).toBeGreaterThanOrEqual(COUNT_CARD_GAP_MIN);
-          expect(layout.step).toBe(layout.size + layout.gap);
+          // 22% overlap: neighbours step by round(S × 0.78), never more.
+          expect(layout.step).toBeLessThanOrEqual(Math.round(layout.size * 0.78));
+          expect(layout.step).toBeGreaterThan(layout.size * 0.5);
         }
-        const boxes = itemBoxes(n, zoneWidth);
-        for (let i = 0; i < boxes.length; i += 1) {
-          for (let j = i + 1; j < boxes.length; j += 1) {
-            const a = boxes[i];
-            const b = boxes[j];
-            const overlapX = Math.min(a.right, b.right) - Math.max(a.left, b.left);
-            const overlapY = Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top);
-            if (overlapX > 0 && overlapY > 0) {
-              throw new Error(`items ${i} and ${j} overlap at zone ${zoneWidth}`);
-            }
-            const sameRow = a.top === b.top;
-            const sameCol = a.left === b.left;
-            if (sameRow) {
-              const gap = Math.max(a.left, b.left) - Math.min(a.right, b.right);
-              expect(gap).toBeGreaterThanOrEqual(COUNT_CARD_GAP_MIN);
-            }
-            if (sameCol && n > 5) {
-              const gap = Math.max(a.top, b.top) - Math.min(a.bottom, b.bottom);
-              expect(gap).toBeGreaterThanOrEqual(COUNT_CARD_GAP_MIN);
-            }
-          }
+        for (const [index, position] of layout.positions.entries()) {
+          const row = index < 5 ? 0 : 1;
+          const col = index < 5 ? index : index - 5;
+          // RTL start: item 1 (and the bottom row's first item) at the right.
+          expect(position.right).toBe(col * layout.step);
+          expect(position.top).toBe(row * layout.rowStep + (col % 2 === 1 ? 4 : 0));
+          expect(position.right + layout.size).toBeLessThanOrEqual(layout.width);
+          expect(position.top + layout.size).toBeLessThanOrEqual(layout.height);
         }
+        // First-counted item on top; bottom row over the top row.
+        const zs = layout.positions.slice(0, Math.min(n, 5)).map((p) => p.z);
+        expect([...zs].sort((a, b) => b - a)).toEqual(zs);
+        if (n > 5) expect(layout.positions[5].z).toBeGreaterThan(layout.positions[0].z);
       }
     }
   );
 
-  it('uses a 5+5 ten-frame for counts 6-10', () => {
-    const layout = countCardLayout(10, 208);
-    expect(layout.cols).toBe(5);
-    expect(layout.rows).toBe(2);
-    expect(layout.gap).toBe(12);
-    expect(layout.size).toBeGreaterThanOrEqual(32);
-    expect(layout.width).toBe(5 * layout.size + 4 * layout.gap);
-    expect(layout.height).toBe(2 * layout.size + layout.gap);
+  it('hits the figma floors 96 / 84 / 70 in the 375px zone (181x102)', () => {
+    expect(countCardLayout(1, 181, 102).size).toBeGreaterThanOrEqual(96);
+    expect(countCardLayout(2, 181, 102).size).toBeGreaterThanOrEqual(84);
+    expect(countCardLayout(3, 181, 102).size).toBeGreaterThanOrEqual(70);
+  });
+
+  it('scales down with a floor of 36 and tightens the step rather than wrapping', () => {
+    const narrow = countCardLayout(5, 120, 96);
+    expect(narrow.size).toBe(36);
+    expect(narrow.width).toBeLessThanOrEqual(120);
+    expect(narrow.rows).toBe(1);
+    const ten = countCardLayout(10, 154, 96);
+    expect(ten.rows).toBe(2);
+    expect(ten.size).toBeLessThan(44);
+    expect(ten.width).toBeLessThanOrEqual(154);
   });
 });
 

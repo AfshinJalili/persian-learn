@@ -2464,19 +2464,21 @@ h2.prompt-numeral {
   gap: 8px;
   flex: none;
   flex-shrink: 0;
+  /* The speaker badge pokes 16px past the tile (spec §2); keep the zone clear. */
+  margin-inline-end: 16px;
 }
 
 .cc-card {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   width: 100%;
   /* rem so the card grows with the phone's font size; 8rem = 128px at 16px root */
   min-height: 8rem;
   max-height: none;
   flex: 1 0 auto;
-  padding: 12px;
+  padding: 10px;
   background: var(--surface);
   border: 3px solid var(--line);
   border-radius: var(--r-lg);
@@ -2516,8 +2518,9 @@ h2.prompt-numeral {
 
 .cc-check {
   position: absolute;
-  top: -4px;
-  inset-inline-end: -4px;
+  /* Off the tile: the speaker now straddles the tile corner. */
+  top: -10px;
+  inset-inline-end: -18px;
   width: 28px;
   min-width: 28px;
   height: 28px;
@@ -2554,7 +2557,8 @@ h2.prompt-numeral {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding-inline-start: 14px;
+  /* 6px (spec 14) keeps long words (هشت، هفت) clear of the speaker badge. */
+  padding-inline-start: 6px;
 }
 
 .cc-tile.pulse {
@@ -2575,9 +2579,16 @@ h2.prompt-numeral {
   font-weight: 700;
 }
 
+/* Spec §2: the speaker badge straddles the tile's bottom end corner (it is
+   only the affordance; the whole card is the button). Out of flow, so the
+   cluster zone gets the spec's ~184px and the 2/3-item floors fit at 375.
+   Placed against the card (the lead is not positioned): its end edge is 16px
+   past the 96px tile, i.e. 10 + 96 - 32 = 74px from the card's start
+   padding edge; its bottom is 10px below the vertically centred tile. */
 .cc-spk {
-  position: relative;
-  inset: auto;
+  position: absolute;
+  inset-inline-start: 74px;
+  top: calc(50% + 10px);
   flex: none;
   flex-shrink: 0;
   overflow: visible;
@@ -2712,8 +2723,8 @@ h2.prompt-numeral {
 
   .cc-intro-screen .cc-card {
     min-height: 8.75rem;
-    padding: 12px;
-    gap: 12px;
+    padding: 12px 10px;
+    gap: 8px;
   }
 
   .cc-intro-screen .cc-tile {
@@ -2749,6 +2760,17 @@ h2.prompt-numeral {
   .cc-lead {
     justify-content: center;
     flex-wrap: wrap;
+    margin-inline-end: 0;
+  }
+
+  .cc-spk {
+    position: relative;
+    inset: auto;
+  }
+
+  .cc-check {
+    top: -4px;
+    inset-inline-end: -4px;
   }
 
   .cc-zone {
@@ -2756,6 +2778,47 @@ h2.prompt-numeral {
     width: 100%;
     height: auto;
     min-height: var(--cc-zone-h, 64px);
+  }
+}
+
+/* Short phones (375x667): three 128px cards, the prompt, helper and
+   Continue fit without scrolling. */
+@media (max-height: 700px) {
+  .content:has(.cc-intro-screen) {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .cc-intro-screen .cc-list {
+    gap: 6px;
+  }
+
+  .cc-intro-screen .cc-helper {
+    line-height: 1.3;
+  }
+
+  .cc-intro-bottom {
+    padding-top: 0;
+  }
+}
+
+/* 360x640: Hoda at the spec's 64px and a slightly smaller h2 so the
+   prompt row is 64 tall instead of 80. */
+@media (max-height: 660px) {
+  .cc-hoda-speaker,
+  .cc-hoda {
+    width: 64px;
+    height: 64px;
+  }
+
+  .cc-intro-body .prompt h2 {
+    font-size: 1.375rem;
+    line-height: 1.4;
+  }
+
+  .cc-intro-screen,
+  .cc-intro-body {
+    gap: 6px;
   }
 }
 
@@ -2776,20 +2839,12 @@ h2.prompt-numeral {
 [data-count-gallery] .cc-card {
   display: flex;
   align-items: stretch;
-  gap: 12px;
+  gap: 8px;
   flex: none;
   min-height: 150px;
   height: auto;
   max-height: none;
-  padding: 12px;
-}
-
-[data-count-gallery] .cc-card .cc-lead {
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-  width: 64px;
-  flex-shrink: 0;
+  padding: 12px 10px;
 }
 
 [data-count-gallery] .cc-zone {

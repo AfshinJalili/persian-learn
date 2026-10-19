@@ -87,6 +87,16 @@ function measureCountCards() {
         cardOverflow,
       };
     });
+    // Spec §3 overlap layout: same-row neighbours overlap by at most 22% of
+    // the box (plus rounding); rows overlap by a few px.
+    let maxRowOverlap = 0;
+    for (let i = 0; i + 1 < items.length; i += 1) {
+      const a = items[i];
+      const b = items[i + 1];
+      if (Math.abs(a.top - b.top) > 6) continue;
+      const overlapX = Math.min(a.right, b.right) - Math.max(a.left, b.left);
+      maxRowOverlap = Math.max(maxRowOverlap, overlapX / Math.min(a.width, b.width));
+    }
     let minGap = Infinity;
     for (let i = 0; i < items.length; i += 1) {
       for (let j = i + 1; j < items.length; j += 1) {
@@ -116,6 +126,22 @@ function measureCountCards() {
             speakerBox.top >= tileBox.bottom - 0.5
           )
         : false;
+    // The badge straddles the tile corner (spec §2) but must not cover the
+    // numeral or the word.
+    const textBoxes = [card.querySelector('.cc-num'), card.querySelector('.cc-word')]
+      .filter(Boolean)
+      .map((node) => (node as HTMLElement).getBoundingClientRect());
+    const speakerOnText = speakerBox
+      ? textBoxes.some(
+          (t) =>
+            !(
+              speakerBox.right <= t.left + 0.5 ||
+              speakerBox.left >= t.right - 0.5 ||
+              speakerBox.bottom <= t.top + 0.5 ||
+              speakerBox.top >= t.bottom - 0.5
+            )
+        )
+      : false;
     const check = card.querySelector('[data-cc-check]') as HTMLElement | null;
     const checkBox = check?.getBoundingClientRect();
     const checkOnTile =
@@ -166,12 +192,14 @@ function measureCountCards() {
         speakerBox ? overflowOutside(speakerBox, cardBox) : 0
       ),
       minGap: items.length > 1 ? minGap : 12,
+      maxRowOverlap,
       minPad: Math.min(padTop, padBottom, padStart, padEnd),
       padTop,
       padBottom,
       speakerItemGap,
       speakerSize: speakerBox ? Math.round(Math.min(speakerBox.width, speakerBox.height)) : 0,
       speakerOnTile,
+      speakerOnText,
       checkOnTile,
       checkSize: checkBox ? Math.round(Math.min(checkBox.width, checkBox.height)) : 0,
       wordSize: tile
@@ -210,13 +238,13 @@ test.describe('Count cards', () => {
         expect(card.cardOverflow, `n=${card.count}`).toBeLessThanOrEqual(1);
         expect(card.minItem, `n=${card.count}`).toBeGreaterThanOrEqual(32);
         expect(card.maxItem, `n=${card.count}`).toBe(card.minItem);
-        expect(card.minGap, `n=${card.count}`).toBeGreaterThanOrEqual(8);
+        expect(card.maxRowOverlap, `n=${card.count}`).toBeLessThanOrEqual(0.24);
         expect(card.minPad, `n=${card.count}`).toBeGreaterThanOrEqual(12);
         expect(Math.abs(card.padTop - card.padBottom), `n=${card.count}`).toBeLessThanOrEqual(6);
-        expect(card.speakerItemGap, `n=${card.count}`).toBeGreaterThanOrEqual(12);
+        expect(card.speakerItemGap, `n=${card.count}`).toBeGreaterThanOrEqual(8);
         expect(card.overflowX, `n=${card.count}`).toBeLessThanOrEqual(2);
         expect(card.speakerSize, `n=${card.count}`).toBeGreaterThanOrEqual(48);
-        expect(card.speakerOnTile, `n=${card.count}`).toBe(false);
+        expect(card.speakerOnText, `n=${card.count}`).toBe(false);
         expect(card.wordSize, `n=${card.count}`).toBeGreaterThanOrEqual(20);
       }
     });
@@ -268,6 +296,72 @@ test.describe('Count cards', () => {
       path: test.info().outputPath('intro-375x667.png'),
       fullPage: false,
     });
+  });
+
+  test('intro at 375x667 hits the figma item floors and single-apple ink', async ({ page }) => {
+    test.setTimeout(60000);
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await seedProgress(page);
+    await page.goto('/lesson/m1l1');
+    await page.addStyleTag({
+      content: 'nextjs-portal, [data-nextjs-dev-overlay] { display: none !important; }',
+    });
+    await expect(page.getByRole('button', { name: 'سه انار' })).toBeVisible();
+    await page.waitForTimeout(800);
+    const cards = await page.evaluate(measureCountCards);
+    const floors: Record<number, number> = { 1: 96, 2: 84, 3: 70 };
+    for (const card of cards) {
+      expect(card.minItem, `n=${card.count}`).toBeGreaterThanOrEqual(floors[card.count]);
+      expect(card.cardHeight, `n=${card.count}`).toBeGreaterThanOrEqual(128);
+      expect(card.itemOverflow, `n=${card.count}`).toBeLessThanOrEqual(2);
+      expect(card.speakerOnText, `n=${card.count}`).toBe(false);
+      expect(card.speakerItemGap, `n=${card.count}`).toBeGreaterThanOrEqual(8);
+    }
+    // Single apple: changed pixels with and without the item, inside the
+    // cluster zone, must span >= 70% of the card height.
+    const single = page.locator('[data-count-card][data-count="1"]');
+    const geo = await single.evaluate((el) => {
+      const c = el.getBoundingClientRect();
+      const z = (el.querySelector('.cc-zone') as HTMLElement).getBoundingClientRect();
+      return { x: z.left, y: c.top, width: z.width, height: c.height };
+    });
+    const withArt = (await page.screenshot({ clip: geo, animations: 'disabled', scale: 'css' })).toString('base64');
+    await single.evaluate((el) =>
+      el.querySelectorAll('.cc-item').forEach((n) => (n as HTMLElement).style.setProperty('visibility', 'hidden', 'important'))
+    );
+    const without = (await page.screenshot({ clip: geo, animations: 'disabled', scale: 'css' })).toString('base64');
+    await single.evaluate((el) =>
+      el.querySelectorAll('.cc-item').forEach((n) => (n as HTMLElement).style.removeProperty('visibility'))
+    );
+    const ink = await page.evaluate(async ({ a, b }) => {
+      const load = async (src: string) => {
+        const img = new Image();
+        img.src = `data:image/png;base64,${src}`;
+        await img.decode();
+        const c = document.createElement('canvas');
+        c.width = img.naturalWidth;
+        c.height = img.naturalHeight;
+        const ctx = c.getContext('2d')!;
+        ctx.drawImage(img, 0, 0);
+        return ctx.getImageData(0, 0, c.width, c.height);
+      };
+      const [da, db] = await Promise.all([load(a), load(b)]);
+      let minY = Infinity;
+      let maxY = -Infinity;
+      for (let y = 0; y < da.height; y += 1) {
+        for (let x = 0; x < da.width; x += 1) {
+          const k = (y * da.width + x) * 4;
+          const d = Math.abs(da.data[k] - db.data[k]) + Math.abs(da.data[k + 1] - db.data[k + 1]) + Math.abs(da.data[k + 2] - db.data[k + 2]);
+          if (d > 30) {
+            minY = Math.min(minY, y);
+            maxY = Math.max(maxY, y);
+          }
+        }
+      }
+      return maxY >= minY ? maxY - minY + 1 : 0;
+    }, { a: withArt, b: without });
+    expect(ink / geo.height).toBeGreaterThanOrEqual(0.7);
   });
 
   test('intro at 412x915 centers the stack', async ({ page }) => {

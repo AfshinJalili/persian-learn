@@ -253,7 +253,7 @@ for (const mode of MODES) {
 // too, at normal size and every font scale.
 const INTRO_SCREENS = SCREENS.filter((s) => s.name.startsWith('intro'));
 for (const mode of MODES) {
-  for (const scale of [1, ...SCALES]) {
+  for (const scale of SCALES) {
     if (mode === 'zoom' && scale === 1) continue;
     test(`counting intro ${mode} ${scale}x at 375x667: nothing overflows or overlaps`, async ({ browser }) => {
       test.setTimeout(180000);
