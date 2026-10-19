@@ -543,6 +543,12 @@ h2.prompt-numeral {
   min-height: 240px;
 }
 
+/* One ink-fitted emoji as the whole answer: its ink is the art box, so the
+   box can use nearly the full card width (pale ink edges still clear 70%). */
+.object-choice-card[data-single-art]:has(> .object-cluster > .illus[data-ink-fit]) {
+  padding-inline: 4px;
+}
+
 .object-count-card {
   min-height: 0;
   padding: 16px;
@@ -572,29 +578,37 @@ h2.prompt-numeral {
 }
 
 /* Short screens: make room for that card by compacting the prompt, the
-   answer tiles and the check bar on single-art count steps only. */
+   answer tiles and the check bar on single-art count steps and on
+   "find this numeral" steps (big digit card + three answers). */
 @media (max-height: 760px) {
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .prompt h2:not(.prompt-numeral) {
+  /* "Find this numeral": the big digit card's 160px floor plus three answer
+     tiles overflow a 640px phone; drop the floor so the short-screen
+     compacting below can clear the Check bar. */
+  .app-phone:not(.object-gallery-page) .object-count-card[data-digit-display] {
+    min-height: 120px;
+  }
+
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .prompt h2:not(.prompt-numeral) {
     font-size: 1.375rem;
     line-height: 1.35;
   }
 
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .prompt .speaker {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .prompt .speaker {
     width: 56px;
     height: 56px;
   }
 
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .content > .grid3 > .card {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .content > .grid3 > .card {
     height: 88px;
     max-height: 88px;
   }
 
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .content > .grid3 > .card .glyph {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .content > .grid3 > .card .glyph {
     font-size: 64px;
     line-height: 1;
   }
 
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .bottom {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .bottom {
     padding: 8px var(--s-5) 12px;
   }
 }
@@ -622,27 +636,27 @@ h2.prompt-numeral {
 }
 
 @media (max-height: 620px) {
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .prompt h2:not(.prompt-numeral) {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .prompt h2:not(.prompt-numeral) {
     font-size: 1.1875rem;
     line-height: 1.3;
   }
 
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .content.content-fit {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .content.content-fit {
     gap: 8px;
     padding-top: 8px;
   }
 
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .prompt .speaker {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .prompt .speaker {
     width: 48px;
     height: 48px;
   }
 
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .content > .grid3 > .card {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .content > .grid3 > .card {
     height: 72px;
     max-height: 72px;
   }
 
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .content > .grid3 > .card .glyph {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .content > .grid3 > .card .glyph {
     font-size: 52px;
     line-height: 1;
   }
@@ -699,6 +713,23 @@ h2.prompt-numeral {
   /* The art is sized from the card box in JS; don't let it size the card
      back, so the grid can give up height on short screens. */
   contain: size;
+}
+
+/* Text answers (words, phrases) are not sized from the card, so the card
+   (and its row) grows to hold every line instead of clipping them. */
+.app-phone:not(.object-gallery-page) .object-choice-card:has(> .glyph.choice-word) {
+  contain: inline-size;
+  min-height: 120px;
+  max-height: none;
+}
+
+.app-phone:not(.object-gallery-page) .content .grid2:has(> .object-choice-card > .glyph.choice-word),
+.app-phone:not(.object-gallery-page) .content .grid3:has(> .object-choice-card > .glyph.choice-word) {
+  flex: 0 0 auto;
+  min-height: 0;
+  max-height: none;
+  overflow: visible;
+  grid-auto-rows: auto;
 }
 
 .object-choice-card:has(.object-cluster[data-count='3'][data-layout='grid']),
@@ -2172,10 +2203,52 @@ h2.prompt-numeral {
 }
 
 /* Ink-fitted emoji: the box is the glyph's ink, so only the font's empty
-   side bearing falls outside it; clip that so it can't widen the card. */
+   side bearing falls outside it; clip that so it can't widen the card. The
+   clip edge sits a few px out so the ink's anti-aliased rim is never cut. */
 .object-cluster > .illus[data-ink-fit] {
   overflow: clip;
-  overflow-clip-margin: 0px;
+  overflow-clip-margin: 4px;
+}
+
+/* Match boards with clock faces: every tile is as tall as a clock tile
+   (the clock is sized from the tile width; see MatchPairsExercise). */
+.match-clock-board .card {
+  min-height: var(--match-tile-min, 80px);
+}
+
+/* A text answer on a choice card (ListenChooseExercise): never clipped;
+   phrases wrap between words, never inside one. The card is the size
+   container its font size (cqi) is set against. */
+.card:has(> .glyph.choice-word) {
+  container-type: inline-size;
+}
+
+.card > .glyph.choice-word {
+  /* Shrunk further in JS when the longest word is wider than the card. */
+  font-size: min(64px, 40cqi);
+  line-height: 1.4;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  text-align: center;
+  max-width: 100%;
+  max-height: none;
+  overflow: visible;
+}
+
+.choice-word-part {
+  white-space: nowrap;
+}
+
+/* Ink-fitted glyphs are measured on a canvas and painted in the DOM with the
+   same emoji-only font stack. With the page font (Vazirmatn) first, the
+   canvas could measure fallback line metrics before the web font loaded and
+   the painted glyph then sat ~0.15em too high, its top cut off by the clip
+   above. */
+.illus[data-ink-fit] > .glyph.ink-fit {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Twemoji Mozilla", "Android Emoji", "EmojiOne Color", sans-serif;
+  font-weight: 400;
+  font-feature-settings: normal;
 }
 
 /* Page-zoomed phones (a 360px phone at 2x lays out at 180px): three answer

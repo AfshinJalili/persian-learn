@@ -8,7 +8,7 @@ import ChoiceButton from '@/components/ChoiceButton';
 import {
   ObjectCluster,
   objectClusterChoiceGridClass,
-  objectArtAspect,
+  useObjectArtAspect,
   splitObjectTokens,
   type ObjectClusterLayout,
 } from '@/components/art/objects';
@@ -47,6 +47,7 @@ function SizedPictureChoice({
     { layout }
   );
   const single = splitObjectTokens(option).length === 1;
+  const aspect = useObjectArtAspect(single ? option : '');
   return (
     <ChoiceButton
       ref={ref}
@@ -59,7 +60,7 @@ function SizedPictureChoice({
       onClick={() => onSelect(option)}
       className="object-choice-card"
       singleArt={single || undefined}
-      style={singleChoiceStyle(single, box.offsetWidth, box.chromeY, objectArtAspect(option))}
+      style={singleChoiceStyle(single, box.offsetWidth, box.chromeY, aspect)}
     >
       <ObjectCluster
         token={option}

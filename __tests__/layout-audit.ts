@@ -59,7 +59,7 @@ export async function auditLayout(page: Page, { zoom = 1 }: { zoom?: number } = 
       const r = el.getBoundingClientRect();
       const s = getComputedStyle(el);
       // Off-screen sideways (sheet animations excluded via out-of-flow).
-      if ((r.right > vw + TOL || r.left < -TOL) && !el.closest('.path-hit, .tooltip, [data-ink-fit], .ink-fit')) {
+      if ((r.right > vw + TOL || r.left < -TOL) && !el.closest('.path-hit, .tooltip')) {
         const clip = clippedBy(el);
         const cr = clip?.getBoundingClientRect();
         const hiddenByClip = cr && (r.left >= cr.right || r.right <= cr.left);
@@ -117,7 +117,7 @@ export async function auditLayout(page: Page, { zoom = 1 }: { zoom?: number } = 
           const negative = ['marginTop', 'marginBottom', 'marginLeft', 'marginRight'].some(
             (k) => parseFloat((s as unknown as Record<string, string>)[k]) < 0
           );
-          if (!negative && s.transform === 'none' && !el.matches('.ink-fit, [data-ink-fit]') && !el.closest('[data-ink-fit]')) {
+          if (!negative && s.transform === 'none') {
             issues.push({
               kind: 'overflow',
               detail: `${describe(el)} [${Math.round(r.left)},${Math.round(r.top)},${Math.round(r.right)},${Math.round(r.bottom)}] outside ${describe(parent)} [${Math.round(pr.left)},${Math.round(top)},${Math.round(pr.right)},${Math.round(bottom)}]`,
@@ -327,4 +327,98 @@ export async function singleArtRatio(page: Page, card: ReturnType<Page['locator'
     return maxX >= minX ? maxX - minX + 1 : 0;
   }, { a: withArt, b: without });
   return inkWidth / box.width;
+}
+
+/**
+ * Ink-fitted glyphs (👏, ✅/❌, clock faces) are clipped to their art box.
+ * Their ink must be fully visible: each box is screenshotted as painted and
+ * again with its clip lifted, and any pixel that changes is ink the clip was
+ * hiding. The box itself must also sit inside every clipping ancestor (the
+ * card), so no outer box can cut the ink either. Fails on any hidden ink.
+ */
+export async function auditInkClip(page: Page, { maxPixels = 0 }: { maxPixels?: number } = {}): Promise<LayoutIssue[]> {
+  const issues: LayoutIssue[] = [];
+  const boxes = page.locator('.illus[data-ink-fit]');
+  const n = await boxes.count();
+  for (let i = 0; i < n; i += 1) {
+    const box = boxes.nth(i);
+    const geo = await box.evaluate((el) => {
+      const s = getComputedStyle(el);
+      if (s.display === 'none' || s.visibility === 'hidden') return null;
+      if (el.closest('[aria-hidden="true"], [data-layout-audit="skip"]')) return null;
+      el.scrollIntoView({ block: 'center', inline: 'nearest' });
+      const r = el.getBoundingClientRect();
+      if (r.width < 4 || r.height < 4) return null;
+      const label = (el.closest('[aria-label]')?.getAttribute('aria-label') || el.textContent || '').trim().slice(0, 12);
+      // The art box must be inside every ancestor that clips (cards, rows).
+      const cut: string[] = [];
+      for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) {
+        const ps = getComputedStyle(p);
+        const scrolls = ['auto', 'scroll'].includes(ps.overflowY) || ['auto', 'scroll'].includes(ps.overflowX);
+        if (scrolls || (ps.overflowX === 'visible' && ps.overflowY === 'visible')) continue;
+        const pr = p.getBoundingClientRect();
+        const bl = parseFloat(ps.borderLeftWidth) || 0;
+        const bt = parseFloat(ps.borderTopWidth) || 0;
+        const inner = { l: pr.left + bl, t: pr.top + bt, r: pr.left + bl + p.clientWidth, b: pr.top + bt + p.clientHeight };
+        if (r.left < inner.l - 0.5 || r.top < inner.t - 0.5 || r.right > inner.r + 0.5 || r.bottom > inner.b + 0.5) {
+          cut.push(`${p.tagName.toLowerCase()}.${String(p.className).split(' ')[0]}`);
+        }
+      }
+      // Room around the box where clipped ink would show once the clip is lifted.
+      const pad = Math.max(r.width, r.height) * 0.35;
+      const x = Math.max(0, r.left - pad);
+      const y = Math.max(0, r.top - pad);
+      return {
+        label,
+        cut,
+        size: [Math.round(r.width), Math.round(r.height)],
+        clip: { x, y, width: Math.min(innerWidth, r.right + pad) - x, height: Math.min(innerHeight, r.bottom + pad) - y },
+      };
+    });
+    if (!geo) continue;
+    for (const c of geo.cut) {
+      issues.push({ kind: 'ink-clip', detail: `"${geo.label}" art box ${geo.size.join('x')} is cut by ${c}` });
+    }
+    if (geo.clip.width < 4 || geo.clip.height < 4) continue;
+    await page.waitForTimeout(40);
+    const painted = (await page.screenshot({ clip: geo.clip, animations: 'disabled', scale: 'css' })).toString('base64');
+    // The art box has a fixed size, so lifting its clip can't move layout.
+    await box.evaluate((el) => {
+      const e = el as HTMLElement;
+      e.dataset.inkAudit = e.style.cssText;
+      e.style.setProperty('overflow', 'visible', 'important');
+      e.style.setProperty('clip-path', 'none', 'important');
+    });
+    await page.waitForTimeout(40);
+    const lifted = (await page.screenshot({ clip: geo.clip, animations: 'disabled', scale: 'css' })).toString('base64');
+    await box.evaluate((el) => {
+      const e = el as HTMLElement;
+      e.style.cssText = e.dataset.inkAudit ?? '';
+      delete e.dataset.inkAudit;
+    });
+    const hidden = await page.evaluate(async ({ a, b }) => {
+      const load = async (src: string) => {
+        const img = new Image();
+        img.src = `data:image/png;base64,${src}`;
+        await img.decode();
+        const c = document.createElement('canvas');
+        c.width = img.naturalWidth;
+        c.height = img.naturalHeight;
+        const ctx = c.getContext('2d')!;
+        ctx.drawImage(img, 0, 0);
+        return ctx.getImageData(0, 0, c.width, c.height);
+      };
+      const [da, db] = await Promise.all([load(a), load(b)]);
+      let count = 0;
+      for (let k = 0; k < da.data.length; k += 4) {
+        const d = Math.abs(da.data[k] - db.data[k]) + Math.abs(da.data[k + 1] - db.data[k + 1]) + Math.abs(da.data[k + 2] - db.data[k + 2]);
+        if (d > 90) count += 1;
+      }
+      return count;
+    }, { a: painted, b: lifted });
+    if (hidden > maxPixels) {
+      issues.push({ kind: 'ink-clip', detail: `"${geo.label}" art box ${geo.size.join('x')} hides ${hidden}px of ink` });
+    }
+  }
+  return issues;
 }

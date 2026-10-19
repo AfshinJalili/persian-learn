@@ -11,7 +11,7 @@ import {
   DICE_PIP_COUNTS,
   ObjectCluster,
   looksLikeObjects,
-  objectArtAspect,
+  useObjectArtAspect,
   splitObjectTokens,
 } from '@/components/art/objects';
 import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
@@ -41,6 +41,7 @@ export default function ChooseDigitExercise({
     Math.max(1, objectDisplay ? splitObjectTokens(display).length : tokens.length),
   ]);
   const singleArt = objectDisplay && splitObjectTokens(display).length === 1;
+  const aspect = useObjectArtAspect(singleArt ? display : '');
   const fontSize = digitDisplayFontSize(box.width, box.height, box.offsetWidth, tokens.length);
 
   return (
@@ -55,7 +56,7 @@ export default function ChooseDigitExercise({
           className="card object-count-card"
           data-dice-face={display}
           data-single-art={singleArt || undefined}
-          style={singleArtStyle(singleArt, box.offsetWidth, objectArtAspect(display))}
+          style={singleArtStyle(singleArt, box.offsetWidth, aspect)}
         >
           <ObjectCluster
             token={display}
@@ -70,7 +71,7 @@ export default function ChooseDigitExercise({
           className="card object-count-card"
           data-object-display
           data-single-art={singleArt || undefined}
-          style={singleArtStyle(singleArt, box.offsetWidth, objectArtAspect(display))}
+          style={singleArtStyle(singleArt, box.offsetWidth, aspect)}
         >
           <ObjectCluster
             tokens={splitObjectTokens(display)}

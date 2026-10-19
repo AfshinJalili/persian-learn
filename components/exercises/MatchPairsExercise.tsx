@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState, type DragEvent } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type DragEvent } from 'react';
 import { playOptionAudio } from '@/lib/spoken-option';
 import { canonicalizePairs } from '@/lib/answers';
 import { shuffleSeeded } from '@/lib/shuffle';
@@ -13,6 +13,8 @@ import {
   ObjectArt,
   ObjectCluster,
   OBJECT_MATCH_LIST_FALLBACK,
+  OBJECT_SINGLE_WIDTH_RATIO,
+  isClockGlyph,
   looksLikeObjects,
   matchApplesBoxFromList,
   splitObjectTokens,
@@ -136,6 +138,29 @@ export default function MatchPairsExercise({
     layout: 'row',
   });
   const applesBox = matchApplesBoxFromList(box, rightOptions.length);
+
+  // Clock faces must be read (hands and all), so a clock tile's art is sized
+  // from the tile's width like any single picture, and every tile on the
+  // board is as tall as a clock tile so the rows line up.
+  const clockBoard = !objectLayout && [...leftOptions, ...rightOptions].some(isClockGlyph);
+  const boardRef = useRef<HTMLDivElement>(null);
+  const [tileWidth, setTileWidth] = useState(0);
+  useLayoutEffect(() => {
+    const board = boardRef.current;
+    if (!board || !clockBoard) return;
+    const apply = () => {
+      const column = board.querySelector<HTMLElement>('[data-match-column]');
+      const width = column ? column.clientWidth : 0;
+      setTileWidth((prev) => (Math.abs(prev - width) < 1 ? prev : width));
+    };
+    apply();
+    if (typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(apply);
+    observer.observe(board);
+    return () => observer.disconnect();
+  }, [clockBoard]);
+  const clockSize = tileWidth > 0 ? Math.round(tileWidth * OBJECT_SINGLE_WIDTH_RATIO) : 48;
+  const tileArtSize = (option: string) => (isClockGlyph(option) ? clockSize : 48);
 
   const resetPlacement = () => {
     selectedRef.current = null;
@@ -305,7 +330,11 @@ export default function MatchPairsExercise({
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4">
+        <div
+          ref={boardRef}
+          className={`grid grid-cols-2 gap-4 ${clockBoard ? 'match-clock-board' : ''}`}
+          style={clockBoard ? ({ '--match-tile-min': `${clockSize + 6 + 16}px` } as CSSProperties) : undefined}
+        >
           <div data-match-column="left" className="space-y-3">
             {leftOptions.map((option) => {
               const used = isLeftUsed(option);
@@ -321,7 +350,7 @@ export default function MatchPairsExercise({
                   className={`card min-h-20 h-auto w-full ${used ? 'dim' : ''} ${selected?.side === 'left' && selected.value === option ? 'selected' : ''}`}
                 >
                   {looksLikeObjects(option) ? (
-                    <ObjectArt token={option} size={48} />
+                    <ObjectArt token={option} size={tileArtSize(option)} />
                   ) : (
                     <span className="glyph font-extrabold" style={{ fontSize: '2.25rem', lineHeight: 1.35 }}>{option}</span>
                   )}
@@ -354,7 +383,7 @@ export default function MatchPairsExercise({
                   className={`card min-h-20 h-auto w-full ${used ? 'dim' : ''} ${selected?.side === 'right' && selected.value === option ? 'selected' : ''}`}
                 >
                   {looksLikeObjects(option) ? (
-                    <ObjectArt token={option} size={48} />
+                    <ObjectArt token={option} size={tileArtSize(option)} />
                   ) : (
                     <span className="glyph font-extrabold" style={{ fontSize: '2.25rem', lineHeight: 1.35 }}>{option}</span>
                   )}

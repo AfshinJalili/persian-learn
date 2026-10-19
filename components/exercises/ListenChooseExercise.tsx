@@ -6,13 +6,12 @@ import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
+import { Fragment, useLayoutEffect, useRef } from 'react';
 import {
-  OBJECT_CLUSTER_MIN_SIZE,
-  ObjectArt,
   ObjectCluster,
   looksLikeObjects,
   objectClusterChoiceGridClass,
-  objectArtAspect,
+  useObjectArtAspect,
   splitObjectTokens,
   type ObjectClusterLayout,
 } from '@/components/art/objects';
@@ -26,6 +25,48 @@ interface Props {
   onAnswerChange: (answer: string) => void;
   disabled: boolean;
   answerState?: 'idle' | 'correct' | 'wrong';
+}
+
+/**
+ * A text answer (a word or short phrase) on a choice card: as large as the
+ * card allows, with its longest word on one line. Phrases wrap between
+ * words, never inside one, and the card grows to hold every line.
+ */
+function ChoiceWord({ text, width }: { text: string; width: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const words = text.split(/\s+/).filter(Boolean);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const fit = () => {
+      el.style.removeProperty('font-size');
+      const base = parseFloat(getComputedStyle(el).fontSize) || 16;
+      const room = (el.parentElement?.clientWidth ?? 0) -
+        (parseFloat(getComputedStyle(el.parentElement!).paddingLeft) || 0) -
+        (parseFloat(getComputedStyle(el.parentElement!).paddingRight) || 0) - 4;
+      const widest = Math.max(
+        1,
+        ...[...el.querySelectorAll<HTMLElement>(':scope > .choice-word-part')].map((w) => w.getBoundingClientRect().width)
+      );
+      if (room > 8 && widest > room) el.style.fontSize = `${Math.max(12, Math.floor(base * (room / widest) * 10) / 10)}px`;
+    };
+    fit();
+    let live = true;
+    document.fonts?.ready.then(() => live && fit()).catch(() => {});
+    return () => {
+      live = false;
+    };
+  }, [text, width]);
+  return (
+    <span ref={ref} className="glyph choice-word">
+      {words.map((word, index) => (
+        <Fragment key={index}>
+          {index > 0 ? ' ' : null}
+          <span className="choice-word-part">{word}</span>
+        </Fragment>
+      ))}
+    </span>
+  );
 }
 
 function SizedListenChoice({
@@ -53,6 +94,7 @@ function SizedListenChoice({
     { layout }
   );
   const single = object && splitObjectTokens(option).length === 1;
+  const aspect = useObjectArtAspect(single ? option : '');
   return (
     <ChoiceButton
       ref={ref}
@@ -65,7 +107,7 @@ function SizedListenChoice({
       onClick={() => onSelect(option)}
       className="object-choice-card"
       singleArt={single || undefined}
-      style={singleChoiceStyle(single, box.offsetWidth, box.chromeY, objectArtAspect(option))}
+      style={singleChoiceStyle(single, box.offsetWidth, box.chromeY, aspect)}
     >
       {object ? (
         <ObjectCluster
@@ -75,15 +117,14 @@ function SizedListenChoice({
           boxHeight={box.height}
           cardWidth={box.offsetWidth}
         />
-      ) : option.length <= 2 ? (
+      ) : [...option.replace(/\p{M}/gu, '')].length <= 1 ? (
         <span className="glyph" style={{ fontSize: 'min(84px, 20cqi)' }}>
           {option}
         </span>
       ) : (
-        <ObjectArt
-          token={option}
-          size={Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.min(box.width, box.height))}
-        />
+        // A word or phrase («بابا»): text sized to the card, never handed to
+        // ObjectArt (which drew it as a box of wrapped letters and clipped it).
+        <ChoiceWord text={option} width={box.width} />
       )}
     </ChoiceButton>
   );

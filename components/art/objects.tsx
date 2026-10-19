@@ -476,11 +476,27 @@ function objectArtForToken(token: string): ReactNode | undefined {
   return EMOJI_ART[token] ?? EMOJI_ART[key] ?? HAND_ART[key];
 }
 
-/** Visible width / height of a token's art (1 for emoji glyphs, which are ink-fitted). */
+/** Visible width / height of a token's drawn art (1 for emoji glyphs; see useObjectArtAspect). */
 export function objectArtAspect(token: string): number {
   const art = objectArtForToken(token);
   if (isValidElement(art)) return SVG_ASPECT.get(art.type) ?? 1;
   return 1;
+}
+
+/**
+ * Like objectArtAspect, but an emoji drawn as a glyph (a door, a glass of
+ * milk) reports its real ink proportions, measured once on the client, so a
+ * single tall glyph gets a tall box and still spans >= 70% of its card.
+ * The first render uses 1 (same as the server) and the measured value lands
+ * before paint.
+ */
+export function useObjectArtAspect(token: string): number {
+  const [aspect, setAspect] = useState(() => objectArtAspect(token));
+  useLayoutEffect(() => {
+    const next = isGlyphArt(token) ? glyphInkAspect(token) ?? 1 : objectArtAspect(token);
+    setAspect((prev) => (Math.abs(prev - next) < 0.005 ? prev : next));
+  }, [token]);
+  return aspect;
 }
 
 export type ObjectClusterLayout = 'grid' | 'row' | 'match' | 'picture';
@@ -732,12 +748,37 @@ export function AvatarArt({
   );
 }
 
+const INK_INSET = 1.5;
+
+/** The font stack ink-fitted glyphs are measured and painted in (see .ink-fit in globals.css). */
+const EMOJI_FONT_STACK =
+  '"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Twemoji Mozilla", "Android Emoji", "EmojiOne Color", sans-serif';
+
+/** An emoji with no drawing of its own: it is shown as a font glyph. */
+function isGlyphArt(token: string): boolean {
+  return (
+    !objectArtForToken(token) &&
+    !DICE_PIP_COUNTS[token] &&
+    !DICE_PIP_COUNTS[normalizeObjectToken(token)] &&
+    /\p{Extended_Pictographic}/u.test(token)
+  );
+}
+
+function glyphInkAspect(token: string): number | null {
+  const m = measureInk(token, { family: EMOJI_FONT_STACK, weight: '400' });
+  return m && m.h > 0 ? Math.max(0.3, Math.min(3, m.w / m.h)) : null;
+}
+
 type InkMetrics = { w: number; h: number; dx: number; dy: number; lh: number };
 const inkCache = new Map<string, InkMetrics>();
 
 /** Ink box of a glyph per 1em (emoji fonts carry side bearing and leading). */
+const inkKey = (token: string, font: { family: string; weight: string }) => `${font.weight}|${font.family}|${token}`;
+const sameInk = (a: InkMetrics, b: InkMetrics) =>
+  (['w', 'h', 'dx', 'dy', 'lh'] as const).every((k) => Math.abs(a[k] - b[k]) < 0.002);
+
 function measureInk(token: string, font: { family: string; weight: string }): InkMetrics | null {
-  const key = `${font.weight}|${font.family}|${token}`;
+  const key = inkKey(token, font);
   const hit = inkCache.get(key);
   if (hit) return hit;
   if (typeof document === 'undefined') return null;
@@ -809,14 +850,32 @@ function InkFitGlyph({ token, width, height }: { token: string; width: number; h
   const ref = useRef<HTMLSpanElement>(null);
   const [ink, setInk] = useState<InkMetrics | null>(null);
   useLayoutEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const s = getComputedStyle(el);
-    const next = measureInk(token, { family: s.fontFamily || 'sans-serif', weight: s.fontWeight || '400' });
-    if (next) setInk(next);
+    if (!ref.current) return;
+    // Always measure and paint with the same emoji-only stack. Measuring from
+    // the page font (Vazirmatn) then painting with an emoji fallback shifted
+    // glyphs up ~0.15em and the clip cut their tops (85cd0d2).
+    const font = { family: EMOJI_FONT_STACK, weight: '400' };
+    const measure = (fresh = false) => {
+      if (fresh) inkCache.delete(inkKey(token, font));
+      const next = measureInk(token, font);
+      if (next) setInk((prev) => (prev && sameInk(prev, next) ? prev : next));
+    };
+    measure();
+    const fonts = typeof document !== 'undefined' ? document.fonts : undefined;
+    if (!fonts) return;
+    let live = true;
+    fonts.ready.then(() => {
+      if (live && ref.current) measure(true);
+    }).catch(() => {});
+    return () => {
+      live = false;
+    };
   }, [token]);
   const m = ink ?? { w: 1.15, h: 1.15, dx: 0, dy: 0, lh: 1.4 };
-  const fontSize = Math.max(8, Math.min(width / m.w, height / m.h));
+  // The ink sits INK_INSET px inside its (clipped) box on every side, so
+  // sub-pixel rounding and anti-aliasing can't cut its edge. WebKit has no
+  // overflow-clip-margin, so this slack has to come from the size itself.
+  const fontSize = Math.max(8, Math.min((width - 2 * INK_INSET) / m.w, (height - 2 * INK_INSET) / m.h));
   return (
     <span
       ref={ref}
@@ -826,6 +885,8 @@ function InkFitGlyph({ token, width, height }: { token: string; width: number; h
         left: '50%',
         top: '50%',
         fontSize,
+        fontFamily: EMOJI_FONT_STACK,
+        fontWeight: 400,
         lineHeight: m.lh,
         maxWidth: 'none',
         maxHeight: 'none',
@@ -844,16 +905,19 @@ function SingleObjectArt({
   size,
   height,
   fluid = false,
+  single = false,
 }: {
   token: string;
   size: number;
   height?: number;
   fluid?: boolean;
+  /** The only picture on its card: a plain emoji glyph is ink-fitted too. */
+  single?: boolean;
 }) {
   const art = objectArtForToken(token);
   const hand = isHandToken(token);
   const h = height ?? size;
-  if (!art && !fluid && isInkFitGlyph(token)) {
+  if (!art && !fluid && (isInkFitGlyph(token) || (single && isGlyphArt(token)))) {
     return (
       <span
         className="illus"
@@ -901,6 +965,7 @@ export function ObjectCluster({
 }) {
   const parts = tokens ?? (token ? splitObjectTokens(token) : []);
   const count = parts.length;
+  const singleAspect = useObjectArtAspect(count === 1 ? parts[0] : '');
   const gap = layout === 'match' || layout === 'row' ? OBJECT_MATCH_GAP : OBJECT_CLUSTER_GAP;
   const fitted = objectClusterLayoutForBox(
     count,
@@ -909,7 +974,7 @@ export function ObjectCluster({
     gap,
     layout,
     cardWidth,
-    count === 1 ? objectArtAspect(parts[0]) : 1
+    count === 1 ? singleAspect : 1
   );
   const cols = fitted.cols;
   const rows = fitted.rows;
@@ -941,6 +1006,7 @@ export function ObjectCluster({
           token={part}
           size={size}
           height={count === 1 && itemSize === undefined ? fitted.height : undefined}
+          single={count === 1 && itemSize === undefined}
         />
       ))}
     </span>
@@ -965,6 +1031,13 @@ export function ObjectArt({
 /** Clap, same/different marks, and clock faces: ink-fitted glyphs (no SVG). */
 const INK_FIT_GLYPH = /[\u{1F44F}\u{2705}\u{274C}\u{1F550}-\u{1F567}]/u;
 
+const CLOCK_GLYPH = /^[\u{1F550}-\u{1F567}]\uFE0F?$/u;
+
+/** A single clock-face emoji (🕐–🕧). */
+export function isClockGlyph(token: string): boolean {
+  return CLOCK_GLYPH.test(token.trim());
+}
+
 export function isInkFitGlyph(token: string): boolean {
   return INK_FIT_GLYPH.test(normalizeObjectToken(token)) || INK_FIT_GLYPH.test(token);
 }
@@ -976,7 +1049,10 @@ export function looksLikeObjects(token: string): boolean {
       objectArtForToken(part) ||
         DICE_PIP_COUNTS[part] ||
         DICE_PIP_COUNTS[key] ||
-        isInkFitGlyph(part)
+        isInkFitGlyph(part) ||
+        // Door, milk, person, weather, etc.: drawn as ink-fitted glyphs when
+        // they are the only picture on a card (see SingleObjectArt `single`).
+        /\p{Extended_Pictographic}/u.test(part)
     );
   });
 }
