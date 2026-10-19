@@ -641,14 +641,12 @@ export function objectClusterRows(
 }
 
 export function objectClusterNeedsWideCard(count: number): boolean {
-  // Stack to one card per row when a 3-across cell would make each item
-  // smaller than a 48px tap-sized picture.
   return (
     objectClusterLayoutForBox(
       count,
       OBJECT_CARD_INNER_FALLBACK.width,
       OBJECT_CARD_INNER_FALLBACK.height
-    ).unclamped < 48
+    ).unclamped < OBJECT_CLUSTER_MIN_SIZE
   );
 }
 

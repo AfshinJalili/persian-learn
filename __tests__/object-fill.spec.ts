@@ -440,7 +440,7 @@ test.describe('Object fill at phone widths', () => {
             const itemSize = await three.evaluate((el) =>
               Number.parseInt((el as HTMLElement).style.getPropertyValue('--object-size') || '0', 10)
             );
-            expect(itemSize, path).toBeGreaterThanOrEqual(48);
+            expect(itemSize, path).toBeGreaterThanOrEqual(32);
           }
           for (const height of stats.choiceCardHeights) {
             expect(height, path).toBeLessThanOrEqual(420);

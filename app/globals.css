@@ -886,8 +886,7 @@ h2.prompt-numeral {
 .app-phone:not(.object-gallery-page) .cluster-stack .object-choice-card,
 .app-phone:not(.object-gallery-page) .content > .cluster-stack .object-choice-card {
   flex: 1 1 0;
-  /* Tall enough for a 3-item column at 48px each (+ gaps + padding). */
-  min-height: 200px;
+  min-height: 120px;
   height: auto;
   max-height: none;
   padding: 12px;
