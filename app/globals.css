@@ -2438,6 +2438,8 @@ h2.prompt-numeral {
   flex: 0 0 auto;
   min-height: auto;
   width: 100%;
+  container-type: inline-size;
+  container-name: cc-list;
 }
 
 .cc-helper {
@@ -2471,7 +2473,7 @@ h2.prompt-numeral {
   gap: 12px;
   width: 100%;
   /* rem so the card grows with the phone's font size */
-  min-height: 5.5rem;
+  min-height: 6rem;
   max-height: none;
   flex: 1 0 auto;
   padding: 12px;
@@ -2558,7 +2560,8 @@ h2.prompt-numeral {
 }
 
 .cc-num {
-  font-size: 36px;
+  /* The big ۱/۲/۳: rem so it stays bigger than the word at any font size. */
+  font-size: 2.75rem;
   line-height: 1;
   font-weight: 900;
 }
@@ -2717,12 +2720,43 @@ h2.prompt-numeral {
   }
 
   .cc-intro-screen .cc-num {
-    font-size: 42px;
+    font-size: 3.5rem;
   }
 
   .cc-intro-screen .cc-word {
     font-size: 1.375rem;
     line-height: 1.15;
+  }
+}
+
+/* Narrow cards (Android page zoom from a large system font: a 360px phone at
+   150-200% lays out at 180-240px): the numeral and speaker sit on top and the
+   pictures get their own full-width row, and the card grows to fit both. */
+@container cc-list (max-width: 290px) {
+  .cc-card {
+    container-type: inline-size;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    min-height: 0;
+    flex: none;
+  }
+
+  .cc-lead {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .cc-zone {
+    flex: none;
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media (max-width: 340px) {
+  .content:has(.cc-intro-screen) {
+    padding-inline: 12px;
   }
 }
 
