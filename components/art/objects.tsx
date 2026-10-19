@@ -978,7 +978,9 @@ function SingleObjectArt({
   const art = objectArtForToken(token);
   const hand = isHandToken(token);
   const h = height ?? size;
-  if (!art && !fluid && (isInkFitGlyph(token) || (single && isGlyphArt(token)))) {
+  // Ink-fit any plain pictographic glyph (clap/check/clock always; door/box/…
+  // too) so counting displays never show a stray unfitted emoji.
+  if (!art && !fluid && (isInkFitGlyph(token) || isGlyphArt(token))) {
     return (
       <span
         className="illus"
@@ -1086,7 +1088,9 @@ export function ObjectArt({
     return <ObjectCluster token={token} itemSize={size} />;
   }
 
-  return <SingleObjectArt token={parts[0] ?? token} size={size} />;
+  // A lone token is the only picture in this art box — ink-fit plain glyphs
+  // (speaker, door, weather, …) the same way ObjectCluster does for count===1.
+  return <SingleObjectArt token={parts[0] ?? token} size={size} single />;
 }
 
 /** Clap, same/different marks, and clock faces: ink-fitted glyphs (no SVG). */

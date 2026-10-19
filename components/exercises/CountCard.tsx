@@ -21,7 +21,7 @@ export const COUNT_WORDS = [
 ] as const;
 
 export const COUNT_CARD_BASE_ZONE = 208;
-export const COUNT_CARD_BASE_HEIGHT = 120;
+export const COUNT_CARD_BASE_HEIGHT = 96;
 export const COUNT_CARD_MIN_SIZE = 32;
 export const COUNT_CARD_GAP_PREFERRED = 12;
 export const COUNT_CARD_GAP_MIN = 8;

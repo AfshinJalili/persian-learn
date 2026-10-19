@@ -2472,8 +2472,8 @@ h2.prompt-numeral {
   align-items: center;
   gap: 12px;
   width: 100%;
-  /* rem so the card grows with the phone's font size */
-  min-height: 6rem;
+  /* rem so the card grows with the phone's font size; 8rem = 128px at 16px root */
+  min-height: 8rem;
   max-height: none;
   flex: 1 0 auto;
   padding: 12px;
@@ -2541,8 +2541,10 @@ h2.prompt-numeral {
 .cc-tile {
   position: relative;
   flex: none;
-  min-width: 64px;
-  min-height: 64px;
+  width: 96px;
+  height: 96px;
+  min-width: 96px;
+  min-height: 96px;
   padding-block: 4px;
   padding-inline-end: 8px;
   border-radius: var(--r-md);
@@ -2552,7 +2554,7 @@ h2.prompt-numeral {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding-inline-start: 8px;
+  padding-inline-start: 14px;
 }
 
 .cc-tile.pulse {
@@ -2560,8 +2562,8 @@ h2.prompt-numeral {
 }
 
 .cc-num {
-  /* The big ۱/۲/۳: rem so it stays bigger than the word at any font size. */
-  font-size: 2.75rem;
+  /* The big ۱/۲/۳: 3.75rem = 60px at 16px root; rem so it scales with font size. */
+  font-size: 3.75rem;
   line-height: 1;
   font-weight: 900;
 }
@@ -2602,7 +2604,7 @@ h2.prompt-numeral {
   min-width: 0;
   margin: 0;
   height: 100%;
-  min-height: 64px;
+  min-height: 96px;
   display: grid;
   place-items: center;
   place-content: center;
@@ -2715,12 +2717,14 @@ h2.prompt-numeral {
   }
 
   .cc-intro-screen .cc-tile {
-    min-width: 72px;
-    min-height: 72px;
+    width: 96px;
+    height: 96px;
+    min-width: 96px;
+    min-height: 96px;
   }
 
   .cc-intro-screen .cc-num {
-    font-size: 3.5rem;
+    font-size: 3.75rem;
   }
 
   .cc-intro-screen .cc-word {
