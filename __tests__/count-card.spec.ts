@@ -6,7 +6,8 @@ const VIEWPORTS = [
 ] as const;
 
 async function seedProgress(page: import('@playwright/test').Page) {
-  await page.goto('/');
+  // Seed from a page that does not run the app (see object-fill.spec).
+  await page.goto('/manifest.json');
   await page.evaluate(async () => {
     const today = new Date().toISOString().split('T')[0];
     const progress = {
