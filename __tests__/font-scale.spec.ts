@@ -26,7 +26,7 @@ const SHOT_DIR = process.env.FONTSCALE_SHOT_DIR;
 const allMath = math.units.flatMap((u) => u.lessons.map((l) => l.id));
 const allAlpha = alphabet.units.flatMap((u) => u.lessons.map((l) => l.id));
 
-type Screen = { name: string; path: string; track?: 'math' | 'alphabet'; greeting?: boolean; answer?: boolean };
+type Screen = { name: string; path: string; track?: 'math' | 'alphabet'; greeting?: boolean; answer?: boolean; hearAll?: boolean };
 const SCREENS: Screen[] = [
   { name: 'greeting', path: '/home', greeting: true },
   { name: 'home', path: '/home' },
@@ -36,6 +36,8 @@ const SCREENS: Screen[] = [
   { name: 'streak', path: '/streak' },
   { name: 'lesson-complete', path: '/lesson-complete?xp=10&lesson=%DB%B1%20%D8%AA%D8%A7%20%DB%B3&id=m1l1' },
   { name: 'intro', path: '/lesson/m1l1?ex=0' },
+  // Counting intro after every card was heard: check marks shown, Continue live.
+  { name: 'intro-heard', path: '/lesson/m1l1?ex=0', hearAll: true },
   { name: 'tap-picture', path: '/lesson/m1l1?ex=1' },
   { name: 'count-single', path: '/lesson/m1l3?ex=1' },
   { name: 'count', path: '/lesson/m1l3?ex=3' },
@@ -100,6 +102,23 @@ async function seed(page: Page, track: 'math' | 'alphabet', unlocked: boolean) {
   }, { track, completed: track === 'math' ? allMath.slice(0, -1) : allAlpha.slice(0, -1), unlocked });
 }
 
+
+async function hearAllCountCards(page: Page) {
+  const cards = page.locator('[data-count-card]');
+  await expect(cards.first()).toBeVisible({ timeout: 30000 });
+  const n = await cards.count();
+  for (let i = 0; i < n; i++) {
+    const card = cards.nth(i);
+    await card.scrollIntoViewIfNeeded();
+    await card.click();
+    await expect(card).toHaveAttribute('data-heard', 'true', { timeout: 15000 });
+  }
+  await expect(page.locator('[data-cc-continue]')).toHaveAttribute('aria-disabled', 'false');
+  // Let the count-along and Continue's one-off "you can go on" pulse finish.
+  await expect(page.locator('.cc-card.playing')).toHaveCount(0, { timeout: 15000 });
+  await page.waitForTimeout(1000);
+}
+
 function answerFor(path: string): string {
   const m = /\/lesson\/(\w+)\?ex=(\d+)/.exec(path)!;
   const lesson = [...math.units, ...alphabet.units].flatMap((u) => u.lessons).find((l) => l.id === m[1])!;
@@ -133,85 +152,112 @@ async function openPage(browser: Browser, mode: 'font' | 'zoom', scale: number, 
   return { context, page };
 }
 
+
+async function auditScreens(
+  browser: Browser,
+  mode: 'font' | 'zoom',
+  scale: number,
+  viewport: { width: number; height: number },
+  screens: Screen[],
+) {
+  const { context, page } = await openPage(browser, mode, scale, viewport);
+  // The e2e audio stub lives on the default page fixture; stub here too.
+  await page.addInitScript(() => {
+    class ImmediateAudio {
+      playbackRate = 1; preservesPitch = true; paused = true; currentTime = 0; src = '';
+      onended: (() => void) | null = null;
+      private ended: (() => void) | null = null;
+      constructor(src?: string) { this.src = src ?? ''; }
+      addEventListener(type: string, cb: () => void) { if (type === 'ended') this.ended = cb; }
+      removeEventListener() {}
+      play() { this.paused = true; queueMicrotask(() => { this.ended?.(); this.onended?.(); }); return Promise.resolve(); }
+      pause() { this.paused = true; }
+    }
+    Object.defineProperty(window, 'Audio', { configurable: true, writable: true, value: ImmediateAudio });
+    if (window.speechSynthesis) window.speechSynthesis.speak = () => {};
+  });
+  const failures: string[] = [];
+  let seeded = '';
+  for (const screen of screens) {
+    const track = screen.track ?? 'math';
+    const key = `${track}:${screen.greeting ? 'locked' : 'unlocked'}`;
+    if (seeded !== key) {
+      await seed(page, track, !screen.greeting);
+      seeded = key;
+    }
+    await page.goto(screen.path);
+    await page.waitForLoadState('networkidle').catch(() => {});
+    if (screen.greeting) {
+      await expect(page.locator('div[role="button"][aria-label="شروع"]')).toBeVisible({ timeout: 30000 });
+    } else {
+      await expect(page.locator('.app-phone .content, .app-phone .home-top').first(), screen.name).toBeVisible({ timeout: 30000 });
+    }
+    if (screen.hearAll) await hearAllCountCards(page);
+    if (screen.answer) {
+      await page.locator('.content button', { hasText: answerFor(screen.path) }).first().click();
+      await page.getByRole('button', { name: /بررسی/ }).click();
+      await expect(page.locator('.sheet')).toBeVisible();
+    }
+    await page.waitForTimeout(500);
+    if (mode === 'font') {
+      const root = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).fontSize));
+      expect(root, 'root font size').toBeCloseTo(16 * scale, 0);
+    }
+    const zoom = mode === 'zoom' ? scale : 1;
+    const issues = [
+      ...(await auditLayout(page, { zoom })),
+      ...(await auditUnderBar(page, {
+        fit:
+          mode === 'font' &&
+          scale === 1 &&
+          viewport.width >= 360 &&
+          viewport.height >= 640 &&
+          /\/lesson\/(m[123]|a[12])l/.test(screen.path),
+      })),
+      ...((await auditSingleArt(page)).filter((i) => i.kind === 'single-art')),
+    ];
+    if (SHOT_DIR) {
+      await page.screenshot({
+        path: `${SHOT_DIR}/${mode}-${scale}x-${viewport.width}x${viewport.height}-${screen.name}.png`,
+        fullPage: false,
+      });
+    }
+    for (const issue of issues) failures.push(`${screen.name} ${issue.kind}: ${issue.detail}`);
+    // Check / Continue must stay reachable (in view after scrolling).
+    const action = page.locator('.sheet .btn, .bottom .btn').first();
+    if ((await action.count()) > 0) {
+      await action.scrollIntoViewIfNeeded();
+      const box = await action.boundingBox();
+      const vh = page.viewportSize()!.height;
+      if (!box || box.y < 0 || box.y + box.height > vh + 1) failures.push(`${screen.name} action button not reachable`);
+    }
+  }
+  await context.close();
+  console.log(`${mode} ${scale}x ${viewport.width}x${viewport.height}: ${failures.length} issues`);
+  expect(failures, failures.join('\n')).toEqual([]);
+}
+
 for (const mode of MODES) {
   for (const viewport of VIEWPORTS) {
     for (const scale of SCALES) {
       if (mode === 'zoom' && scale === 1) continue;
       test(`font scale ${mode} ${scale}x at ${viewport.width}x${viewport.height}: nothing overflows or overlaps`, async ({ browser }) => {
         test.setTimeout(600000);
-        const { context, page } = await openPage(browser, mode, scale, viewport);
-        // The e2e audio stub lives on the default page fixture; stub here too.
-        await page.addInitScript(() => {
-          class ImmediateAudio {
-            playbackRate = 1; preservesPitch = true; paused = true; currentTime = 0; src = '';
-            onended: (() => void) | null = null;
-            constructor(src?: string) { this.src = src ?? ''; }
-            addEventListener() {} removeEventListener() {}
-            play() { this.paused = true; queueMicrotask(() => this.onended?.()); return Promise.resolve(); }
-            pause() { this.paused = true; }
-          }
-          Object.defineProperty(window, 'Audio', { configurable: true, writable: true, value: ImmediateAudio });
-          if (window.speechSynthesis) window.speechSynthesis.speak = () => {};
-        });
-        const failures: string[] = [];
-        let seeded = '';
-        for (const screen of SCREENS) {
-          const track = screen.track ?? 'math';
-          const key = `${track}:${screen.greeting ? 'locked' : 'unlocked'}`;
-          if (seeded !== key) {
-            await seed(page, track, !screen.greeting);
-            seeded = key;
-          }
-          await page.goto(screen.path);
-          await page.waitForLoadState('networkidle').catch(() => {});
-          if (screen.greeting) {
-            await expect(page.locator('div[role="button"][aria-label="شروع"]')).toBeVisible({ timeout: 30000 });
-          } else {
-            await expect(page.locator('.app-phone .content, .app-phone .home-top').first(), screen.name).toBeVisible({ timeout: 30000 });
-          }
-          if (screen.answer) {
-            await page.locator('.content button', { hasText: answerFor(screen.path) }).first().click();
-            await page.getByRole('button', { name: /بررسی/ }).click();
-            await expect(page.locator('.sheet')).toBeVisible();
-          }
-          await page.waitForTimeout(500);
-          if (mode === 'font') {
-            const root = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).fontSize));
-            expect(root, 'root font size').toBeCloseTo(16 * scale, 0);
-          }
-          const zoom = mode === 'zoom' ? scale : 1;
-          const issues = [
-            ...(await auditLayout(page, { zoom })),
-            ...(await auditUnderBar(page, {
-              fit:
-                mode === 'font' &&
-                scale === 1 &&
-                viewport.width >= 360 &&
-                viewport.height >= 640 &&
-                /\/lesson\/(m[123]|a[12])l/.test(screen.path),
-            })),
-            ...((await auditSingleArt(page)).filter((i) => i.kind === 'single-art')),
-          ];
-          if (SHOT_DIR) {
-            await page.screenshot({
-              path: `${SHOT_DIR}/${mode}-${scale}x-${viewport.width}x${viewport.height}-${screen.name}.png`,
-              fullPage: false,
-            });
-          }
-          for (const issue of issues) failures.push(`${screen.name} ${issue.kind}: ${issue.detail}`);
-          // Check / Continue must stay reachable (in view after scrolling).
-          const action = page.locator('.sheet .btn, .bottom .btn').first();
-          if ((await action.count()) > 0) {
-            await action.scrollIntoViewIfNeeded();
-            const box = await action.boundingBox();
-            const vh = page.viewportSize()!.height;
-            if (!box || box.y < 0 || box.y + box.height > vh + 1) failures.push(`${screen.name} action button not reachable`);
-          }
-        }
-        await context.close();
-        console.log(`${mode} ${scale}x ${viewport.width}x${viewport.height}: ${failures.length} issues`);
-        expect(failures, failures.join('\n')).toEqual([]);
+        await auditScreens(browser, mode, scale, viewport, SCREENS);
       });
     }
+  }
+}
+
+// The counting intro is designed at 375x667 (iPhone SE size): check it there
+// too, at normal size and every font scale.
+const INTRO_SCREENS = SCREENS.filter((s) => s.name.startsWith('intro'));
+for (const mode of MODES) {
+  for (const scale of [1, ...SCALES]) {
+    if (mode === 'zoom' && scale === 1) continue;
+    test(`counting intro ${mode} ${scale}x at 375x667: nothing overflows or overlaps`, async ({ browser }) => {
+      test.setTimeout(180000);
+      await auditScreens(browser, mode, scale, { width: 375, height: 667 }, INTRO_SCREENS);
+    });
   }
 }
