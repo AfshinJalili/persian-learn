@@ -16,7 +16,7 @@ let bump = 0;
 // turned down, so a test can watch the whole manifest get cached quickly.
 let fastWarm = false;
 // Audio clip requests seen (GET /__test/audio-hits, reset with /reset).
-let audioHits = { total: 0, ranged: 0, paths: {} };
+let audioHits = { total: 0, ranged: 0, warm: 0, warmRanged: [], rangedBy: {}, paths: {} };
 
 const next = spawn('npx', ['next', 'start', '-p', String(upstream)], { stdio: 'inherit' });
 process.on('exit', () => next.kill());
@@ -36,7 +36,7 @@ http
       return;
     }
     if (path === '/__test/audio-hits/reset') {
-      audioHits = { total: 0, ranged: 0, paths: {} };
+      audioHits = { total: 0, ranged: 0, warm: 0, warmRanged: [], rangedBy: {}, paths: {} };
       res.end('0');
       return;
     }
@@ -47,7 +47,20 @@ http
     }
     if (/^\/audio\/[0-9a-f]+\.mp3$/.test(path)) {
       audioHits.total += 1;
-      if (req.headers.range) audioHits.ranged += 1;
+      if (req.headers['x-pl-warm']) {
+        audioHits.warm += 1;
+        // Chrome's HTTP cache can turn a whole-file fetch into a range request
+        // to finish a partial entry it already holds (e.g. from the v2 days);
+        // the worker still receives the complete 200.
+        if (req.headers.range) audioHits.warmRanged.push(path);
+      }
+      if (req.headers.range) {
+        audioHits.ranged += 1;
+        // 'audio' = an <audio> element's own request passed straight through
+        // (only the legacy worker does that); 'empty' = a worker's fetch().
+        const dest = String(req.headers['sec-fetch-dest'] || 'none');
+        audioHits.rangedBy[dest] = (audioHits.rangedBy[dest] || 0) + 1;
+      }
       audioHits.paths[path] = (audioHits.paths[path] || 0) + 1;
     }
     if (!legacyOn && (bump > 0 || fastWarm) && path === '/sw.js') {

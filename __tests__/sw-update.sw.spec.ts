@@ -469,6 +469,8 @@ async function upgradeFromLegacy(page: import('@playwright/test').Page, complete
   await page.request.get('/__test/legacy-sw/on');
   await controlled(page);
   await seedOnboarded(page, completed);
+  // Count only what happens from the upgrade on (v2 forwards Range headers).
+  await page.request.get('/__test/audio-hits/reset');
   await page.request.get('/__test/legacy-sw/off');
   await page.goto('/home');
   await expect
@@ -512,7 +514,6 @@ test('an upgraded profile ends up with every clip cached whole and playable offl
 }) => {
   test.setTimeout(240000);
   await request.get('/__test/sw-fast-warm/on');
-  await request.get('/__test/audio-hits/reset');
   await upgradeFromLegacy(page, ['m1l1']);
   const plan: Plan = await (await request.get('/audio-plan.json')).json();
   expect(plan.all.length).toBeGreaterThan(2000);
@@ -540,9 +541,23 @@ test('an upgraded profile ends up with every clip cached whole and playable offl
   });
   expect(audit.bad).toEqual([]);
   expect(audit.audio).toBeGreaterThanOrEqual(plan.all.length);
-  // The worker's warm-up never sent Range; only full files were fetched.
+  // The warm-up asks for whole files. (Chrome's HTTP cache may still send a
+  // Range upstream to complete a partial entry left from the v2 days; the
+  // worker gets the complete file either way.) Cached bodies are the whole file.
   const hits = await (await request.get('/__test/audio-hits')).json();
-  expect(hits.ranged).toBe(0);
+  expect(hits.warm).toBeGreaterThanOrEqual(plan.all.length - 60);
+  const check = [...new Set([...hits.warmRanged, ...plan.all.filter((_, i) => i % 60 === 0).map(clipPath)])];
+  const cachedSizes = await page.evaluate(async (paths) => {
+    const cache = await caches.open('pl-audio');
+    const out: Record<string, number> = {};
+    for (const path of paths) out[path] = (await (await cache.match(path))!.arrayBuffer()).byteLength;
+    return out;
+  }, check);
+  for (const path of check) {
+    // Straight from the server, not through the worker.
+    const real = (await (await request.get(path)).body()).byteLength;
+    expect(cachedSizes[path], path).toBe(real);
+  }
 
   // Offline: clips from a lesson she has not started play through <audio>.
   const sample = [plan.ui[0], plan.tracks.math[10].clips[0], plan.tracks.alphabet[59].clips[0], plan.all[plan.all.length - 1]];

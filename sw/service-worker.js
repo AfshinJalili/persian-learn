@@ -525,7 +525,7 @@ async function warmClips(hashes, cached, pauseMs) {
       batch.map(async (path) => {
         try {
           // No Range header: the full file, which is the only thing we store.
-          const res = await fetch(path, { credentials: 'same-origin' });
+          const res = await fetch(path, { credentials: 'same-origin', headers: { 'X-PL-Warm': '1' } });
           if (res.status === 200) {
             await cache.put(path, res);
             cached.add(path);
