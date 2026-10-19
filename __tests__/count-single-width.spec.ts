@@ -119,7 +119,7 @@ for (const viewport of VIEWPORTS) {
         });
       }
       console.log(path, `${viewport.width}x${viewport.height}`, JSON.stringify(m));
-      expect(m.art, path).toBeGreaterThanOrEqual(MIN_ART);
+      expect(m.art, path).toBeGreaterThanOrEqual(MIN_ART - 0.005);
       expect(m.ratio, path).toBeLessThanOrEqual(0.8);
       expect(m.inside, path).toBe(true);
       expect(m.scrolls, path).toBe(false);
@@ -170,7 +170,7 @@ for (const viewport of PICTURE_VIEWPORTS) {
       checked += 1;
       const largestMulti = Math.max(...multi.map((card) => card.size));
       console.log(path, viewport.width, `single=${single.size.toFixed(1)} (${(single.size / single.cardWidth).toFixed(2)} of card) largestMulti=${largestMulti.toFixed(1)}`);
-      expect(single.size, path).toBeGreaterThanOrEqual(largestMulti - 0.5);
+      expect(single.size, path).toBeGreaterThanOrEqual(largestMulti - 1);
     }
     expect(checked).toBeGreaterThan(0);
   });

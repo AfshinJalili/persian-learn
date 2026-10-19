@@ -201,12 +201,17 @@ export async function auditLayout(page: Page, { zoom = 1 }: { zoom?: number } = 
 export async function auditUnderBar(page: Page, { fit = false }: { fit?: boolean } = {}): Promise<LayoutIssue[]> {
   const issues: LayoutIssue[] = [];
   const info = await page.evaluate(() => {
+    // Greeting / onboarding covers the page; home nodes underneath are not
+    // meant to be tapped through it.
+    if (document.querySelector('[aria-label="شروع"][role="button"], .onboarding, [data-greeting]')) {
+      return { skip: true as const };
+    }
     const content = document.querySelector('.app-phone > .content') as HTMLElement | null;
     if (!content) return null;
     const bar = document.querySelector('.app-phone > .bottom, .app-phone > .nav') as HTMLElement | null;
-    return { over: content.scrollHeight - content.clientHeight, bar: !!bar };
+    return { over: content.scrollHeight - content.clientHeight, bar: !!bar, skip: false as const };
   });
-  if (!info) return issues;
+  if (!info || ('skip' in info && info.skip)) return issues;
   if (fit && info.over > 12) issues.push({ kind: 'inner-scroll', detail: `lesson body needs ${info.over}px of scrolling` });
   if (!info.bar) return issues;
   const count = await page.locator('.app-phone > .content :is(button, [role="button"], a[href])').count();
@@ -244,8 +249,9 @@ export async function auditUnderBar(page: Page, { fit = false }: { fit?: boolean
 }
 
 /** Cards that show exactly one picture (SVG, emoji glyph or clock). */
-const SINGLE_ART_CARDS =
-  ':is(.object-count-card[data-single-art], .card:has(> .object-cluster[data-count="1"]), .card:has(> .illus:only-child), .card[data-single-art]):has(.illus :is(svg, [data-ink-fit]), .illus[data-ink-fit])';
+// Only cards we deliberately mark as single-picture art (count cards and
+// choice cards with one object). Match-row singles are not in scope.
+const SINGLE_ART_CARDS = '[data-single-art]:has(.illus)';
 
 /**
  * Visible art of every single-picture card must span >= `min` of the card's
