@@ -2379,7 +2379,8 @@ h2.prompt-numeral {
 }
 .content:has(.cc-intro-screen) {
   overflow-x: hidden;
-  overflow-y: hidden;
+  /* Large system font: the intro scrolls; Continue stays pinned below. */
+  overflow-y: auto;
   gap: 8px;
   padding-top: 12px;
   padding-bottom: 12px;
@@ -2387,8 +2388,8 @@ h2.prompt-numeral {
 }
 
 .cc-intro-screen {
-  flex: 1;
-  min-height: 0;
+  flex: 1 0 auto;
+  min-height: auto;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -2396,8 +2397,8 @@ h2.prompt-numeral {
 }
 
 .cc-intro-body {
-  flex: 1;
-  min-height: 0;
+  flex: 1 0 auto;
+  min-height: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -2434,8 +2435,8 @@ h2.prompt-numeral {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  flex: 0 1 auto;
-  min-height: 0;
+  flex: 0 0 auto;
+  min-height: auto;
   width: 100%;
 }
 
@@ -2447,6 +2448,11 @@ h2.prompt-numeral {
 
 .cc-intro-bottom {
   flex: none;
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  background: var(--bg);
+  padding-top: 4px;
 }
 
 .cc-lead {
@@ -2464,9 +2470,10 @@ h2.prompt-numeral {
   align-items: center;
   gap: 12px;
   width: 100%;
-  min-height: 88px;
+  /* rem so the card grows with the phone's font size */
+  min-height: 5.5rem;
   max-height: none;
-  flex: 1 1 auto;
+  flex: 1 0 auto;
   padding: 12px;
   background: var(--surface);
   border: 3px solid var(--line);
@@ -2532,8 +2539,10 @@ h2.prompt-numeral {
 .cc-tile {
   position: relative;
   flex: none;
-  width: 64px;
-  height: 64px;
+  min-width: 64px;
+  min-height: 64px;
+  padding-block: 4px;
+  padding-inline-end: 8px;
   border-radius: var(--r-md);
   background: var(--green-100);
   color: var(--green-900);
@@ -2555,8 +2564,9 @@ h2.prompt-numeral {
 }
 
 .cc-word {
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 1.1;
+  white-space: nowrap;
   font-weight: 700;
 }
 
@@ -2696,14 +2706,14 @@ h2.prompt-numeral {
   }
 
   .cc-intro-screen .cc-card {
-    min-height: 140px;
+    min-height: 8.75rem;
     padding: 12px;
     gap: 12px;
   }
 
   .cc-intro-screen .cc-tile {
-    width: 72px;
-    height: 72px;
+    min-width: 72px;
+    min-height: 72px;
   }
 
   .cc-intro-screen .cc-num {
@@ -2711,7 +2721,7 @@ h2.prompt-numeral {
   }
 
   .cc-intro-screen .cc-word {
-    font-size: 20px;
+    font-size: 1.25rem;
     line-height: 1.15;
   }
 }
