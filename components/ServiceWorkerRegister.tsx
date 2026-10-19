@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 const RELOAD_KEY = 'sw-reloaded-for';
 // Long-open tabs (e.g. a phone left on the app) look for a new deploy this often.
 const UPDATE_CHECK_MS = 30 * 60 * 1000;
+const WARM_DELAY_MS = 4000;
 
 function inLesson(): boolean {
   return window.location.pathname.startsWith('/lesson/');
@@ -97,12 +98,19 @@ export default function ServiceWorkerRegister() {
       })
       .catch(() => {});
 
+    // Resume the worker's background audio warm-up (it may have been stopped
+    // part-way). Delayed so it never competes with this page's own loading.
+    const warmTimer = window.setTimeout(() => {
+      sw.ready.then((reg) => reg.active?.postMessage({ type: 'WARM_AUDIO' })).catch(() => {});
+    }, WARM_DELAY_MS);
+
     return () => {
       sw.removeEventListener('controllerchange', onControllerChange);
       document.removeEventListener('visibilitychange', onVisible);
       window.removeEventListener('popstate', onRoute);
       window.clearInterval(routeTimer);
       window.clearInterval(updateTimer);
+      window.clearTimeout(warmTimer);
     };
   }, []);
 
