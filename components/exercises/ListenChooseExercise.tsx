@@ -12,10 +12,12 @@ import {
   ObjectCluster,
   looksLikeObjects,
   objectClusterChoiceGridClass,
+  objectArtAspect,
   splitObjectTokens,
   type ObjectClusterLayout,
 } from '@/components/art/objects';
 import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
+import { singleChoiceStyle } from '@/components/art/single-art';
 import TurtleIcon from '@/components/ui/TurtleIcon';
 
 interface Props {
@@ -50,6 +52,7 @@ function SizedListenChoice({
     [object ? splitObjectTokens(option).length : 1],
     { layout }
   );
+  const single = object && splitObjectTokens(option).length === 1;
   return (
     <ChoiceButton
       ref={ref}
@@ -61,6 +64,8 @@ function SizedListenChoice({
       peers={peers}
       onClick={() => onSelect(option)}
       className="object-choice-card"
+      singleArt={single || undefined}
+      style={singleChoiceStyle(single, box.offsetWidth, box.chromeY, objectArtAspect(option))}
     >
       {object ? (
         <ObjectCluster

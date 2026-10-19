@@ -318,12 +318,12 @@ export default function MatchPairsExercise({
                   draggable={!disabled && !used}
                   onDragStart={(event) => handleDigitDragStart(option, event)}
                   disabled={disabled}
-                  className={`card h-20 w-full ${used ? 'dim' : ''} ${selected?.side === 'left' && selected.value === option ? 'selected' : ''}`}
+                  className={`card min-h-20 h-auto w-full ${used ? 'dim' : ''} ${selected?.side === 'left' && selected.value === option ? 'selected' : ''}`}
                 >
                   {looksLikeObjects(option) ? (
                     <ObjectArt token={option} size={48} />
                   ) : (
-                    <span className="glyph text-[36px] font-extrabold">{option}</span>
+                    <span className="glyph font-extrabold" style={{ fontSize: '2.25rem', lineHeight: 1.35 }}>{option}</span>
                   )}
                 </button>
               );
@@ -351,12 +351,12 @@ export default function MatchPairsExercise({
                   onDragOver={(event) => event.preventDefault()}
                   onDrop={(event) => handleSlotDrop(option, event)}
                   disabled={disabled}
-                  className={`card h-20 w-full ${used ? 'dim' : ''} ${selected?.side === 'right' && selected.value === option ? 'selected' : ''}`}
+                  className={`card min-h-20 h-auto w-full ${used ? 'dim' : ''} ${selected?.side === 'right' && selected.value === option ? 'selected' : ''}`}
                 >
                   {looksLikeObjects(option) ? (
                     <ObjectArt token={option} size={48} />
                   ) : (
-                    <span className="glyph text-[36px] font-extrabold">{option}</span>
+                    <span className="glyph font-extrabold" style={{ fontSize: '2.25rem', lineHeight: 1.35 }}>{option}</span>
                   )}
                 </button>
               );

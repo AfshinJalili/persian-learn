@@ -55,12 +55,34 @@ function NodeGlyph({
 // real width, so the path never spills sideways on narrow or zoomed screens.
 const PATH_WIDTH = 342;
 
+// Rows are 104px apart: each node's 100px tap area plus a 4px gap, so
+// neighbouring nodes never share a tappable pixel.
+const NODE_STEP = 104;
+const NODE_HIT = 100;
+
 function nodePosition(index: number, total: number) {
   const pattern = [171, 96, 171, 246, 171];
   const right = pattern[index % pattern.length] ?? 171;
-  const top = index * 88;
-  const height = Math.max(420, (total - 1) * 88 + 120);
+  const top = index * NODE_STEP;
+  const height = Math.max(420, (total - 1) * NODE_STEP + 120);
   return { right, top, height };
+}
+
+/** The dotted road through every node's centre. */
+function pathThroughNodes(total: number): string {
+  const points = Array.from({ length: total }, (_, index) => {
+    const { right, top } = nodePosition(index, total);
+    return { x: PATH_WIDTH - right, y: top + NODE_HIT / 2 };
+  });
+  if (points.length === 0) return '';
+  let d = `M${points[0].x} ${points[0].y}`;
+  for (let i = 1; i < points.length; i += 1) {
+    const prev = points[i - 1];
+    const next = points[i];
+    const bend = next.x === prev.x ? (i % 2 === 0 ? -12 : 12) : 0;
+    d += ` Q${(next.x + bend + (next.x - prev.x) * 0.03).toFixed(1)} ${((prev.y + next.y) / 2).toFixed(1)} ${next.x} ${next.y}`;
+  }
+  return d;
 }
 
 export default function HomePage() {
@@ -130,7 +152,7 @@ export default function HomePage() {
     currentIndex >= 0 ? nodePosition(currentIndex, currentUnit.lessons.length).right : 0;
   const hideMascot = currentRight >= 220;
   const unitNumber = Number(currentUnit.id.replace(/\D/g, '')) || 1;
-  const pathHeight = Math.max(420, (currentUnit.lessons.length - 1) * 88 + 120);
+  const pathHeight = Math.max(420, (currentUnit.lessons.length - 1) * NODE_STEP + 120);
   const trackLabel = progress.currentTrack === 'math' ? 'حساب' : 'حرف';
 
   return (
@@ -179,7 +201,7 @@ export default function HomePage() {
             preserveAspectRatio="none"
           >
             <path
-              d="M171 42 Q248.5 86 246 130 Q168.5 178 171 226 Q173.5 280 96 334 Q93.5 377 171 420"
+              d={pathThroughNodes(currentUnit.lessons.length)}
               fill="none"
               stroke="#D5DCD7"
               strokeWidth="12"
@@ -215,7 +237,7 @@ export default function HomePage() {
             );
           })}
           {hideMascot ? null : (
-            <span className="illus" style={{ width: 112, height: 112, position: 'absolute', right: '1%', top: 292 }}>
+            <span className="illus" style={{ width: 112, height: 112, position: 'absolute', right: '1%', top: Math.round(292 * (NODE_STEP / 88)) }}>
               <HodaMascot className="w-full h-full" />
             </span>
           )}

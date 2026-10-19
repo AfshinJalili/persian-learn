@@ -8,10 +8,12 @@ import ChoiceButton from '@/components/ChoiceButton';
 import {
   ObjectCluster,
   objectClusterChoiceGridClass,
+  objectArtAspect,
   splitObjectTokens,
   type ObjectClusterLayout,
 } from '@/components/art/objects';
 import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
+import { singleChoiceStyle } from '@/components/art/single-art';
 
 interface Props {
   exercise: Exercise;
@@ -44,6 +46,7 @@ function SizedPictureChoice({
     [splitObjectTokens(option).length],
     { layout }
   );
+  const single = splitObjectTokens(option).length === 1;
   return (
     <ChoiceButton
       ref={ref}
@@ -55,6 +58,8 @@ function SizedPictureChoice({
       peers={peers}
       onClick={() => onSelect(option)}
       className="object-choice-card"
+      singleArt={single || undefined}
+      style={singleChoiceStyle(single, box.offsetWidth, box.chromeY, objectArtAspect(option))}
     >
       <ObjectCluster
         token={option}

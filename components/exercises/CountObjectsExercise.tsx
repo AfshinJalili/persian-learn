@@ -6,7 +6,7 @@ import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
-import { ObjectCluster } from '@/components/art/objects';
+import { ObjectCluster, objectArtAspect } from '@/components/art/objects';
 import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
 interface Props {
@@ -45,7 +45,7 @@ export default function CountObjectsExercise({
         ref={ref}
         className="card object-count-card"
         data-single-art={objects.length === 1 || undefined}
-        style={singleArtStyle(objects.length === 1, box.offsetWidth)}
+        style={singleArtStyle(objects.length === 1, box.offsetWidth, objectArtAspect(objects[0] ?? ''))}
       >
         <ObjectCluster
           tokens={objects}

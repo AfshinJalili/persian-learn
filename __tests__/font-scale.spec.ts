@@ -2,7 +2,7 @@ import { test, expect } from './e2e-audio-stub';
 import type { Browser, Page } from '@playwright/test';
 import math from '../public/content/math.json';
 import alphabet from '../public/content/alphabet.json';
-import { auditLayout } from './layout-audit';
+import { auditLayout, auditUnderBar, auditSingleArt } from './layout-audit';
 
 // Fariba's phone uses a very large system font. Two ways that reaches the page:
 //  - "font": the root font size grows (Chrome's text-size setting, iOS
@@ -13,9 +13,12 @@ import { auditLayout } from './layout-audit';
 // sideways and keep 48px taps. Vertical scrolling is allowed.
 const VIEWPORTS = [
   { width: 360, height: 640 },
+  { width: 375, height: 667 },
   { width: 412, height: 915 },
 ] as const;
-const SCALES = [1.3, 1.5, 2] as const;
+// Normal font (1x) is included so the Check-bar / roadmap / number-line
+// floors that fail even without a large system font are covered.
+const SCALES = [1, 1.3, 1.5, 2] as const;
 const MODES = ['font', 'zoom'] as const;
 
 const SHOT_DIR = process.env.FONTSCALE_SHOT_DIR;
@@ -44,6 +47,11 @@ const SCREENS: Screen[] = [
   { name: 'match', path: '/lesson/m1l4?ex=1' },
   { name: 'match-6', path: '/lesson/m1l5?ex=6' },
   { name: 'number-line', path: '/lesson/m3l5?ex=3' },
+  { name: 'claps', path: '/lesson/a1l2?ex=1', track: 'alphabet' },
+  { name: 'same-diff', path: '/lesson/a1l4?ex=1', track: 'alphabet' },
+  { name: 'letter-match-a2', path: '/lesson/a2l2?ex=2', track: 'alphabet' },
+  { name: 'index-hand', path: '/lesson/m2l4?ex=2' },
+  { name: 'onion', path: '/lesson/m1l5?ex=9' },
   { name: 'equation', path: '/lesson/m4l1?ex=6' },
   { name: 'compare', path: '/lesson/m5l1?ex=1' },
   { name: 'ten-frame', path: '/lesson/m6l1?ex=1' },
@@ -107,7 +115,7 @@ async function openPage(browser: Browser, mode: 'font' | 'zoom', scale: number, 
     deviceScaleFactor: zoom ? 2.75 * scale : 2.75,
     isMobile: true,
     hasTouch: true,
-    baseURL: 'http://localhost:3000',
+    baseURL: `http://localhost:${process.env.PW_PORT || 3000}`,
   });
   const page = await context.newPage();
   if (!zoom) {
@@ -128,6 +136,7 @@ async function openPage(browser: Browser, mode: 'font' | 'zoom', scale: number, 
 for (const mode of MODES) {
   for (const viewport of VIEWPORTS) {
     for (const scale of SCALES) {
+      if (mode === 'zoom' && scale === 1) continue;
       test(`font scale ${mode} ${scale}x at ${viewport.width}x${viewport.height}: nothing overflows or overlaps`, async ({ browser }) => {
         test.setTimeout(600000);
         const { context, page } = await openPage(browser, mode, scale, viewport);
@@ -170,7 +179,14 @@ for (const mode of MODES) {
             const root = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).fontSize));
             expect(root, 'root font size').toBeCloseTo(16 * scale, 0);
           }
-          const issues = await auditLayout(page, { zoom: mode === 'zoom' ? scale : 1 });
+          const zoom = mode === 'zoom' ? scale : 1;
+          const issues = [
+            ...(await auditLayout(page, { zoom })),
+            ...(await auditUnderBar(page, {
+              fit: screen.path.startsWith('/lesson/') && mode === 'font' && scale === 1 && viewport.width >= 360 && viewport.height >= 640,
+            })),
+            ...((await auditSingleArt(page)).filter((i) => i.kind === 'single-art')),
+          ];
           if (SHOT_DIR) {
             await page.screenshot({
               path: `${SHOT_DIR}/${mode}-${scale}x-${viewport.width}x${viewport.height}-${screen.name}.png`,

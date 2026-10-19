@@ -5,7 +5,8 @@ import { playOptionAudio } from '@/lib/spoken-option';
 import { comparePrompt } from '@/lib/compare';
 import { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
-import { ObjectCluster, objectClusterChoiceGridClass, splitObjectTokens } from '@/components/art/objects';
+import { ObjectCluster, looksLikeObjects, objectArtAspect, objectClusterChoiceGridClass, splitObjectTokens } from '@/components/art/objects';
+import { singleChoiceStyle } from '@/components/art/single-art';
 import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
 interface CompareMoreLessExerciseProps {
@@ -31,6 +32,8 @@ function CompareSide({
   const { ref, box } = useSharedClusterSize<HTMLButtonElement>([
     splitObjectTokens(token).length,
   ]);
+  const parts = splitObjectTokens(token);
+  const single = parts.length === 1 && looksLikeObjects(parts[0]);
   return (
     <button
       ref={ref}
@@ -38,6 +41,8 @@ function CompareSide({
       onClick={() => onSelect(value, token)}
       disabled={disabled}
       className={`card object-choice-card ${selected ? 'selected' : ''}`}
+      data-single-art={single || undefined}
+      style={singleChoiceStyle(single, box.offsetWidth, box.chromeY, objectArtAspect(parts[0] ?? ''))}
     >
       <ObjectCluster
         token={token}

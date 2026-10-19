@@ -1,8 +1,10 @@
-import type { CSSProperties, ReactNode } from 'react';
+'use client';
+
+import { isValidElement, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 
 export function AppleSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="15.5 10.5 69 79.6" aria-hidden="true">
       <path d="M50 30c-8-6-30-8-34 14-3 18 10 44 24 46 4 .6 7-2 10-2s6 2.6 10 2c14-2 27-28 24-46-4-22-26-20-34-14z" fill="#D93A2B" />
       <path d="M28 44c2-8 8-11 13-11" stroke="#F4A091" strokeWidth="5" fill="none" strokeLinecap="round" />
       <path d="M50 31c0-8 2-14 6-18" stroke="#6B4226" strokeWidth="5" fill="none" strokeLinecap="round" />
@@ -13,7 +15,7 @@ export function AppleSvg() {
 
 export function PomegranateSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="16 12 68 78" aria-hidden="true">
       <path d="M38 24l4-12 8 8 8-8 4 12z" fill="#8E1B2E" />
       <circle cx="50" cy="56" r="34" fill="#B3243A" />
       <path d="M30 46c3-9 10-14 17-15" stroke="#E98A98" strokeWidth="5" fill="none" strokeLinecap="round" />
@@ -24,7 +26,7 @@ export function PomegranateSvg() {
 
 export function TeaSvg() {
   return (
-    <svg viewBox="14 16 72 80" aria-hidden="true">
+    <svg viewBox="16 20.5 68 71.5" aria-hidden="true">
       <ellipse cx="50" cy="84" rx="34" ry="8" fill="#5A7A84" />
       <path d="M32 22h36l-4 20c-1 6 4 10 4 22 0 10-8 16-18 16s-18-6-18-16c0-12 5-16 4-22z" fill="#5A7A84" stroke="#3A5560" strokeWidth="3" />
       <path d="M34.5 40h31c-1 5 3.5 10 3.5 24 0 8.5-7 13.5-19 13.5S31 72.5 31 64c0-14 4.5-19 3.5-24z" fill="#B8541A" />
@@ -48,7 +50,7 @@ export function BreadSvg() {
 
 export function TulipSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="24 18 50 75" aria-hidden="true">
       <path d="M50 52v38" stroke="#2E7D0F" strokeWidth="6" strokeLinecap="round" />
       <path d="M50 78c-6-12-18-14-26-12 4 10 14 14 26 12zM50 72c6-10 16-12 24-10-4 9-12 12-24 10z" fill="#3E9A00" />
       <path d="M30 22c4 10 6 16 10 18l10-22 10 22c4-2 6-8 10-18 4 18 2 34-20 36-22-2-24-18-20-36z" fill="#C8102E" />
@@ -59,7 +61,7 @@ export function TulipSvg() {
 
 export function CypressSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="34.5 8 31 84" aria-hidden="true">
       <path d="M50 8c14 20 18 44 14 64-2 8-8 12-14 12s-12-4-14-12c-4-20 0-44 14-64z" fill="#2E7D4F" />
       <path d="M50 22c-4 10-8 28-6 46" stroke="#7CC08E" strokeWidth="4" fill="none" strokeLinecap="round" />
       <rect x="46" y="82" width="8" height="10" rx="2" fill="#6B4226" />
@@ -69,7 +71,7 @@ export function CypressSvg() {
 
 export function SunSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="5 5 90 90" aria-hidden="true">
       <g stroke="#C47A00" strokeWidth="6" strokeLinecap="round">
         <path d="M50 8v12M50 80v12M8 50h12M80 50h12M20 20l8 8M72 72l8 8M80 20l-8 8M28 72l-8 8" />
       </g>
@@ -80,7 +82,7 @@ export function SunSvg() {
 
 export function MoonSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="19.2 18 66.8 62" aria-hidden="true">
       <path d="M68 70A30 30 0 0 1 40 18a32 32 0 1 0 40 44 30 30 0 0 1-12 8z" fill="#B07E20" />
       <circle cx="74" cy="24" r="3" fill="#B07E20" />
       <circle cx="84" cy="40" r="2" fill="#B07E20" />
@@ -90,7 +92,7 @@ export function MoonSvg() {
 
 export function KeySvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="6 4 86 86" aria-hidden="true">
       <circle cx="36" cy="34" r="24" fill="none" stroke="#B07A10" strokeWidth="12" />
       <path d="M54 42l38 28-12 16-12-8-8 12-16-12z" fill="#B07A10" />
     </svg>
@@ -99,7 +101,7 @@ export function KeySvg() {
 
 export function PhoneSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="30 8 40 84" aria-hidden="true">
       <rect x="30" y="8" width="40" height="84" rx="8" fill="#1B2A22" />
       <rect x="34" y="16" width="32" height="58" rx="3" fill="#E3EEFB" />
       <circle cx="50" cy="84" r="4" fill="#D5DCD7" />
@@ -109,7 +111,7 @@ export function PhoneSvg() {
 
 export function EggSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="22 24 56 68" aria-hidden="true">
       <ellipse cx="50" cy="58" rx="26" ry="32" fill="#C07A3A" stroke="#8A5A2B" strokeWidth="4" />
       <path d="M38 44c5-10 14-14 22-12" stroke="#8A5A2B" strokeWidth="3" fill="none" strokeLinecap="round" />
     </svg>
@@ -118,7 +120,7 @@ export function EggSvg() {
 
 export function OrangeSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="20 18 60 68" aria-hidden="true">
       <circle cx="50" cy="56" r="30" fill="#D66A0C" />
       <path d="M50 28c6-10 16-12 22-8-4 8-12 10-22 8z" fill="#3E9A00" />
     </svg>
@@ -127,7 +129,7 @@ export function OrangeSvg() {
 
 export function HouseSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="9.4 12 81.2 74" aria-hidden="true">
       <path d="M12 48L50 16l38 32" fill="none" stroke="#1F6408" strokeWidth="8" strokeLinejoin="round" />
       <rect x="26" y="46" width="48" height="38" fill="#A85A32" stroke="#1F6408" strokeWidth="4" />
       <rect x="42" y="58" width="16" height="26" fill="#7B2A55" />
@@ -137,7 +139,7 @@ export function HouseSvg() {
 
 export function WaterSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="20 12 60 82" aria-hidden="true">
       <path d="M50 12c18 22 30 36 30 52a30 30 0 1 1-60 0c0-16 12-30 30-52z" fill="#0D4F9E" />
       <path d="M36 62c2-10 8-16 14-18" stroke="#8FB7E8" strokeWidth="5" fill="none" strokeLinecap="round" />
     </svg>
@@ -146,7 +148,7 @@ export function WaterSvg() {
 
 export function DotSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="12 12 76 76" aria-hidden="true">
       <circle cx="50" cy="50" r="38" fill="#1D6AD8" />
       <circle cx="38" cy="38" r="12" fill="#7EB6FF" opacity="0.7" />
     </svg>
@@ -155,7 +157,7 @@ export function DotSvg() {
 
 export function ClockSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="17.5 21.5 65 65" aria-hidden="true">
       <circle cx="50" cy="54" r="30" fill="#B07E20" stroke="#1B2A22" strokeWidth="5" />
       <path d="M50 32v24l14 8" stroke="#1B2A22" strokeWidth="5" fill="none" strokeLinecap="round" />
     </svg>
@@ -164,7 +166,7 @@ export function ClockSvg() {
 
 export function TomatoSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="20 21.5 60 66.5" aria-hidden="true">
       <circle cx="50" cy="58" r="30" fill="#C8102E" />
       <path d="M50 30c-8 6-18 6-24 2 6-8 16-12 24-10 8-2 18 2 24 10-6 4-16 4-24-2z" fill="#2E7D0F" />
     </svg>
@@ -173,7 +175,7 @@ export function TomatoSvg() {
 
 export function OnionSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="22 18 56 70" aria-hidden="true">
       <ellipse cx="50" cy="62" rx="28" ry="26" fill="#7B2A55" />
       <path d="M50 18c4 8 6 14 6 22H44c0-8 2-14 6-22z" fill="#2E7D0F" />
       <path d="M36 58c4-10 10-14 14-14 4 0 10 4 14 14" stroke="#4A1834" strokeWidth="3" fill="none" />
@@ -183,7 +185,7 @@ export function OnionSvg() {
 
 export function PencilSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="14 18 68 70" aria-hidden="true">
       <path d="M22 78L70 18l12 10-48 60z" fill="#C47A00" />
       <path d="M70 18l12 10-8 8-12-10z" fill="#C07A3A" />
       <path d="M22 78l-8 8 16-2z" fill="#1B2A22" />
@@ -231,7 +233,7 @@ export function IndexHandSvg() {
 
 export function VictoryHandSvg() {
   return (
-    <svg viewBox="6.5 6.8 76.5 84.7" aria-hidden="true">
+    <svg viewBox="6.5 8.4 74.8 83.1" aria-hidden="true">
       <g transform="rotate(-16 40 58)">
         <HandFinger x={32} y={8} width={14} height={54} />
       </g>
@@ -260,7 +262,7 @@ export function RaisedHandSvg() {
 
 export function RedDotSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="12 12 76 76" aria-hidden="true">
       <circle cx="50" cy="50" r="38" fill="#C8102E" />
       <circle cx="38" cy="38" r="12" fill="#7B2A55" opacity="0.45" />
     </svg>
@@ -269,7 +271,7 @@ export function RedDotSvg() {
 
 export function EmptyDotSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="13 13 74 74" aria-hidden="true">
       <circle cx="50" cy="50" r="34" fill="#F4E6D0" stroke="#4A5A51" strokeWidth="6" />
     </svg>
   );
@@ -311,7 +313,7 @@ const DICE_PIP_LAYOUT: Record<number, Array<[number, number]>> = {
 
 export function PlateSvg() {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox="10 22 80 60" aria-hidden="true">
       <ellipse cx="50" cy="52" rx="38" ry="28" fill="#D5DCD7" stroke="#4A5A51" strokeWidth="4" />
       <ellipse cx="50" cy="50" rx="24" ry="16" fill="#F4E6D0" stroke="#4A5A51" strokeWidth="3" />
     </svg>
@@ -390,9 +392,10 @@ export function splitObjectTokens(token: string): string[] {
 export const OBJECT_CLUSTER_GAP = 8;
 export const OBJECT_MATCH_GAP = 4;
 export const OBJECT_CLUSTER_MIN_SIZE = 32;
-// Box ratio for a single item: with tight viewBoxes the drawn art fills the
-// box, so 0.77 leaves the visible art at >= 0.70 of the card width.
-export const OBJECT_SINGLE_WIDTH_RATIO = 0.77;
+// Width of a single item's art box as a share of the card width. The
+// viewBoxes hug the ink and tall art gets a taller (not narrower) box, so the
+// visible art is this wide: >= 0.70 with room for antialiasing and rounding.
+export const OBJECT_SINGLE_WIDTH_RATIO = 0.73;
 export const OBJECT_MATCH_SINGLE_MAX = 96;
 export const OBJECT_CARD_INNER_FALLBACK = { width: 81, height: 140 };
 export const OBJECT_MATCH_INNER_FALLBACK = { width: 220, height: 72 };
@@ -433,6 +436,37 @@ const HAND_ART: Record<string, ReactNode> = {
   '\u270B': <RaisedHandSvg />,
 };
 
+// Width / height of each drawing's tight viewBox (the viewBoxes hug the ink,
+// so these are the visible art's proportions).
+const SVG_ASPECT = new Map<unknown, number>([
+  [AppleSvg, 0.867],
+  [PomegranateSvg, 0.872],
+  [TeaSvg, 0.951],
+  [BreadSvg, 1.851],
+  [TulipSvg, 0.667],
+  [CypressSvg, 0.369],
+  [SunSvg, 1.0],
+  [MoonSvg, 1.077],
+  [KeySvg, 1.0],
+  [PhoneSvg, 0.476],
+  [EggSvg, 0.824],
+  [OrangeSvg, 0.882],
+  [HouseSvg, 1.097],
+  [WaterSvg, 0.732],
+  [DotSvg, 1.0],
+  [ClockSvg, 1.0],
+  [TomatoSvg, 0.902],
+  [OnionSvg, 0.8],
+  [PencilSvg, 0.971],
+  [IndexHandSvg, 0.765],
+  [VictoryHandSvg, 0.9],
+  [RaisedHandSvg, 0.976],
+  [RedDotSvg, 1.0],
+  [EmptyDotSvg, 1.0],
+  [PlateSvg, 1.333],
+  [DiceSvg, 1.0],
+]);
+
 function isHandToken(token: string): boolean {
   return normalizeObjectToken(token) in HAND_ART;
 }
@@ -440,6 +474,13 @@ function isHandToken(token: string): boolean {
 function objectArtForToken(token: string): ReactNode | undefined {
   const key = normalizeObjectToken(token);
   return EMOJI_ART[token] ?? EMOJI_ART[key] ?? HAND_ART[key];
+}
+
+/** Visible width / height of a token's art (1 for emoji glyphs, which are ink-fitted). */
+export function objectArtAspect(token: string): number {
+  const art = objectArtForToken(token);
+  if (isValidElement(art)) return SVG_ASPECT.get(art.type) ?? 1;
+  return 1;
 }
 
 export type ObjectClusterLayout = 'grid' | 'row' | 'match' | 'picture';
@@ -454,8 +495,9 @@ export function objectClusterLayoutForBox(
   innerHeight: number,
   gap: number = OBJECT_CLUSTER_GAP,
   layout: ObjectClusterLayout = 'grid',
-  cardOffsetWidth?: number
-): { cols: number; rows: number; size: number; unclamped: number } {
+  cardOffsetWidth?: number,
+  aspect = 1
+): { cols: number; rows: number; size: number; unclamped: number; height?: number } {
   if (count <= 0) {
     return { cols: 1, rows: 1, size: 0, unclamped: 0 };
   }
@@ -463,27 +505,36 @@ export function objectClusterLayoutForBox(
   if (count === 1) {
     const widthBasis =
       cardOffsetWidth && cardOffsetWidth > 8 ? cardOffsetWidth : innerWidth;
+    const ratio = aspect > 0 && Number.isFinite(aspect) ? aspect : 1;
+    // `unclamped` is the art box width; its height is width / aspect. The
+    // height limit is innerHeight * aspect (cards grow to make room for it).
     const unclamped =
       layout === 'picture'
-        ? innerWidth
+        ? Math.min(innerWidth, innerHeight * ratio)
         : layout === 'row' || layout === 'match'
           ? Math.min(
               widthBasis * OBJECT_SINGLE_WIDTH_RATIO,
               innerWidth,
-              innerHeight,
+              innerHeight * ratio,
               OBJECT_MATCH_SINGLE_MAX
             )
-          : Math.max(
-              Math.min(widthBasis * OBJECT_SINGLE_WIDTH_RATIO, innerWidth, innerHeight),
-              // Never smaller than each item of a 2-item card in the same box
-              // (narrow three-across cards stack two items at nearly full width).
-              objectClusterLayoutForBox(2, innerWidth, innerHeight, gap, layout).unclamped
+          : Math.min(
+              Math.max(
+                Math.min(widthBasis * OBJECT_SINGLE_WIDTH_RATIO, innerWidth),
+                // Never smaller than each item of a 2-item card in the same box
+                // (narrow three-across cards stack two items at nearly full width).
+                objectClusterLayoutForBox(2, innerWidth, innerHeight, gap, layout).unclamped
+              ),
+              innerWidth,
+              innerHeight * ratio
             );
+    const size = Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.floor(unclamped));
     return {
       cols: 1,
       rows: 1,
       unclamped,
-      size: Math.max(OBJECT_CLUSTER_MIN_SIZE, Math.floor(unclamped)),
+      size,
+      height: Math.floor(size / ratio),
     };
   }
 
@@ -679,22 +730,143 @@ export function AvatarArt({
   );
 }
 
+type InkMetrics = { w: number; h: number; dx: number; dy: number; lh: number };
+const inkCache = new Map<string, InkMetrics>();
+
+/** Ink box of a glyph per 1em (emoji fonts carry side bearing and leading). */
+function measureInk(token: string, font: { family: string; weight: string }): InkMetrics | null {
+  const key = `${font.weight}|${font.family}|${token}`;
+  const hit = inkCache.get(key);
+  if (hit) return hit;
+  if (typeof document === 'undefined') return null;
+  let ctx: CanvasRenderingContext2D | null = null;
+  try {
+    ctx = document.createElement('canvas').getContext('2d');
+  } catch {
+    ctx = null;
+  }
+  if (!ctx || typeof ctx.measureText !== 'function' || typeof ctx.getImageData !== 'function') return null;
+  // Colour-emoji fonts report their bitmap's em box as the "actual" bounds, so
+  // the ink is found on pixels: draw at 100px and scan for painted pixels.
+  const S = 100;
+  const W = 300;
+  ctx.canvas.width = W;
+  ctx.canvas.height = W;
+  ctx.font = `${font.weight} ${S}px ${font.family}`;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'alphabetic';
+  const m = ctx.measureText(token);
+  const ox = 100;
+  const oy = 200;
+  ctx.fillStyle = '#000';
+  ctx.fillText(token, ox, oy);
+  let data: Uint8ClampedArray;
+  try {
+    data = ctx.getImageData(0, 0, W, W).data;
+  } catch {
+    return null;
+  }
+  let x0 = W;
+  let y0 = W;
+  let x1 = -1;
+  let y1 = -1;
+  for (let y = 0; y < W; y += 1) {
+    for (let x = 0; x < W; x += 1) {
+      if (data[(y * W + x) * 4 + 3] > 24) {
+        if (x < x0) x0 = x;
+        if (x > x1) x1 = x;
+        if (y < y0) y0 = y;
+        if (y > y1) y1 = y;
+      }
+    }
+  }
+  if (x1 < x0 || y1 < y0) return null;
+  const fA = m.fontBoundingBoxAscent ?? S * 0.9;
+  const fD = m.fontBoundingBoxDescent ?? S * 0.3;
+  const w = (x1 - x0 + 1) / S;
+  const h = (y1 - y0 + 1) / S;
+  const inkCx = (x0 + x1 + 1) / 2 - ox;
+  const inkCy = (y0 + y1 + 1) / 2 - oy;
+  const metrics = {
+    w,
+    h,
+    // Shift that puts the ink's centre on the line box's centre.
+    dx: (m.width / 2 - inkCx) / S,
+    dy: ((fD - fA) / 2 - inkCy) / S,
+    lh: (fA + fD) / S,
+  };
+  inkCache.set(key, metrics);
+  return metrics;
+}
+
+/**
+ * An emoji or other glyph sized by its real ink box, not its em box: the
+ * visible picture fills width x height and nothing is clipped.
+ */
+function InkFitGlyph({ token, width, height }: { token: string; width: number; height: number }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [ink, setInk] = useState<InkMetrics | null>(null);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const s = getComputedStyle(el);
+    const next = measureInk(token, { family: s.fontFamily || 'sans-serif', weight: s.fontWeight || '400' });
+    if (next) setInk(next);
+  }, [token]);
+  const m = ink ?? { w: 1.15, h: 1.15, dx: 0, dy: 0, lh: 1.4 };
+  const fontSize = Math.max(8, Math.min(width / m.w, height / m.h));
+  return (
+    <span
+      ref={ref}
+      className="glyph ink-fit"
+      style={{
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        fontSize,
+        lineHeight: m.lh,
+        maxWidth: 'none',
+        maxHeight: 'none',
+        overflow: 'visible',
+        whiteSpace: 'nowrap',
+        transform: `translate(calc(-50% + ${(m.dx * fontSize).toFixed(2)}px), calc(-50% + ${(m.dy * fontSize).toFixed(2)}px))`,
+      }}
+    >
+      {token}
+    </span>
+  );
+}
+
 function SingleObjectArt({
   token,
   size,
+  height,
   fluid = false,
 }: {
   token: string;
   size: number;
+  height?: number;
   fluid?: boolean;
 }) {
   const art = objectArtForToken(token);
   const hand = isHandToken(token);
+  const h = height ?? size;
+  if (!art && !fluid && PICTOGRAPH.test(token)) {
+    return (
+      <span
+        className="illus"
+        data-ink-fit
+        style={{ width: size, height: h, position: 'relative', aspectRatio: 'auto' }}
+      >
+        <InkFitGlyph token={token} width={size} height={h} />
+      </span>
+    );
+  }
   return (
     <span
       className="illus"
       data-glyph={hand ? 'hand' : undefined}
-      style={fluid ? undefined : { width: size, height: size }}
+      style={fluid ? undefined : { width: size, height: h, aspectRatio: 'auto' }}
     >
       {art ?? (
         <span
@@ -734,7 +906,8 @@ export function ObjectCluster({
     boxHeight && boxHeight > 8 ? boxHeight : OBJECT_CARD_INNER_FALLBACK.height,
     gap,
     layout,
-    cardWidth
+    cardWidth,
+    count === 1 ? objectArtAspect(parts[0]) : 1
   );
   const cols = fitted.cols;
   const rows = fitted.rows;
@@ -754,11 +927,19 @@ export function ObjectCluster({
           '--cluster-gap': `${gap}px`,
           '--dot': `${size}px`,
           '--object-size': `${size}px`,
+          ...(count === 1 && itemSize === undefined && fitted.height
+            ? { gridTemplateColumns: `${size}px`, gridTemplateRows: `${fitted.height}px` }
+            : {}),
         } as CSSProperties
       }
     >
       {parts.map((part, index) => (
-        <SingleObjectArt key={`${part}-${index}`} token={part} size={size} />
+        <SingleObjectArt
+          key={`${part}-${index}`}
+          token={part}
+          size={size}
+          height={count === 1 && itemSize === undefined ? fitted.height : undefined}
+        />
       ))}
     </span>
   );
@@ -779,9 +960,13 @@ export function ObjectArt({
   return <SingleObjectArt token={parts[0] ?? token} size={size} />;
 }
 
+const PICTOGRAPH = /\p{Extended_Pictographic}/u;
+
 export function looksLikeObjects(token: string): boolean {
   return splitGraphemes(token).some((part) => {
     const key = normalizeObjectToken(part);
-    return Boolean(objectArtForToken(part) || DICE_PIP_COUNTS[part] || DICE_PIP_COUNTS[key]);
+    return Boolean(
+      objectArtForToken(part) || DICE_PIP_COUNTS[part] || DICE_PIP_COUNTS[key] || PICTOGRAPH.test(part)
+    );
   });
 }
