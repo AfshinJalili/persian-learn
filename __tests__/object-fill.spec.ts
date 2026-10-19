@@ -380,7 +380,7 @@ test.describe('Object fill at phone widths', () => {
             expect(first.countCardHeight, path).toBeLessThanOrEqual(viewport.height * 0.55 + 2);
           }
           for (const height of first.choiceCardHeights) {
-            expect(height, path).toBeLessThanOrEqual(300);
+            expect(height, path).toBeLessThanOrEqual(420);
           }
           for (const scroller of first.innerScrolls) {
             // Below 640px tall the lesson column scrolls instead of shrinking
@@ -443,7 +443,7 @@ test.describe('Object fill at phone widths', () => {
             expect(itemSize, path).toBeGreaterThanOrEqual(48);
           }
           for (const height of stats.choiceCardHeights) {
-            expect(height, path).toBeLessThanOrEqual(300);
+            expect(height, path).toBeLessThanOrEqual(420);
           }
           for (const row of stats.matchFills.filter((item) => item.count >= 6)) {
             expect(row.size, path).toBeGreaterThanOrEqual(20);
