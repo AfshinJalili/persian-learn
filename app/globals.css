@@ -2880,3 +2880,79 @@ h2.prompt-numeral {
     animation: none;
   }
 }
+
+/* Plain intro art lines (IntroPlain): terms never wrap inside themselves;
+   the line wraps only between terms. */
+.intro-art-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-art-term {
+  display: inline-grid;
+  justify-content: center;
+  align-items: center;
+  flex: none;
+}
+
+.intro-art-text {
+  flex: none;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.intro-visual-text {
+  margin: 0;
+  font-size: 2.25rem;
+  line-height: 1.2;
+  font-weight: 900;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.intro-speaker-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.intro-speaker {
+  display: flex;
+  flex: none;
+}
+
+.intro-visual {
+  display: flex;
+  justify-content: center;
+}
+
+.intro-number-text {
+  font-size: 3rem;
+  line-height: 1.1;
+  font-weight: 900;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.intro-art-unit {
+  display: inline-flex;
+  flex: none;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+/* A word / sentence beside pictures on a plain intro: text, wrapping only
+   between words. */
+.intro-word-text {
+  font-size: 2.25rem;
+  line-height: 1.3;
+  font-weight: 900;
+  color: var(--ink);
+  max-width: 100%;
+  overflow-wrap: normal;
+}

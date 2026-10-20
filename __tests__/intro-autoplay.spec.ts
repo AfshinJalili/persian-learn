@@ -125,12 +125,14 @@ test.describe('group intros fit at 375x667', () => {
     test(`${id}e1: items fitted (48–72px), no horizontal scroll, Continue on screen`, async ({ page }) => {
       await seed(page, false);
       await page.goto(`/lesson/${id}?ex=0`);
-      const group = page.locator('[data-group-art] .object-cluster');
+      // m6l1 / m6l3 are lone groups ([data-group-art]); m8l4 (🥚×5 - 🥚×3) is a
+      // sum line ([data-art-line]).
+      const group = page.locator('[data-group-art] .object-cluster, [data-art-line="display"]').first();
       await expect(group).toBeVisible();
       await page.evaluate(() => document.fonts.ready);
       const r = await page.evaluate(() => {
         const content = document.querySelector('.app-phone .content') as HTMLElement;
-        const items = [...document.querySelectorAll('[data-group-art] .illus')].map((e) => e.getBoundingClientRect());
+        const items = [...document.querySelectorAll('[data-group-art] .illus, [data-art-line] .illus')].map((e) => e.getBoundingClientRect());
         const btn = [...content.querySelectorAll('button')].find((b) => b.textContent?.includes('ادامه'))!;
         const b = btn.getBoundingClientRect();
         return {

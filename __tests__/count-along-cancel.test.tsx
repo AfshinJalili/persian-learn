@@ -204,7 +204,7 @@ describe('count-card intro is opt-in from content', () => {
     (id) => {
       render(<IntroExercise exercise={byId(id)} onContinue={() => {}} autoplay={false} />);
       expect(document.querySelector('[data-single-art]')).toBeNull();
-      const items = [...document.querySelectorAll<HTMLElement>('[data-group-art] .illus')];
+      const items = [...document.querySelectorAll<HTMLElement>('[data-group-art] .illus, [data-art-line] .illus')];
       expect(items.length).toBeGreaterThan(5);
       for (const item of items) expect(item.style.width).not.toBe('160px');
     }

@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
-import { personalizeIntroScript } from '@/lib/learner';
 import {
   beginAudioSequence,
   getAudioSpeed,
@@ -10,17 +9,9 @@ import {
   stopAudio,
   vibrate,
 } from '@/lib/audio';
-import SpeakerButton from '@/components/SpeakerButton';
 import HodaMascot from '@/components/HodaMascot';
-import {
-  ObjectArt,
-  ObjectCluster,
-  OBJECT_CLUSTER_GAP,
-  objectClusterLayoutForBox,
-  looksLikeObjects,
-  splitObjectTokens,
-  useObjectArtAspect,
-} from '@/components/art/objects';
+import { splitObjectTokens } from '@/components/art/objects';
+import IntroPlain from '@/components/exercises/IntroPlain';
 import CountCard, {
   CONTINUE_GATE_HINT,
   INTRO_HELPER,
@@ -85,93 +76,6 @@ function countGroupsFrom(exercise: Exercise): CountGroup[] {
       label: labels[index] ?? `${countWord(count)}`.trim(),
     };
   });
-}
-
-const INTRO_SINGLE_SIZE = 160;
-/** Item size for intro groups beside other groups, and the floor for a lone group. */
-const INTRO_GROUP_ITEM_SIZE = 48;
-/** Height cap of a lone multi-item group (two rows of ~52px), so Continue stays near. */
-const INTRO_GROUP_MAX_HEIGHT = 112;
-/** Smallest the single picture gets on very narrow (page-zoomed) screens. */
-const INTRO_SINGLE_MIN = 96;
-/**
- * Share of the column the art box may take: an ink-fitted tall glyph (👂)
- * lays out ~1.5x its box wide (empty side bearing), and that must still fit
- * on a 2x page-zoomed phone. 160 is reached from a ~230px column up.
- */
-const INTRO_SINGLE_SIDE = 0.7;
-/** Tall art: box height so the drawing's width is >= this share of the box. */
-const INTRO_TALL_WIDTH_RATIO = 0.86;
-
-/**
- * One picture as the intro's main content: a 160px-wide art box (its "card"
- * for the single-art >= 0.70 ink rule). Tall drawings (an ear, a raised
- * finger) get a taller box so their ink still spans the width, the same way
- * single-art count cards grow with the drawing's proportions. On a screen
- * too narrow for 160 (2x page zoom) the box shrinks with it.
- */
-function IntroSingleArt({ token }: { token: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [size, setSize] = useState(INTRO_SINGLE_SIZE);
-  useEffect(() => {
-    const column = ref.current?.parentElement?.parentElement;
-    if (!column || typeof ResizeObserver === 'undefined') return undefined;
-    const observer = new ResizeObserver(() => {
-      const width = column.clientWidth;
-      if (!(width > 0)) return;
-      const next = Math.max(
-        INTRO_SINGLE_MIN,
-        Math.min(INTRO_SINGLE_SIZE, Math.floor(width * INTRO_SINGLE_SIDE))
-      );
-      setSize((prev) => (prev === next ? prev : next));
-    });
-    observer.observe(column);
-    return () => observer.disconnect();
-  }, []);
-  const aspect = useObjectArtAspect(token);
-  const ratio = aspect > 0 && Number.isFinite(aspect) ? aspect : 1;
-  const height = Math.max(size, Math.ceil((size * INTRO_TALL_WIDTH_RATIO) / ratio));
-  return (
-    <div ref={ref} className="intro-single-art" data-single-art>
-      <ObjectArt token={token} size={size} height={height} />
-    </div>
-  );
-}
-
-/**
- * A lone group of several pictures (🔴🔴🔴🔴🔴⚪⚪⚪⚪⚪, 🥚×8) fitted to the
- * column: up to five across, two rows within INTRO_GROUP_MAX_HEIGHT, items
- * never under 48px. Where even that doesn't fit (2x page zoom) it falls back
- * to the 48px wrapped grid.
- */
-function IntroGroupArt({ token }: { token: string }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(0);
-  useEffect(() => {
-    const column = ref.current?.parentElement?.parentElement;
-    if (!column || typeof ResizeObserver === 'undefined') return undefined;
-    const observer = new ResizeObserver(() => {
-      const next = Math.floor(column.clientWidth);
-      if (next > 0) setWidth((prev) => (prev === next ? prev : next));
-    });
-    observer.observe(column);
-    return () => observer.disconnect();
-  }, []);
-  const count = splitObjectTokens(token).length;
-  const fitted =
-    width > 0
-      ? objectClusterLayoutForBox(count, width, INTRO_GROUP_MAX_HEIGHT, OBJECT_CLUSTER_GAP)
-      : null;
-  const fits = fitted != null && fitted.unclamped >= INTRO_GROUP_ITEM_SIZE;
-  return (
-    <div ref={ref} className="intro-group-art" data-group-art>
-      {fits ? (
-        <ObjectCluster token={token} boxWidth={width} boxHeight={INTRO_GROUP_MAX_HEIGHT} />
-      ) : (
-        <ObjectArt token={token} size={INTRO_GROUP_ITEM_SIZE} />
-      )}
-    </div>
-  );
 }
 
 export default function IntroExercise({ exercise, onContinue, autoplay = true }: Props) {
@@ -331,46 +235,7 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
   }, [allHeard]);
 
   if (!counting) {
-    const payload = exercise.payload as { display: string; visual?: string };
-    const pieces = String(payload.display || '')
-      .split(/\s{2,}/)
-      .filter(Boolean);
-
-    return (
-      <div
-        className="flex flex-1 flex-col items-center gap-4 text-center"
-        style={{ justifyContent: 'safe center' }}
-      >
-        <SpeakerButton text={exercise.audio_script} size="md" />
-        <div className="flex flex-wrap items-end justify-center gap-4">
-          {pieces.map((group, index) => {
-            const token = group.trim();
-            const key = `${group}-${index}`;
-            // Only a lone single picture is the screen's main content and is
-            // drawn big (160, single-art box). Any group of several items
-            // (🔴🔴🔴⚪⚪…) keeps 48px items so the whole group and Continue
-            // fit on a phone.
-            const single =
-              pieces.length === 1 &&
-              looksLikeObjects(token) &&
-              splitObjectTokens(token).length === 1;
-            if (single) {
-              return <IntroSingleArt key={key} token={token} />;
-            }
-            if (pieces.length === 1 && looksLikeObjects(token)) {
-              return <IntroGroupArt key={key} token={token} />;
-            }
-            return <ObjectArt key={key} token={token} size={INTRO_GROUP_ITEM_SIZE} />;
-          })}
-        </div>
-        {payload.visual ? <ObjectArt token={payload.visual} size={72} /> : null}
-        <p className="body-lg">{personalizeIntroScript(exercise.audio_script)}</p>
-        <button type="button" onClick={onContinue} className="btn btn-primary">
-          ادامه
-          <ArrowLeft strokeWidth={2.6} />
-        </button>
-      </div>
-    );
+    return <IntroPlain exercise={exercise} onContinue={onContinue} />;
   }
 
   return (

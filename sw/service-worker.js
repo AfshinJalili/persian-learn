@@ -16,6 +16,14 @@ const PENDING_LEGACY_KEY = '/__sw/pending-legacy-clients';
 // versioned cache (not prefixed, so version cleanup leaves it alone).
 const AUDIO_CACHE = 'pl-audio';
 const WARM_DONE_KEY = '/__sw/audio-warm-done';
+// The filename is a hash of the clip's *text*, so re-synthesized audio keeps
+// its URL. Clips are therefore stored under /audio/<id>.mp3?v=<bytes hash>,
+// with the bytes hash from /audio-plan.json (`clips`, computed from the files
+// at build time). A clip whose audio changed gets a new key; the old bytes are
+// deleted. The last plan seen is kept here so playback knows the versions.
+const AUDIO_PLAN_KEY = '/__sw/audio-plan';
+const CLIP_PATH = /^\/audio\/([0-9a-f]{32})\.mp3$/;
+const CLIP_BYTES_HASH_LENGTH = 16;
 const urlsToCache = [
   '/',
   '/home',
@@ -127,31 +135,135 @@ async function rangeResponse(full, rangeHeader) {
   });
 }
 
+let audioPlanMemo = null;
+
+function clipVersions(plan) {
+  return plan && plan.clips && typeof plan.clips === 'object' ? plan.clips : null;
+}
+
+async function rememberAudioPlan(plan) {
+  const clips = clipVersions(plan);
+  if (!clips) return;
+  audioPlanMemo = { version: plan.version, clips };
+  const meta = await caches.open(META_CACHE);
+  await meta.put(AUDIO_PLAN_KEY, new Response(JSON.stringify(audioPlanMemo))).catch(() => undefined);
+}
+
+// Versions from the last plan this worker (or an earlier one) fetched.
+async function knownClipVersions() {
+  if (!audioPlanMemo) {
+    try {
+      const meta = await caches.open(META_CACHE);
+      const res = await meta.match(AUDIO_PLAN_KEY);
+      if (res) audioPlanMemo = await res.json();
+    } catch {
+      // none yet
+    }
+  }
+  return clipVersions(audioPlanMemo);
+}
+
+function clipKey(path, version) {
+  return version ? `${path}?v=${version}` : path;
+}
+
+function isFull(res) {
+  return Boolean(res) && res.status === 200;
+}
+
+async function bytesHash(buffer) {
+  const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', buffer));
+  return Array.from(digest, (b) => b.toString(16).padStart(2, '0'))
+    .join('')
+    .slice(0, CLIP_BYTES_HASH_LENGTH);
+}
+
+// Stores `res` under `key` only if its bytes are that version of the clip.
+async function putIfVersion(cache, key, version, res) {
+  const buffer = await res.clone().arrayBuffer();
+  if ((await bytesHash(buffer)) !== version) return null;
+  const stored = new Response(buffer, { status: 200, statusText: 'OK', headers: res.headers });
+  await cache.put(key, stored.clone());
+  return stored;
+}
+
+// Drops every other copy of this clip (unversioned, or another version).
+async function evictOtherVersions(cache, path, key) {
+  const requests = await cache.keys(path, { ignoreSearch: true, ignoreVary: true });
+  for (const req of requests) {
+    const url = new URL(req.url);
+    if (url.pathname + url.search !== key) await cache.delete(req);
+  }
+}
+
 async function audioCacheFirst(request) {
   const cache = await caches.open(AUDIO_CACHE);
   const url = new URL(request.url);
-  const key = url.pathname;
-  let full = await cache.match(key, { ignoreVary: true });
-  if (!full || full.status !== 200) {
-    // Saved by an older build in its versioned cache: move it over.
-    const older = await caches.match(key, { ignoreVary: true });
-    if (older && older.status === 200) {
-      full = older;
-      await cache.put(key, older.clone()).catch(() => undefined);
+  const path = url.pathname;
+  const id = CLIP_PATH.exec(path);
+  const versions = id ? await knownClipVersions() : null;
+  const version = versions ? versions[id[1]] || null : null;
+  const key = clipKey(path, version);
+  // No plan seen yet: any stored copy of the clip will do.
+  let full = await cache.match(key, { ignoreVary: true, ignoreSearch: !version });
+  // Old bytes of this clip, served only if the network is out.
+  let stale = null;
+  if (!isFull(full) && version) {
+    // Stored before versioning (or by an older plan): keep it if the bytes
+    // are this version, otherwise it is replaced below.
+    for (const req of await cache.keys(path, { ignoreSearch: true, ignoreVary: true })) {
+      const res = await cache.match(req, { ignoreVary: true });
+      if (!isFull(res)) continue;
+      const adopted = await putIfVersion(cache, key, version, res).catch(() => null);
+      if (adopted) {
+        full = adopted;
+        await evictOtherVersions(cache, path, key).catch(() => undefined);
+        break;
+      }
+      stale = stale || res;
     }
   }
-  if (!full || full.status !== 200) {
-    // Separate fetch without the Range header so we get (and keep) the whole file.
+  if (!isFull(full)) {
+    // Saved by an older build in its versioned cache: move it over.
+    const older = await caches.match(path, { ignoreVary: true });
+    if (isFull(older)) {
+      if (!version) {
+        full = older;
+        await cache.put(key, older.clone()).catch(() => undefined);
+      } else {
+        const adopted = await putIfVersion(cache, key, version, older).catch(() => null);
+        if (adopted) full = adopted;
+        else stale = stale || older;
+      }
+    }
+  }
+  if (!isFull(full)) {
+    // Separate fetch without the Range header so we get (and keep) the whole
+    // file. The versioned URL also skips any HTTP-cached older bytes.
     try {
       full = await fetch(key, { credentials: 'same-origin' });
     } catch {
-      return fallbackResponse(request);
+      return stale ? rangeOrFull(stale, request) : fallbackResponse(request);
     }
     if (full.status !== 200) {
-      return full;
+      return stale ? rangeOrFull(stale, request) : full;
     }
-    await cache.put(key, full.clone()).catch(() => undefined);
+    if (version) {
+      // Only bytes that match the plan are kept (a mid-deploy mismatch is
+      // played but not stored).
+      const stored = await putIfVersion(cache, key, version, full).catch(() => null);
+      if (stored) {
+        full = stored;
+        await evictOtherVersions(cache, path, key).catch(() => undefined);
+      }
+    } else {
+      await cache.put(key, full.clone()).catch(() => undefined);
+    }
   }
+  return rangeOrFull(full, request);
+}
+
+function rangeOrFull(full, request) {
   const rangeHeader = request.headers.get('Range');
   if (!rangeHeader) {
     return full;
@@ -276,7 +388,9 @@ async function migrateFrom(oldNames) {
       }
       if (isAudio(url.pathname)) {
         const audio = await caches.open(AUDIO_CACHE);
-        if (!(await audio.match(url.pathname))) await audio.put(url.pathname, cached);
+        // Any version already there wins; an unversioned copy is checked
+        // against the plan by the next warm-up (or on first play).
+        if (!(await audio.match(url.pathname, { ignoreSearch: true }))) await audio.put(url.pathname, cached);
         continue;
       }
       await target.put(key, cached);
@@ -511,9 +625,9 @@ function supersededWorker() {
 }
 
 // Fetches and stores clips not cached yet. Returns false if it went offline.
-async function warmClips(hashes, cached, pauseMs) {
+async function warmClips(hashes, cached, pauseMs, keyFor, versions) {
   const cache = await caches.open(AUDIO_CACHE);
-  const todo = hashes.map((hash) => `/audio/${hash}.mp3`).filter((path) => !cached.has(path));
+  const todo = hashes.filter((hash) => !cached.has(keyFor(hash)));
   for (let i = 0; i < todo.length; i += WARM_CONCURRENCY) {
     if (self.navigator && self.navigator.onLine === false) return false;
     // A newer worker is on its way: step aside so this job never holds up its
@@ -522,13 +636,19 @@ async function warmClips(hashes, cached, pauseMs) {
     const batch = todo.slice(i, i + WARM_CONCURRENCY);
     let offline = false;
     await Promise.all(
-      batch.map(async (path) => {
+      batch.map(async (hash) => {
+        const key = keyFor(hash);
         try {
           // No Range header: the full file, which is the only thing we store.
-          const res = await fetch(path, { credentials: 'same-origin', headers: { 'X-PL-Warm': '1' } });
+          const res = await fetch(key, { credentials: 'same-origin', headers: { 'X-PL-Warm': '1' } });
           if (res.status === 200) {
-            await cache.put(path, res);
-            cached.add(path);
+            const version = versions && versions[hash];
+            if (!version) {
+              await cache.put(key, res);
+              cached.add(key);
+            } else if (await putIfVersion(cache, key, version, res)) {
+              cached.add(key);
+            }
           }
         } catch {
           offline = true;
@@ -541,20 +661,54 @@ async function warmClips(hashes, cached, pauseMs) {
   return true;
 }
 
+// Brings pl-audio in line with the plan's clip versions and returns the keys
+// that are current. Entries from before versioning (/audio/<id>.mp3) are kept
+// under their versioned key when their bytes are the current audio, and
+// deleted otherwise; entries for an older version, or for a clip no longer in
+// the manifest, are deleted. Returns null if a newer worker took over.
+async function reconcileAudioCache(audio, versions) {
+  const cached = new Set();
+  for (const req of await audio.keys()) {
+    if (supersededWorker()) return null;
+    const url = new URL(req.url);
+    const id = CLIP_PATH.exec(url.pathname);
+    if (!id) continue;
+    const want = versions[id[1]];
+    const key = clipKey(url.pathname, want);
+    const have = url.searchParams.get('v');
+    if (want && have === want) {
+      cached.add(key);
+      continue;
+    }
+    if (want && have === null && !cached.has(key)) {
+      const res = await audio.match(req, { ignoreVary: true });
+      if (isFull(res) && (await putIfVersion(audio, key, want, res).catch(() => null))) cached.add(key);
+    }
+    await audio.delete(req);
+  }
+  return cached;
+}
+
 async function runWarmAudio() {
   const plan = await fetchJson('/audio-plan.json');
   if (!plan || !Array.isArray(plan.ui) || !plan.tracks) return;
+  await rememberAudioPlan(plan);
   const meta = await caches.open(META_CACHE);
   const done = await meta.match(WARM_DONE_KEY);
   if (done && (await done.text()) === plan.version) return;
 
   const audio = await caches.open(AUDIO_CACHE);
-  const cached = new Set((await audio.keys()).map((req) => new URL(req.url).pathname));
+  const versions = clipVersions(plan);
+  const keyFor = (hash) => clipKey(`/audio/${hash}.mp3`, versions && versions[hash]);
+  const cached = versions
+    ? await reconcileAudioCache(audio, versions)
+    : new Set((await audio.keys()).map((req) => new URL(req.url).pathname));
+  if (!cached) return;
   const { priority, idle } = warmOrder(plan, await readSavedProgress());
-  if (!(await warmClips(priority, cached, WARM_PRIORITY_PAUSE_MS))) return;
+  if (!(await warmClips(priority, cached, WARM_PRIORITY_PAUSE_MS, keyFor, versions))) return;
   if (!(await idleAllowed())) return;
-  if (!(await warmClips(idle, cached, WARM_IDLE_PAUSE_MS))) return;
-  const missing = (plan.all || []).some((hash) => !cached.has(`/audio/${hash}.mp3`));
+  if (!(await warmClips(idle, cached, WARM_IDLE_PAUSE_MS, keyFor, versions))) return;
+  const missing = (plan.all || []).some((hash) => !cached.has(keyFor(hash)));
   if (!missing) await meta.put(WARM_DONE_KEY, new Response(plan.version));
 }
 
