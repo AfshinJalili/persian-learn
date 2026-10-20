@@ -1,15 +1,15 @@
 'use client';
 
-import { isValidElement, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { cloneElement, isValidElement, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactElement, type ReactNode } from 'react';
 
 function gradientId(prefix: string, reactId: string): string {
   return `${prefix}-${reactId.replace(/[^a-zA-Z0-9_-]/g, '')}`;
 }
 
-export function AppleSvg() {
+export function AppleSvg({ viewBox = '0 0 100 100' }: { viewBox?: string } = {}) {
   const fillId = gradientId('ap-g', useId());
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox={viewBox} aria-hidden="true">
       <defs>
         <radialGradient id={fillId} cx="38%" cy="38%" r="70%">
           <stop offset="0" stopColor="#F0624B" />
@@ -29,10 +29,10 @@ export function AppleSvg() {
   );
 }
 
-export function PomegranateSvg() {
+export function PomegranateSvg({ viewBox = '0 0 100 100' }: { viewBox?: string } = {}) {
   const fillId = gradientId('pm-g', useId());
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox={viewBox} aria-hidden="true">
       <defs>
         <radialGradient id={fillId} cx="38%" cy="40%" r="70%">
           <stop offset="0" stopColor="#D9465A" />
@@ -142,10 +142,10 @@ export function EggSvg() {
   );
 }
 
-export function OrangeSvg() {
+export function OrangeSvg({ viewBox = '0 0 100 100' }: { viewBox?: string } = {}) {
   const fillId = gradientId('or-g', useId());
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox={viewBox} aria-hidden="true">
       <defs>
         <radialGradient id={fillId} cx="38%" cy="38%" r="70%">
           <stop offset="0" stopColor="#FFB547" />
@@ -167,9 +167,9 @@ export function OrangeSvg() {
 }
 
 
-export function SparrowSvg() {
+export function SparrowSvg({ viewBox = '0 0 100 100' }: { viewBox?: string } = {}) {
   return (
-    <svg viewBox="0 0 100 100" aria-hidden="true">
+    <svg viewBox={viewBox} aria-hidden="true">
       <path d="M74 58l22-10-4 20z" fill="#7A4E2D" />
       <ellipse cx="54" cy="60" rx="34" ry="28" fill="#B07A4A" />
       <ellipse cx="46" cy="70" rx="22" ry="16" fill="#F2DDBF" />
@@ -499,8 +499,8 @@ const HAND_ART: Record<string, ReactNode> = {
 // Width / height of each drawing's tight viewBox (the viewBoxes hug the ink,
 // so these are the visible art's proportions).
 const SVG_ASPECT = new Map<unknown, number>([
-  [AppleSvg, 1.0],
-  [PomegranateSvg, 1.0],
+  [AppleSvg, 0.907],
+  [PomegranateSvg, 0.859],
   [TeaSvg, 0.951],
   [BreadSvg, 1.851],
   [TulipSvg, 0.667],
@@ -510,8 +510,8 @@ const SVG_ASPECT = new Map<unknown, number>([
   [KeySvg, 1.0],
   [PhoneSvg, 0.476],
   [EggSvg, 0.824],
-  [OrangeSvg, 1.0],
-  [SparrowSvg, 1.0],
+  [OrangeSvg, 0.91],
+  [SparrowSvg, 1.208],
   [HouseSvg, 1.097],
   [WaterSvg, 0.732],
   [DotSvg, 1.0],
@@ -527,6 +527,26 @@ const SVG_ASPECT = new Map<unknown, number>([
   [PlateSvg, 1.333],
   [DiceSvg, 1.0],
 ]);
+
+/**
+ * The counting-intro drawings use the design's 0 0 100 100 viewBox (~10%
+ * internal margin, which the count cards' overlap layout relies on). Where
+ * one of them is the lone picture of a choice card, it is drawn with this
+ * ink-hugging viewBox instead (aspects in SVG_ASPECT), so its visible ink
+ * still spans >= 0.70 of the card, as the older tight drawings did.
+ */
+const SVG_TIGHT_VIEWBOX = new Map<unknown, string>([
+  [AppleSvg, '11 7 78 86'],
+  [PomegranateSvg, '13.5 9.5 73 85'],
+  [OrangeSvg, '13.5 12.3 73 80.2'],
+  [SparrowSvg, '3.5 19.5 93 77'],
+]);
+
+function tightArt(art: ReactNode): ReactNode {
+  if (!isValidElement(art)) return art;
+  const viewBox = SVG_TIGHT_VIEWBOX.get(art.type);
+  return viewBox ? cloneElement(art as ReactElement<{ viewBox?: string }>, { viewBox }) : art;
+}
 
 function isHandToken(token: string): boolean {
   return normalizeObjectToken(token) in HAND_ART;
@@ -967,6 +987,7 @@ function SingleObjectArt({
   height,
   fluid = false,
   single = false,
+  tight = false,
 }: {
   token: string;
   size: number;
@@ -974,8 +995,11 @@ function SingleObjectArt({
   fluid?: boolean;
   /** The only picture on its card: a plain emoji glyph is ink-fitted too. */
   single?: boolean;
+  /** Lone picture of a choice card: draw design SVGs with their ink-tight viewBox. */
+  tight?: boolean;
 }) {
-  const art = objectArtForToken(token);
+  const rawArt = objectArtForToken(token);
+  const art = tight ? tightArt(rawArt) : rawArt;
   const hand = isHandToken(token);
   const h = height ?? size;
   // Ink-fit any plain pictographic glyph (clap/check/clock always; door/box/…
@@ -1070,6 +1094,7 @@ export function ObjectCluster({
           size={size}
           height={count === 1 && itemSize === undefined ? fitted.height : undefined}
           single={count === 1 && itemSize === undefined}
+          tight={count === 1 && itemSize === undefined}
         />
       ))}
     </span>

@@ -199,6 +199,17 @@ describe('count-card intro is opt-in from content', () => {
     expect(document.querySelectorAll('[data-count-card]')).toHaveLength(3);
   });
 
+  it.each(['m6l1e1', 'm6l3e1', 'm8l4e1'])(
+    'a lone multi-item group intro (%s) is not drawn at 160px per item',
+    (id) => {
+      render(<IntroExercise exercise={byId(id)} onContinue={() => {}} autoplay={false} />);
+      expect(document.querySelector('[data-single-art]')).toBeNull();
+      const items = [...document.querySelectorAll<HTMLElement>('[data-group-art] .illus')];
+      expect(items.length).toBeGreaterThan(5);
+      for (const item of items) expect(item.style.width).not.toBe('160px');
+    }
+  );
+
   it('a single-picture intro draws its art at 160px', () => {
     render(<IntroExercise exercise={byId('m1l2e1')} onContinue={() => {}} autoplay={false} />);
     const box = document.querySelector('.intro-single-art[data-single-art] .illus') as HTMLElement;

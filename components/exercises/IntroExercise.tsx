@@ -14,6 +14,9 @@ import SpeakerButton from '@/components/SpeakerButton';
 import HodaMascot from '@/components/HodaMascot';
 import {
   ObjectArt,
+  ObjectCluster,
+  OBJECT_CLUSTER_GAP,
+  objectClusterLayoutForBox,
   looksLikeObjects,
   splitObjectTokens,
   useObjectArtAspect,
@@ -85,6 +88,10 @@ function countGroupsFrom(exercise: Exercise): CountGroup[] {
 }
 
 const INTRO_SINGLE_SIZE = 160;
+/** Item size for intro groups beside other groups, and the floor for a lone group. */
+const INTRO_GROUP_ITEM_SIZE = 48;
+/** Height cap of a lone multi-item group (two rows of ~52px), so Continue stays near. */
+const INTRO_GROUP_MAX_HEIGHT = 112;
 /** Smallest the single picture gets on very narrow (page-zoomed) screens. */
 const INTRO_SINGLE_MIN = 96;
 /**
@@ -127,6 +134,42 @@ function IntroSingleArt({ token }: { token: string }) {
   return (
     <div ref={ref} className="intro-single-art" data-single-art>
       <ObjectArt token={token} size={size} height={height} />
+    </div>
+  );
+}
+
+/**
+ * A lone group of several pictures (🔴🔴🔴🔴🔴⚪⚪⚪⚪⚪, 🥚×8) fitted to the
+ * column: up to five across, two rows within INTRO_GROUP_MAX_HEIGHT, items
+ * never under 48px. Where even that doesn't fit (2x page zoom) it falls back
+ * to the 48px wrapped grid.
+ */
+function IntroGroupArt({ token }: { token: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+  useEffect(() => {
+    const column = ref.current?.parentElement?.parentElement;
+    if (!column || typeof ResizeObserver === 'undefined') return undefined;
+    const observer = new ResizeObserver(() => {
+      const next = Math.floor(column.clientWidth);
+      if (next > 0) setWidth((prev) => (prev === next ? prev : next));
+    });
+    observer.observe(column);
+    return () => observer.disconnect();
+  }, []);
+  const count = splitObjectTokens(token).length;
+  const fitted =
+    width > 0
+      ? objectClusterLayoutForBox(count, width, INTRO_GROUP_MAX_HEIGHT, OBJECT_CLUSTER_GAP)
+      : null;
+  const fits = fitted != null && fitted.unclamped >= INTRO_GROUP_ITEM_SIZE;
+  return (
+    <div ref={ref} className="intro-group-art" data-group-art>
+      {fits ? (
+        <ObjectCluster token={token} boxWidth={width} boxHeight={INTRO_GROUP_MAX_HEIGHT} />
+      ) : (
+        <ObjectArt token={token} size={INTRO_GROUP_ITEM_SIZE} />
+      )}
     </div>
   );
 }
@@ -197,7 +240,7 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
     // Registered with the global player: any other playAudio / stopAudio
     // (Continue's gate hint, a speaker button, step navigation) aborts the
     // whole count-along, including its pending timers and queued clips.
-    const controller = beginAudioSequence();
+    const controller = beginAudioSequence(exercise.id);
     sequenceRef.current = controller;
     vibrate(10);
     void runCountAlong(cardIndex, controller.signal).finally(() => {
@@ -222,7 +265,7 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
 
   const playHeader = () => {
     stopSequence();
-    const controller = beginAudioSequence();
+    const controller = beginAudioSequence(exercise.id);
     sequenceRef.current = controller;
     void (async () => {
       await playAudio(exercise.audio_script, false, controller.signal);
@@ -235,7 +278,7 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
 
   useEffect(() => {
     if (!counting) return undefined;
-    const controller = beginAudioSequence();
+    const controller = beginAudioSequence(exercise.id);
     sequenceRef.current = controller;
 
     const start = async () => {
@@ -303,14 +346,21 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
           {pieces.map((group, index) => {
             const token = group.trim();
             const key = `${group}-${index}`;
-            // A lone picture group is the screen's main content: drawn big
-            // (160, as before the counting intro). One picture gets the
-            // single-art box; a lone cluster keeps its 160px items.
-            const big = pieces.length === 1 && looksLikeObjects(token);
-            if (big && splitObjectTokens(token).length === 1) {
+            // Only a lone single picture is the screen's main content and is
+            // drawn big (160, single-art box). Any group of several items
+            // (🔴🔴🔴⚪⚪…) keeps 48px items so the whole group and Continue
+            // fit on a phone.
+            const single =
+              pieces.length === 1 &&
+              looksLikeObjects(token) &&
+              splitObjectTokens(token).length === 1;
+            if (single) {
               return <IntroSingleArt key={key} token={token} />;
             }
-            return <ObjectArt key={key} token={token} size={big ? INTRO_SINGLE_SIZE : 48} />;
+            if (pieces.length === 1 && looksLikeObjects(token)) {
+              return <IntroGroupArt key={key} token={token} />;
+            }
+            return <ObjectArt key={key} token={token} size={INTRO_GROUP_ITEM_SIZE} />;
           })}
         </div>
         {payload.visual ? <ObjectArt token={payload.visual} size={72} /> : null}

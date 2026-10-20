@@ -71,6 +71,8 @@ function haltCurrent() {
 }
 
 let activeSequence: AbortController | null = null;
+/** Who registered the active sequence (e.g. the exercise id that started it). */
+let activeOwner: string | null = null;
 
 /**
  * Register a multi-clip sequence (e.g. the count-along) as the one global
@@ -79,17 +81,24 @@ let activeSequence: AbortController | null = null;
  * stopAudio or a newer sequence aborts it, so queued clips and pending
  * timers never talk over whatever came next.
  */
-export function beginAudioSequence(): AbortController {
+export function beginAudioSequence(owner?: string): AbortController {
   cancelAudioSequence();
   const controller = new AbortController();
   activeSequence = controller;
+  activeOwner = owner ?? null;
   return controller;
+}
+
+/** Owner passed to beginAudioSequence for the live sequence, if any. */
+export function activeAudioSequenceOwner(): string | null {
+  return activeSequence && !activeSequence.signal.aborted ? activeOwner : null;
 }
 
 /** Abort the registered sequence (if any) without touching other playback. */
 export function cancelAudioSequence() {
   const controller = activeSequence;
   activeSequence = null;
+  activeOwner = null;
   controller?.abort();
 }
 
@@ -99,7 +108,19 @@ function haltPlayback() {
   finishPlayback();
 }
 
-export function stopAudio() {
+export interface StopAudioOptions {
+  /**
+   * Leave a live sequence registered by this owner (and its playback) alone.
+   * A step-entry stop runs after the step's own components mounted, so it
+   * passes the step id to avoid killing the sequence that step just started.
+   * Anything else (previous steps, other owners, unowned playback) still stops.
+   */
+  keepOwner?: string;
+}
+
+export function stopAudio(options?: StopAudioOptions) {
+  const keep = options?.keepOwner;
+  if (keep != null && activeAudioSequenceOwner() === keep) return;
   cancelAudioSequence();
   haltPlayback();
 }

@@ -69,18 +69,21 @@ export default function LessonPage() {
   const audioStepRef = useRef<AbortController | null>(null);
   const promptTimerRef = useRef<number | null>(null);
 
-  const endLessonAudio = () => {
+  // keepOwner: a step-entry stop must not cancel the audio sequence the new
+  // step's own components (e.g. the counting intro's greeting) just began —
+  // child effects run before this page's step effect.
+  const endLessonAudio = (keepOwner?: string) => {
     if (promptTimerRef.current != null) {
       window.clearTimeout(promptTimerRef.current);
       promptTimerRef.current = null;
     }
     audioStepRef.current?.abort();
     audioStepRef.current = null;
-    stopAudio();
+    stopAudio(keepOwner != null ? { keepOwner } : undefined);
   };
 
-  const startLessonAudio = () => {
-    endLessonAudio();
+  const startLessonAudio = (keepOwner?: string) => {
+    endLessonAudio(keepOwner);
     const controller = new AbortController();
     audioStepRef.current = controller;
     return controller.signal;
@@ -120,7 +123,7 @@ export default function LessonPage() {
 
   useEffect(() => {
     if (!currentExercise) return;
-    const signal = startLessonAudio();
+    const signal = startLessonAudio(currentExercise.id);
     if (autoplay && !isCountingIntro(currentExercise)) {
       promptTimerRef.current = window.setTimeout(() => {
         if (signal.aborted) return;
