@@ -83,8 +83,11 @@ class Track:
             "distractors": list(distractors), "feedback_correct": fc, "feedback_wrong": fw})
 
     # ---- generic exercise helpers (on-screen prompts are icons/symbols, research §5.3) ----
-    def intro(self, display, audio, visual="", teaches=(), prompt=None, labels=None):
+    def intro(self, display, audio, visual="", teaches=(), prompt=None, labels=None, variant=None):
         payload = {"display": display, "visual": visual, "teaches": list(teaches)}
+        # Explicit opt-in for the tappable count-card intro; never inferred from the display.
+        if variant is not None:
+            payload["variant"] = variant
         if labels is not None:
             payload["labels"] = list(labels)
         self.ex("intro", prompt or display, audio, payload)
@@ -137,7 +140,7 @@ for _f in ("math_content.py", "alphabet_content.py"):
 # =========================== finalize ===========================
 REPL = {"~": "\u200c", "^": "\u0654", "_": "\u0640", "@": "\u064e", "#": "\u0650", "$": "\u064f",
         "*": "\u0651", "ي": "ی", "ك": "ک"}
-RAW_KEYS = {"type", "id", "ask", "choice_kind", "teaches", "style", "op"}
+RAW_KEYS = {"type", "id", "ask", "choice_kind", "teaches", "style", "op", "variant"}
 
 def fix(v, key=None):
     if isinstance(v, str) and key in RAW_KEYS: return v

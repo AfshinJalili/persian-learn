@@ -17,6 +17,7 @@ jest.mock('@/lib/audio', () => ({
   playAudio: (text: string, slow?: boolean, signal?: AbortSignal) => playAudio(text, slow, signal),
   stopAudio: () => stopAudio(),
   getAudioSpeed: () => getAudioSpeed(),
+  beginAudioSequence: () => new AbortController(),
   vibrate: jest.fn(),
 }));
 
@@ -111,6 +112,7 @@ function countingExercise(): Exercise {
       display: '🍎  🐦🐦  🍇🍇🍇',
       visual: '',
       teaches: [],
+      variant: 'count_cards',
       labels: ['یک سیب', 'دو گنجشک', 'سه انار'],
     },
     answer: '',

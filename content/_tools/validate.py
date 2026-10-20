@@ -19,6 +19,7 @@ SHAPES = {"intro":{"display","visual","teaches"},"tap_picture":{"display"},"list
           "pay_amount":{"item","price","wallet"},"make_change":{"item","price","paid"},
           "read_clock":{"hour","minute","style"},
           "ten_frame":{"count","objects"},"break_points":{"word"}}
+INTRO_OPTIONAL = {"variant", "labels"}   # count-card intro opt-in (variant="count_cards")
 CHOICE_KINDS = {"digit","letter","word","money","time","claps","same","picture"}
 DENOMS = {10000, 50000, 100000}   # 10k note + 50k/100k Iran Cheques (§4.2 B10)
 CLOCK_EMOJI = {(h, 0): e for h, e in zip(range(1, 13), "🕐🕑🕒🕓🕔🕕🕖🕗🕘🕙🕚🕛")}
@@ -107,7 +108,13 @@ for track, pre in (("math","m"),("alphabet","a")):
                 ty = x.get("type"); types[ty] = types.get(ty, 0) + 1
                 if ty not in TYPES: E(f"{xid}: bad type {ty}"); continue
                 pl = x["payload"]; a = x["answer"]
-                if set(pl) != SHAPES[ty]: E(f"{xid}: payload keys {set(pl)} != {SHAPES[ty]}"); continue
+                extra = INTRO_OPTIONAL if ty == "intro" else set()
+                if not (SHAPES[ty] <= set(pl) <= SHAPES[ty] | extra): E(f"{xid}: payload keys {set(pl)} != {SHAPES[ty]}"); continue
+                if ty == "intro" and (pl.get("variant") is not None or "labels" in pl):
+                    groups = [g for g in re.split(r"\s{2,}", pl["display"]) if g]
+                    if pl.get("variant") != "count_cards": E(f"{xid}: intro variant {pl.get('variant')!r} unknown (labels need variant 'count_cards')")
+                    labels = pl.get("labels")
+                    if not isinstance(labels, list) or len(labels) != len(groups): E(f"{xid}: count_cards intro needs one label per display group")
                 if ty == "intro":
                     th = pl["teaches"]
                     if not isinstance(th, list) or any(s_ not in S.SIGN_LESSON for s_ in th): E(f"{xid}: bad teaches {th}")
@@ -211,7 +218,7 @@ for track, pre in (("math","m"),("alphabet","a")):
                 # ---- text hygiene ----
                 def walk(v, path):
                     if isinstance(v, str):
-                        if path in ("type","id","ask","choice_kind","style","op","teaches"): return
+                        if path in ("type","id","ask","choice_kind","style","op","teaches","variant"): return
                         if BAD.search(v): E(f"{xid}.{path}: suspicious char in {v!r}")
                     elif isinstance(v, list): [walk(i, path) for i in v]
                     elif isinstance(v, dict): [walk(i, k) for k, i in v.items()]

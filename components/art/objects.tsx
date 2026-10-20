@@ -1079,9 +1079,12 @@ export function ObjectCluster({
 export function ObjectArt({
   token,
   size = 96,
+  height,
 }: {
   token: string;
   size?: number;
+  /** Art box height for a lone token (defaults to `size`, a square box). */
+  height?: number;
 }) {
   const parts = splitObjectTokens(token);
   if (parts.length > 1) {
@@ -1090,7 +1093,7 @@ export function ObjectArt({
 
   // A lone token is the only picture in this art box — ink-fit plain glyphs
   // (speaker, door, weather, …) the same way ObjectCluster does for count===1.
-  return <SingleObjectArt token={parts[0] ?? token} size={size} single />;
+  return <SingleObjectArt token={parts[0] ?? token} size={size} height={height} single />;
 }
 
 /** Clap, same/different marks, and clock faces: ink-fitted glyphs (no SVG). */

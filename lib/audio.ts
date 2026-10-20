@@ -70,10 +70,38 @@ function haltCurrent() {
   }
 }
 
-export function stopAudio() {
+let activeSequence: AbortController | null = null;
+
+/**
+ * Register a multi-clip sequence (e.g. the count-along) as the one global
+ * owner of playback. Pass the returned controller's signal to every
+ * playAudio call in the sequence and to its timers: any other playAudio,
+ * stopAudio or a newer sequence aborts it, so queued clips and pending
+ * timers never talk over whatever came next.
+ */
+export function beginAudioSequence(): AbortController {
+  cancelAudioSequence();
+  const controller = new AbortController();
+  activeSequence = controller;
+  return controller;
+}
+
+/** Abort the registered sequence (if any) without touching other playback. */
+export function cancelAudioSequence() {
+  const controller = activeSequence;
+  activeSequence = null;
+  controller?.abort();
+}
+
+function haltPlayback() {
   playGeneration += 1;
   haltCurrent();
   finishPlayback();
+}
+
+export function stopAudio() {
+  cancelAudioSequence();
+  haltPlayback();
 }
 
 export async function playAudio(
@@ -83,7 +111,10 @@ export async function playAudio(
 ): Promise<void> {
   if (signal?.aborted) return;
 
-  stopAudio();
+  // New playback from anyone but the registered sequence cancels that
+  // sequence outright (not just its current clip).
+  if (!activeSequence || activeSequence.signal !== signal) cancelAudioSequence();
+  haltPlayback();
   const token = playGeneration;
 
   const onAbort = () => {

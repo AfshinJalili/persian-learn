@@ -3,10 +3,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { personalizeIntroScript } from '@/lib/learner';
-import { getAudioSpeed, playAudio, stopAudio, vibrate } from '@/lib/audio';
+import {
+  beginAudioSequence,
+  getAudioSpeed,
+  playAudio,
+  stopAudio,
+  vibrate,
+} from '@/lib/audio';
 import SpeakerButton from '@/components/SpeakerButton';
 import HodaMascot from '@/components/HodaMascot';
-import { ObjectArt, splitObjectTokens } from '@/components/art/objects';
+import {
+  ObjectArt,
+  looksLikeObjects,
+  splitObjectTokens,
+  useObjectArtAspect,
+} from '@/components/art/objects';
 import CountCard, {
   CONTINUE_GATE_HINT,
   INTRO_HELPER,
@@ -73,6 +84,53 @@ function countGroupsFrom(exercise: Exercise): CountGroup[] {
   });
 }
 
+const INTRO_SINGLE_SIZE = 160;
+/** Smallest the single picture gets on very narrow (page-zoomed) screens. */
+const INTRO_SINGLE_MIN = 96;
+/**
+ * Share of the column the art box may take: an ink-fitted tall glyph (👂)
+ * lays out ~1.5x its box wide (empty side bearing), and that must still fit
+ * on a 2x page-zoomed phone. 160 is reached from a ~230px column up.
+ */
+const INTRO_SINGLE_SIDE = 0.7;
+/** Tall art: box height so the drawing's width is >= this share of the box. */
+const INTRO_TALL_WIDTH_RATIO = 0.86;
+
+/**
+ * One picture as the intro's main content: a 160px-wide art box (its "card"
+ * for the single-art >= 0.70 ink rule). Tall drawings (an ear, a raised
+ * finger) get a taller box so their ink still spans the width, the same way
+ * single-art count cards grow with the drawing's proportions. On a screen
+ * too narrow for 160 (2x page zoom) the box shrinks with it.
+ */
+function IntroSingleArt({ token }: { token: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [size, setSize] = useState(INTRO_SINGLE_SIZE);
+  useEffect(() => {
+    const column = ref.current?.parentElement?.parentElement;
+    if (!column || typeof ResizeObserver === 'undefined') return undefined;
+    const observer = new ResizeObserver(() => {
+      const width = column.clientWidth;
+      if (!(width > 0)) return;
+      const next = Math.max(
+        INTRO_SINGLE_MIN,
+        Math.min(INTRO_SINGLE_SIZE, Math.floor(width * INTRO_SINGLE_SIDE))
+      );
+      setSize((prev) => (prev === next ? prev : next));
+    });
+    observer.observe(column);
+    return () => observer.disconnect();
+  }, []);
+  const aspect = useObjectArtAspect(token);
+  const ratio = aspect > 0 && Number.isFinite(aspect) ? aspect : 1;
+  const height = Math.max(size, Math.ceil((size * INTRO_TALL_WIDTH_RATIO) / ratio));
+  return (
+    <div ref={ref} className="intro-single-art" data-single-art>
+      <ObjectArt token={token} size={size} height={height} />
+    </div>
+  );
+}
+
 export default function IntroExercise({ exercise, onContinue, autoplay = true }: Props) {
   const counting = isCountingIntro(exercise);
   const groups = counting ? countGroupsFrom(exercise) : [];
@@ -136,12 +194,20 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
 
   const playCard = (cardIndex: number) => {
     sequenceRef.current?.abort();
-    const controller = new AbortController();
+    // Registered with the global player: any other playAudio / stopAudio
+    // (Continue's gate hint, a speaker button, step navigation) aborts the
+    // whole count-along, including its pending timers and queued clips.
+    const controller = beginAudioSequence();
     sequenceRef.current = controller;
     vibrate(10);
     void runCountAlong(cardIndex, controller.signal).finally(() => {
       if (sequenceRef.current === controller) {
         sequenceRef.current = null;
+        if (controller.signal.aborted) {
+          setPlayingIndex(null);
+          setHighlightIndex(null);
+          setPulseIndex(null);
+        }
       }
     });
   };
@@ -156,7 +222,7 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
 
   const playHeader = () => {
     stopSequence();
-    const controller = new AbortController();
+    const controller = beginAudioSequence();
     sequenceRef.current = controller;
     void (async () => {
       await playAudio(exercise.audio_script, false, controller.signal);
@@ -169,7 +235,7 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
 
   useEffect(() => {
     if (!counting) return undefined;
-    const controller = new AbortController();
+    const controller = beginAudioSequence();
     sequenceRef.current = controller;
 
     const start = async () => {
@@ -209,6 +275,7 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
       return;
     }
     vibrate(10);
+    stopSequence();
     nudgeNextUnheard();
     void playAudio(CONTINUE_GATE_HINT, false);
   };
@@ -233,9 +300,18 @@ export default function IntroExercise({ exercise, onContinue, autoplay = true }:
       >
         <SpeakerButton text={exercise.audio_script} size="md" />
         <div className="flex flex-wrap items-end justify-center gap-4">
-          {pieces.map((group, index) => (
-            <ObjectArt key={`${group}-${index}`} token={group.trim()} size={48} />
-          ))}
+          {pieces.map((group, index) => {
+            const token = group.trim();
+            const key = `${group}-${index}`;
+            // A lone picture group is the screen's main content: drawn big
+            // (160, as before the counting intro). One picture gets the
+            // single-art box; a lone cluster keeps its 160px items.
+            const big = pieces.length === 1 && looksLikeObjects(token);
+            if (big && splitObjectTokens(token).length === 1) {
+              return <IntroSingleArt key={key} token={token} />;
+            }
+            return <ObjectArt key={key} token={token} size={big ? INTRO_SINGLE_SIZE : 48} />;
+          })}
         </div>
         {payload.visual ? <ObjectArt token={payload.visual} size={72} /> : null}
         <p className="body-lg">{personalizeIntroScript(exercise.audio_script)}</p>

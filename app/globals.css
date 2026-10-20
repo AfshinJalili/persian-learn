@@ -2210,6 +2210,21 @@ h2.prompt-numeral {
   overflow-clip-margin: 4px;
 }
 
+/* A single intro picture (IntroExercise) is drawn up to 160px, where the
+   canvas ink measurement can be a few px off; give its clip more slack and
+   keep that slack inside the art's own box (the padding) so it never spills
+   into the row around it. */
+.intro-single-art {
+  display: flex;
+  justify-content: center;
+  padding-inline: 9px;
+}
+
+.intro-single-art > .illus[data-ink-fit] {
+  overflow: clip;
+  overflow-clip-margin: 8px;
+}
+
 /* Match boards with clock faces: every tile is as tall as a clock tile
    (the clock is sized from the tile width; see MatchPairsExercise). */
 .match-clock-board .card {

@@ -2,7 +2,7 @@
 
 import { useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import { Check } from 'lucide-react';
-import { ObjectArt, looksLikeObjects, splitObjectTokens } from '@/components/art/objects';
+import { ObjectArt, splitObjectTokens } from '@/components/art/objects';
 import SpeakerIcon from '@/components/ui/SpeakerIcon';
 import { formatPersianNumber } from '@/lib/persian';
 import type { Exercise } from '@/lib/types';
@@ -140,14 +140,18 @@ export function countCardLayout(
   };
 }
 
+/** Payload variant that opts an intro into the tappable count-card layout. */
+export const COUNT_CARDS_VARIANT = 'count_cards';
+
+/**
+ * Only intros explicitly flagged in content (payload.variant = "count_cards",
+ * emitted by math_content.py) use the count cards. Never inferred from the
+ * display: e.g. the clock intro m12l2e1 (☀️  🌙) is a normal intro.
+ */
 export function isCountingIntro(exercise: Exercise): boolean {
   if (exercise.type !== 'intro') return false;
-  const payload = exercise.payload as { display?: string; labels?: unknown };
-  if (Array.isArray(payload.labels) && payload.labels.length > 0) return true;
-  const groups = String(payload.display || '')
-    .split(/\s{2,}/)
-    .filter(Boolean);
-  return groups.length >= 2 && groups.every((group) => looksLikeObjects(group.trim()));
+  const payload = exercise.payload as { variant?: unknown };
+  return payload.variant === COUNT_CARDS_VARIANT;
 }
 
 export function countWord(count: number): string {
