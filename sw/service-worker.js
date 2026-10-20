@@ -141,16 +141,17 @@ function clipVersions(plan) {
   return plan && plan.clips && typeof plan.clips === 'object' ? plan.clips : null;
 }
 
+// Keeps the whole plan, so a warm-up resumed on a later page load (same
+// version) doesn't download it again.
 async function rememberAudioPlan(plan) {
-  const clips = clipVersions(plan);
-  if (!clips) return;
-  audioPlanMemo = { version: plan.version, clips };
+  if (!clipVersions(plan)) return;
+  audioPlanMemo = plan;
   const meta = await caches.open(META_CACHE);
-  await meta.put(AUDIO_PLAN_KEY, new Response(JSON.stringify(audioPlanMemo))).catch(() => undefined);
+  await meta.put(AUDIO_PLAN_KEY, new Response(JSON.stringify(plan))).catch(() => undefined);
 }
 
-// Versions from the last plan this worker (or an earlier one) fetched.
-async function knownClipVersions() {
+// The last plan this worker (or an earlier one) fetched.
+async function storedAudioPlan() {
   if (!audioPlanMemo) {
     try {
       const meta = await caches.open(META_CACHE);
@@ -160,7 +161,12 @@ async function knownClipVersions() {
       // none yet
     }
   }
-  return clipVersions(audioPlanMemo);
+  return audioPlanMemo;
+}
+
+// Versions from the last plan this worker (or an earlier one) fetched.
+async function knownClipVersions() {
+  return clipVersions(await storedAudioPlan());
 }
 
 function clipKey(path, version) {
@@ -689,11 +695,26 @@ async function reconcileAudioCache(audio, versions) {
   return cached;
 }
 
+function usablePlan(plan) {
+  return Boolean(plan) && Array.isArray(plan.ui) && Boolean(plan.tracks);
+}
+
 async function runWarmAudio() {
-  const plan = await fetchJson('/audio-plan.json');
-  if (!plan || !Array.isArray(plan.ui) || !plan.tracks) return;
-  await rememberAudioPlan(plan);
+  // Every page load asks only for the plan's version (~100 bytes). The full
+  // plan (~430 KB) is downloaded only when that version is new to this
+  // phone; a resumed warm-up reuses the copy kept in pl-sw-meta.
+  const head = await fetchJson('/audio-plan-version.json');
+  const latest = head && typeof head.version === 'string' ? head.version : null;
   const meta = await caches.open(META_CACHE);
+  if (latest) {
+    const done = await meta.match(WARM_DONE_KEY);
+    if (done && (await done.text()) === latest) return;
+  }
+  const stored = latest ? await storedAudioPlan() : null;
+  const reuse = usablePlan(stored) && stored.version === latest;
+  const plan = reuse ? stored : await fetchJson('/audio-plan.json');
+  if (!usablePlan(plan)) return;
+  if (!reuse) await rememberAudioPlan(plan);
   const done = await meta.match(WARM_DONE_KEY);
   if (done && (await done.text()) === plan.version) return;
 

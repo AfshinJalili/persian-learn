@@ -591,11 +591,22 @@ test('warming again fetches only clips that are missing', async ({ page, request
     .toBe(0);
   await page.waitForTimeout(1000);
 
-  // A finished warm-up is remembered: another page load fetches nothing.
+  await expect
+    .poll(() => page.evaluate(async () => Boolean(await (await caches.open('pl-sw-meta')).match('/__sw/audio-warm-done'))), {
+      timeout: 60000,
+    })
+    .toBe(true);
+
+  // A finished warm-up is remembered: another page load fetches no clips,
+  // and only the small version file, not the ~430 KB plan.
   await request.get('/__test/audio-hits/reset');
   await page.evaluate(async () => (await navigator.serviceWorker.ready).active!.postMessage({ type: 'WARM_AUDIO' }));
   await page.waitForTimeout(3000);
-  expect((await (await request.get('/__test/audio-hits')).json()).total).toBe(0);
+  const repeat = await (await request.get('/__test/audio-hits')).json();
+  expect(repeat.total).toBe(0);
+  // (The page's own delayed WARM_AUDIO may add a second version check.)
+  expect(repeat.planVersion).toBeGreaterThanOrEqual(1);
+  expect(repeat.plan).toBe(0);
 
   // Interrupted / evicted: drop the marker and 5 clips; only those 5 come back.
   const dropped = plan.all.slice(100, 105).map(clipPath);
@@ -611,6 +622,8 @@ test('warming again fetches only clips that are missing', async ({ page, request
   const hits = await (await request.get('/__test/audio-hits')).json();
   expect(hits.total).toBe(5);
   expect(Object.keys(hits.paths).sort()).toEqual([...dropped].sort());
+  // Same plan version: the resumed warm-up reuses the stored plan.
+  expect(hits.plan).toBe(0);
 });
 
 // ---- Clip versions (audio bytes hash in the cache key) ----------------------

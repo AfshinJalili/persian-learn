@@ -1,32 +1,11 @@
-import { createHash } from 'crypto';
-import { readFileSync } from 'fs';
-import { join } from 'path';
-import { buildAudioPlan, CLIP_BYTES_HASH_LENGTH } from '@/lib/audio-plan';
+import { servedAudioPlan } from '@/lib/audio-plan-source';
 
 // Built once at build time: which audio clips each lesson plays. The service
-// worker uses it to warm the audio cache, the lessons she is on first.
+// worker uses it to warm the audio cache, the lessons she is on first. It is
+// large (~430 KB), so the worker fetches it only when
+// /audio-plan-version.json reports a version it doesn't have.
 export const dynamic = 'force-static';
 
-const sha256 = (data: string | Buffer) => createHash('sha256').update(data).digest('hex');
-
-// Hash of the clip's bytes as shipped in public/audio (the cache version).
-function clipBytesHash(id: string): string | null {
-  try {
-    return sha256(readFileSync(join(process.cwd(), 'public', 'audio', `${id}.mp3`))).slice(0, CLIP_BYTES_HASH_LENGTH);
-  } catch {
-    return null;
-  }
-}
-
-const read = (...parts: string[]) =>
-  JSON.parse(readFileSync(join(process.cwd(), 'public', ...parts), 'utf8'));
-
 export function GET() {
-  const plan = buildAudioPlan(
-    { math: read('content', 'math.json'), alphabet: read('content', 'alphabet.json') },
-    read('audio', 'manifest.json'),
-    (key) => sha256(Buffer.from(key, 'utf8')).slice(0, 32),
-    clipBytesHash
-  );
-  return Response.json(plan, { headers: { 'Cache-Control': 'no-cache' } });
+  return Response.json(servedAudioPlan(), { headers: { 'Cache-Control': 'no-cache' } });
 }

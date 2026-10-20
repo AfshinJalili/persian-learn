@@ -20,8 +20,9 @@ let fastWarm = false;
 // re-synthesized one clip: /audio/<clip>.mp3 serves the other clip's bytes and
 // /audio-plan.json carries the matching bytes hash (and a new version).
 let audioSwap = null;
-// Audio clip requests seen (GET /__test/audio-hits, reset with /reset).
-let audioHits = { total: 0, ranged: 0, warm: 0, warmRanged: [], rangedBy: {}, paths: {} };
+// Audio clip requests seen (GET /__test/audio-hits, reset with /reset), plus
+// /audio-plan.json and /audio-plan-version.json requests.
+let audioHits = { total: 0, ranged: 0, warm: 0, warmRanged: [], rangedBy: {}, paths: {}, plan: 0, planVersion: 0 };
 
 const next = spawn('npx', ['next', 'start', '-p', String(upstream)], { stdio: 'inherit' });
 process.on('exit', () => next.kill());
@@ -52,6 +53,14 @@ http
       res.end(JSON.stringify(audioSwap ? { id: audioSwap.id, v: audioSwap.v } : null));
       return;
     }
+    if (path === '/audio-plan.json') audioHits.plan += 1;
+    if (path === '/audio-plan-version.json') audioHits.planVersion += 1;
+    if (audioSwap && path === '/audio-plan-version.json') {
+      const head = await (await fetch(`http://127.0.0.1:${upstream}/audio-plan-version.json`)).json();
+      res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
+      res.end(JSON.stringify({ version: `${head.version}:swap-${audioSwap.v}` }));
+      return;
+    }
     if (audioSwap && path === '/audio-plan.json') {
       const plan = await (await fetch(`http://127.0.0.1:${upstream}/audio-plan.json`)).json();
       plan.clips[audioSwap.id] = audioSwap.v;
@@ -61,7 +70,7 @@ http
       return;
     }
     if (path === '/__test/audio-hits/reset') {
-      audioHits = { total: 0, ranged: 0, warm: 0, warmRanged: [], rangedBy: {}, paths: {} };
+      audioHits = { total: 0, ranged: 0, warm: 0, warmRanged: [], rangedBy: {}, paths: {}, plan: 0, planVersion: 0 };
       res.end('0');
       return;
     }
