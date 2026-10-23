@@ -4,6 +4,7 @@
 // /__test/legacy-sw/off goes back to the real file. GET /__test/sw-bump
 // changes the worker's bytes, like a new deploy would.
 import { spawn } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import http from 'node:http';
 
@@ -15,8 +16,13 @@ let bump = 0;
 // /__test/sw-fast-warm/on serves the worker with the audio warm-up throttle
 // turned down, so a test can watch the whole manifest get cached quickly.
 let fastWarm = false;
-// Audio clip requests seen (GET /__test/audio-hits, reset with /reset).
-let audioHits = { total: 0, ranged: 0, warm: 0, warmRanged: [], rangedBy: {}, paths: {} };
+// /__test/audio-swap/on?id=<clip>&from=<other clip> simulates a deploy that
+// re-synthesized one clip: /audio/<clip>.mp3 serves the other clip's bytes and
+// /audio-plan.json carries the matching bytes hash (and a new version).
+let audioSwap = null;
+// Audio clip requests seen (GET /__test/audio-hits, reset with /reset), plus
+// /audio-plan.json and /audio-plan-version.json requests.
+let audioHits = { total: 0, ranged: 0, warm: 0, warmRanged: [], rangedBy: {}, paths: {}, plan: 0, planVersion: 0 };
 
 const next = spawn('npx', ['next', 'start', '-p', String(upstream)], { stdio: 'inherit' });
 process.on('exit', () => next.kill());
@@ -35,8 +41,36 @@ http
       res.end(String(fastWarm));
       return;
     }
+    if (path.startsWith('/__test/audio-swap/')) {
+      const q = new URL(req.url || '/', 'http://x').searchParams;
+      if (path.endsWith('/on')) {
+        const bytes = readFileSync(new URL(`../public/audio/${q.get('from')}.mp3`, import.meta.url));
+        const v = createHash('sha256').update(bytes).digest('hex').slice(0, 16);
+        audioSwap = { id: q.get('id'), bytes, v };
+      } else {
+        audioSwap = null;
+      }
+      res.end(JSON.stringify(audioSwap ? { id: audioSwap.id, v: audioSwap.v } : null));
+      return;
+    }
+    if (path === '/audio-plan.json') audioHits.plan += 1;
+    if (path === '/audio-plan-version.json') audioHits.planVersion += 1;
+    if (audioSwap && path === '/audio-plan-version.json') {
+      const head = await (await fetch(`http://127.0.0.1:${upstream}/audio-plan-version.json`)).json();
+      res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
+      res.end(JSON.stringify({ version: `${head.version}:swap-${audioSwap.v}` }));
+      return;
+    }
+    if (audioSwap && path === '/audio-plan.json') {
+      const plan = await (await fetch(`http://127.0.0.1:${upstream}/audio-plan.json`)).json();
+      plan.clips[audioSwap.id] = audioSwap.v;
+      plan.version = `${plan.version}:swap-${audioSwap.v}`;
+      res.writeHead(200, { 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' });
+      res.end(JSON.stringify(plan));
+      return;
+    }
     if (path === '/__test/audio-hits/reset') {
-      audioHits = { total: 0, ranged: 0, warm: 0, warmRanged: [], rangedBy: {}, paths: {} };
+      audioHits = { total: 0, ranged: 0, warm: 0, warmRanged: [], rangedBy: {}, paths: {}, plan: 0, planVersion: 0 };
       res.end('0');
       return;
     }
@@ -62,6 +96,15 @@ http
         audioHits.rangedBy[dest] = (audioHits.rangedBy[dest] || 0) + 1;
       }
       audioHits.paths[path] = (audioHits.paths[path] || 0) + 1;
+      if (audioSwap && path === `/audio/${audioSwap.id}.mp3`) {
+        res.writeHead(200, {
+          'Content-Type': 'audio/mpeg',
+          'Content-Length': String(audioSwap.bytes.length),
+          'Cache-Control': 'public, max-age=0',
+        });
+        res.end(audioSwap.bytes);
+        return;
+      }
     }
     if (!legacyOn && (bump > 0 || fastWarm) && path === '/sw.js') {
       const upstreamRes = await fetch(`http://127.0.0.1:${upstream}${req.url}`);

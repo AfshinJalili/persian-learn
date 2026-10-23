@@ -2210,6 +2210,21 @@ h2.prompt-numeral {
   overflow-clip-margin: 4px;
 }
 
+/* A single intro picture (IntroExercise) is drawn up to 160px, where the
+   canvas ink measurement can be a few px off; give its clip more slack and
+   keep that slack inside the art's own box (the padding) so it never spills
+   into the row around it. */
+.intro-single-art {
+  display: flex;
+  justify-content: center;
+  padding-inline: 9px;
+}
+
+.intro-single-art > .illus[data-ink-fit] {
+  overflow: clip;
+  overflow-clip-margin: 8px;
+}
+
 /* Match boards with clock faces: every tile is as tall as a clock tile
    (the clock is sized from the tile width; see MatchPairsExercise). */
 .match-clock-board .card {
@@ -2377,4 +2392,573 @@ h2.prompt-numeral {
     font-size: min(2.5rem, 18cqi);
   }
 }
+.content:has(.cc-intro-screen) {
+  overflow-x: hidden;
+  /* Large system font: the intro scrolls; Continue stays pinned below. */
+  overflow-y: auto;
+  gap: 8px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-inline: 24px;
+}
 
+.cc-intro-screen {
+  flex: 1 0 auto;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.cc-intro-body {
+  flex: 1 0 auto;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cc-intro-body .prompt {
+  flex: none;
+}
+
+.cc-hoda-speaker {
+  flex: none;
+  width: 80px;
+  height: 80px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.cc-hoda-speaker:focus-visible {
+  outline: 4px solid var(--blue-700);
+  outline-offset: 3px;
+}
+
+.cc-hoda {
+  width: 80px;
+  height: 80px;
+  pointer-events: none;
+}
+
+.cc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 0 0 auto;
+  min-height: auto;
+  width: 100%;
+  container-type: inline-size;
+  container-name: cc-list;
+}
+
+.cc-helper {
+  text-align: center;
+  flex: none;
+  margin: 0;
+}
+
+.cc-intro-bottom {
+  flex: none;
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  background: var(--bg);
+  padding-top: 4px;
+}
+
+.cc-lead {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  flex-shrink: 0;
+  /* The speaker badge pokes 16px past the tile (spec §2); keep the zone clear. */
+  margin-inline-end: 16px;
+}
+
+.cc-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  /* rem so the card grows with the phone's font size; 8rem = 128px at 16px root */
+  min-height: 8rem;
+  max-height: none;
+  flex: 1 0 auto;
+  padding: 10px;
+  background: var(--surface);
+  border: 3px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: 0 5px 0 var(--line);
+  cursor: pointer;
+  text-align: start;
+  color: inherit;
+  overflow: hidden;
+  container-type: size;
+  animation: cc-enter 240ms var(--ease-out) both;
+  transition: transform var(--dur-press) var(--ease-out), box-shadow var(--dur-press) var(--ease-out);
+}
+
+.cc-card:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--line);
+}
+
+.cc-card.playing {
+  border-color: var(--blue-700);
+  background: var(--blue-100);
+  box-shadow: 0 5px 0 var(--blue-700);
+}
+
+.cc-card.playing:active {
+  box-shadow: 0 2px 0 var(--blue-700);
+}
+
+.cc-card.invite {
+  animation: cc-invite 900ms var(--ease-out);
+}
+
+.cc-card:focus-visible {
+  outline: 4px solid var(--blue-700);
+  outline-offset: 3px;
+}
+
+.cc-check {
+  position: absolute;
+  /* Off the tile: the speaker now straddles the tile corner. */
+  top: -10px;
+  inset-inline-end: -18px;
+  width: 28px;
+  min-width: 28px;
+  height: 28px;
+  min-height: 28px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: var(--green-700);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  z-index: 4;
+  pointer-events: none;
+  box-shadow: 0 0 0 2px #fff;
+}
+
+.cc-check svg {
+  width: 16px;
+  height: 16px;
+}
+
+.cc-tile {
+  position: relative;
+  flex: none;
+  width: 96px;
+  height: 96px;
+  min-width: 96px;
+  min-height: 96px;
+  padding-block: 4px;
+  padding-inline-end: 8px;
+  border-radius: var(--r-md);
+  background: var(--green-100);
+  color: var(--green-900);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  /* 6px (spec 14) keeps long words (هشت، هفت) clear of the speaker badge. */
+  padding-inline-start: 6px;
+}
+
+.cc-tile.pulse {
+  animation: cc-pulse 300ms var(--ease-out);
+}
+
+.cc-num {
+  /* The big ۱/۲/۳: 3.75rem = 60px at 16px root; rem so it scales with font size. */
+  font-size: 3.75rem;
+  line-height: 1;
+  font-weight: 900;
+}
+
+.cc-word {
+  font-size: 1.375rem;
+  line-height: 1.1;
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+/* Spec §2: the speaker badge straddles the tile's bottom end corner (it is
+   only the affordance; the whole card is the button). Out of flow, so the
+   cluster zone gets the spec's ~184px and the 2/3-item floors fit at 375.
+   Placed against the card (the lead is not positioned): its end edge is 16px
+   past the 96px tile, i.e. 10 + 96 - 32 = 74px from the card's start
+   padding edge; its bottom is 10px below the vertically centred tile. */
+.cc-spk {
+  position: absolute;
+  inset-inline-start: 74px;
+  top: calc(50% + 10px);
+  flex: none;
+  flex-shrink: 0;
+  overflow: visible;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--blue-700);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 2px var(--blue-700);
+  z-index: 2;
+}
+
+.cc-spk svg {
+  width: 22px;
+  height: 22px;
+}
+
+.cc-zone {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  height: 100%;
+  min-height: 96px;
+  display: grid;
+  place-items: center;
+  place-content: center;
+}
+
+.cc-cluster {
+  position: relative;
+}
+
+.cc-item {
+  position: absolute;
+  top: 0;
+  display: block;
+  filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff)
+    drop-shadow(0 -2px 0 #fff) drop-shadow(0 3px 2px rgba(27, 42, 34, 0.18));
+}
+
+.cc-item svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.cc-item.hl {
+  z-index: 50 !important;
+  filter: drop-shadow(0 0 0 #fff) drop-shadow(0 0 6px #0d4f9e);
+}
+
+.cc-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--blue-700);
+  color: #fff;
+  font-weight: 800;
+  font-size: 22px;
+  line-height: 34px;
+  text-align: center;
+  z-index: 60;
+}
+
+.cc-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.cc-continue-pulse {
+  animation: cc-pulse 900ms var(--ease-out);
+}
+
+@keyframes cc-enter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cc-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes cc-invite {
+  0%,
+  100% {
+    transform: scale(1);
+    box-shadow: 0 5px 0 var(--line);
+  }
+  40% {
+    transform: scale(1.06);
+    box-shadow: 0 5px 0 var(--line), 0 0 0 6px rgba(13, 79, 158, 0.28);
+  }
+}
+
+@media (min-height: 760px) {
+  .cc-intro-screen,
+  .cc-intro-body {
+    gap: 14px;
+  }
+
+  .cc-intro-screen .cc-list {
+    gap: 14px;
+    flex: 1 1 auto;
+  }
+
+  .cc-intro-screen .cc-card {
+    min-height: 8.75rem;
+    padding: 12px 10px;
+    gap: 8px;
+  }
+
+  .cc-intro-screen .cc-tile {
+    width: 96px;
+    height: 96px;
+    min-width: 96px;
+    min-height: 96px;
+  }
+
+  .cc-intro-screen .cc-num {
+    font-size: 3.75rem;
+  }
+
+  .cc-intro-screen .cc-word {
+    font-size: 1.375rem;
+    line-height: 1.15;
+  }
+}
+
+/* Narrow cards (Android page zoom from a large system font: a 360px phone at
+   150-200% lays out at 180-240px): the numeral and speaker sit on top and the
+   pictures get their own full-width row, and the card grows to fit both. */
+@container cc-list (max-width: 290px) {
+  .cc-card {
+    container-type: inline-size;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    min-height: 0;
+    flex: none;
+  }
+
+  .cc-lead {
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-inline-end: 0;
+  }
+
+  .cc-spk {
+    position: relative;
+    inset: auto;
+  }
+
+  .cc-check {
+    top: -4px;
+    inset-inline-end: -4px;
+  }
+
+  .cc-zone {
+    flex: none;
+    width: 100%;
+    height: auto;
+    min-height: var(--cc-zone-h, 64px);
+  }
+}
+
+/* Short phones (375x667): three 128px cards, the prompt, helper and
+   Continue fit without scrolling. */
+@media (max-height: 700px) {
+  .content:has(.cc-intro-screen) {
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .cc-intro-screen .cc-list {
+    gap: 6px;
+  }
+
+  .cc-intro-screen .cc-helper {
+    line-height: 1.3;
+  }
+
+  .cc-intro-bottom {
+    padding-top: 0;
+  }
+}
+
+/* 360x640: Hoda at the spec's 64px and a slightly smaller h2 so the
+   prompt row is 64 tall instead of 80. */
+@media (max-height: 660px) {
+  .cc-hoda-speaker,
+  .cc-hoda {
+    width: 64px;
+    height: 64px;
+  }
+
+  .cc-intro-body .prompt h2 {
+    font-size: 1.375rem;
+    line-height: 1.4;
+  }
+
+  .cc-intro-screen,
+  .cc-intro-body {
+    gap: 5px;
+  }
+
+  /* 360x640 was 3px over: trim the space above the prompt (outside the
+     cards) instead of shrinking the cards or their pictures. */
+  .content:has(.cc-intro-screen) {
+    padding-top: 2px;
+  }
+}
+
+@media (max-width: 340px) {
+  .content:has(.cc-intro-screen) {
+    padding-inline: 12px;
+  }
+}
+
+[data-count-gallery] .cc-list {
+  gap: 14px;
+}
+
+[data-count-gallery] .content {
+  padding-inline: 24px;
+}
+
+[data-count-gallery] .cc-card {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  flex: none;
+  min-height: 150px;
+  height: auto;
+  max-height: none;
+  padding: 12px 10px;
+}
+
+[data-count-gallery] .cc-zone {
+  min-height: var(--cc-zone-h, 0px);
+  height: auto;
+  align-self: stretch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-card,
+  .cc-card:active,
+  .cc-card.invite,
+  .cc-item,
+  .cc-item.hl,
+  .cc-tile.pulse,
+  .cc-continue-pulse {
+    transform: none;
+    animation: none;
+  }
+}
+
+/* Plain intro art lines (IntroPlain): terms never wrap inside themselves;
+   the line wraps only between terms. */
+.intro-art-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.intro-art-term {
+  display: inline-grid;
+  justify-content: center;
+  align-items: center;
+  flex: none;
+}
+
+.intro-art-text {
+  flex: none;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.intro-visual-text {
+  margin: 0;
+  font-size: 2.25rem;
+  line-height: 1.2;
+  font-weight: 900;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.intro-speaker-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.intro-speaker {
+  display: flex;
+  flex: none;
+}
+
+.intro-visual {
+  display: flex;
+  justify-content: center;
+}
+
+.intro-number-text {
+  font-size: 3rem;
+  line-height: 1.1;
+  font-weight: 900;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.intro-art-unit {
+  display: inline-flex;
+  flex: none;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+/* A word / sentence beside pictures on a plain intro: text, wrapping only
+   between words. */
+.intro-word-text {
+  font-size: 2.25rem;
+  line-height: 1.3;
+  font-weight: 900;
+  color: var(--ink);
+  max-width: 100%;
+  overflow-wrap: normal;
+}

@@ -40,6 +40,7 @@ test.describe.configure({ mode: 'serial' });
 test.afterEach(async ({ request }) => {
   await request.get('/__test/legacy-sw/off');
   await request.get('/__test/sw-fast-warm/off');
+  await request.get('/__test/audio-swap/off');
 });
 
 test('a returning user on the old worker gets the new build without a manual reload', async ({
@@ -276,7 +277,7 @@ test('a range request caches the full audio file and ranges are served offline',
     const res = await fetch(src, { headers: { Range: 'bytes=0-99' } });
     const part = new Uint8Array(await res.arrayBuffer());
     const cacheName = 'pl-audio';
-    const cached = await (await caches.open(cacheName)).match(src);
+    const cached = await (await caches.open(cacheName)).match(src, { ignoreSearch: true });
     return {
       size: full.length,
       status: res.status,
@@ -295,7 +296,7 @@ test('a range request caches the full audio file and ranges are served offline',
   await context.setOffline(true);
   const offline = await page.evaluate(async (src) => {
     const cacheName = 'pl-audio';
-    const full = new Uint8Array(await (await (await caches.open(cacheName)).match(src))!.arrayBuffer());
+    const full = new Uint8Array(await (await (await caches.open(cacheName)).match(src, { ignoreSearch: true }))!.arrayBuffer());
     const size = full.length;
     const mid = await fetch(src, { headers: { Range: 'bytes=1000-1999' } });
     const midBytes = new Uint8Array(await mid.arrayBuffer());
@@ -355,7 +356,7 @@ test('audio saved by the legacy worker survives the upgrade', async ({ page, con
 
   const carried = await page.evaluate(async (src) => {
     const names = await caches.keys();
-    const hit = await caches.match(src);
+    const hit = await caches.match(src, { ignoreSearch: true });
     return { names, status: hit?.status ?? 0 };
   }, AUDIO);
   expect(carried.names.some((n) => n.startsWith('persian-learn-'))).toBe(true);
@@ -460,7 +461,7 @@ test('failed or uncached requests always get a Response, never a network error',
 
 // ---- Audio warm-up after the upgrade ---------------------------------------
 
-type Plan = { version: string; ui: string[]; tracks: Record<string, Array<{ id: string; clips: string[] }>>; all: string[] };
+type Plan = { version: string; clips: Record<string, string>; ui: string[]; tracks: Record<string, Array<{ id: string; clips: string[] }>>; all: string[] };
 const clipPath = (hash: string) => `/audio/${hash}.mp3`;
 
 async function upgradeFromLegacy(page: import('@playwright/test').Page, completed: string[]) {
@@ -550,7 +551,7 @@ test('an upgraded profile ends up with every clip cached whole and playable offl
   const cachedSizes = await page.evaluate(async (paths) => {
     const cache = await caches.open('pl-audio');
     const out: Record<string, number> = {};
-    for (const path of paths) out[path] = (await (await cache.match(path))!.arrayBuffer()).byteLength;
+    for (const path of paths) out[path] = (await (await cache.match(path, { ignoreSearch: true }))!.arrayBuffer()).byteLength;
     return out;
   }, check);
   for (const path of check) {
@@ -590,18 +591,29 @@ test('warming again fetches only clips that are missing', async ({ page, request
     .toBe(0);
   await page.waitForTimeout(1000);
 
-  // A finished warm-up is remembered: another page load fetches nothing.
+  await expect
+    .poll(() => page.evaluate(async () => Boolean(await (await caches.open('pl-sw-meta')).match('/__sw/audio-warm-done'))), {
+      timeout: 60000,
+    })
+    .toBe(true);
+
+  // A finished warm-up is remembered: another page load fetches no clips,
+  // and only the small version file, not the ~430 KB plan.
   await request.get('/__test/audio-hits/reset');
   await page.evaluate(async () => (await navigator.serviceWorker.ready).active!.postMessage({ type: 'WARM_AUDIO' }));
   await page.waitForTimeout(3000);
-  expect((await (await request.get('/__test/audio-hits')).json()).total).toBe(0);
+  const repeat = await (await request.get('/__test/audio-hits')).json();
+  expect(repeat.total).toBe(0);
+  // (The page's own delayed WARM_AUDIO may add a second version check.)
+  expect(repeat.planVersion).toBeGreaterThanOrEqual(1);
+  expect(repeat.plan).toBe(0);
 
   // Interrupted / evicted: drop the marker and 5 clips; only those 5 come back.
   const dropped = plan.all.slice(100, 105).map(clipPath);
   await page.evaluate(async (paths) => {
     await (await caches.open('pl-sw-meta')).delete('/__sw/audio-warm-done');
     const cache = await caches.open('pl-audio');
-    for (const p of paths) await cache.delete(p);
+    for (const p of paths) await cache.delete(p, { ignoreSearch: true });
   }, dropped);
   await request.get('/__test/audio-hits/reset');
   await page.evaluate(async () => (await navigator.serviceWorker.ready).active!.postMessage({ type: 'WARM_AUDIO' }));
@@ -610,4 +622,148 @@ test('warming again fetches only clips that are missing', async ({ page, request
   const hits = await (await request.get('/__test/audio-hits')).json();
   expect(hits.total).toBe(5);
   expect(Object.keys(hits.paths).sort()).toEqual([...dropped].sort());
+  // Same plan version: the resumed warm-up reuses the stored plan.
+  expect(hits.plan).toBe(0);
 });
+
+// ---- Clip versions (audio bytes hash in the cache key) ----------------------
+
+function clipKeys(page: import('@playwright/test').Page, path: string) {
+  return page.evaluate(async (src) => {
+    const cache = await caches.open('pl-audio');
+    return (await cache.keys(src, { ignoreSearch: true })).map((req) => new URL(req.url).search).sort();
+  }, path);
+}
+
+async function playBytes(page: import('@playwright/test').Page, path: string) {
+  return page.evaluate(async (src) => {
+    const res = await fetch(src, { headers: { Range: 'bytes=0-' } });
+    const bytes = new Uint8Array(await res.arrayBuffer());
+    const audio = new Audio(src);
+    const loaded = await new Promise<boolean>((resolve) => {
+      audio.addEventListener('loadedmetadata', () => resolve(true));
+      audio.addEventListener('error', () => resolve(false));
+      setTimeout(() => resolve(false), 8000);
+    });
+    return { status: res.status, bytes: Array.from(bytes), loaded };
+  }, path);
+}
+
+async function planSeen(page: import('@playwright/test').Page) {
+  await expect
+    .poll(() => page.evaluate(async () => Boolean(await (await caches.open('pl-sw-meta')).match('/__sw/audio-plan'))), {
+      timeout: 20000,
+    })
+    .toBe(true);
+}
+
+// A deploy reloads a page that isn't mid-lesson; wait for that reload.
+async function deployAndReload(page: import('@playwright/test').Page) {
+  await page.evaluate(() => {
+    (window as unknown as Win).__marker = 1;
+  });
+  await deploy(page);
+  await expect.poll(() => marker(page), { timeout: 30000 }).toBeUndefined();
+  await page.waitForLoadState('load');
+}
+
+// Clips at the end of the alphabet course: the throttled idle pass is minutes
+// away from them, so only playback (or reconciling) touches them here.
+function lateClips(plan: Plan, n: number) {
+  const lessons = plan.tracks.alphabet.slice(-3);
+  const early = new Set([...plan.ui, ...plan.tracks.math.slice(0, 3).flatMap((l) => l.clips)]);
+  return [...new Set(lessons.flatMap((l) => l.clips))].filter((h) => !early.has(h)).slice(-n);
+}
+
+test('a re-synthesized clip evicts the old cached audio and the next play fetches the new one', async ({
+  page,
+  request,
+}) => {
+  test.setTimeout(120000);
+  await controlled(page);
+  await planSeen(page);
+  const plan: Plan = await (await request.get('/audio-plan.json')).json();
+  const [id] = lateClips(plan, 1);
+  const from = plan.all.find((h) => h !== id && plan.clips[h] !== plan.clips[id])!;
+  const path = clipPath(id);
+  const oldBytes = Array.from(await (await request.get(path)).body());
+  const newBytes = Array.from(await (await request.get(clipPath(from))).body());
+
+  // First play: stored under its bytes hash.
+  const first = await playBytes(page, path);
+  expect(first.bytes).toEqual(oldBytes);
+  expect(await clipKeys(page, path)).toEqual([`?v=${plan.clips[id]}`]);
+
+  // Deploy with that clip re-synthesized (same text, so same URL; new bytes).
+  const swap = await (await request.get(`/__test/audio-swap/on?id=${id}&from=${from}`)).json();
+  const swapped: Plan = await (await request.get('/audio-plan.json')).json();
+  expect(swapped.clips[id]).toBe(swap.v);
+  expect(swapped.version).not.toBe(plan.version);
+  await deployAndReload(page);
+  // The new worker's warm-up drops the old bytes.
+  await expect.poll(() => clipKeys(page, path), { timeout: 30000 }).not.toContain(`?v=${plan.clips[id]}`);
+
+  await request.get('/__test/audio-hits/reset');
+  const next = await playBytes(page, path);
+  expect(next.bytes).toEqual(newBytes);
+  expect(next.loaded).toBe(true);
+  const hits = await (await request.get('/__test/audio-hits')).json();
+  expect(hits.paths[path]).toBe(1);
+  expect(await clipKeys(page, path)).toEqual([`?v=${swap.v}`]);
+  const cached = await page.evaluate(async (key) => {
+    const res = await (await caches.open('pl-audio')).match(key);
+    return res ? Array.from(new Uint8Array(await res.arrayBuffer())) : [];
+  }, `${path}?v=${swap.v}`);
+  expect(cached).toEqual(newBytes);
+});
+
+test('clips cached before versioning are kept if current, replaced if not, and dropped if gone', async ({
+  page,
+  request,
+}) => {
+  test.setTimeout(120000);
+  await controlled(page);
+  await planSeen(page);
+  const plan: Plan = await (await request.get('/audio-plan.json')).json();
+  const [good, bad] = lateClips(plan, 2);
+  const other = plan.all.find((h) => h !== bad && plan.clips[h] !== plan.clips[bad])!;
+  const goodBytes = Array.from(await (await request.get(clipPath(good))).body());
+  const badRealBytes = Array.from(await (await request.get(clipPath(bad))).body());
+  const wrongBytes = Array.from(await (await request.get(clipPath(other))).body());
+  const gone = `/audio/${'0'.repeat(32)}.mp3`;
+  // What a phone updated from #8 holds: clips under the bare URL. One with
+  // the current bytes, one with older bytes, one no longer in the manifest.
+  await page.evaluate(
+    async ({ entries }) => {
+      const cache = await caches.open('pl-audio');
+      for (const [path, bytes] of entries) {
+        await cache.put(path, new Response(new Uint8Array(bytes), { headers: { 'Content-Type': 'audio/mpeg' } }));
+      }
+      await (await caches.open('pl-sw-meta')).put('/__sw/audio-warm-done', new Response('avalai:old:2634'));
+    },
+    {
+      entries: [
+        [clipPath(good), goodBytes],
+        [clipPath(bad), wrongBytes],
+        [gone, wrongBytes],
+      ] as Array<[string, number[]]>,
+    }
+  );
+  await request.get('/__test/audio-hits/reset');
+  await deployAndReload(page);
+
+  await expect.poll(() => clipKeys(page, clipPath(good)), { timeout: 30000 }).toEqual([`?v=${plan.clips[good]}`]);
+  await expect.poll(() => clipKeys(page, clipPath(bad)), { timeout: 30000 }).toEqual([]);
+  expect(await clipKeys(page, gone)).toEqual([]);
+  // The current one was re-keyed in place, not downloaded again.
+  let hits = await (await request.get('/__test/audio-hits')).json();
+  expect(hits.paths[clipPath(good)]).toBeUndefined();
+
+  // The stale one plays the current audio, fetched once.
+  const played = await playBytes(page, clipPath(bad));
+  expect(played.bytes).toEqual(badRealBytes);
+  hits = await (await request.get('/__test/audio-hits')).json();
+  expect(hits.paths[clipPath(bad)]).toBe(1);
+  expect(await clipKeys(page, clipPath(bad))).toEqual([`?v=${plan.clips[bad]}`]);
+});
+

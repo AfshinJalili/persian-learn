@@ -37,6 +37,11 @@ export async function auditLayout(page: Page, { zoom = 1 }: { zoom?: number } = 
       el.closest('svg') !== null && el.tagName.toLowerCase() !== 'svg' ||
       el.closest('[aria-hidden="true"]') !== null && !el.matches('[aria-hidden="true"]') ||
       el.closest('[data-layout-audit="skip"]') !== null ||
+      // Visually hidden screen-reader text (1x1px, clipped) is meant to clip.
+      (() => {
+        const r = el.getBoundingClientRect();
+        return r.width <= 1 && r.height <= 1 && getComputedStyle(el).overflow === 'hidden';
+      })() ||
       ['script', 'style', 'link', 'meta', 'next-route-announcer', 'nextjs-portal', 'canvas'].includes(el.tagName.toLowerCase());
 
     const se = document.scrollingElement!;
@@ -69,8 +74,36 @@ export async function auditLayout(page: Page, { zoom = 1 }: { zoom?: number } = 
       const clips = (v: string) => v === 'hidden' || v === 'clip';
       const hasText = [...el.childNodes].some((n) => n.nodeType === 3 && (n.textContent || '').trim());
       const textual = hasText || el.querySelector(':scope > span, :scope > div, :scope > p') !== null;
+      // scrollWidth/Height also grow when content merely reaches into the
+      // padding; only count it as clipped when something crosses the
+      // padding box edge.
+      const cutBeyondPadding = (axis: 'x' | 'y') => {
+        const bl = parseFloat(s.borderLeftWidth) || 0;
+        const br = parseFloat(s.borderRightWidth) || 0;
+        const bt = parseFloat(s.borderTopWidth) || 0;
+        const bb = parseFloat(s.borderBottomWidth) || 0;
+        const box = { left: r.left + bl, right: r.right - br, top: r.top + bt, bottom: r.bottom - bb };
+        const rects: DOMRect[] = [];
+        for (const d of el.querySelectorAll('*')) {
+          const dr = d.getBoundingClientRect();
+          if (dr.width > 0 && dr.height > 0) rects.push(dr);
+        }
+        for (const n of el.childNodes) {
+          if (n.nodeType !== 3 || !(n.textContent || '').trim()) continue;
+          const range = document.createRange();
+          range.selectNodeContents(n);
+          rects.push(...range.getClientRects());
+        }
+        return rects.some((dr) =>
+          axis === 'x'
+            ? dr.left < box.left - TOL || dr.right > box.right + TOL
+            : dr.top < box.top - TOL || dr.bottom > box.bottom + TOL
+        );
+      };
+      // Ink-fitted glyphs: empty side bearing can exceed the box; the ink-clip
+      // visual check covers real clipping for those.
       if (textual && el.tagName.toLowerCase() !== 'svg' && !el.matches('[data-ink-fit]')) {
-        if (clips(s.overflowX) && el.scrollWidth > el.clientWidth + TOL) {
+        if (clips(s.overflowX) && el.scrollWidth > el.clientWidth + TOL && cutBeyondPadding('x')) {
           issues.push({ kind: 'clipped', detail: `${describe(el)} clips text sideways (${el.scrollWidth} > ${el.clientWidth})` });
         }
         // A lone numeral glyph's line box (1.1em) is shorter than the font's
@@ -79,7 +112,7 @@ export async function auditLayout(page: Page, { zoom = 1 }: { zoom?: number } = 
         const fontPx = parseFloat(s.fontSize) || 16;
         const numeralSlack =
           /^[\s۰-۹0-9؟?]+$/.test(el.textContent || '') && el.scrollHeight <= fontPx * 1.4 + TOL;
-        if (clips(s.overflowY) && el.scrollHeight > el.clientHeight + TOL && !numeralSlack) {
+        if (clips(s.overflowY) && el.scrollHeight > el.clientHeight + TOL && !numeralSlack && cutBeyondPadding('y')) {
           issues.push({ kind: 'clipped', detail: `${describe(el)} clips text vertically (${el.scrollHeight} > ${el.clientHeight})` });
         }
         if (s.webkitLineClamp && s.webkitLineClamp !== 'none' && el.scrollHeight > el.clientHeight + TOL) {

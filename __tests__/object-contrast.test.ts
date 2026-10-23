@@ -19,6 +19,7 @@ import {
   PhoneSvg,
   PomegranateSvg,
   RaisedHandSvg,
+  SparrowSvg,
   RedDotSvg,
   SunSvg,
   TeaSvg,
@@ -61,6 +62,7 @@ const CARD_BACKGROUNDS = ['#ffffff', '#fff8ec'] as const;
 
 const COUNTING_ART = [
   ['apple', AppleSvg],
+  ['sparrow', SparrowSvg],
   ['bread', BreadSvg],
   ['tea', TeaSvg],
   ['pomegranate', PomegranateSvg],

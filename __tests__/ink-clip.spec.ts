@@ -14,6 +14,11 @@ const SCREENS = [
   '/lesson/m12l2?ex=4',
   '/lesson/m12l3?ex=9',
   '/lesson/m12l5?ex=3',
+  // Single-picture intros (160px ink-fitted art).
+  '/lesson/a1l1?ex=0',
+  '/lesson/a1l2?ex=0',
+  '/lesson/a1l4?ex=0',
+  '/lesson/m12l1?ex=0',
 ];
 const CONFIGS = [
   { name: '360x640 1x', width: 360, height: 640, font: 1, zoom: 1 },

@@ -70,10 +70,59 @@ function haltCurrent() {
   }
 }
 
-export function stopAudio() {
+let activeSequence: AbortController | null = null;
+/** Who registered the active sequence (e.g. the exercise id that started it). */
+let activeOwner: string | null = null;
+
+/**
+ * Register a multi-clip sequence (e.g. the count-along) as the one global
+ * owner of playback. Pass the returned controller's signal to every
+ * playAudio call in the sequence and to its timers: any other playAudio,
+ * stopAudio or a newer sequence aborts it, so queued clips and pending
+ * timers never talk over whatever came next.
+ */
+export function beginAudioSequence(owner?: string): AbortController {
+  cancelAudioSequence();
+  const controller = new AbortController();
+  activeSequence = controller;
+  activeOwner = owner ?? null;
+  return controller;
+}
+
+/** Owner passed to beginAudioSequence for the live sequence, if any. */
+export function activeAudioSequenceOwner(): string | null {
+  return activeSequence && !activeSequence.signal.aborted ? activeOwner : null;
+}
+
+/** Abort the registered sequence (if any) without touching other playback. */
+export function cancelAudioSequence() {
+  const controller = activeSequence;
+  activeSequence = null;
+  activeOwner = null;
+  controller?.abort();
+}
+
+function haltPlayback() {
   playGeneration += 1;
   haltCurrent();
   finishPlayback();
+}
+
+export interface StopAudioOptions {
+  /**
+   * Leave a live sequence registered by this owner (and its playback) alone.
+   * A step-entry stop runs after the step's own components mounted, so it
+   * passes the step id to avoid killing the sequence that step just started.
+   * Anything else (previous steps, other owners, unowned playback) still stops.
+   */
+  keepOwner?: string;
+}
+
+export function stopAudio(options?: StopAudioOptions) {
+  const keep = options?.keepOwner;
+  if (keep != null && activeAudioSequenceOwner() === keep) return;
+  cancelAudioSequence();
+  haltPlayback();
 }
 
 export async function playAudio(
@@ -83,7 +132,10 @@ export async function playAudio(
 ): Promise<void> {
   if (signal?.aborted) return;
 
-  stopAudio();
+  // New playback from anyone but the registered sequence cancels that
+  // sequence outright (not just its current clip).
+  if (!activeSequence || activeSequence.signal !== signal) cancelAudioSequence();
+  haltPlayback();
   const token = playGeneration;
 
   const onAbort = () => {

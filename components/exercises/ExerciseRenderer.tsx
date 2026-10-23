@@ -25,6 +25,7 @@ interface ExerciseRendererProps {
   onTraced: (answer: string) => void;
   disabled: boolean;
   answerState?: 'idle' | 'correct' | 'wrong';
+  autoplay?: boolean;
 }
 
 export default function ExerciseRenderer({
@@ -35,10 +36,11 @@ export default function ExerciseRenderer({
   onTraced,
   disabled,
   answerState = 'idle',
+  autoplay = true,
 }: ExerciseRendererProps) {
   switch (exercise.type) {
     case 'intro':
-      return <IntroExercise exercise={exercise} onContinue={onContinue} />;
+      return <IntroExercise exercise={exercise} onContinue={onContinue} autoplay={autoplay} />;
     case 'tap_picture':
       return (
         <TapPictureExercise
