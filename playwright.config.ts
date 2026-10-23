@@ -1,5 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// PW_PORT lets a second checkout run its suite beside another dev server.
+const PORT = Number(process.env.PW_PORT || 3000);
+const BASE = `http://localhost:${PORT}`;
+
 export default defineConfig({
   testDir: './__tests__',
   testMatch: '**/*.spec.ts',
@@ -11,7 +15,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:3000',
+    baseURL: BASE,
     trace: 'on-first-retry',
     viewport: { width: 390, height: 844 },
     isMobile: true,
@@ -27,8 +31,8 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:3000',
+    command: `npx next dev -p ${PORT}`,
+    url: BASE,
     reuseExistingServer: !process.env.CI,
     timeout: 120000,
   },

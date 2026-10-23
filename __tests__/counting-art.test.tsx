@@ -58,21 +58,20 @@ function countingTokens(): string[] {
 }
 
 describe('counting display art', () => {
-  it('never renders a raw emoji glyph', () => {
+  it('renders SVG art or an ink-fitted glyph (clocks, clap, same/different)', () => {
     const tokens = countingTokens();
     expect(tokens.length).toBeGreaterThan(10);
     for (const token of tokens) {
       const { container, unmount } = render(<ObjectArt token={token} size={72} />);
-      const raw = [...container.querySelectorAll('.glyph')].filter((node) =>
+      const hasSvg = Boolean(container.querySelector('svg'));
+      const inkFit = Boolean(container.querySelector('[data-ink-fit]'));
+      const stray = [...container.querySelectorAll('.glyph:not(.ink-fit)')].filter((node) =>
         /\p{Extended_Pictographic}/u.test(node.textContent ?? '')
       );
-      expect({ token, glyphs: raw.map((node) => node.textContent) }).toEqual({
+      expect({ token, stray: stray.map((n) => n.textContent), drawn: hasSvg || inkFit }).toEqual({
         token,
-        glyphs: [],
-      });
-      expect({ token, hasSvg: Boolean(container.querySelector('svg')) }).toEqual({
-        token,
-        hasSvg: true,
+        stray: [],
+        drawn: true,
       });
       unmount();
     }

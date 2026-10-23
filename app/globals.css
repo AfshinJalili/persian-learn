@@ -533,8 +533,20 @@ h2.prompt-numeral {
   overflow: hidden;
 }
 
+.object-choice-card:has([data-ink-fit]),
+.object-count-card[data-digit-sequence],
+.object-count-card[data-digit-display] {
+  overflow: visible;
+}
+
 .object-choice-card {
   min-height: 240px;
+}
+
+/* One ink-fitted emoji as the whole answer: its ink is the art box, so the
+   box can use nearly the full card width (pale ink edges still clear 70%). */
+.object-choice-card[data-single-art]:has(> .object-cluster > .illus[data-ink-fit]) {
+  padding-inline: 4px;
 }
 
 .object-count-card {
@@ -553,42 +565,50 @@ h2.prompt-numeral {
   padding: 12px;
 }
 
-/* A single picture or die is sized to ~77% of the card width (drawn art >= 70%), so the card's
+/* A single picture or die is sized to 76% of the card width (drawn art >= 70%), so the card's
    height follows its width instead of whatever space is left. It never
    shrinks: on short screens the exercise scrolls instead. */
 .app-phone:not(.object-gallery-page) .object-count-card[data-single-art] {
-  flex: 0 0 calc(var(--single-card-w, 100cqi) * 0.77 + 24px + 6px);
+  flex: 0 0 calc(var(--single-card-w, 100cqi) * var(--single-art-h, 0.76) + 24px + 6px);
   height: auto;
-  max-height: calc(var(--single-card-w, 100cqi) * 0.77 + 24px + 6px);
+  max-height: calc(var(--single-card-w, 100cqi) * var(--single-art-h, 0.76) + 24px + 6px);
   min-height: 0;
   /* The art is sized from this box; don't let the art size the box back. */
   contain: size;
 }
 
 /* Short screens: make room for that card by compacting the prompt, the
-   answer tiles and the check bar on single-art count steps only. */
+   answer tiles and the check bar on single-art count steps and on
+   "find this numeral" steps (big digit card + three answers). */
 @media (max-height: 760px) {
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .prompt h2:not(.prompt-numeral) {
+  /* "Find this numeral": the big digit card's 160px floor plus three answer
+     tiles overflow a 640px phone; drop the floor so the short-screen
+     compacting below can clear the Check bar. */
+  .app-phone:not(.object-gallery-page) .object-count-card[data-digit-display] {
+    min-height: 120px;
+  }
+
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .prompt h2:not(.prompt-numeral) {
     font-size: 1.375rem;
     line-height: 1.35;
   }
 
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .prompt .speaker {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .prompt .speaker {
     width: 56px;
     height: 56px;
   }
 
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .content > .grid3 > .card {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .content > .grid3 > .card {
     height: 88px;
     max-height: 88px;
   }
 
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .content > .grid3 > .card .glyph {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .content > .grid3 > .card .glyph {
     font-size: 64px;
     line-height: 1;
   }
 
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .bottom {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .bottom {
     padding: 8px var(--s-5) 12px;
   }
 }
@@ -616,27 +636,27 @@ h2.prompt-numeral {
 }
 
 @media (max-height: 620px) {
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .prompt h2:not(.prompt-numeral) {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .prompt h2:not(.prompt-numeral) {
     font-size: 1.1875rem;
     line-height: 1.3;
   }
 
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .content.content-fit {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .content.content-fit {
     gap: 8px;
     padding-top: 8px;
   }
 
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .prompt .speaker {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .prompt .speaker {
     width: 48px;
     height: 48px;
   }
 
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .content > .grid3 > .card {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .content > .grid3 > .card {
     height: 72px;
     max-height: 72px;
   }
 
-  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .content > .grid3 > .card .glyph {
+  .app-phone:not(.object-gallery-page):has(.object-count-card:is([data-single-art], [data-digit-display])) .content > .grid3 > .card .glyph {
     font-size: 52px;
     line-height: 1;
   }
@@ -686,7 +706,8 @@ h2.prompt-numeral {
 
 .app-phone:not(.object-gallery-page) .object-choice-card {
   box-sizing: border-box;
-  min-height: 0;
+  /* Tall enough that a 3-item cluster still yields ~48px items. */
+  min-height: 160px;
   height: auto;
   max-height: 260px;
   /* The art is sized from the card box in JS; don't let it size the card
@@ -694,8 +715,25 @@ h2.prompt-numeral {
   contain: size;
 }
 
+/* Text answers (words, phrases) are not sized from the card, so the card
+   (and its row) grows to hold every line instead of clipping them. */
+.app-phone:not(.object-gallery-page) .object-choice-card:has(> .glyph.choice-word) {
+  contain: inline-size;
+  min-height: 120px;
+  max-height: none;
+}
+
+.app-phone:not(.object-gallery-page) .content .grid2:has(> .object-choice-card > .glyph.choice-word),
+.app-phone:not(.object-gallery-page) .content .grid3:has(> .object-choice-card > .glyph.choice-word) {
+  flex: 0 0 auto;
+  min-height: 0;
+  max-height: none;
+  overflow: visible;
+  grid-auto-rows: auto;
+}
+
 .object-choice-card:has(.object-cluster[data-count='3'][data-layout='grid']),
-.object-choice-card:has([data-glyph='hand']) {
+.object-choice-card:not([data-single-art]):has([data-glyph='hand']) {
   padding: 16px;
 }
 
@@ -795,13 +833,15 @@ h2.prompt-numeral {
   justify-content: center;
   align-items: center;
   gap: 16px;
-  padding: 12px 16px;
+  padding: 8px 16px;
   box-sizing: border-box;
   max-width: 100%;
-  max-height: 100%;
-  overflow: hidden;
+  /* Allowed to be taller than the card's inner box; the card grows (or the
+     page scrolls) instead of clipping the question-mark ascent. */
+  max-height: none;
+  overflow: visible;
   font-weight: 800;
-  line-height: 1;
+  line-height: 1.05;
   font-feature-settings: "ss01";
 }
 
@@ -813,8 +853,8 @@ h2.prompt-numeral {
 [data-digit-display] .glyph,
 [data-digit-sequence] {
   max-width: 100%;
-  max-height: 100%;
-  overflow: hidden;
+  max-height: none;
+  overflow: visible;
 }
 
 .card.selected {
@@ -877,7 +917,7 @@ h2.prompt-numeral {
 .app-phone:not(.object-gallery-page) .cluster-stack .object-choice-card,
 .app-phone:not(.object-gallery-page) .content > .cluster-stack .object-choice-card {
   flex: 1 1 0;
-  min-height: 72px;
+  min-height: 120px;
   height: auto;
   max-height: none;
   padding: 12px;
@@ -1054,11 +1094,15 @@ h2.prompt-numeral {
 
 .match-pair-placed {
   width: 100%;
+  /* On a narrow (zoomed) column the ✕ drops under the card instead of
+     squeezing it. */
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .match-pair-placed > .card {
   flex: 1 1 0;
-  min-width: 0;
+  min-width: max(48px, 1.6em);
   width: auto;
 }
 
@@ -1077,7 +1121,8 @@ h2.prompt-numeral {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 1.75rem;
+  /* An icon, not text: it keeps its size inside the 48px circle. */
+  font-size: 28px;
   font-weight: 800;
   line-height: 1;
   color: var(--clay-800);
@@ -2002,3 +2047,334 @@ h2.prompt-numeral {
 .listen-choose > .grid3 {
   width: 100%;
 }
+
+/* A choice card with one picture is as tall as that picture needs at 73% of
+   the card width (inline min-height); its grid row follows instead of
+   capping the card. */
+.app-phone:not(.object-gallery-page) .content :is(.grid2, .grid3, .picture-grid):has(> .object-choice-card[data-single-art]) {
+  flex: none;
+  max-height: none;
+  /* Rows follow the tallest single-picture card; multi-item cards in the
+     same grid (sized from their box) keep a usable floor when stacked. */
+  grid-auto-rows: minmax(160px, auto);
+  overflow: visible;
+}
+
+.app-phone:not(.object-gallery-page) .object-choice-card[data-single-art] {
+  max-height: none;
+  contain: inline-size;
+}
+
+/* Number line: one >= 48px cell per number, wrapping right to left. */
+.number-line-hint {
+  margin-top: -8px;
+}
+
+.number-line-card {
+  padding: 12px 8px;
+  gap: 8px;
+  align-content: center;
+}
+
+.number-line {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: grid;
+  row-gap: 4px;
+}
+
+.number-line > li {
+  min-width: 0;
+}
+
+.number-line-tick {
+  width: 100%;
+  min-width: 48px;
+  min-height: 72px;
+  display: grid;
+  grid-template-rows: 28px 18px auto;
+  justify-items: center;
+  align-items: center;
+  padding: 0 0 4px;
+  border: 0;
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+}
+
+.number-line-tick.selected {
+  background: var(--select-bg);
+}
+
+.number-line-pin {
+  width: 22px;
+  height: 28px;
+  display: grid;
+  align-items: end;
+}
+
+.number-line-pin svg {
+  width: 22px;
+  height: 28px;
+}
+
+/* The line runs through every cell; each cell adds its own tick. */
+.number-line-mark {
+  position: relative;
+  width: 100%;
+  height: 18px;
+}
+
+.number-line-mark::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  height: 5px;
+  margin-top: -2.5px;
+  background: #1b2a22;
+}
+
+.number-line-tick[data-row-start] .number-line-mark::before {
+  inset-inline-start: 50%;
+  border-start-start-radius: 3px;
+  border-end-start-radius: 3px;
+}
+
+.number-line-tick[data-row-end] .number-line-mark::before {
+  inset-inline-end: 50%;
+}
+
+.number-line-mark::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 5px;
+  height: 18px;
+  margin-left: -2.5px;
+  border-radius: 3px;
+  background: #1b2a22;
+}
+
+.number-line-num {
+  font-size: 1.625rem;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.number-line-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 16px;
+  width: 100%;
+  font-weight: 700;
+  color: var(--ink-2);
+  padding-inline: 8px;
+}
+
+/* Short phones (360x640, 375x667): a slimmer check bar and tighter gaps so a
+   lesson step fits without scrolling. Placed last so it wins over the base
+   .bottom / .content rules above. */
+@media (max-height: 700px) {
+  .app-phone > .bottom {
+    padding: 10px var(--s-5) 12px;
+  }
+
+  .app-phone > .content {
+    gap: 14px;
+    padding-top: 12px;
+    padding-bottom: 14px;
+  }
+
+  .number-line-hint {
+    font-size: 1.0625rem;
+    margin-top: -6px;
+  }
+
+  .number-line-card {
+    padding: 6px 6px 8px;
+    gap: 2px;
+  }
+}
+
+/* Ink-fitted emoji: the box is the glyph's ink, so only the font's empty
+   side bearing falls outside it; clip that so it can't widen the card. The
+   clip edge sits a few px out so the ink's anti-aliased rim is never cut. */
+.object-cluster > .illus[data-ink-fit] {
+  overflow: clip;
+  overflow-clip-margin: 4px;
+}
+
+/* Match boards with clock faces: every tile is as tall as a clock tile
+   (the clock is sized from the tile width; see MatchPairsExercise). */
+.match-clock-board .card {
+  min-height: var(--match-tile-min, 80px);
+}
+
+/* A text answer on a choice card (ListenChooseExercise): never clipped;
+   phrases wrap between words, never inside one. The card is the size
+   container its font size (cqi) is set against. */
+.card:has(> .glyph.choice-word) {
+  container-type: inline-size;
+}
+
+.card > .glyph.choice-word {
+  /* Shrunk further in JS when the longest word is wider than the card. */
+  font-size: min(64px, 40cqi);
+  line-height: 1.4;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  text-align: center;
+  max-width: 100%;
+  max-height: none;
+  overflow: visible;
+}
+
+.choice-word-part {
+  white-space: nowrap;
+}
+
+/* Ink-fitted glyphs are measured on a canvas and painted in the DOM with the
+   same emoji-only font stack. With the page font (Vazirmatn) first, the
+   canvas could measure fallback line metrics before the web font loaded and
+   the painted glyph then sat ~0.15em too high, its top cut off by the clip
+   above. */
+.illus[data-ink-fit] > .glyph.ink-fit {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Twemoji Mozilla", "Android Emoji", "EmojiOne Color", sans-serif;
+  font-weight: 400;
+  font-feature-settings: normal;
+}
+
+/* Page-zoomed phones (a 360px phone at 2x lays out at 180px): three answer
+   cards still get >= 48px each. */
+@media (max-width: 220px) {
+  .app-phone > .content,
+  .app-phone > .bottom,
+  .lesson-top {
+    padding-inline: 8px;
+  }
+
+  .grid2,
+  .grid3 {
+    gap: 6px;
+  }
+
+  .grid2 > .card,
+  .grid3 > .card {
+    padding-inline: 2px;
+  }
+}
+
+/* When the whole page scrolls (very short CSS viewports), scrolling an item
+   into view keeps it above the sticky check bar / nav. */
+@media (max-height: 420px) {
+  html {
+    scroll-padding-bottom: 128px;
+  }
+}
+
+/* Trace card: full size on tall phones; on short ones the drawing scales to
+   the height that's left so the step fits without scrolling. */
+.trace-card {
+  min-height: 380px;
+}
+
+.trace-art {
+  width: 300px;
+  max-width: 100%;
+}
+
+@media (max-height: 760px) {
+  .trace-card {
+    min-height: 0;
+    padding: 8px 12px !important;
+  }
+
+  .trace-art {
+    width: max(140px, min(280px, calc((100dvh - 400px) * 1.067)));
+  }
+
+  .app-phone:has(.trace-card) .prompt h2:not(.prompt-numeral) {
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+
+  .app-phone:has(.trace-card) .btn-row .btn {
+    min-height: 52px;
+    padding-block: 8px;
+  }
+}
+
+@media (max-height: 700px) {
+  .listen-choose > .speaker.xl {
+    width: 116px;
+    height: 116px;
+  }
+
+  .listen-choose > .speaker.xl svg {
+    width: 58px;
+    height: 58px;
+  }
+
+  /* Single-picture count steps: tighter card padding and answer tiles. */
+  .app-phone:not(.object-gallery-page) .object-count-card[data-single-art] {
+    padding: 8px;
+    flex-basis: calc(var(--single-card-w, 100cqi) * var(--single-art-h, 0.76) + 16px + 6px);
+    max-height: calc(var(--single-card-w, 100cqi) * var(--single-art-h, 0.76) + 16px + 6px);
+  }
+
+  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .content > .grid3 > .card {
+    height: 72px;
+    max-height: 72px;
+  }
+
+  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) > .content {
+    gap: 8px;
+  }
+
+  .app-phone:not(.object-gallery-page):has(.object-count-card[data-single-art]) .prompt h2:not(.prompt-numeral) {
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+
+  .trace-art {
+    width: max(160px, min(300px, calc((100dvh - 420px) * 1.067)));
+  }
+}
+
+/* Zoomed phones (~180 CSS px at 2x on a 360 phone): three answer cards must
+   each be at least 48px, so they stack one per row sooner. */
+@media (max-width: 200px) {
+  .app-phone:not(.object-gallery-page) .content > .grid3:not(:has(.object-choice-card)),
+  .app-phone:not(.object-gallery-page) .content > .grid2:not(:has(.object-choice-card)),
+  .app-phone:not(.object-gallery-page) .content .grid3:has(.object-choice-card),
+  .app-phone:not(.object-gallery-page) .content .grid2:has(.object-choice-card),
+  .app-phone:not(.object-gallery-page) .content .picture-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: auto;
+    flex: none;
+    max-height: none;
+  }
+
+  .app-phone:not(.object-gallery-page) .content > .grid3 > .card,
+  .app-phone:not(.object-gallery-page) .content > .grid2 > .card,
+  .app-phone:not(.object-gallery-page) .content .grid3 > .object-choice-card,
+  .app-phone:not(.object-gallery-page) .content .grid2 > .object-choice-card {
+    height: auto;
+    min-height: 72px;
+    max-height: none;
+    contain: none;
+  }
+
+  .app-phone:not(.object-gallery-page) .content .grid3 > .object-choice-card .glyph,
+  .app-phone:not(.object-gallery-page) .content .grid2 > .object-choice-card .glyph {
+    font-size: min(2.5rem, 18cqi);
+  }
+}
+

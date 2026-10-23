@@ -39,6 +39,7 @@ test.describe.configure({ mode: 'serial' });
 
 test.afterEach(async ({ request }) => {
   await request.get('/__test/legacy-sw/off');
+  await request.get('/__test/sw-fast-warm/off');
 });
 
 test('a returning user on the old worker gets the new build without a manual reload', async ({
@@ -274,7 +275,7 @@ test('a range request caches the full audio file and ranges are served offline',
     const full = new Uint8Array(await (await fetch(src, { cache: 'no-store', headers: { 'x-probe': '1' } })).arrayBuffer());
     const res = await fetch(src, { headers: { Range: 'bytes=0-99' } });
     const part = new Uint8Array(await res.arrayBuffer());
-    const cacheName = (await caches.keys()).find((n) => n.startsWith('persian-learn-'))!;
+    const cacheName = 'pl-audio';
     const cached = await (await caches.open(cacheName)).match(src);
     return {
       size: full.length,
@@ -293,7 +294,7 @@ test('a range request caches the full audio file and ranges are served offline',
 
   await context.setOffline(true);
   const offline = await page.evaluate(async (src) => {
-    const cacheName = (await caches.keys()).find((n) => n.startsWith('persian-learn-'))!;
+    const cacheName = 'pl-audio';
     const full = new Uint8Array(await (await (await caches.open(cacheName)).match(src))!.arrayBuffer());
     const size = full.length;
     const mid = await fetch(src, { headers: { Range: 'bytes=1000-1999' } });
@@ -455,4 +456,158 @@ test('failed or uncached requests always get a Response, never a network error',
   expect(String(result.rscType)).not.toContain('text/html');
   expect(typeof nav, String(nav)).not.toBe('string');
   expect(failed.filter((line) => !line.includes('ERR_ABORTED'))).toEqual([]);
+});
+
+// ---- Audio warm-up after the upgrade ---------------------------------------
+
+type Plan = { version: string; ui: string[]; tracks: Record<string, Array<{ id: string; clips: string[] }>>; all: string[] };
+const clipPath = (hash: string) => `/audio/${hash}.mp3`;
+
+async function upgradeFromLegacy(page: import('@playwright/test').Page, completed: string[]) {
+  // A phone on the v2 worker: v2 tried to cache audio as 206 range responses,
+  // which the Cache API rejects, so the only audio it has is what we plant.
+  await page.request.get('/__test/legacy-sw/on');
+  await controlled(page);
+  await seedOnboarded(page, completed);
+  // Count only what happens from the upgrade on (v2 forwards Range headers).
+  await page.request.get('/__test/audio-hits/reset');
+  await page.request.get('/__test/legacy-sw/off');
+  await page.goto('/home');
+  await expect
+    .poll(() => page.evaluate(() => caches.keys()).catch(() => ['persian-learn-v2']), { timeout: 20000 })
+    .not.toContain('persian-learn-v2');
+  await page.waitForTimeout(1500);
+  await page.waitForLoadState('load');
+}
+
+function cachedAudio(page: import('@playwright/test').Page) {
+  return page.evaluate(async () => {
+    const cache = await caches.open('pl-audio');
+    return (await cache.keys()).map((req) => new URL(req.url).pathname);
+  });
+}
+
+test('after the upgrade, lessons she is on are warmed first, then the rest', async ({ page, request }) => {
+  test.setTimeout(120000);
+  // Normal (throttled) worker.
+  await upgradeFromLegacy(page, ['m1l1', 'm1l2']);
+  const plan: Plan = await (await request.get('/audio-plan.json')).json();
+  const lesson = (id: string) => [...plan.tracks.math, ...plan.tracks.alphabet].find((l) => l.id === id)!;
+  const priority = new Set([...plan.ui, ...lesson('m1l1').clips, ...lesson('m1l2').clips, ...lesson('m1l3').clips].map(clipPath));
+  await expect
+    .poll(async () => {
+      const have = new Set(await cachedAudio(page));
+      return [...priority].filter((p) => !have.has(p)).length;
+    }, { timeout: 90000, intervals: [1000] })
+    .toBe(0);
+  // The throttled idle pass is still far from the end of the alphabet course.
+  const last = plan.tracks.alphabet[plan.tracks.alphabet.length - 1];
+  const have = new Set(await cachedAudio(page));
+  const lastCached = last.clips.filter((h) => have.has(clipPath(h))).length;
+  expect(lastCached).toBeLessThan(last.clips.length);
+});
+
+test('an upgraded profile ends up with every clip cached whole and playable offline', async ({
+  page,
+  context,
+  request,
+}) => {
+  test.setTimeout(240000);
+  await request.get('/__test/sw-fast-warm/on');
+  await upgradeFromLegacy(page, ['m1l1']);
+  const plan: Plan = await (await request.get('/audio-plan.json')).json();
+  expect(plan.all.length).toBeGreaterThan(2000);
+
+  await expect
+    .poll(async () => plan.all.length - (await cachedAudio(page)).length, { timeout: 200000, intervals: [2000] })
+    .toBe(0);
+  await expect
+    .poll(() => page.evaluate(async () => Boolean(await (await caches.open('pl-sw-meta')).match('/__sw/audio-warm-done'))))
+    .toBe(true);
+
+  // Every cached clip, in every cache, is a full 200 response: no 206 partials.
+  const audit = await page.evaluate(async () => {
+    const bad: string[] = [];
+    let audio = 0;
+    for (const name of await caches.keys()) {
+      const cache = await caches.open(name);
+      for (const req of await cache.keys()) {
+        const res = await cache.match(req);
+        if (!res || res.status !== 200 || res.headers.has('Content-Range')) bad.push(`${name} ${req.url} ${res?.status}`);
+        if (new URL(req.url).pathname.startsWith('/audio/')) audio += 1;
+      }
+    }
+    return { bad, audio };
+  });
+  expect(audit.bad).toEqual([]);
+  expect(audit.audio).toBeGreaterThanOrEqual(plan.all.length);
+  // The warm-up asks for whole files. (Chrome's HTTP cache may still send a
+  // Range upstream to complete a partial entry left from the v2 days; the
+  // worker gets the complete file either way.) Cached bodies are the whole file.
+  const hits = await (await request.get('/__test/audio-hits')).json();
+  expect(hits.warm).toBeGreaterThanOrEqual(plan.all.length - 60);
+  const check = [...new Set([...hits.warmRanged, ...plan.all.filter((_, i) => i % 60 === 0).map(clipPath)])];
+  const cachedSizes = await page.evaluate(async (paths) => {
+    const cache = await caches.open('pl-audio');
+    const out: Record<string, number> = {};
+    for (const path of paths) out[path] = (await (await cache.match(path))!.arrayBuffer()).byteLength;
+    return out;
+  }, check);
+  for (const path of check) {
+    // Straight from the server, not through the worker.
+    const real = (await (await request.get(path)).body()).byteLength;
+    expect(cachedSizes[path], path).toBe(real);
+  }
+
+  // Offline: clips from a lesson she has not started play through <audio>.
+  const sample = [plan.ui[0], plan.tracks.math[10].clips[0], plan.tracks.alphabet[59].clips[0], plan.all[plan.all.length - 1]];
+  await context.setOffline(true);
+  const offline = await page.evaluate(async (paths) => {
+    const out: Array<{ path: string; range: number; loaded: boolean }> = [];
+    for (const path of paths) {
+      const res = await fetch(path, { headers: { Range: 'bytes=0-9' } });
+      const audio = new Audio(path);
+      const loaded = await new Promise<boolean>((resolve) => {
+        audio.addEventListener('loadedmetadata', () => resolve(true));
+        audio.addEventListener('error', () => resolve(false));
+        setTimeout(() => resolve(false), 8000);
+      });
+      out.push({ path, range: res.status, loaded });
+    }
+    return out;
+  }, sample.map(clipPath));
+  await context.setOffline(false);
+  for (const row of offline) expect(row, row.path).toEqual({ path: row.path, range: 206, loaded: true });
+});
+
+test('warming again fetches only clips that are missing', async ({ page, request }) => {
+  test.setTimeout(240000);
+  await request.get('/__test/sw-fast-warm/on');
+  await upgradeFromLegacy(page, []);
+  const plan: Plan = await (await request.get('/audio-plan.json')).json();
+  await expect
+    .poll(async () => plan.all.length - (await cachedAudio(page)).length, { timeout: 200000, intervals: [2000] })
+    .toBe(0);
+  await page.waitForTimeout(1000);
+
+  // A finished warm-up is remembered: another page load fetches nothing.
+  await request.get('/__test/audio-hits/reset');
+  await page.evaluate(async () => (await navigator.serviceWorker.ready).active!.postMessage({ type: 'WARM_AUDIO' }));
+  await page.waitForTimeout(3000);
+  expect((await (await request.get('/__test/audio-hits')).json()).total).toBe(0);
+
+  // Interrupted / evicted: drop the marker and 5 clips; only those 5 come back.
+  const dropped = plan.all.slice(100, 105).map(clipPath);
+  await page.evaluate(async (paths) => {
+    await (await caches.open('pl-sw-meta')).delete('/__sw/audio-warm-done');
+    const cache = await caches.open('pl-audio');
+    for (const p of paths) await cache.delete(p);
+  }, dropped);
+  await request.get('/__test/audio-hits/reset');
+  await page.evaluate(async () => (await navigator.serviceWorker.ready).active!.postMessage({ type: 'WARM_AUDIO' }));
+  await expect.poll(async () => (await cachedAudio(page)).length, { timeout: 30000 }).toBe(plan.all.length);
+  await page.waitForTimeout(1000);
+  const hits = await (await request.get('/__test/audio-hits')).json();
+  expect(hits.total).toBe(5);
+  expect(Object.keys(hits.paths).sort()).toEqual([...dropped].sort());
 });

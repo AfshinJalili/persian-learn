@@ -39,7 +39,7 @@ export default function TenFrameExercise({
         ))}
       </div>
 
-      <div className="grid grid-cols-3 gap-4 w-full">
+      <div className="grid3 w-full">
         {choices.map((choice) => (
           <ChoiceButton
             key={choice}

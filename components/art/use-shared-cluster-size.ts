@@ -24,7 +24,7 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLElement>(
 ): {
   ref: RefCallback<T>;
   size: number;
-  box: { width: number; height: number; offsetWidth: number };
+  box: { width: number; height: number; offsetWidth: number; chromeY: number };
   fullest: number;
 } {
   const nodeRef = useRef<T | null>(null);
@@ -47,13 +47,14 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLElement>(
     width: fallbackWidth,
     height: fallbackHeight,
     offsetWidth: fallbackWidth,
+    chromeY: 0,
   }));
 
   useLayoutEffect(() => {
     const node = nodeRef.current;
     if (!node) return;
 
-    const applyBox = (innerW: number, innerH: number, offsetWidth: number) => {
+    const applyBox = (innerW: number, innerH: number, offsetWidth: number, chromeY = 0) => {
       if (!Number.isFinite(innerW) || !Number.isFinite(innerH) || innerW < 8 || innerH < 8) {
         setBox((prev) => {
           if (
@@ -63,7 +64,7 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLElement>(
           ) {
             return prev;
           }
-          return { width: fallbackWidth, height: fallbackHeight, offsetWidth: fallbackWidth };
+          return { width: fallbackWidth, height: fallbackHeight, offsetWidth: fallbackWidth, chromeY: 0 };
         });
         const fallbackSize = objectClusterLayoutForBox(
           fullest,
@@ -90,11 +91,12 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLElement>(
         if (
           nearlyEqual(prev.width, width) &&
           nearlyEqual(prev.height, height) &&
-          nearlyEqual(prev.offsetWidth, cardWidth)
+          nearlyEqual(prev.offsetWidth, cardWidth) &&
+          nearlyEqual(prev.chromeY, chromeY)
         ) {
           return prev;
         }
-        return { width, height, offsetWidth: cardWidth };
+        return { width, height, offsetWidth: cardWidth, chromeY: Math.round(chromeY) };
       });
       setSize((prev) => (prev === nextSize ? prev : nextSize));
     };
@@ -109,23 +111,24 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLElement>(
         width: target.clientWidth - padX - padRight,
         height: target.clientHeight - padY - padBottom,
         offsetWidth: target.offsetWidth,
+        chromeY: target.offsetHeight - (target.clientHeight - padY - padBottom),
       };
     };
 
     let frame = 0;
-    const scheduleApply = (innerW: number, innerH: number, offsetWidth: number) => {
+    const scheduleApply = (innerW: number, innerH: number, offsetWidth: number, chromeY: number) => {
       if (typeof requestAnimationFrame !== 'function') {
-        applyBox(innerW, innerH, offsetWidth);
+        applyBox(innerW, innerH, offsetWidth, chromeY);
         return;
       }
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
-        applyBox(innerW, innerH, offsetWidth);
+        applyBox(innerW, innerH, offsetWidth, chromeY);
       });
     };
 
     const first = innerFromNode(node);
-    applyBox(first.width, first.height, first.offsetWidth);
+    applyBox(first.width, first.height, first.offsetWidth, first.chromeY);
 
     if (typeof ResizeObserver === 'undefined') {
       return () => {
@@ -136,7 +139,7 @@ export function useSharedClusterSize<T extends HTMLElement = HTMLElement>(
       const entry = entries.find((item) => item.target === node) ?? entries[0];
       if (!entry) return;
       const next = innerFromNode(entry.target as HTMLElement);
-      scheduleApply(next.width, next.height, next.offsetWidth);
+      scheduleApply(next.width, next.height, next.offsetWidth, next.chromeY);
     });
     observer.observe(node);
     return () => {
