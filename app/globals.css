@@ -2833,7 +2833,13 @@ h2.prompt-numeral {
 
   .cc-intro-screen,
   .cc-intro-body {
-    gap: 6px;
+    gap: 5px;
+  }
+
+  /* 360x640 was 3px over: trim the space above the prompt (outside the
+     cards) instead of shrinking the cards or their pictures. */
+  .content:has(.cc-intro-screen) {
+    padding-top: 2px;
   }
 }
 

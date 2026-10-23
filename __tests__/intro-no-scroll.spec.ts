@@ -4,8 +4,9 @@ import { test, expect, type Page } from '@playwright/test';
 // Owner rule for multi-item intros: at 360x640 and up, 1x font, the screen
 // fits with no vertical or horizontal scroll, Continue fully on screen at
 // load, and every picture and tap target >= 48px. The screens are found by
-// sweeping the content (no hard-coded list): every plain (non count-card)
-// intro with more than one picture in its display or its visual.
+// sweeping the content (no hard-coded list): every intro with more than one
+// picture in its display or its visual, including the count-card intro
+// (variant count_cards, m1l1).
 
 type Ex = { id: string; type: string; payload: { display?: string; visual?: string; variant?: string } };
 type Track = { units: { lessons: { id: string; exercises: Ex[] }[] }[] };
@@ -23,9 +24,15 @@ const MULTI = Object.entries(tracks).flatMap(([track, t]) =>
     .flatMap((lesson) =>
       lesson.exercises.flatMap((ex, index) =>
         ex.type === 'intro' &&
-        !ex.payload.variant &&
         (pictures(ex.payload.display) > 1 || pictures(ex.payload.visual) > 1)
-          ? [{ track, path: `/lesson/${lesson.id}?ex=${index}`, id: `${lesson.id}e${index}` }]
+          ? [
+              {
+                track,
+                path: `/lesson/${lesson.id}?ex=${index}`,
+                id: `${lesson.id}e${index}`,
+                cards: ex.payload.variant === 'count_cards',
+              },
+            ]
           : []
       )
     )
@@ -66,10 +73,12 @@ async function seed(page: Page, track: string) {
 
 test('the sweep finds the group intros', () => {
   const ids = MULTI.map((m) => m.id);
-  for (const id of ['m6l1e0', 'm7l1e0', 'm8l1e0', 'm9l1e0', 'm11l2e0', 'm6l3e0', 'm8l4e0']) {
+  for (const id of ['m1l1e0', 'm6l1e0', 'm7l1e0', 'm8l1e0', 'm9l1e0', 'm11l2e0', 'm6l3e0', 'm8l4e0']) {
     expect(ids).toContain(id);
   }
-  expect(ids.length).toBeGreaterThan(20);
+  // The count-card intro is in the sweep, not skipped by its variant.
+  expect(MULTI.filter((m) => m.cards).map((m) => m.id)).toEqual(['m1l1e0']);
+  expect(ids.length).toBe(29);
 });
 
 for (const viewport of [
@@ -86,7 +95,9 @@ for (const viewport of [
         const failures: string[] = [];
         for (const screen of screens) {
           await page.goto(screen.path);
-          await page.locator('[data-intro-plain]').waitFor();
+          const columnSelector = screen.cards ? '.cc-intro-screen' : '[data-intro-plain]';
+          await page.locator(columnSelector).waitFor();
+          if (screen.cards) await page.locator('[data-count-card]').nth(2).waitFor();
           await page.evaluate(async () => {
             await document.fonts.ready;
             await Promise.all(
@@ -96,10 +107,10 @@ for (const viewport of [
           // Two frames for the fit / in-row-speaker pass after fonts.
           await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
           await page.waitForTimeout(150);
-          const r = await page.evaluate(() => {
+          const r = await page.evaluate((columnSelector) => {
             const content = document.querySelector('.app-phone .content') as HTMLElement;
             const root = document.scrollingElement as HTMLElement;
-            const column = content.querySelector('[data-intro-plain]') as HTMLElement;
+            const column = content.querySelector(columnSelector) as HTMLElement;
             const btn = [...column.querySelectorAll('button')].find((b) => b.textContent?.includes('ادامه'))!;
             const b = btn.getBoundingClientRect();
             const taps = [...document.querySelectorAll('.app-phone button')]
@@ -125,7 +136,7 @@ for (const viewport of [
               minArt: art.length ? Math.min(...art) : 48,
               lines,
             };
-          });
+          }, columnSelector);
           const bad: string[] = [];
           if (r.v > 0) bad.push(`vertical scroll ${r.v}px`);
           if (r.docV > 0) bad.push(`page scroll ${r.docV}px`);
