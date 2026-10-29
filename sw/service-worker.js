@@ -11,6 +11,11 @@ const LEGACY_CACHE_NAME = 'persian-learn-v2';
 // Small bookkeeping cache (not prefixed, so it survives version cleanup).
 const META_CACHE = 'pl-sw-meta';
 const PENDING_LEGACY_KEY = '/__sw/pending-legacy-clients';
+// Audio clips are content-addressed (/audio/<hash>.mp3), so they live in one
+// cache that is kept across deploys instead of being copied into every
+// versioned cache (not prefixed, so version cleanup leaves it alone).
+const AUDIO_CACHE = 'pl-audio';
+const WARM_DONE_KEY = '/__sw/audio-warm-done';
 const urlsToCache = [
   '/',
   '/home',
@@ -123,10 +128,18 @@ async function rangeResponse(full, rangeHeader) {
 }
 
 async function audioCacheFirst(request) {
-  const cache = await caches.open(CACHE_NAME);
+  const cache = await caches.open(AUDIO_CACHE);
   const url = new URL(request.url);
   const key = url.pathname;
   let full = await cache.match(key, { ignoreVary: true });
+  if (!full || full.status !== 200) {
+    // Saved by an older build in its versioned cache: move it over.
+    const older = await caches.match(key, { ignoreVary: true });
+    if (older && older.status === 200) {
+      full = older;
+      await cache.put(key, older.clone()).catch(() => undefined);
+    }
+  }
   if (!full || full.status !== 200) {
     // Separate fetch without the Range header so we get (and keep) the whole file.
     try {
@@ -261,7 +274,12 @@ async function migrateFrom(oldNames) {
         }
         continue;
       }
-      await target.put(isAudio(url.pathname) ? url.pathname : key, cached);
+      if (isAudio(url.pathname)) {
+        const audio = await caches.open(AUDIO_CACHE);
+        if (!(await audio.match(url.pathname))) await audio.put(url.pathname, cached);
+        continue;
+      }
+      await target.put(key, cached);
     }
   }
 }
@@ -313,6 +331,9 @@ self.addEventListener('activate', (event) => {
       }
       await Promise.all(stale.map((name) => caches.delete(name)));
       await self.clients.claim();
+      // Re-warm the audio cache after activation, in a message event with its
+      // own lifetime, so it never holds up activation or page loads.
+      self.registration.active?.postMessage({ type: 'WARM_AUDIO' });
 
       // Pages opened by the original worker have no controllerchange hook, so
       // the worker moves them to the new build itself. Those mid-lesson are
@@ -347,10 +368,204 @@ async function reloadLegacyClients(onlyId) {
   await writePendingLegacy(still);
 }
 
+// ---- Audio warm-up -------------------------------------------------------
+// Returning users upgraded from the v2 worker have almost no audio cached
+// (v2 tried to store 206 range responses, which the Cache API rejects), so
+// lessons go silent offline. After each activation, and on every page load
+// (ServiceWorkerRegister posts WARM_AUDIO), this fills the audio cache in the
+// background from /audio-plan.json:
+//   1. priority: app-shell clips, every lesson she has started or completed,
+//      and the next lesson in each track she is on;
+//   2. idle: the rest of her current track, the other track, then any other
+//      clip in the manifest (skipped with Save-Data or low storage).
+// Clips are fetched whole (no Range), only 200s are stored, cached clips are
+// skipped, and it stops when offline. Being cut off (the browser stops idle
+// workers after a few minutes) is fine: the next page load resumes it.
+const WARM_CONCURRENCY = 3;
+const WARM_PRIORITY_PAUSE_MS = 150;
+const WARM_IDLE_PAUSE_MS = 400;
+const WARM_IDLE_MIN_FREE_BYTES = 200 * 1024 * 1024;
+let warming = null;
+
+function warmAudio() {
+  if (!warming) {
+    warming = runWarmAudio().finally(() => {
+      warming = null;
+    });
+  }
+  return warming;
+}
+
+function sleepMs(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function fetchJson(path) {
+  try {
+    const res = await fetch(path, { cache: 'no-cache', credentials: 'same-origin' });
+    if (res.status === 200) {
+      const cache = await caches.open(CACHE_NAME);
+      await cache.put(path, res.clone()).catch(() => undefined);
+      return await res.json();
+    }
+  } catch {
+    // offline: use the copy from last time
+  }
+  const cached = await caches.match(path);
+  return cached ? cached.json() : null;
+}
+
+// Saved progress, read without ever creating the app's database: if it does
+// not exist yet the upgrade is aborted, so the app still creates it itself.
+function readSavedProgress() {
+  return new Promise((resolve) => {
+    let req;
+    try {
+      req = indexedDB.open('persian-learn');
+    } catch {
+      resolve(null);
+      return;
+    }
+    req.onupgradeneeded = () => req.transaction && req.transaction.abort();
+    req.onerror = () => resolve(null);
+    req.onblocked = () => resolve(null);
+    req.onsuccess = () => {
+      const db = req.result;
+      const stores = ['progress', 'lessons'].filter((name) => db.objectStoreNames.contains(name));
+      if (stores.length < 2) {
+        db.close();
+        resolve(null);
+        return;
+      }
+      try {
+        const tx = db.transaction(stores, 'readonly');
+        const progressReq = tx.objectStore('progress').get('current');
+        const lessonsReq = tx.objectStore('lessons').getAllKeys();
+        tx.oncomplete = () => {
+          db.close();
+          resolve({ progress: progressReq.result || null, started: lessonsReq.result || [] });
+        };
+        tx.onerror = () => {
+          db.close();
+          resolve(null);
+        };
+      } catch {
+        db.close();
+        resolve(null);
+      }
+    };
+  });
+}
+
+// Clip order: [priority clips, idle clips], each without duplicates.
+function warmOrder(plan, saved) {
+  const progress = (saved && saved.progress) || {};
+  const completed = new Set(progress.completedLessons || []);
+  const started = new Set((saved && saved.started) || []);
+  const currentTrack = plan.tracks[progress.currentTrack] ? progress.currentTrack : 'math';
+  const seen = new Set();
+  const priority = [];
+  const idle = [];
+  const push = (list, clips) => {
+    for (const hash of clips) {
+      if (seen.has(hash)) continue;
+      seen.add(hash);
+      list.push(hash);
+    }
+  };
+  push(priority, plan.ui);
+  const trackNames = [currentTrack, ...Object.keys(plan.tracks).filter((n) => n !== currentTrack)];
+  for (const name of trackNames) {
+    const lessons = plan.tracks[name];
+    const touched = lessons.some((l) => completed.has(l.id) || started.has(l.id));
+    for (const lesson of lessons) {
+      if (completed.has(lesson.id) || started.has(lesson.id)) push(priority, lesson.clips);
+    }
+    if (name === currentTrack || touched) {
+      const next = lessons.find((l) => !completed.has(l.id));
+      if (next) push(priority, next.clips);
+    }
+  }
+  for (const name of trackNames) {
+    for (const lesson of plan.tracks[name]) push(idle, lesson.clips);
+  }
+  push(idle, plan.all || []);
+  return { priority, idle };
+}
+
+async function idleAllowed() {
+  const connection = self.navigator && self.navigator.connection;
+  if (connection && connection.saveData) return false;
+  try {
+    const { quota, usage } = await self.navigator.storage.estimate();
+    if (typeof quota === 'number' && quota - (usage || 0) < WARM_IDLE_MIN_FREE_BYTES) return false;
+  } catch {
+    // no estimate: assume there is room
+  }
+  return true;
+}
+
+function supersededWorker() {
+  const reg = self.registration;
+  return Boolean(reg.installing || reg.waiting || (reg.active && self.serviceWorker && reg.active !== self.serviceWorker));
+}
+
+// Fetches and stores clips not cached yet. Returns false if it went offline.
+async function warmClips(hashes, cached, pauseMs) {
+  const cache = await caches.open(AUDIO_CACHE);
+  const todo = hashes.map((hash) => `/audio/${hash}.mp3`).filter((path) => !cached.has(path));
+  for (let i = 0; i < todo.length; i += WARM_CONCURRENCY) {
+    if (self.navigator && self.navigator.onLine === false) return false;
+    // A newer worker is on its way: step aside so this job never holds up its
+    // activation. The new worker starts its own warm-up once it is active.
+    if (supersededWorker()) return false;
+    const batch = todo.slice(i, i + WARM_CONCURRENCY);
+    let offline = false;
+    await Promise.all(
+      batch.map(async (path) => {
+        try {
+          // No Range header: the full file, which is the only thing we store.
+          const res = await fetch(path, { credentials: 'same-origin', headers: { 'X-PL-Warm': '1' } });
+          if (res.status === 200) {
+            await cache.put(path, res);
+            cached.add(path);
+          }
+        } catch {
+          offline = true;
+        }
+      })
+    );
+    if (offline) return false;
+    if (i + WARM_CONCURRENCY < todo.length) await sleepMs(pauseMs);
+  }
+  return true;
+}
+
+async function runWarmAudio() {
+  const plan = await fetchJson('/audio-plan.json');
+  if (!plan || !Array.isArray(plan.ui) || !plan.tracks) return;
+  const meta = await caches.open(META_CACHE);
+  const done = await meta.match(WARM_DONE_KEY);
+  if (done && (await done.text()) === plan.version) return;
+
+  const audio = await caches.open(AUDIO_CACHE);
+  const cached = new Set((await audio.keys()).map((req) => new URL(req.url).pathname));
+  const { priority, idle } = warmOrder(plan, await readSavedProgress());
+  if (!(await warmClips(priority, cached, WARM_PRIORITY_PAUSE_MS))) return;
+  if (!(await idleAllowed())) return;
+  if (!(await warmClips(idle, cached, WARM_IDLE_PAUSE_MS))) return;
+  const missing = (plan.all || []).some((hash) => !cached.has(`/audio/${hash}.mp3`));
+  if (!missing) await meta.put(WARM_DONE_KEY, new Response(plan.version));
+}
+
 self.addEventListener('message', (event) => {
   const data = event.data || {};
   if (data.type === 'RELOAD_LEGACY') {
     event.waitUntil(reloadLegacyClients());
+    return;
+  }
+  if (data.type === 'WARM_AUDIO') {
+    event.waitUntil(warmAudio().catch(() => undefined));
     return;
   }
   if (data.type === 'GET_VERSION' && event.ports && event.ports[0]) {

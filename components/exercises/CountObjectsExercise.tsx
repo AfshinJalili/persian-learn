@@ -6,7 +6,7 @@ import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
 import type { Exercise } from '@/lib/types';
 import SpeakerButton from '@/components/SpeakerButton';
 import ChoiceButton from '@/components/ChoiceButton';
-import { ObjectCluster } from '@/components/art/objects';
+import { ObjectCluster, useObjectArtAspect } from '@/components/art/objects';
 import { useSharedClusterSize } from '@/components/art/use-shared-cluster-size';
 
 interface Props {
@@ -29,6 +29,7 @@ export default function CountObjectsExercise({
   const count = Number.isFinite(payload.count) ? payload.count : 0;
   const objects = Array.from({ length: Math.max(0, count) }, () => payload.objects || '•');
   const { ref, box } = useSharedClusterSize([objects.length]);
+  const aspect = useObjectArtAspect(objects.length === 1 ? objects[0] : '');
 
   const handleSelect = (option: string) => {
     if (disabled) return;
@@ -45,7 +46,7 @@ export default function CountObjectsExercise({
         ref={ref}
         className="card object-count-card"
         data-single-art={objects.length === 1 || undefined}
-        style={singleArtStyle(objects.length === 1, box.offsetWidth)}
+        style={singleArtStyle(objects.length === 1, box.offsetWidth, aspect)}
       >
         <ObjectCluster
           tokens={objects}

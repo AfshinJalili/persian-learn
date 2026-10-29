@@ -98,9 +98,9 @@ describe('ObjectCluster', () => {
     );
   });
 
-  it('sizes a single math item to 77% of the card offset width, capped by the inner box', () => {
-    expect(objectClusterLayoutForBox(1, 81, 140, 8, 'grid', 103).size).toBe(79);
-    expect(objectClusterLayoutForBox(1, 100, 140).size).toBe(77);
+  it('sizes a single math item to 76% of the card offset width, capped by the inner box', () => {
+    expect(objectClusterLayoutForBox(1, 81, 140, 8, 'grid', 103).size) .toBe(Math.round(103 * 0.76));
+    expect(objectClusterLayoutForBox(1, 100, 140).size).toBe(Math.round(100 * 0.76));
     expect(objectClusterLayoutForBox(1, 81, 40, 8, 'grid', 81).size).toBe(40);
     expect(objectClusterLayoutForBox(1, 40, 140).size).toBeGreaterThanOrEqual(OBJECT_CLUSTER_MIN_SIZE);
   });

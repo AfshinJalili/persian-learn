@@ -1,6 +1,6 @@
 'use client';
 
-import { forwardRef, type ReactNode } from 'react';
+import { forwardRef, type CSSProperties, type ReactNode } from 'react';
 import { playOptionAudio } from '@/lib/spoken-option';
 
 interface ChoiceButtonProps {
@@ -13,6 +13,8 @@ interface ChoiceButtonProps {
   dim?: boolean;
   name?: string;
   peers?: string[];
+  style?: CSSProperties;
+  singleArt?: boolean;
 }
 
 const ChoiceButton = forwardRef<HTMLButtonElement, ChoiceButtonProps>(
@@ -27,6 +29,8 @@ const ChoiceButton = forwardRef<HTMLButtonElement, ChoiceButtonProps>(
       dim = false,
       name,
       peers,
+      style,
+      singleArt,
     },
     ref
   ) {
@@ -52,6 +56,8 @@ const ChoiceButton = forwardRef<HTMLButtonElement, ChoiceButtonProps>(
         }}
         disabled={disabled && state === 'idle'}
         aria-label={name}
+        style={style}
+        data-single-art={singleArt || undefined}
         className={`card ${extras}`.trim()}
       >
         {children}

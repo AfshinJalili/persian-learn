@@ -41,9 +41,8 @@ export default function TraceLetterExercise({ exercise, onComplete }: Props) {
       </div>
       <button
         type="button"
-        className="card"
+        className="card trace-card"
         style={{
-          minHeight: 380,
           background: '#fff',
           position: 'relative',
           display: 'flex',
@@ -59,7 +58,7 @@ export default function TraceLetterExercise({ exercise, onComplete }: Props) {
         <span className="body-lg" style={{ alignSelf: 'stretch', textAlign: 'start', color: 'var(--ink-2)', fontWeight: 700 }}>
           از دایرهٔ سبز شروع کنید
         </span>
-        <span style={{ position: 'relative', display: 'block', width: 300, maxWidth: '100%' }}>
+        <span className="trace-art" style={{ position: 'relative', display: 'block' }}>
         <svg viewBox="0 0 320 300" width="300" height="282" aria-hidden="true" style={{ display: 'block', width: '100%', height: 'auto' }}>
           <path d="M266 140 C 280 186, 262 206, 226 206 L 100 206 C 62 206, 46 186, 52 150" fill="none" stroke="#E6E9E7" strokeWidth="46" strokeLinecap="round" />
           <path d="M266 140 C 280 186, 262 206, 226 206 L 100 206 C 62 206, 46 186, 52 150" fill="none" stroke="#9AA59F" strokeWidth="4" strokeDasharray="4 12" strokeLinecap="round" />

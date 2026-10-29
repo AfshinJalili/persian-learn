@@ -6,6 +6,38 @@ import { playOptionAudio } from '@/lib/spoken-option';
 import { exerciseHeading, exerciseHeadingClass } from '@/lib/exercise-copy';
 import SpeakerButton from '@/components/SpeakerButton';
 import { PomegranateSvg } from '@/components/art/objects';
+import { useLayoutEffect, useRef, useState, type RefObject } from 'react';
+
+const MIN_CELL = 48;
+
+/**
+ * Columns for the number line: as many as fit at >= 48px (and >= 1.7em of the
+ * numeral, so big text still fits), balanced so the rows are near-equal.
+ */
+function useNumberLineColumns(ref: RefObject<HTMLOListElement | null>, count: number): number {
+  const [cols, setCols] = useState(Math.min(count, 6));
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const apply = () => {
+      const width = el.clientWidth;
+      if (!(width > 0)) return;
+      const num = el.querySelector('.number-line-num');
+      const fontPx = num ? parseFloat(getComputedStyle(num).fontSize) || 28 : 28;
+      const cell = Math.max(MIN_CELL, fontPx * 1.7);
+      const fit = Math.max(1, Math.min(count, Math.floor(width / cell)));
+      const rows = Math.ceil(count / fit);
+      const next = Math.ceil(count / rows);
+      setCols((prev) => (prev === next ? prev : next));
+    };
+    apply();
+    if (typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(apply);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ref, count]);
+  return cols;
+}
 
 interface NumberLineExerciseProps {
   exercise: Exercise;
@@ -28,16 +60,17 @@ export default function NumberLineExercise({
   };
   const safeMin = Number.isFinite(min) ? min : 0;
   const safeMax = Number.isFinite(max) ? max : 5;
+  // 0..100 lines count in tens (11 marks), like 0..10 lines count in ones.
+  const step = safeMax - safeMin > 10 ? Math.ceil((safeMax - safeMin) / 10) : 1;
   const numbers: number[] = [];
-  for (let i = safeMin; i <= safeMax; i += 1) {
+  for (let i = safeMin; i <= safeMax; i += step) {
     numbers.push(i);
   }
+  if (numbers[numbers.length - 1] !== safeMax) numbers.push(safeMax);
+  const lineRef = useRef<HTMLOListElement>(null);
 
   const selected = userAnswer ? Number(userAnswer.replace(/[۰-۹]/g, (d) => String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d)))) : null;
-  const xs = numbers.map((_, index) => {
-    const span = Math.max(numbers.length - 1, 1);
-    return 300 - (index / span) * 280;
-  });
+  const cols = useNumberLineColumns(lineRef, numbers.length);
 
   return (
     <>
@@ -45,51 +78,59 @@ export default function NumberLineExercise({
         <SpeakerButton text={exercise.audio_script} />
         <h2 className={exerciseHeadingClass(exercise)}>{exerciseHeading(exercise)}</h2>
       </div>
-      <p className="body-lg muted" style={{ marginTop: -8 }}>
+      <p className="body-lg muted number-line-hint">
         علامت سبز را روی عدد درست بگذارید.
       </p>
-      <div className="card" style={{ minHeight: 300, alignContent: 'center', position: 'relative' }}>
-        <svg viewBox="0 0 342 230" width="342" height="230" style={{ width: '100%', maxWidth: 342, height: 'auto' }}>
-          <line x1="6" y1="144" x2="318" y2="144" stroke="#1B2A22" strokeWidth="5" strokeLinecap="round" />
-          <path d="M4 144l14-10v20z" fill="#1B2A22" />
+      <div className="card number-line-card">
+        {/* Each number is its own >= 48px tap cell on the line. The line wraps
+            onto more rows (still right to left) when the screen is narrow or
+            the text is large, instead of shrinking the cells. */}
+        <ol
+          ref={lineRef}
+          className="number-line"
+          style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
+          data-cols={cols}
+        >
           {numbers.map((num, index) => {
-            const x = xs[index] ?? 20;
+            const label = formatPersianNumber(num);
+            const isSelected = selected === num;
+            const rowStart = index % cols === 0;
+            const rowEnd = index % cols === cols - 1 || index === numbers.length - 1;
             return (
-              <g key={num}>
-                <line x1={x} y1="130" x2={x} y2="158" stroke="#1B2A22" strokeWidth="5" strokeLinecap="round" />
-                <text x={x} y="204" textAnchor="middle" style={{ font: '800 36px Vazirmatn' }} fill="#1B2A22">
-                  {formatPersianNumber(num)}
-                </text>
-                {selected === num && (
-                  <g transform={`translate(${x} 46)`}>
-                    <path d="M0 72c-16-20-26-32-26-46a26 26 0 0 1 52 0c0 14-10 26-26 46z" fill="#1F6408" />
-                    <circle cx="0" cy="26" r="11" fill="#fff" />
-                  </g>
-                )}
-              </g>
+              <li key={num}>
+                <button
+                  type="button"
+                  disabled={disabled}
+                  aria-label={label}
+                  aria-pressed={isSelected}
+                  data-number-tick={num}
+                  className={`number-line-tick${isSelected ? ' selected' : ''}`}
+                  data-row-start={rowStart || undefined}
+                  data-row-end={rowEnd || undefined}
+                  onClick={(event) => {
+                    onAnswerChange(label);
+                    playOptionAudio(label).catch(() => {});
+                    event.currentTarget.scrollIntoView?.({ block: 'nearest' });
+                  }}
+                >
+                  <span className="number-line-pin" aria-hidden="true">
+                    {isSelected && (
+                      <svg viewBox="-28 0 56 74">
+                        <path d="M0 72c-16-20-26-32-26-46a26 26 0 0 1 52 0c0 14-10 26-26 46z" fill="#1F6408" />
+                        <circle cx="0" cy="26" r="11" fill="#fff" />
+                      </svg>
+                    )}
+                  </span>
+                  <span className="number-line-mark" aria-hidden="true" />
+                  <span className="number-line-num">{label}</span>
+                </button>
+              </li>
             );
           })}
-        </svg>
-        <div className="flex flex-wrap justify-between gap-x-4 w-full max-w-[300px] font-bold text-[var(--ink-2)]">
+        </ol>
+        <div className="number-line-legend">
           <span>کمتر</span>
           <span>بیشتر ←</span>
-        </div>
-        <div className="absolute inset-0 flex">
-          {numbers.map((num) => (
-            <button
-              key={`hit-${num}`}
-              type="button"
-              disabled={disabled}
-              aria-label={formatPersianNumber(num)}
-              onClick={() => {
-                const label = formatPersianNumber(num);
-                onAnswerChange(label);
-                playOptionAudio(label).catch(() => {});
-              }}
-              className="flex-1 min-h-[56px]"
-              data-tap-strip
-            />
-          ))}
         </div>
       </div>
       {selected !== null && selected >= 0 && selected <= 5 && (

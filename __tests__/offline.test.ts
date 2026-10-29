@@ -40,7 +40,10 @@ describe('service worker', () => {
     const precache = source.match(/const urlsToCache = \[([\s\S]*?)\];/)?.[1] ?? '';
     expect(precache).not.toContain('/audio');
     expect(precache).not.toContain('.mp3');
-    expect(source).not.toContain('.mp3');
+    // Audio is warmed in the background after activation, never at install.
+    const install = source.match(/addEventListener\('install'[\s\S]*?\n\}\);/)?.[0] ?? '';
+    expect(install).not.toBe('');
+    expect(install).not.toMatch(/audio|warm/i);
   });
 
   it('versions the cache per build and takes over immediately', () => {

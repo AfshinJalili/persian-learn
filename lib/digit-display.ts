@@ -29,6 +29,8 @@ export function digitDisplayFontSize(
   const usable = Math.max(1, innerWidth - SEQUENCE_PAD_X * 2 - gaps);
   return Math.max(
     1,
-    Math.floor(Math.min(SEQUENCE_FONT_MAX, usable / Math.max(1, tokenCount)))
+    // Height cap: the row's 8px vertical padding plus a 1.05em line (the
+    // question mark rises a little above the digits).
+    Math.floor(Math.min(SEQUENCE_FONT_MAX, usable / Math.max(1, tokenCount), (innerHeight - 20) / 1.1))
   );
 }

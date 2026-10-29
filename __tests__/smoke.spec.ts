@@ -2,7 +2,7 @@ import { test, expect } from './e2e-audio-stub';
 
 test.describe('Onboarding', () => {
   test('should complete onboarding flow', async ({ page }) => {
-    await page.goto('http://localhost:3000');
+    await page.goto('/');
 
     await page.waitForSelector('text=خوش آمدید', { timeout: 10000 });
 
@@ -30,7 +30,7 @@ test.describe('Onboarding', () => {
 
 test.describe('Lesson Flow', () => {
   test.skip('should complete a math lesson', async ({ page }) => {
-    await page.goto('http://localhost:3000/lesson/m1l1');
+    await page.goto('/lesson/m1l1');
 
     await page.waitForSelector('text=ادامه', { timeout: 5000 });
 
